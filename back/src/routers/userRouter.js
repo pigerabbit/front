@@ -49,7 +49,7 @@ const userAuthRouter = Router();
  *                success:
  *                  type: string
  *                  example: true
- *                users:
+ *                payload:
  *                  type: object
  *                  properties:
  *                    name:
