@@ -5,6 +5,99 @@ import { userAuthService } from "../services/userService";
 
 const userAuthRouter = Router();
 
+/**
+ *  @swagger
+ *  tags:
+ *    name: User
+ *    description: Users MVP.
+ */
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *    summary: 유저 API
+ *    description: 유저를 생성할 때 사용하는 API 입니다.
+ *    tags: [Users]
+ *    requestBody:
+ *      x-name: body
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            required:
+ *            - name
+ *            - email
+ *            - password
+ *            properties:
+ *              name:
+ *                type: string
+ *                example: 쨍이
+ *              email:
+ *                type: string
+ *                example: test@test.com
+ *              password:
+ *                type: string
+ *                example: password
+ *    responses:
+ *      201:
+ *        description: 유저 생성
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: string
+ *                  example: true
+ *                users:
+ *                  type: object
+ *                  properties:
+ *                    name:
+ *                      type: string
+ *                      description: 유저 이름
+ *                      example: 쨍이
+ *                    email:
+ *                      type: string
+ *                      description: 유저 이메일
+ *                      example: test@test.com
+ *                    password:
+ *                      type: string
+ *                      description: 유저 비밀번호
+ *                      example: password
+ *      400:
+ *        description: 댓글 생성 오류
+ *        content:
+ *         application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: string
+ *                  example: false
+ *                error:
+ *                  type: object
+ *                  properties:
+ *                    code:
+ *                      type: integer
+ *                      description: http status
+ *                      example: 400
+ *                    message:
+ *                      type: string
+ *                      description: 오류 내용
+ *                      example: 이름을 입력해주세요.
+ *                    detail:
+ *                      type: object
+ *                      description: 오류 세부 사항
+ *                      properties:
+ *                        msg:
+ *                          type: string
+ *                          description: 오류 내용
+ *                          example: 이름을 입력해주세요.
+ *                        body:
+ *                          type: string
+ *                          description: 입력하지 않은 파라미터
+ *                          example: name
+ */
 userAuthRouter.post("/user/register", async function (req, res, next) {
   try {
     if (is.emptyObject(req.body)) {
