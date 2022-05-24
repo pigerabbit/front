@@ -65,7 +65,7 @@ const userAuthRouter = Router();
  *                      description: 유저 비밀번호
  *                      example: password
  *      400:
- *        description: 댓글 생성 오류
+ *        description: 유저 생성 오류
  *        content:
  *         application/json:
  *            schema:
@@ -98,7 +98,7 @@ const userAuthRouter = Router();
  *                          description: 입력하지 않은 파라미터
  *                          example: name
  */
-userAuthRouter.post("/user/register", async function (req, res, next) {
+userAuthRouter.post("/users", async function (req, res, next) {
   try {
     if (is.emptyObject(req.body)) {
       throw new Error(
