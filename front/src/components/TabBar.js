@@ -84,7 +84,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   z-index: 9;
-  filter: drop-shadow(0px -5px 8px rgba(0, 0, 0, 0.2));
+  box-shadow: 0 -8px 8px -6px #c0c0c0;
 `;
 
 const Cricle = styled.div`
