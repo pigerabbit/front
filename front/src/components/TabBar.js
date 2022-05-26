@@ -88,7 +88,7 @@ const Container = styled.div`
 `;
 
 const Cricle = styled.div`
-  position: absolute;
+  position: fixed;
   left: calc(50% - ${({ width }) => width / 2}px);
   bottom: ${({ bottom }) => bottom}px;
   width: ${({ width }) => width}px;
