@@ -15,9 +15,9 @@ export default MainPage;
 
 const Container = styled.div`
   position: relative;
-  width: 770px;
+  width: 100%;
+  max-width: 770px;
   min-width: 360px;
   min-height: 100vh;
-  height: 200vh;
   background-color: #ffffff;
 `;
