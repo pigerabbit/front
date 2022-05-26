@@ -8,6 +8,7 @@ import * as Api from "./api";
 import { login } from "./redux/userSlice";
 
 import ExamplePage from "./pages/ExamplePage";
+import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -44,6 +45,7 @@ function App() {
         <Routes>
           {/* 예시페이지 만들어났습니다. 이름 바꿔서 쓰세요~ */}
           <Route path="/" element={<ExamplePage />} />
+          <Route path="/products/:id" element={<ProductDetailPage />} />
         </Routes>
       </Container>
     </Router>
