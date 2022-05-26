@@ -3,6 +3,9 @@ import styled from "styled-components";
 
 import TopBar from "./TopBar";
 import Tabs from "./Tabs";
+import HomeTab from "./HomeTab";
+import BestTab from "./BestTab";
+import DeadlineTab from "./DeadlineTab";
 import SideBar from "./SideBar";
 import TabBar from "components/TabBar";
 
@@ -17,7 +20,11 @@ const MainPage = () => {
         setSideBarTitle={setSideBarTitle}
         setIsOpenSideBar={setIsOpenSideBar}
       />
+
       <Tabs tab={tab} setTab={setTab} />
+      {tab === "home" && <HomeTab />}
+      {tab === "best" && <BestTab />}
+      {tab === "deadline" && <DeadlineTab />}
 
       <SideBar
         title={sideBarTitle}
