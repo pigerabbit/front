@@ -7,7 +7,7 @@ import styled from "styled-components";
 import * as Api from "./api";
 import { login } from "./redux/userSlice";
 
-import ExamplePage from "./pages/ExamplePage";
+import MainPage from "./pages/Main/MainPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -42,8 +42,7 @@ function App() {
     <Router>
       <Container>
         <Routes>
-          {/* 예시페이지 만들어났습니다. 이름 바꿔서 쓰세요~ */}
-          <Route path="/" element={<ExamplePage />} />
+          <Route path="/" element={<MainPage />} />
         </Routes>
       </Container>
     </Router>

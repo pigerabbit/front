@@ -3,16 +3,15 @@ import styled from "styled-components";
 
 import TabBar from "components/TabBar";
 
-const ExamplePage = () => {
+const MainPage = () => {
   return (
     <Container>
-      {/* 탭바 안쓰이는 페이지에서는 지워주시면 됩니다. */}
       <TabBar />
     </Container>
   );
 };
 
-export default ExamplePage;
+export default MainPage;
 
 const Container = styled.div`
   position: relative;
@@ -21,7 +20,4 @@ const Container = styled.div`
   min-height: 100vh;
   height: 200vh;
   background-color: #ffffff;
-  "::-webkit-scrollbar-track" {
-    background: none;
-  },
 `;
