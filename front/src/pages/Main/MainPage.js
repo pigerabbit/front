@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import TopBar from "./TopBar";
+import Tabs from "./Tabs";
 import SideBar from "./SideBar";
 import TabBar from "components/TabBar";
 
 const MainPage = () => {
+  const [tab, setTab] = useState("home");
   const [sideBarTitle, setSideBarTitle] = useState("카테고리");
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
 
@@ -15,11 +17,14 @@ const MainPage = () => {
         setSideBarTitle={setSideBarTitle}
         setIsOpenSideBar={setIsOpenSideBar}
       />
+      <Tabs tab={tab} setTab={setTab} />
+
       <SideBar
         title={sideBarTitle}
         isOpenSideBar={isOpenSideBar}
         setIsOpenSideBar={setIsOpenSideBar}
       />
+
       <TabBar />
     </Container>
   );
