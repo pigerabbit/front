@@ -54,11 +54,11 @@ const TabBar = () => {
           </Tab>
         </LeftRight>
       </Container>
-      <Cricle index={"bottom"} width={120} color={"white"} bottom={0} />
-      <Cricle index={"top"} width={120} color={"white"} bottom={0} />
+      <Cricle index={"bottom"} width={110} color={"white"} bottom={0} />
+      <Cricle index={"top"} width={110} color={"white"} bottom={0} />
       <Cricle
         index={"top"}
-        width={90}
+        width={80}
         color={"#FFB564"}
         bottom={15}
         onClick={() => {
@@ -79,7 +79,10 @@ const Container = styled.div`
   bottom: 0;
   width: 100%;
   max-width: 770px;
-  height: 80px;
+  height: 75px;
+  @media (max-width: 440px) {
+    height: 65px;
+  }
   background-color: white;
   display: flex;
   justify-content: space-between;
@@ -93,6 +96,11 @@ const Cricle = styled.div`
   bottom: ${({ bottom }) => bottom}px;
   width: ${({ width }) => width}px;
   height: ${({ width }) => width}px;
+  @media (max-width: 440px) {
+    width: ${({ width }) => width - 10}px;
+    height: ${({ width }) => width - 10}px;
+    font-size: 13px;
+  }
   border-radius: 50%;
   background-color: ${({ color }) => color};
   cursor: pointer;
@@ -117,14 +125,23 @@ const Cricle = styled.div`
 
 const LeftRight = styled.div`
   box-sizing: border-box;
-  width: 40%;
-  padding: 0 7%;
+  width: 40vw;
+  padding: 0 7vw;
+  @media (max-width: 440px) {
+    padding: 0 4vw;
+  }
+  @media (min-width: 440px) and (max-width: 580px) {
+    padding: 0 5vw;
+  }
   display: felx;
   justify-content: space-between;
 `;
 
 const Tab = styled.div`
   width: 60px;
+  @media (max-width: 440px) {
+    width: 50px;
+  }
   height: 100%;
   cursor: pointer;
 
@@ -135,6 +152,9 @@ const Tab = styled.div`
   color: #8a8a8a;
   font-weight: 600;
   font-size: 12px;
+  @media (max-width: 440px) {
+    font-size: 10px;
+  }
 
   span {
     margin-top: 10px;
