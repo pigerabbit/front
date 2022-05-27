@@ -2,24 +2,31 @@ import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
 import * as Api from "api";
+import axios from "axios";
+
+import { faUser, faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ProductTabs from "./ProductTabs";
 import ProductExplanation from "./ProductExplanationTab";
 
 const ProductDetailPage = () => {
-  const [product, setProduct] = useState("123");
+  const navigate = useNavigate();
+  const [product, setProduct] = useState({});
   const [currentTab, setCurrentTab] = useState({
     index: 0,
     name: "상품설명",
-    content: ProductExplanation(product),
+    content: <ProductExplanation product={product} />,
   });
 
   const productId = useParams().id;
 
   const getProductDetail = async () => {
     try {
-      const res = await Api.get(`products/${productId}`);
-      setProduct(res.data);
+      // const res = await Api.get(`products/${productId}`);
+      const res = await axios.get("/data/products.json");
+      setProduct(res.data.content[0]);
+      console.log(product);
     } catch (e) {
       console.log(e);
     }
@@ -32,13 +39,38 @@ const ProductDetailPage = () => {
   return (
     <Container>
       <Top>
-        <GoBack></GoBack>
-        <ProductTitle>논산에서 자란 신선한 딸기딸기 1.5kg</ProductTitle>
+        <GoBack onClick={() => navigate("/products")} />
+        <ProductTitle>{product.name}</ProductTitle>
+        <ButtonTopContainer>
+          <div
+            id="home"
+            onClick={() => {
+              navigate("/home");
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faHome}
+              style={{ fontSize: "20px", color: "#f79831" }}
+            />
+          </div>
+          <div
+            id="user"
+            onClick={() => {
+              navigate("/user");
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faUser}
+              style={{ fontSize: "20px", color: "#f79831" }}
+            />
+          </div>
+        </ButtonTopContainer>
       </Top>
       <ProductTabs
         product={product}
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
+        key={product.id}
       />
       {currentTab.content}
       <ButtonsContainer>
@@ -79,6 +111,21 @@ const GoBack = styled.i`
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);
   cursor: pointer;
+`;
+
+const ButtonTopContainer = styled.div`
+  width: 55px;
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  #home,
+  #user {
+    cursor: pointer;
+  }
 `;
 
 // const TabsContainer = styled.div`

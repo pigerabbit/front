@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProductInquiry = (product) => {
-  return <Container>{product}문의문의</Container>;
+const ProductInquiry = ({ product }) => {
+  return <Container>{product.name}문의문의</Container>;
 };
 
 export default ProductInquiry;

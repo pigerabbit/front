@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProductReview = (product) => {
-  return <Container>{product}후기후기</Container>;
+const ProductReview = ({ product }) => {
+  return <Container>{product.name}후기후기</Container>;
 };
 
 export default ProductReview;

@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProductInformation = (product) => {
-  return <Container>{product}정보정보</Container>;
+const ProductInformation = ({ product }) => {
+  return <Container>{product.name}정보정보</Container>;
 };
 
 export default ProductInformation;

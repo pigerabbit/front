@@ -6,12 +6,28 @@ import ProductInformation from "./ProductInformationTab";
 import ProductReview from "./ProductReviewTab";
 import ProductInquiry from "./ProductInquiryTab";
 
-const ProductTabs = ({ product, currentTab, setCurrentTab }) => {
+const ProductTabs = ({ product, currentTab, setCurrentTab, productId }) => {
   const tabArr = [
-    { index: 0, name: "상품설명", content: ProductExplanation(product) },
-    { index: 1, name: "상세정보", content: ProductInformation(product) },
-    { index: 2, name: "후기", content: ProductReview(product) },
-    { index: 3, name: "문의", content: ProductInquiry(product) },
+    {
+      index: 0,
+      name: "상품설명",
+      content: <ProductExplanation product={product} />,
+    },
+    {
+      index: 1,
+      name: "상세정보",
+      content: <ProductInformation product={product} />,
+    },
+    {
+      index: 2,
+      name: "후기",
+      content: <ProductReview product={product} />,
+    },
+    {
+      index: 3,
+      name: "문의",
+      content: <ProductInquiry product={product} />,
+    },
   ];
 
   const handleTab = (e) => {
@@ -22,13 +38,18 @@ const ProductTabs = ({ product, currentTab, setCurrentTab }) => {
   return (
     <>
       <TabsContainer>
-        {tabArr.map((v) => (
-          <Tab onClick={handleTab} isActive="">
+        {tabArr.map((v, i) => (
+          <Tab
+            onClick={handleTab}
+            isActive=""
+            index={i}
+            curIndex={currentTab.index}
+          >
             {v.name}
           </Tab>
         ))}
       </TabsContainer>
-      <TabLine currentTab={currentTab} />
+      <TabLine curIndex={currentTab.index} />
     </>
   );
 };
@@ -56,7 +77,10 @@ const Tab = styled.li`
   cursor: pointer;
 
   background-color: #ffffff;
-  color: #636363;
+  color: ${({ index, curIndex }) =>
+    index === curIndex ? "#f79831" : "#636363"};
+  /* border-bottom: ${({ index, curIndex }) =>
+    index === curIndex ? "solid #f79831 3px;" : "none"}; */
   font-weight: bold;
   font-size: 15px;
 
@@ -72,12 +96,7 @@ const TabLine = styled.div`
   margin: 0px;
   width: 25%;
   height: 3px;
-  left: ${({ currentTab }) => {
-    if (currentTab.name === "상품설명") return "0;";
-    else if (currentTab.name === "상세정보") return "33.4%;";
-    else if (currentTab.name === "후기") return "66.7%;";
-    else if (currentTab.name === "문의") return "75%";
-  }}
+  left: ${({ curIndex }) => `${25 * curIndex}%`}
   bottom: 0;
   transition: left 0.4s;
 `;
