@@ -1,32 +1,38 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import ProductExplanation from "./ProductExplanationTab";
+import ProductExplanation from "./ProductDescriptionTab";
 import ProductInformation from "./ProductInformationTab";
 import ProductReview from "./ProductReviewTab";
 import ProductInquiry from "./ProductInquiryTab";
 
-const ProductTabs = ({ product, currentTab, setCurrentTab, productId }) => {
+const ProductTabs = ({
+  product,
+  seller,
+  currentTab,
+  setCurrentTab,
+  productId,
+}) => {
   const tabArr = [
     {
       index: 0,
       name: "상품설명",
-      content: <ProductExplanation product={product} />,
+      content: <ProductExplanation product={product} seller={seller} />,
     },
     {
       index: 1,
       name: "상세정보",
-      content: <ProductInformation product={product} />,
+      content: <ProductInformation product={product} seller={seller} />,
     },
     {
       index: 2,
       name: "후기",
-      content: <ProductReview product={product} />,
+      content: <ProductReview product={product} seller={seller} />,
     },
     {
       index: 3,
       name: "문의",
-      content: <ProductInquiry product={product} />,
+      content: <ProductInquiry product={product} seller={seller} />,
     },
   ];
 
@@ -58,7 +64,7 @@ export default ProductTabs;
 
 const TabsContainer = styled.div`
   position: relative;
-  margin: 5px 0 5px 0;
+  margin: 5px 0 3px 0;
   left: 5%;
   width: 90%;
   height: 50px;

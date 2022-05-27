@@ -1,0 +1,74 @@
+{
+  "content": [
+    {
+      "description": "설명이 아직 없습니다. 추가해 주세요.",
+      "_id": "628f8810021dc6fbec6709c3",
+      "id": "145a84a3-6343-4e84-becc-4f73311f3466",
+      "name": "eikjae",
+      "email": "eikjae@naver.com",
+      "password": "$2b$10$s4PI1qOX5E12X3VFI268p.yiPRyEM.BJDY6nWhdiOebmbXQY9nQTS",
+      "business": "카페",
+      "address": "중랑구 망우동",
+      "type": "sogongx2",
+      "createdAt": "2022-05-26T14:00:48.913Z",
+      "updatedAt": "2022-05-26T14:00:48.913Z",
+      "__v": 0
+    },
+    {
+      "description": "설명이 아직 없습니다. 추가해 주세요.",
+      "_id": "628f888f021dc6fbec6709c6",
+      "id": "2b3b3989-c186-4594-b34f-753d70bca53b",
+      "name": "minsoo",
+      "email": "minsoo@naver.com",
+      "password": "$2b$10$K32JCx1LlDywJJ9aUZyVO.xDzXTYMvSXIMQ4L4Z6q2IUaxK589twy",
+      "business": "카페",
+      "address": "중랑구 상봉동",
+      "type": "sogongx2",
+      "createdAt": "2022-05-26T14:02:55.623Z",
+      "updatedAt": "2022-05-26T14:02:55.623Z",
+      "__v": 0
+    },
+    {
+      "description": "설명이 아직 없습니다. 추가해 주세요.",
+      "_id": "628f88bb021dc6fbec6709c9",
+      "id": "feecd18e-a86e-407b-9c0b-bce5a85be4dc",
+      "name": "seongjin",
+      "email": "seongjin@naver.com",
+      "password": "$2b$10$yHrBZMC7SD1bmnccr9CKguGAuiPIJ2NK6fkyYwB18eaDXodFYYAg6",
+      "business": "음식점",
+      "address": "중랑구 신내동",
+      "type": "sogongx2",
+      "createdAt": "2022-05-26T14:03:39.840Z",
+      "updatedAt": "2022-05-26T14:03:39.840Z",
+      "__v": 0
+    },
+    {
+      "description": "설명이 아직 없습니다. 추가해 주세요.",
+      "_id": "628f88ea021dc6fbec6709cd",
+      "id": "c5783003-712b-40f5-9903-0e81a05e8350",
+      "name": "민호의 철물계란",
+      "email": "minho@naver.com",
+      "password": "$2b$10$5dpeXZDyd0aKmLzZE7vKyOpReX4hTmr0o7Qoc4Y/3Dw6kWfXMcfmS",
+      "business": "철물점",
+      "address": "중랑구 면목동",
+      "type": "sogongx2",
+      "createdAt": "2022-05-26T14:04:26.546Z",
+      "updatedAt": "2022-05-26T14:04:26.546Z",
+      "__v": 0
+    },
+    {
+      "description": "설명이 아직 없습니다. 추가해 주세요.",
+      "_id": "628f89ed021dc6fbec6709d0",
+      "id": "e2a425f0-2557-48eb-8748-b2e3afca666c",
+      "name": "taeyoon",
+      "email": "taeyoon@naver.com",
+      "password": "$2b$10$07ilqoR55y.C2X3ATzwGnum8YIjR9ouHefGphHSKYhk7TNiztBnuS",
+      "business": "치과",
+      "address": "중랑구 상봉동",
+      "type": "sogongx2",
+      "createdAt": "2022-05-26T14:08:45.480Z",
+      "updatedAt": "2022-05-26T14:08:45.480Z",
+      "__v": 0
+    }
+  ]
+}
