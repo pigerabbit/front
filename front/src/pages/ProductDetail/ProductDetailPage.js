@@ -162,7 +162,7 @@ const GoBack = styled.i`
 `;
 
 const ButtonTopContainer = styled.div`
-  width: 55px;
+  width: 60px;
   position: absolute;
   top: 18px;
   right: 20px;

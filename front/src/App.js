@@ -7,8 +7,8 @@ import styled from "styled-components";
 import * as Api from "./api";
 import { login } from "./redux/userSlice";
 
-import ExamplePage from "./pages/ExamplePage";
 import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
+import MainPage from "./pages/Main/MainPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -44,8 +44,8 @@ function App() {
       <Container>
         <Routes>
           {/* 예시페이지 만들어났습니다. 이름 바꿔서 쓰세요~ */}
-          <Route path="/" element={<ExamplePage />} />
           <Route path="/products/:id" element={<ProductDetailPage />} />
+          <Route path="/" element={<MainPage />} />
         </Routes>
       </Container>
     </Router>
@@ -56,9 +56,9 @@ export default App;
 
 const Container = styled.div`
   width = 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #F2F2F2;
   display: flex;
   justify-content: center;
-  overflow: scroll;
+
 `;
