@@ -82,7 +82,7 @@ const ProductDetailPage = () => {
 
   return (
     <Container>
-      <div>
+      <Header>
         <Top>
           <GoBack onClick={() => navigate("/products")} />
           <ProductTitle>{product.name}</ProductTitle>
@@ -118,8 +118,8 @@ const ProductDetailPage = () => {
           setCurrentTab={setCurrentTab}
           key={product.id}
         />
-      </div>
-      {currentTab.content}
+      </Header>
+      <body>{currentTab.content}</body>
       <ButtonsContainer>
         <LeftButton position="left">공구 열기</LeftButton>
         <RightButton isFilled="true" position="right">
@@ -141,10 +141,23 @@ const Container = styled.div`
   "::-webkit-scrollbar-track" {
     background: none;
   }
-  background-attachment: fixed;
+
+  body {
+    padding: 100px 0 65px 0;
+  }
 `;
 
-const Top = styled.header`
+const Header = styled.header`
+  position: fixed;
+  width: 100%;
+  min-width: 360px;
+  max-width: 770px;
+  top: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+`;
+
+const Top = styled.div`
   width: 100%;
   background-color: #ffffff;
   height: 50px;
@@ -175,37 +188,6 @@ const ButtonTopContainer = styled.div`
     cursor: pointer;
   }
 `;
-
-// const TabsContainer = styled.div`
-//   width: 100%;
-//   height: 50px;
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   justify-content: center;
-//   border-bottom: solid #d0d0d0 1px;
-// `;
-
-// const Tab = styled.li`
-//   width: 25%;
-//   height: 100%;
-//   list-style: none;
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-//   justify-content: center;
-//   cursor: pointer;
-
-//   background-color: #ffffff;
-//   color: #636363;
-//   font-weight: bold;
-//   font-size: 15px;
-
-//   &:hover {
-//     border-bottom: solid #f79831 3px;
-//     color: #f79831;
-//   }
-// `;
 
 const ProductTitle = styled.p`
   margin-left: 10px;

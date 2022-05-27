@@ -55,7 +55,6 @@ const ProductTabs = ({
           </Tab>
         ))}
       </TabsContainer>
-      <TabLine curIndex={currentTab.index} />
     </>
   );
 };
@@ -93,15 +92,4 @@ const Tab = styled.li`
     border-bottom: solid #f79831 3px;
     color: #f79831;
   }
-`;
-
-const TabLine = styled.div`
-  position: absolute;
-  background-color: black;
-  margin: 0px;
-  width: 25%;
-  height: 3px;
-  left: ${({ curIndex }) => `${25 * curIndex}%`}
-  bottom: 0;
-  transition: left 0.4s;
 `;

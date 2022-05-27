@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
 
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 const ProductExplanation = ({ product, seller }) => {
   const navigate = useNavigate();
 
@@ -73,7 +76,7 @@ const ProductExplanation = ({ product, seller }) => {
         /> */}
         <img
           id="descriptionImg"
-          src={descriptionImg}
+          src="/test_images/pigerabbit.png"
           alt={name + " 설명 사진"}
         />
       </DescriptionContainer>
@@ -92,7 +95,7 @@ const Container = styled.div`
   "::-webkit-scrollbar-track" {
     background: none;
   },
-  padding: 10px;
+  padding: 100px 10px 60px 10px;
 `;
 
 const ImgContainer = styled.div`
@@ -176,4 +179,9 @@ const DescriptionContainer = styled.div`
   align-items: start;
   justify-content: center;
   border-top: 1px solid #d0d0d0;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
 `;
