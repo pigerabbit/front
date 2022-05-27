@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { productList } from "./SearchMockData";
-import SearchProductCard from "../../components/SearchProductCard";
+import ProductCard from "../../components/ProductCard";
 
 const SearchCurrent = () => {
   const [currentKeyword, setCurrentKeyword] = useState([
@@ -25,7 +25,7 @@ const SearchCurrent = () => {
         <h4>최근 본 판매상품</h4>
         <CurrentProductWrapper>
           {productList.map((product) => (
-            <SearchProductCard
+            <ProductCard
               name={product.name}
               price={product.price}
               salePrice={product.salePrice}
@@ -46,6 +46,7 @@ const Container = styled.div`
   border: 1px #dcdcde solid;
   border-radius: 5px;
   padding: 3.5%;
+  margin-bottom: 2vh;
   @media only screen and (max-width: 400px) {
     min-width: 277px;
   }

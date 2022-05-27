@@ -1,30 +1,36 @@
 import styled from "styled-components";
 
-const SearchProductCard = ({ name, price, salePrice, discountRate }) => {
+const GroupCard = ({
+  name,
+  price,
+  salePrice,
+  discountRate,
+  leftParticipants,
+  deadline,
+}) => {
   return (
     <CardContainer>
       <CardWrapper>
         <CardImage />
         <CardContent>
           <Name>{name}</Name>
-          <DescriptionWrapper>
-            <Description>
-              <Price>{`${price}원`}</Price>
-              <DiscountRate>{`${discountRate}%`}</DiscountRate>
-              <SalePrice>{`${salePrice}원`}</SalePrice>
-            </Description>
-            <InfoButton>보러가기</InfoButton>
-          </DescriptionWrapper>
+          <Price>{`${price}원`}</Price>
+          <DiscountRate>{`${discountRate}%`}</DiscountRate>
+          <SalePrice>{`${salePrice}원`}</SalePrice>
+          <Leftparticipants>{`${leftParticipants}개 남음`}</Leftparticipants>
+          <Deadline>{`${deadline}까지`}</Deadline>
         </CardContent>
       </CardWrapper>
     </CardContainer>
   );
 };
 
+export default GroupCard;
+
 const CardContainer = styled.div`
   width: 100%;
   height: 80px;
-  background: #fafafa;
+  background: transparent;
   margin: 10px 0;
   padding: 10px;
 `;
@@ -38,26 +44,17 @@ const CardWrapper = styled.div`
 
 const CardImage = styled.div`
   background: #c0c0c0;
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
   border-radius: 10px;
 `;
+
 const CardContent = styled.div`
   width: 70%;
+  line-height: 15px;
 `;
-
 const Name = styled.p`
   font-size: 15px;
-`;
-
-const DescriptionWrapper = styled.div`
-  width: 90%;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Description = styled.div`
-  line-height: 15px;
 `;
 
 const Price = styled.p`
@@ -77,13 +74,12 @@ const SalePrice = styled.span`
   margin-left: 5px;
 `;
 
-const InfoButton = styled.button`
-  height: 30px;
-  background: #ffb564;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  align-self: flex-end;
+const Leftparticipants = styled.p`
+  font-size: 10px;
+  color: #ff6a6a;
 `;
 
-export default SearchProductCard;
+const Deadline = styled.p`
+  font-size: 10px;
+  color: #969696;
+`;

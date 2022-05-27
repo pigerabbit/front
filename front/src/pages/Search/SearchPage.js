@@ -6,9 +6,11 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { groupList } from "./SearchMockData";
 import SearchCurrent from "./SearchCurrent";
 import SearchInputForm from "./SearchInputForm";
 import SearchTrending from "./SearchTrending";
+import GroupCard from "../../components/GroupCard";
 
 const SearchPage = () => {
   const [IsTrendingPage, setIsTrendingPage] = useState(true);
@@ -46,11 +48,29 @@ const SearchPage = () => {
           />
         </NextBtn>
       )}
+      <DeadLineContainer>
+        <h3>마감 임박</h3>
+        <GroupCard
+          name="싱싱한 왕딸기 공구해요!"
+          price="10000"
+          salePrice="9000"
+          discountRate="10"
+          leftParticipants="3"
+          deadline="2022년 05월 28일 13시"
+        />
+      </DeadLineContainer>
     </Container>
   );
 };
 
 export default SearchPage;
+
+const DeadLineContainer = styled.div`
+  width: 100%;
+  height: 25vh;
+  background: #f6f6f6;
+  padding: 3.5%;
+`;
 
 const Container = styled.div`
   position: relative;
