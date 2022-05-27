@@ -24,6 +24,11 @@ const DeadlineTab = () => {
         title={productDeadlineTitle}
         groupPurchaseList={groupPurchaseList}
       ></CardContainer>
+
+      <CardContainer
+        title={timeDeadlineTitle}
+        groupPurchaseList={groupPurchaseList}
+      ></CardContainer>
     </Container>
   );
 };
@@ -31,5 +36,5 @@ const DeadlineTab = () => {
 export default DeadlineTab;
 
 const Container = styled.div`
-  border: red 1px solid;
+  padding-bottom: 100px;
 `;

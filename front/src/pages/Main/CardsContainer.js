@@ -36,12 +36,12 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
       <Title>{title}</Title>
 
       {groupPurchaseList.slice(from, to).map((purchase, idx) => (
-        <>
-          <CardContainer key={purchase.groupId}>
+        <div key={purchase.groupId}>
+          <CardContainer>
             <GroupPurchaseCard styles={CardStyles} purchase={purchase} />
           </CardContainer>
           {idx < 2 && <div className="line" />}
-        </>
+        </div>
       ))}
 
       <NextButton onClick={handleButtonClick}>
@@ -57,9 +57,8 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
 export default CardsContainer;
 
 const Container = styled.div`
-  border: blue solid 1px;
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   position: relative;
   width: 80%;
   left: 10%;
