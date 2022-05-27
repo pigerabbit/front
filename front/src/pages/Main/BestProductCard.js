@@ -33,7 +33,7 @@ const BestProductCard = ({ product, index }) => {
           <span>{product.price}원</span>
           <div className="sale-price">
             <span>
-              {Math.round((product.price - product.salePrice) / 100)}%
+              {Math.floor((product.price - product.salePrice) / 100)}%
             </span>
             <span>{product.salePrice}원</span>
           </div>
