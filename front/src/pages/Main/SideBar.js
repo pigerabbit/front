@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const SideBar = ({ children, title, isOpenSideBar, setIsOpenSideBar }) => {
+  useEffect(() => {
+    if (isOpenSideBar) {
+      document.body.style.cssText = `
+      position: fixed; 
+      top: -${window.scrollY}px;
+      overflow-y: scroll;
+      width: 100%;`;
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = "";
+      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+    }
+  }, [isOpenSideBar]);
+
   return (
     <Container isOpenSideBar={isOpenSideBar}>
       <TitleBar>
@@ -50,7 +64,13 @@ const TitleBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 25px;
+  font-size: 20px;
+  @media (min-width: 500px) {
+    font-size: 22px;
+  }
+  @media (min-width: 770px) {
+    font-size: 26px;
+  }
   color: #636363;
 
   div {

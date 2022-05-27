@@ -7,6 +7,7 @@ import HomeTab from "./HomeTab";
 import BestTab from "./BestTab";
 import DeadlineTab from "./DeadlineTab";
 import SideBar from "./SideBar";
+import Category from "./Category";
 import TabBar from "components/TabBar";
 
 const MainPage = () => {
@@ -30,7 +31,9 @@ const MainPage = () => {
         title={sideBarTitle}
         isOpenSideBar={isOpenSideBar}
         setIsOpenSideBar={setIsOpenSideBar}
-      />
+      >
+        {sideBarTitle === "카테고리" && <Category />}
+      </SideBar>
 
       <TabBar />
     </Container>
