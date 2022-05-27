@@ -128,10 +128,14 @@ const LeftRight = styled.div`
   width: 40vw;
   padding: 0 7vw;
   @media (max-width: 440px) {
-    padding: 0 4vw;
+    padding: 0 6vw;
   }
   @media (min-width: 440px) and (max-width: 580px) {
-    padding: 0 5vw;
+    padding: 0 5.5vw;
+  }
+  @media (min-width: 770px) {
+    width: 310px;
+    padding: 0 55px;
   }
   display: felx;
   justify-content: space-between;
@@ -140,7 +144,7 @@ const LeftRight = styled.div`
 const Tab = styled.div`
   width: 60px;
   @media (max-width: 440px) {
-    width: 50px;
+    width: 45px;
   }
   height: 100%;
   cursor: pointer;
