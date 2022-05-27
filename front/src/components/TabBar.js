@@ -97,9 +97,9 @@ const Cricle = styled.div`
   width: ${({ width }) => width}px;
   height: ${({ width }) => width}px;
   @media (max-width: 440px) {
-    width: ${({ width }) => width - 10}px;
-    height: ${({ width }) => width - 10}px;
-    font-size: 13px;
+    width: ${({ width }) => width - 20}px;
+    height: ${({ width }) => width - 20}px;
+    font-size: 12px;
   }
   border-radius: 50%;
   background-color: ${({ color }) => color};
@@ -113,7 +113,7 @@ const Cricle = styled.div`
   font-weight: 600;
 
   span {
-    margin-top: 10px;
+    margin-top: 6px;
   }
 
   ${({ index }) => {
