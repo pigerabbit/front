@@ -98,7 +98,10 @@ const Interest = styled.div`
 const Title = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 19px;
+  font-size: 17px;
+  @media (min-width: 500px) {
+    font-size: 19px;
+  }
   font-weight: 600;
   margin-bottom: 15px;
 

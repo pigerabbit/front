@@ -7,10 +7,10 @@ import GroupPurchaseCard from "./GroupPurchaseCard";
 
 const CardsContainer = ({ title, groupPurchaseList }) => {
   const [from, setFrom] = useState(0);
-  const [to, setTo] = useState(3);
+  const [to, setTo] = useState(4);
   const [page, setPage] = useState(1);
   const last = groupPurchaseList.length;
-  const totalPage = last / 3;
+  const totalPage = last / 4;
 
   const CardStyles = {
     cardHeight: "85px;",
@@ -22,11 +22,11 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
   const handleButtonClick = () => {
     if (to === last) {
       setFrom(0);
-      setTo(3);
+      setTo(4);
       setPage(1);
     } else {
-      setFrom((cur) => cur + 3);
-      setTo((cur) => cur + 3);
+      setFrom((cur) => cur + 4);
+      setTo((cur) => cur + 4);
       setPage((cur) => cur + 1);
     }
   };
@@ -35,14 +35,14 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
     <Container>
       <Title>{title}</Title>
 
-      {groupPurchaseList.slice(from, to).map((purchase, idx) => (
-        <div key={purchase.groupId}>
-          <CardContainer>
+      <CardList>
+        {groupPurchaseList.slice(from, to).map((purchase, idx) => (
+          <CardContainer key={purchase.groupId}>
             <GroupPurchaseCard styles={CardStyles} purchase={purchase} />
+            {idx < 3 && <div className="line" />}
           </CardContainer>
-          {idx < 2 && <div className="line" />}
-        </div>
-      ))}
+        ))}
+      </CardList>
 
       <NextButton onClick={handleButtonClick}>
         <span>
@@ -57,27 +57,44 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
 export default CardsContainer;
 
 const Container = styled.div`
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 50px;
   position: relative;
   width: 80%;
   left: 10%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Title = styled.div`
+  font-size: 17px;
+  font-weight: 600;
+`;
+
+const CardList = styled.div`
+  margin-top: 20px;
+  width: 100%;
+`;
+
+const CardContainer = styled.div`
+  width: 100%;
+  display: inline-block;
+  @media (min-width: 700px) {
+    width: 45%;
+    margin-left: 2.5%;
+  }
+  margin-top: 15px;
 
   .line {
     width: 100%;
     height: 1px;
     background-color: #cdcdcd;
+    margin-top: 15px;
+    @media (min-width: 700px) {
+      width: 44%;
+      background-color: white;
+    }
   }
-`;
-
-const Title = styled.div`
-  font-size: 18px;
-  font-weight: 600;
-`;
-
-const CardContainer = styled.div`
-  width: 100%;
-  margin: 15px 0;
 `;
 
 const NextButton = styled.div`
@@ -86,6 +103,7 @@ const NextButton = styled.div`
   border-radius: 5px;
   width: 100%;
   height: 35px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;

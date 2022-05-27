@@ -130,5 +130,47 @@
       "createdAt": "2022-05-26T14:49:28.246Z",
       "updatedAt": "2022-05-26T14:49:28.246Z",
       "__v": 0
+    },
+    {
+      "_id": "628f93784eab8a3a513a5fab",
+      "groupId": "f4172ba8-a533-4b9b-8937-3752d0798487",
+      "groupType": "local",
+      "location": "부산진구 가야동",
+      "deadline": "2022-05-29-13",
+      "participants": [],
+      "notPaid": [],
+      "productId": "904c7d80-5447-4797-832a-73c171feb32i",
+      "state": 1,
+      "createdAt": "2022-05-26T14:49:28.246Z",
+      "updatedAt": "2022-05-26T14:49:28.246Z",
+      "__v": 0
+    },
+    {
+      "_id": "628f93784eab8a3a513a5fab",
+      "groupId": "f4172ba8-a533-4b9b-8937-3752d0798488",
+      "groupType": "local",
+      "location": "금정구 수림동",
+      "deadline": "2022-05-29-13",
+      "participants": [],
+      "notPaid": [],
+      "productId": "904c7d80-5447-4797-832a-73c171feb32i",
+      "state": 1,
+      "createdAt": "2022-05-26T14:49:28.246Z",
+      "updatedAt": "2022-05-26T14:49:28.246Z",
+      "__v": 0
+    },
+    {
+      "_id": "628f93784eab8a3a513a5fab",
+      "groupId": "f4172ba8-a533-4b9b-8937-3752d0798489",
+      "groupType": "local",
+      "location": "남구 남포동",
+      "deadline": "2022-05-29-13",
+      "participants": [],
+      "notPaid": [],
+      "productId": "904c7d80-5447-4797-832a-73c171feb32i",
+      "state": 1,
+      "createdAt": "2022-05-26T14:49:28.246Z",
+      "updatedAt": "2022-05-26T14:49:28.246Z",
+      "__v": 0
     }
   ]}
