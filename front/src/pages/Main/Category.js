@@ -14,49 +14,37 @@ import {
   faCircleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { useNavigate } from "react-router-dom";
+
 const Category = () => {
+  const category = [
+    { eng: "fruitVegetable", kor: "과일·채소", icon: faCarrot },
+    { eng: "cereal", kor: "견과·쌀", icon: faWheatAwn },
+    { eng: "seafood", kor: "수산·해산·건어물", icon: faFish },
+    { eng: "meatEgg", kor: "정육·달걀", icon: faEgg },
+    { eng: "noddleSpice", kor: "면·양념·오일", icon: faCubesStacked },
+    { eng: "drink", kor: "생수·음료·우유", icon: faBottleDroplet },
+    { eng: "coffeeAlcohol", kor: "커피·주류", icon: faWineGlass },
+    { eng: "living", kor: "생활용품·리빙", icon: faFaceSmile },
+    { eng: "kitchen", kor: "주방용품", icon: faUtensils },
+    { eng: "other", kor: "기타", icon: faCircleExclamation },
+  ];
+
+  const navigate = useNavigate();
+
   return (
     <Container>
-      <span>
-        <FontAwesomeIcon icon={faCarrot} />
-        과일·채소
-      </span>
-      <span>
-        <FontAwesomeIcon icon={faWheatAwn} />
-        견과·쌀
-      </span>
-      <span>
-        <FontAwesomeIcon icon={faFish} />
-        수산·해산·건어물·
-      </span>
-      <span>
-        <FontAwesomeIcon icon={faEgg} />
-        정육·계란
-      </span>
-      <span>
-        <FontAwesomeIcon icon={faCubesStacked} />
-        면·양념·오일
-      </span>
-      <span>
-        <FontAwesomeIcon icon={faBottleDroplet} />
-        생수·음료·우유
-      </span>
-      <span>
-        <FontAwesomeIcon icon={faWineGlass} />
-        커피·주류
-      </span>
-      <span>
-        <FontAwesomeIcon icon={faFaceSmile} />
-        생활용품·리빙
-      </span>
-      <span>
-        <FontAwesomeIcon icon={faUtensils} />
-        주방용품
-      </span>
-      <span>
-        <FontAwesomeIcon icon={faCircleExclamation} />
-        기타
-      </span>
+      {category.map(({ eng, kor, icon }, idx) => (
+        <span
+          key={idx}
+          onClick={() => {
+            navigate(`/products?category=${eng}`);
+          }}
+        >
+          <FontAwesomeIcon icon={icon} />
+          {kor}
+        </span>
+      ))}
     </Container>
   );
 };

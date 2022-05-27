@@ -89,7 +89,10 @@ const Interest = styled.div`
   display: flex;
   flex-direction: column;
   width: 80%;
-  margin: 3vw 10% 6vw 10%;
+  margin: 6vw 10% 10vw 10%;
+  @media (min-width: 770px) {
+    margin: 45px 10% 75px 10%;
+  }
 `;
 
 const Title = styled.div`
