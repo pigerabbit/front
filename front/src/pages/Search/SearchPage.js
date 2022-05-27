@@ -1,35 +1,51 @@
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+
+import SearchCurrent from "./SearchCurrent";
 import SearchInputForm from "./SearchInputForm";
+import SearchTrending from "./SearchTrending";
+
 const SearchPage = () => {
-  const trending = [
-    "피클",
-    "라이스 페이퍼",
-    "사과",
-    "나쵸",
-    "배",
-    "원두",
-    "감자",
-    "바나나",
-    "딸기",
-    "샐러드",
-  ];
+  const [IsTrendingPage, setIsTrendingPage] = useState(true);
+  const slideRef = useRef(null);
+
+  useEffect(() => {
+    slideRef.current.style.transition = "all 0.5s ease-in-out";
+    slideRef.current.style.transform = `translateX(-${
+      IsTrendingPage ? 0 : 1
+    }00%)`;
+  }, [IsTrendingPage]);
+
   return (
     <Container>
       <SearchInputForm />
       <SearchContentContainer>
-        <SearchContentWrapper>
-          <h3>인기검색어</h3>
-          {trending.map((keyword, idx) => (
-            <KeywordWrapper>
-              <KeywordNumber>{idx + 1}</KeywordNumber>
-              <span>{keyword}</span>
-            </KeywordWrapper>
-          ))}
-        </SearchContentWrapper>
-        <SearchContentWrapper>
-          <h4>최근 검색어</h4>
-        </SearchContentWrapper>
+        <SliderContainer ref={slideRef}>
+          <SearchTrending />
+          <SearchCurrent />
+        </SliderContainer>
       </SearchContentContainer>
+      {!IsTrendingPage && (
+        <PrevBtn onClick={() => setIsTrendingPage(true)}>
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            style={{ background: "transparent" }}
+          />
+        </PrevBtn>
+      )}
+      {IsTrendingPage && (
+        <NextBtn onClick={() => setIsTrendingPage(false)}>
+          <FontAwesomeIcon
+            icon={faChevronRight}
+            style={{ background: "transparent" }}
+          />
+        </NextBtn>
+      )}
     </Container>
   );
 };
@@ -46,27 +62,50 @@ const Container = styled.div`
   "::-webkit-scrollbar-track" {
     background: none;
   }
+  overflow: hidden;
 `;
 
 const SearchContentContainer = styled.div`
+  @media only screen and (max-width: 400px) {
+    width: 300px;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+  }
+`;
+
+const SliderContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
+  @media only screen and (max-width: 400px) {
+    justify-content: flex-start;
+    width: 300px;
+    margin: auto;
+  }
 `;
 
-const SearchContentWrapper = styled.div`
-  width: 35%;
-  height: 55vh;
-  border: 1px #dcdcde solid;
-  border-radius: 5px;
-  padding: 3%;
+const PrevBtn = styled.div`
+  visibility: hidden;
+  pointer-events: none;
+  @media only screen and (max-width: 500px) {
+    visibility: visible;
+    pointer-events: auto;
+    position: absolute;
+    font-size: 30px;
+    top: 270px;
+    left: 10px;
+  }
 `;
 
-const KeywordWrapper = styled.div`
-  width: 100%;
-  margin: 25px 0;
-`;
-
-const KeywordNumber = styled.strong`
-  margin-right: 8px;
-  color: #f79831;
+const NextBtn = styled.div`
+  visibility: hidden;
+  pointer-events: none;
+  @media only screen and (max-width: 500px) {
+    visibility: visible;
+    pointer-events: auto;
+    position: absolute;
+    font-size: 30px;
+    top: 270px;
+    right: 10px;
+  }
 `;
