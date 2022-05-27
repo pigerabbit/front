@@ -68,9 +68,9 @@ const Container = styled.div`
 
   > img {
     width: 30vw;
-    max-width: 220px;
+    max-width: 165px;
     height: 30vw;
-    max-height: 220px;
+    max-height: 165px;
     border-radius: 5px;
   }
 
@@ -78,15 +78,14 @@ const Container = styled.div`
     position: absolute;
     right: 10px;
     bottom: 10px;
-    font-size: 3.2vw;
-    @media only screen and (min-width: 770px) {
-      font-size: 24px;
-    }
   }
 `;
 
 const Information = styled.div`
   padding: 2.5vw 0;
+  @media (min-width: 500px) {
+    padding: 12px 0;
+  }
   margin-left: 2vw;
   flex-grow: 1;
   display: flex;
@@ -101,24 +100,24 @@ const CardTitle = styled.div`
   > span:first-child {
     font-weight: 600;
     margin-bottom: 4px;
-    font-size: 24px;
-    @media only screen and (max-width: 770px) {
-      font-size: 3vw;
+    font-size: 3vw;
+    @media (min-width: 500px) {
+      font-size: 15px;
     }
   }
 
   > span:last-child {
-    font-size: 32px;
-    @media only screen and (max-width: 770px) {
-      font-size: 4vw;
+    font-size: 4vw;
+    @media (min-width: 500px) {
+      font-size: 20px;
     }
   }
 `;
 
 const Price = styled.div`
-  font-size: 24px;
-  @media only screen and (max-width: 770px) {
-    font-size: 3vw;
+  font-size: 3.2vw;
+  @media (min-width: 500px) {
+    font-size: 16px;
   }
   font-weight: 600;
 
@@ -128,9 +127,9 @@ const Price = styled.div`
   }
 
   > span:last-child {
-    font-size: 20px;
-    @media only screen and (max-width: 770px) {
-      font-size: 2.5vw;
+    font-size: 2.8vw;
+    @media (min-width: 500px) {
+      font-size: 14px;
     }
     color: #b1b1b1;
     text-decoration-line: line-through;
@@ -139,9 +138,9 @@ const Price = styled.div`
 `;
 
 const Deadline = styled.div`
-  font-size: 24px;
-  @media only screen and (max-width: 770px) {
-    font-size: 3vw;
+  font-size: 3.2vw;
+  @media (min-width: 500px) {
+    font-size: 16px;
   }
 
   > div {

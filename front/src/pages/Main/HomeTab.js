@@ -130,15 +130,19 @@ const Pagination = styled.div`
   justify-content: center;
   color: #a4a4a4;
   font-size: 4vw;
-  @media only screen and (min-width: 770px) {
-    font-size: 28px;
+  @media (min-width: 500px) {
+    font-size: 20px;
   }
 
   > div {
-    width: 12vw;
     display: flex;
     justify-content: center;
+    width: 12vw;
     margin: 0 2vw;
+    @media (min-width: 500px) {
+      width: 52px;
+      margin: 2px 14px;
+    }
     margin-top: 0.4vw;
 
     > span {
