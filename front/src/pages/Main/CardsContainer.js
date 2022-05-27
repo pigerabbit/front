@@ -13,7 +13,7 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
   const totalPage = last / 3;
 
   const CardStyles = {
-    cardHeight: 85,
+    cardHeight: "85px;",
     titleSize: 14,
     priceSize: 12,
     deadlineSize: 12,
