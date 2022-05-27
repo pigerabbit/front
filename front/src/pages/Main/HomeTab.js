@@ -143,7 +143,7 @@ const Pagination = styled.div`
     width: 12vw;
     margin: 0 2vw;
     @media (min-width: 500px) {
-      width: 52px;
+      width: 60px;
       margin: 2px 14px;
     }
     margin-top: 0.4vw;
