@@ -224,18 +224,18 @@ const ProductTitle = styled.p`
 
 const ButtonsContainer = styled.div`
   position: fixed;
-  bottom: 20px;
+  bottom: 0px;
   left: 0px;
   right: 0px;
   max-width: 770px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
-  "::-webkit-scrollbar-track" {
-    background: none;
-  }
+  padding: 10px 0 10px 0;
+  background-color: #ffffff;
 `;
 
 const LeftButton = styled.div`
