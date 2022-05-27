@@ -6,7 +6,7 @@ import Tabs from "./Tabs";
 import HomeTab from "./HomeTab";
 import BestTab from "./BestTab";
 import DeadlineTab from "./DeadlineTab";
-import SideBar from "./SideBar";
+import SideBar from "../../components/SideBar";
 import Category from "./Category";
 import TabBar from "components/TabBar";
 
