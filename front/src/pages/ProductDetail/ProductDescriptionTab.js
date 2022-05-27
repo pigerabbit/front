@@ -36,7 +36,12 @@ const ProductExplanation = ({ product, seller }) => {
   return (
     <Container>
       <ImgContainer>
-        <img src={images} alt={product.name + " 사진"} />
+        {/* <img id="productImg" src={images} alt={product.name + " 사진"} /> */}
+        <img
+          id="productImg"
+          src="/test_images/strawberry.jpeg"
+          alt={product.name + " 사진"}
+        />
       </ImgContainer>
       <Seller
         onClick={() => {
@@ -61,6 +66,11 @@ const ProductExplanation = ({ product, seller }) => {
       </InfoContainer>
       <DescriptionContainer>
         <div>{description}</div>
+        {/* <img
+          id="descriptionImg"
+          src={descriptionImg}
+          alt={name + " 설명 사진"}
+        /> */}
         <img
           id="descriptionImg"
           src={descriptionImg}
@@ -86,7 +96,8 @@ const Container = styled.div`
 `;
 
 const ImgContainer = styled.div`
-  width: 100%;
+  width: 95%;
+  margin: 0 auto;
   height: 360px;
   display: flex;
   flex-direction: row;
@@ -94,9 +105,9 @@ const ImgContainer = styled.div`
   justify-content: center;
   background-color: gray;
 
-  .div {
-    width: 90%;
-    background-color: black;
+  #productImg {
+    width: auto;
+    height: 360px;
   }
 `;
 

@@ -64,9 +64,8 @@ export default ProductTabs;
 
 const TabsContainer = styled.div`
   position: relative;
-  margin: 5px 0 3px 0;
-  left: 5%;
-  width: 90%;
+  margin: 2px auto;
+  width: 95%;
   height: 50px;
   display: flex;
   border-bottom: solid #d0d0d0 1px;
@@ -85,8 +84,8 @@ const Tab = styled.li`
   background-color: #ffffff;
   color: ${({ index, curIndex }) =>
     index === curIndex ? "#f79831" : "#636363"};
-  /* border-bottom: ${({ index, curIndex }) =>
-    index === curIndex ? "solid #f79831 3px;" : "none"}; */
+  border-bottom: ${({ index, curIndex }) =>
+    index === curIndex ? "solid #f79831 3px;" : "none"};
   font-weight: bold;
   font-size: 15px;
 

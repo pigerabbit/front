@@ -82,41 +82,43 @@ const ProductDetailPage = () => {
 
   return (
     <Container>
-      <Top>
-        <GoBack onClick={() => navigate("/products")} />
-        <ProductTitle>{product.name}</ProductTitle>
-        <ButtonTopContainer>
-          <div
-            id="home"
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
-            <FontAwesomeIcon
-              icon={faHome}
-              style={{ fontSize: "20px", color: "#f79831" }}
-            />
-          </div>
-          <div
-            id="user"
-            onClick={() => {
-              navigate("/user");
-            }}
-          >
-            <FontAwesomeIcon
-              icon={faUser}
-              style={{ fontSize: "20px", color: "#f79831" }}
-            />
-          </div>
-        </ButtonTopContainer>
-      </Top>
-      <ProductTabs
-        product={product}
-        seller={seller}
-        currentTab={currentTab}
-        setCurrentTab={setCurrentTab}
-        key={product.id}
-      />
+      <div>
+        <Top>
+          <GoBack onClick={() => navigate("/products")} />
+          <ProductTitle>{product.name}</ProductTitle>
+          <ButtonTopContainer>
+            <div
+              id="home"
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faHome}
+                style={{ fontSize: "20px", color: "#f79831" }}
+              />
+            </div>
+            <div
+              id="user"
+              onClick={() => {
+                navigate("/user");
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faUser}
+                style={{ fontSize: "20px", color: "#f79831" }}
+              />
+            </div>
+          </ButtonTopContainer>
+        </Top>
+        <ProductTabs
+          product={product}
+          seller={seller}
+          currentTab={currentTab}
+          setCurrentTab={setCurrentTab}
+          key={product.id}
+        />
+      </div>
       {currentTab.content}
       <ButtonsContainer>
         <LeftButton position="left">공구 열기</LeftButton>
