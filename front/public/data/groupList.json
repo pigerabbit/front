@@ -1,0 +1,148 @@
+{"groupList" : [
+    {
+      "_id": "628f8d4e4eab8a3a513a5f87",
+      "groupId": "8fb40e0d-4653-4017-b9ed-2e4b680651c3",
+      "groupType": "local",
+      "location": "중랑구 상봉동",
+      "deadline": "2022-05-27-13",
+      "participants": [
+        "145a84a3-6343-4e84-becc-4f73311f3466",
+        "2b3b3989-c186-4594-b34f-753d70bca53b"
+      ],
+      "notPaid": [
+        "2b3b3989-c186-4594-b34f-753d70bca53b",
+        "145a84a3-6343-4e84-becc-4f73311f3466"
+      ],
+      "productId": "904c7d80-5447-4797-832a-73c171feb32a",
+      "state": 3,
+      "createdAt": "2022-05-26T14:23:10.172Z",
+      "updatedAt": "2022-05-26T14:36:35.409Z",
+      "__v": 0
+    },
+    {
+      "_id": "628f90af4eab8a3a513a5f97",
+      "groupId": "e90d34c6-02f1-4520-9801-e326f9c73264",
+      "groupType": "nomal",
+      "location": "일반 공동구매의 경우는 필요하지 않은 정보입니다.",
+      "deadline": "2022-05-29-13",
+      "participants": ["feecd18e-a86e-407b-9c0b-bce5a85be4dc"],
+      "notPaid": ["feecd18e-a86e-407b-9c0b-bce5a85be4dc"],
+      "productId": "904c7d80-5447-4797-832a-73c171feb32b",
+      "state": 2,
+      "createdAt": "2022-05-26T14:37:35.101Z",
+      "updatedAt": "2022-05-26T14:41:42.214Z",
+      "__v": 0
+    },
+    {
+      "_id": "628f91eb4eab8a3a513a5fa9",
+      "groupId": "336f0c38-61a1-4e97-a771-179eddb5d029",
+      "groupType": "local",
+      "location": "중랑구 망우동",
+      "deadline": "2022-05-30-13",
+      "participants": [],
+      "notPaid": [],
+      "productId": "904c7d80-5447-4797-832a-73c171feb32c",
+      "state": 1,
+      "createdAt": "2022-05-26T14:42:51.401Z",
+      "updatedAt": "2022-05-26T14:42:51.401Z",
+      "__v": 0
+    },
+    {
+      "_id": "628f93784eab8a3a513a5fab",
+      "groupId": "f4172ba8-a533-4b9b-8937-3752d0798483",
+      "groupType": "local",
+      "location": "중랑구 신내동",
+      "deadline": "2022-05-29-13",
+      "participants": [],
+      "notPaid": [],
+      "productId": "904c7d80-5447-4797-832a-73c171feb32d",
+      "state": 3,
+      "createdAt": "2022-05-26T14:49:28.246Z",
+      "updatedAt": "2022-05-26T14:49:28.246Z",
+      "__v": 0
+    },
+    {
+        "_id": "628f93784eab8a3a513a5fab",
+        "groupId": "f4172ba8-a533-4b9b-8937-3752d0798483",
+        "groupType": "local",
+        "location": "중랑구 신내동",
+        "deadline": "2022-05-29-13",
+        "participants": [],
+        "notPaid": [],
+        "productId": "904c7d80-5447-4797-832a-73c171feb32e",
+        "state": 2,
+        "createdAt": "2022-05-26T14:49:28.246Z",
+        "updatedAt": "2022-05-26T14:49:28.246Z",
+        "__v": 0
+      },
+      {
+        "_id": "628f93784eab8a3a513a5fab",
+        "groupId": "f4172ba8-a533-4b9b-8937-3752d0798483",
+        "groupType": "local",
+        "location": "중랑구 신내동",
+        "deadline": "2022-05-29-13",
+        "participants": [],
+        "notPaid": [],
+        "productId": "904c7d80-5447-4797-832a-73c171feb32f",
+        "state": 1,
+        "createdAt": "2022-05-26T14:49:28.246Z",
+        "updatedAt": "2022-05-26T14:49:28.246Z",
+        "__v": 0
+      },
+      {
+        "_id": "628f93784eab8a3a513a5fab",
+        "groupId": "f4172ba8-a533-4b9b-8937-3752d0798483",
+        "groupType": "local",
+        "location": "중랑구 신내동",
+        "deadline": "2022-05-29-13",
+        "participants": [],
+        "notPaid": [],
+        "productId": "904c7d80-5447-4797-832a-73c171feb32g",
+        "state": 3,
+        "createdAt": "2022-05-26T14:49:28.246Z",
+        "updatedAt": "2022-05-26T14:49:28.246Z",
+        "__v": 0
+      }
+      ,    {
+        "_id": "628f93784eab8a3a513a5fab",
+        "groupId": "f4172ba8-a533-4b9b-8937-3752d0798483",
+        "groupType": "local",
+        "location": "중랑구 신내동",
+        "deadline": "2022-05-29-13",
+        "participants": [],
+        "notPaid": [],
+        "productId": "904c7d80-5447-4797-832a-73c171feb32h",
+        "state": 2,
+        "createdAt": "2022-05-26T14:49:28.246Z",
+        "updatedAt": "2022-05-26T14:49:28.246Z",
+        "__v": 0
+      },
+      {
+        "_id": "628f93784eab8a3a513a5fab",
+        "groupId": "f4172ba8-a533-4b9b-8937-3752d0798483",
+        "groupType": "local",
+        "location": "중랑구 신내동",
+        "deadline": "2022-05-29-13",
+        "participants": [],
+        "notPaid": [],
+        "productId": "904c7d80-5447-4797-832a-73c171feb32i",
+        "state": 1,
+        "createdAt": "2022-05-26T14:49:28.246Z",
+        "updatedAt": "2022-05-26T14:49:28.246Z",
+        "__v": 0
+      },
+      {
+        "_id": "628f93784eab8a3a513a5fab",
+        "groupId": "f4172ba8-a533-4b9b-8937-3752d0798483",
+        "groupType": "local",
+        "location": "중랑구 신내동",
+        "deadline": "2022-05-29-13",
+        "participants": [],
+        "notPaid": [],
+        "productId": "904c7d80-5447-4797-832a-73c171feb32j",
+        "state": 3,
+        "createdAt": "2022-05-26T14:49:28.246Z",
+        "updatedAt": "2022-05-26T14:49:28.246Z",
+        "__v": 0
+      }
+  ]}
