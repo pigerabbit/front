@@ -67,7 +67,7 @@ export default SearchPage;
 
 const DeadLineContainer = styled.div`
   width: 100%;
-  height: 25vh;
+  height: 30vh;
   background: #f6f6f6;
   padding: 3.5%;
 `;

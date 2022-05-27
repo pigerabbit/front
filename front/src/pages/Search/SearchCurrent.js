@@ -16,8 +16,8 @@ const SearchCurrent = () => {
       <CurrentKeywordContainer>
         <h4>최근 검색어</h4>
         <CurrentKeywordWrapper>
-          {currentKeyword.map((k) => (
-            <Keyword>{k}</Keyword>
+          {currentKeyword.map((k, idx) => (
+            <Keyword key={idx}>{k}</Keyword>
           ))}
         </CurrentKeywordWrapper>
       </CurrentKeywordContainer>
@@ -26,6 +26,7 @@ const SearchCurrent = () => {
         <CurrentProductWrapper>
           {productList.map((product) => (
             <ProductCard
+              key={product.id}
               name={product.name}
               price={product.price}
               salePrice={product.salePrice}
@@ -46,25 +47,32 @@ const Container = styled.div`
   border: 1px #dcdcde solid;
   border-radius: 5px;
   padding: 3.5%;
-  margin-bottom: 2vh;
   @media only screen and (max-width: 400px) {
     min-width: 277px;
+    margin-bottom: 3vh;
   }
 `;
 
 const CurrentKeywordContainer = styled.div`
   width: 100%;
-  height: 30%;
+  height: 25%;
   margin: auto;
+  @media only screen and (max-width: 400px) {
+    height: 30%;
+  }
 `;
 
 const CurrentProductContainer = styled.div`
   width: 100%;
-  height: 70%;
+  height: 75%;
+  @media only screen and (max-width: 400px) {
+    height: 70%;
+  }
 `;
 
 const CurrentKeywordWrapper = styled.div`
   width: 100%;
+  height: 100%;
   white-space: nowrap;
   overflow-x: scroll;
   margin: 25px 0;
@@ -86,6 +94,7 @@ const Keyword = styled.button`
   color: #ff8500;
   font-weight: 500;
   border: none;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.15);
 `;
 
 const CurrentProductWrapper = styled.div`

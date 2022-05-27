@@ -42,7 +42,6 @@ function App() {
     <Router>
       <Container>
         <Routes>
-          {/* 예시페이지 만들어났습니다. 이름 바꿔서 쓰세요~ */}
           <Route path="/" element={<SearchPage />} />
         </Routes>
       </Container>
@@ -58,5 +57,4 @@ const Container = styled.div`
   background-color: #F2F2F2;
   display: flex;
   justify-content: center;
-  overflow: scroll;
 `;

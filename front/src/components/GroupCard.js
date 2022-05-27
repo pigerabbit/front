@@ -29,9 +29,8 @@ export default GroupCard;
 
 const CardContainer = styled.div`
   width: 100%;
-  height: 80px;
   background: transparent;
-  margin: 10px 0;
+  margin: 10px 0px;
   padding: 10px;
 `;
 
@@ -44,42 +43,68 @@ const CardWrapper = styled.div`
 
 const CardImage = styled.div`
   background: #c0c0c0;
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 110px;
   border-radius: 10px;
+  @media only screen and (max-width: 400px) {
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 const CardContent = styled.div`
-  width: 70%;
-  line-height: 15px;
+  width: 75%;
+  line-height: 18px;
+  @media only screen and (max-width: 400px) {
+    width: 65%;
+    line-height: 15px;
+  }
 `;
 const Name = styled.p`
-  font-size: 15px;
+  font-size: 18px;
+  @media only screen and (max-width: 400px) {
+    font-size: 15px;
+  }
 `;
 
 const Price = styled.p`
-  font-size: 10px;
+  font-size: 13px;
   text-decoration: line-through;
   color: #b1b1b1;
   margin-top: 8px;
+  @media only screen and (max-width: 400px) {
+    font-size: 10px;
+  }
 `;
 
 const DiscountRate = styled.span`
-  font-size: 13px;
+  font-size: 15px;
   color: #ffb564;
+  @media only screen and (max-width: 400px) {
+    font-size: 13px;
+  }
 `;
 
 const SalePrice = styled.span`
-  font-size: 13px;
+  font-size: 15px;
   margin-left: 5px;
+  @media only screen and (max-width: 400px) {
+    font-size: 13px;
+  }
 `;
 
 const Leftparticipants = styled.p`
-  font-size: 10px;
+  font-size: 13px;
   color: #ff6a6a;
+  @media only screen and (max-width: 400px) {
+    font-size: 10px;
+  }
 `;
 
 const Deadline = styled.p`
-  font-size: 10px;
+  font-size: 13px;
   color: #969696;
+  @media only screen and (max-width: 400px) {
+    font-size: 10px;
+  }
 `;

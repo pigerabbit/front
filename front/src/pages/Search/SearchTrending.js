@@ -18,7 +18,7 @@ const SearchTrending = () => {
     <Container>
       <h4>인기검색어</h4>
       {trendingKeyword.map((keyword, idx) => (
-        <KeywordWrapper>
+        <KeywordWrapper key={idx}>
           <KeywordNumber>{idx + 1}</KeywordNumber>
           <span>{keyword}</span>
         </KeywordWrapper>
@@ -37,6 +37,7 @@ const Container = styled.div`
   padding: 3.5%;
   @media only screen and (max-width: 400px) {
     min-width: 277px;
+    margin-bottom: 3vh;
   }
 `;
 
