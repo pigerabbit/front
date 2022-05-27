@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const ProductCard = ({ name, price, salePrice, discountRate }) => {
+const SearchProductCard = ({ name, price, salePrice, discountRate }) => {
   return (
     <CardContainer>
       <CardWrapper>
@@ -21,7 +21,7 @@ const ProductCard = ({ name, price, salePrice, discountRate }) => {
   );
 };
 
-export default ProductCard;
+export default SearchProductCard;
 
 const CardContainer = styled.div`
   width: 100%;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { productList } from "./SearchMockData";
-import ProductCard from "../../components/ProductCard";
+import SearchProductCard from "./SearchProductCard";
 
 const SearchCurrent = () => {
   const [currentKeyword, setCurrentKeyword] = useState([
@@ -25,7 +25,7 @@ const SearchCurrent = () => {
         <h4>최근 본 판매상품</h4>
         <CurrentProductWrapper>
           {productList.map((product) => (
-            <ProductCard
+            <SearchProductCard
               key={product.id}
               name={product.name}
               price={product.price}

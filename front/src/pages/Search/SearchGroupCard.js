@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const GroupCard = ({
+const SearchGroupCard = ({
   name,
   price,
   salePrice,
@@ -25,7 +25,7 @@ const GroupCard = ({
   );
 };
 
-export default GroupCard;
+export default SearchGroupCard;
 
 const CardContainer = styled.div`
   width: 100%;
@@ -54,7 +54,7 @@ const CardImage = styled.div`
 
 const CardContent = styled.div`
   width: 75%;
-  line-height: 18px;
+  line-height: 20px;
   @media only screen and (max-width: 400px) {
     width: 65%;
     line-height: 15px;

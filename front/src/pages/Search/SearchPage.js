@@ -6,11 +6,10 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { groupList } from "./SearchMockData";
 import SearchCurrent from "./SearchCurrent";
 import SearchInputForm from "./SearchInputForm";
 import SearchTrending from "./SearchTrending";
-import GroupCard from "../../components/GroupCard";
+import SearchGroupCard from "./SearchGroupCard";
 
 const SearchPage = () => {
   const [IsTrendingPage, setIsTrendingPage] = useState(true);
@@ -50,7 +49,7 @@ const SearchPage = () => {
       )}
       <DeadLineContainer>
         <h3>마감 임박</h3>
-        <GroupCard
+        <SearchGroupCard
           name="싱싱한 왕딸기 공구해요!"
           price="10000"
           salePrice="9000"
