@@ -1,20 +1,24 @@
 import { useState } from "react";
 import styled from "styled-components";
-import WishListTabs from "./WishListTabs";
 import TabBar from "components/TabBar";
+import MyWishListTabs from "../MyWishListTabs";
 import GroupWishListTab from "./GroupWishListTab";
 import ProductWishListTab from "./ProductWishListTab";
 
 const MyWishListPage = () => {
-  const [tab, setTab] = useState("group");
+  const [tab, setTab] = useState("tab1");
   return (
     <Container>
       <WishListTitle>
         <h2>찜</h2>
       </WishListTitle>
-      <WishListTabs tab={tab} setTab={setTab} />
-      {tab === "group" && <GroupWishListTab />}
-      {tab === "product" && <ProductWishListTab />}
+      <MyWishListTabs
+        tab={tab}
+        setTab={setTab}
+        tabNames={["공동구매", "판매상품"]}
+      />
+      {tab === "tab1" && <GroupWishListTab />}
+      {tab === "tab2" && <ProductWishListTab />}
       <TabBar />
     </Container>
   );

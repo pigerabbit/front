@@ -1,25 +1,25 @@
 import styled from "styled-components";
 
-const WishListTabs = ({ tab, setTab }) => {
+const MyWishListTabs = ({ tab, setTab, tabNames }) => {
   return (
     <TabsContainer>
       <Tab
-        onClick={() => setTab("group")}
-        borderBottom={tab === "group" ? "2px solid #ffb564" : "none"}
+        onClick={() => setTab("tab1")}
+        borderBottom={tab === "tab1" ? "2px solid #ffb564" : "none"}
       >
-        <span>공동구매</span>
+        <span>{tabNames[0]}</span>
       </Tab>
       <Tab
-        onClick={() => setTab("product")}
-        borderBottom={tab === "product" ? "2px solid #ffb564" : "none"}
+        onClick={() => setTab("tab2")}
+        borderBottom={tab === "tab2" ? "2px solid #ffb564" : "none"}
       >
-        <span>판매상품</span>
+        <span>{tabNames[1]}</span>
       </Tab>
     </TabsContainer>
   );
 };
 
-export default WishListTabs;
+export default MyWishListTabs;
 
 const TabsContainer = styled.div`
   position: relative;
