@@ -7,7 +7,7 @@ import HomeTab from "./HomeTab";
 import BestTab from "./BestTab";
 import DeadlineTab from "./DeadlineTab";
 import SideBar from "../../components/SideBar";
-import Category from "./Category";
+import Category from "../../components/Category";
 import TabBar from "components/TabBar";
 
 const MainPage = () => {
