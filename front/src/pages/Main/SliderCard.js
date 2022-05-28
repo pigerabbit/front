@@ -5,6 +5,9 @@ import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 
+const url =
+  "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500";
+
 const SliderCard = ({ purchase }) => {
   const [product, setProduct] = useState({});
 
@@ -30,7 +33,7 @@ const SliderCard = ({ purchase }) => {
 
   return (
     <Container>
-      <img src="https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500" />
+      <Image url={url} />
       <Information>
         <CardTitle>
           <span>
@@ -66,19 +69,22 @@ const Container = styled.div`
   width: 100%;
   display: flex;
 
-  > img {
-    width: 30vw;
-    max-width: 200px;
-    height: 30vw;
-    max-height: 200px;
-    border-radius: 5px;
-  }
-
   > svg {
     position: absolute;
     right: 10px;
     bottom: 10px;
   }
+`;
+
+const Image = styled.div`
+  width: 30vw;
+  max-width: 200px;
+  height: 30vw;
+  max-height: 200px;
+  border-radius: 5px;
+  background-image: url(${({ url }) => url});
+  background-size: 100%;
+  background-position: center;
 `;
 
 const Information = styled.div`

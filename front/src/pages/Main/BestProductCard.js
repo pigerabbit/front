@@ -13,9 +13,8 @@ const BestProductCard = ({ product, index }) => {
   return (
     <Container wish={wish}>
       <span>{index + 1}</span>
-      <img
-        src={product.images[0]}
-        alt="img"
+      <Image
+        url={product.images[0]}
         onClick={() => {
           navigate(`/products/${product.id}`);
         }}
@@ -78,13 +77,16 @@ const Container = styled.div`
       else return "#9c9c9c;";
     }};
   }
+`;
 
-  img {
-    cursor: pointer;
-    width: 85px;
-    height: 85px;
-    border-radius: 10px;
-  }
+const Image = styled.div`
+  cursor: pointer;
+  width: 85px;
+  height: 85px;
+  border-radius: 10px;
+  background-image: url(${({ url }) => url});
+  background-size: 100%;
+  background-position: center;
 `;
 
 const Information = styled.div`

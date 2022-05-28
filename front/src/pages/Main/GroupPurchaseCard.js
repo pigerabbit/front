@@ -12,6 +12,9 @@ import axios from "axios";
 //     priceSize: 12,
 //     deadlineSize: 12,
 //   };
+const url =
+  "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500";
+
 const GroupPurchaseCard = ({ styles, purchase }) => {
   const [product, setProduct] = useState({});
 
@@ -36,8 +39,8 @@ const GroupPurchaseCard = ({ styles, purchase }) => {
   }, []);
 
   return (
-    <Container height={styles.cardHeight}>
-      <img src="https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500" />
+    <Container>
+      <Image height={styles.cardHeight} url={url} />
       <Information>
         <CardTitle size={styles.titleSize}>
           <span>
@@ -66,22 +69,25 @@ const GroupPurchaseCard = ({ styles, purchase }) => {
 export default GroupPurchaseCard;
 
 const Container = styled.div`
-  cursor:pointer;
+  cursor: pointer;
   position: relative;
   width: 100%;
   display: flex;
-
-  > img {
-    width: ${({ height }) => height}
-    height: ${({ height }) => height}
-    border-radius:5px;
-  }
 
   > svg {
     position: absolute;
     right: 0;
     bottom: 0;
   }
+`;
+
+const Image = styled.div`
+width: ${({ height }) => height}
+height: ${({ height }) => height}
+border-radius:5px;
+background-image: url(${({ url }) => url});
+background-size: 100%;
+background-position: center;
 `;
 
 const Information = styled.div`
