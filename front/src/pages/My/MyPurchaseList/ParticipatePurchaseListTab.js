@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { FakeParticipategroupList } from "../MyMockData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import MyPurchaseListCard from "./MyPurchaseListCard";
 
-const options = ["전체보기", "진행중", "결제완료"];
+const options = ["전체보기", "진행중", "결제완료", "기간 마감"];
 
 const ParticipatePurchaseListTab = () => {
   const [option, setOption] = useState("전체보기");
@@ -34,6 +35,22 @@ const ParticipatePurchaseListTab = () => {
           ))}
         </SelectBoxContainer>
       </InfoWrapper>
+      <PurchaseListWrapper>
+        {FakeParticipategroupList.map((group, idx) => (
+          <MyPurchaseListCard
+            key={idx}
+            type={group.groupType}
+            state={group.state}
+            title={group.title}
+            cnt={group.cnt}
+            price={group.price}
+            participants={group?.participants}
+            required={group?.requiredParticipants}
+            date={group.purchaseDate}
+            review={group?.review}
+          />
+        ))}
+      </PurchaseListWrapper>
     </Container>
   );
 };
@@ -63,6 +80,7 @@ const InfoWrapper = styled.div`
 `;
 
 const SelectBoxContainer = styled.div`
+  position: absolute;
   width: 100px;
   position: relative;
   display: inline-block;
@@ -91,4 +109,8 @@ const OpenButton = styled.button`
   border: none;
   background: transparent;
   cursor: pointer;
+`;
+
+const PurchaseListWrapper = styled.div`
+  width: 100%;
 `;
