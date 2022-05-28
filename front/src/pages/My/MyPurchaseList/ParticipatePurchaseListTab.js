@@ -16,11 +16,13 @@ const ParticipatePurchaseListTab = () => {
         <p>
           총 <strong>{FakeParticipategroupList.length}</strong>개
         </p>
-        <SelectBox>
-          <span>{option}</span>
-          <OpenButton onClick={() => setIsOpen(!isOpen)}>
-            <FontAwesomeIcon icon={faCaretDown} />
-          </OpenButton>
+        <SelectBoxContainer>
+          <SelectBoxWrapper>
+            <span>{option}</span>
+            <OpenButton onClick={() => setIsOpen(!isOpen)}>
+              <FontAwesomeIcon icon={faCaretDown} />
+            </OpenButton>
+          </SelectBoxWrapper>
           {options.map((option) => (
             <Option
               key={option}
@@ -30,7 +32,7 @@ const ParticipatePurchaseListTab = () => {
               {option}
             </Option>
           ))}
-        </SelectBox>
+        </SelectBoxContainer>
       </InfoWrapper>
     </Container>
   );
@@ -54,16 +56,29 @@ const Container = styled.div`
 const InfoWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin: 0 2%;
+  > p {
+    padding: 10px 0;
+  }
 `;
 
-const SelectBox = styled.div`
+const SelectBoxContainer = styled.div`
+  width: 100px;
   position: relative;
   display: inline-block;
   border: 1px solid #c4c4c4;
   border-radius: 5px;
   padding: 5px 0 5px 5px;
+  line-height: 25px;
+  background: #fff;
+`;
+
+const SelectBoxWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  > span {
+    font-weight: bold;
+  }
 `;
 
 const Option = styled.div`
