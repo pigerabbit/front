@@ -68,9 +68,9 @@ const Container = styled.div`
 
   > img {
     width: 30vw;
-    max-width: 165px;
+    max-width: 200px;
     height: 30vw;
-    max-height: 165px;
+    max-height: 200px;
     border-radius: 5px;
   }
 
@@ -100,24 +100,24 @@ const CardTitle = styled.div`
   > span:first-child {
     font-weight: 600;
     margin-bottom: 4px;
-    font-size: 3vw;
-    @media (min-width: 500px) {
+    font-size: 2.6vw;
+    @media (min-width: 600px) {
       font-size: 15px;
     }
   }
 
   > span:last-child {
-    font-size: 4vw;
-    @media (min-width: 500px) {
-      font-size: 20px;
+    font-size: 3.5vw;
+    @media (min-width: 600px) {
+      font-size: 22px;
     }
   }
 `;
 
 const Price = styled.div`
-  font-size: 3.2vw;
-  @media (min-width: 500px) {
-    font-size: 16px;
+  font-size: 2.8vw;
+  @media (min-width: 600px) {
+    font-size: 17px;
   }
   font-weight: 600;
 
@@ -128,8 +128,8 @@ const Price = styled.div`
 
   > span:last-child {
     font-size: 2.8vw;
-    @media (min-width: 500px) {
-      font-size: 14px;
+    @media (min-width: 600px) {
+      font-size: 15px;
     }
     color: #b1b1b1;
     text-decoration-line: line-through;
@@ -138,9 +138,9 @@ const Price = styled.div`
 `;
 
 const Deadline = styled.div`
-  font-size: 3.2vw;
-  @media (min-width: 500px) {
-    font-size: 16px;
+  font-size: 3vw;
+  @media (min-width: 600px) {
+    font-size: 17px;
   }
 
   > div {
