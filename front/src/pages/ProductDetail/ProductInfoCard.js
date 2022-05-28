@@ -18,7 +18,9 @@ const ProductInfoCard = ({ title, content, img }) => {
       {open && (
         <Content open={open}>
           <div>{content}</div>
-          {img && <img src={img} alt="상세정보 사진"></img>}
+          {img && (
+            <InfoImg id="infoImg" src={img} alt="상세정보 사진"></InfoImg>
+          )}
         </Content>
       )}
     </Container>
@@ -32,7 +34,6 @@ const Container = styled.div`
   width: 95%;
   margin: 2px auto;
   min-height: 80px;
-  vertical-align: middle;
   border-bottom: 1px solid #d0d0d0;
   background-color: #ffffff;
   cursor: pointer;
@@ -46,8 +47,7 @@ const Title = styled.div`
 `;
 
 const Content = styled.div`
-  margin: 30px 0 30px 30px;
-  justify-content: center;
+  margin: 30px;
   font-size: 15px;
 `;
 
@@ -64,4 +64,11 @@ const OpenArrow = styled.i`
   -webkit-transform: ${({ open }) =>
     open ? "rotate(225deg)" : "rotate(45deg)"};
   cursor: pointer;
+`;
+
+const InfoImg = styled.img`
+  width: 100%;
+  height: auto;
+
+  background-image: url(img);
 `;
