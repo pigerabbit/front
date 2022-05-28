@@ -47,8 +47,6 @@ const Title = styled.div`
 
 const Content = styled.div`
   margin: 30px 0 30px 30px;
-  flex-direction: column;
-  align-items: flex-start;
   justify-content: center;
   font-size: 15px;
 `;
