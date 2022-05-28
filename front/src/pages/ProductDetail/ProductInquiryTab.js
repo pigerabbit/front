@@ -15,6 +15,6 @@ const Container = styled.div`
   background-color: #ffffff;
   "::-webkit-scrollbar-track" {
     background: none;
-  },
-  padding: 10px;
+  }
+  margin-top: 7px;
 `;

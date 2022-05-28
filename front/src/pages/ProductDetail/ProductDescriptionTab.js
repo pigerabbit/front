@@ -94,8 +94,7 @@ const Container = styled.div`
   background-color: #ffffff;
   "::-webkit-scrollbar-track" {
     background: none;
-  },
-  padding: 100px 10px 60px 10px;
+  }
 `;
 
 const ImgContainer = styled.div`

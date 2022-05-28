@@ -153,7 +153,7 @@ const Header = styled.header`
   min-width: 360px;
   max-width: 770px;
   top: 0;
-  z-index: 1000;
+  z-index: 5;
   background-color: #ffffff;
 `;
 
@@ -220,6 +220,7 @@ const ButtonsContainer = styled.div`
   margin: 0 auto;
   padding: 10px 0 10px 0;
   background-color: #ffffff;
+  z-index: 5;
 `;
 
 const LeftButton = styled.div`
