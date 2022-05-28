@@ -1,14 +1,18 @@
 import styled from "styled-components";
 
-const WishListTabs = ({ setTab }) => {
-  const borderBottomStyle = "2px solid #FFB564";
-
+const WishListTabs = ({ tab, setTab }) => {
   return (
     <TabsContainer>
-      <Tab onClick={() => setTab("group")}>
+      <Tab
+        onClick={() => setTab("group")}
+        borderBottom={tab === "group" ? "2px solid #ffb564" : "none"}
+      >
         <span>공동구매</span>
       </Tab>
-      <Tab onClick={() => setTab("product")}>
+      <Tab
+        onClick={() => setTab("product")}
+        borderBottom={tab === "product" ? "2px solid #ffb564" : "none"}
+      >
         <span>판매상품</span>
       </Tab>
     </TabsContainer>
@@ -34,6 +38,7 @@ const Tab = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #fff;
+  border-bottom: ${(props) => props.borderBottom};
   span {
     pointer-events: none;
   }
