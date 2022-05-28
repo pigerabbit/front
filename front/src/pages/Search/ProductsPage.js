@@ -134,6 +134,9 @@ const Option = styled.div`
 const ProductsCardContainer = styled.div`
   width: 84%;
   margin-left: 8%;
+  @media (min-width: 600px) {
+    margin-top: 50px;
+  }
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 15px;

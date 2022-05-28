@@ -55,7 +55,7 @@ const TabLine = styled.div`
   position: absolute;
   background-color: black;
   width: 33.3%;
-  height: 2px;
+  height: 1.5px;
   left: ${({ tab }) => {
     if (tab === "home") return "0;";
     else if (tab === "best") return "33.4%;";

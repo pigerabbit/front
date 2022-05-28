@@ -8,6 +8,7 @@ import BestTab from "./BestTab";
 import DeadlineTab from "./DeadlineTab";
 import SideBar from "../../components/SideBar";
 import Category from "../../components/Category";
+import Notice from "./Notice";
 import TabBar from "components/TabBar";
 
 const MainPage = () => {
@@ -33,6 +34,7 @@ const MainPage = () => {
         setIsOpenSideBar={setIsOpenSideBar}
       >
         {sideBarTitle === "카테고리" && <Category />}
+        {sideBarTitle === "알림" && <Notice />}
       </SideBar>
 
       <TabBar />
