@@ -39,12 +39,12 @@ const ProductExplanation = ({ product, seller }) => {
   return (
     <Container>
       <ImgContainer>
-        {/* <img id="productImg" src={images} alt={product.name + " 사진"} /> */}
-        <img
+        <img id="productImg" src={images} alt={product.name + " 사진"} />
+        {/* <img
           id="productImg"
           src="/test_images/strawberry.jpeg"
           alt={product.name + " 사진"}
-        />
+        /> */}
       </ImgContainer>
       <Seller
         onClick={() => {
@@ -69,16 +69,16 @@ const ProductExplanation = ({ product, seller }) => {
       </InfoContainer>
       <DescriptionContainer>
         <div>{description}</div>
-        {/* <img
+        <img
           id="descriptionImg"
           src={descriptionImg}
           alt={name + " 설명 사진"}
-        /> */}
-        <img
+        />
+        {/* <img
           id="descriptionImg"
           src="/test_images/pigerabbit.png"
           alt={name + " 설명 사진"}
-        />
+        /> */}
       </DescriptionContainer>
     </Container>
   );

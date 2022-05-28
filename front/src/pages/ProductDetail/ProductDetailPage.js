@@ -63,14 +63,12 @@ const ProductDetailPage = () => {
 
   const getProductDetail = async () => {
     try {
-      // const res = await Api.get(`products/${productId}`);
-      const resProduct = await axios.get("/data/products.json");
-      setProduct(resProduct.data.content[12]);
-      const resSeller = await axios.get("/data/userList.json");
-      const seller = resSeller.data.content.filter(
-        (v) => product.userId === v.id
-      );
-      setSeller(seller[0]);
+      const res = await Api.get(`products/${productId}`);
+      setProduct(res.data.payload);
+      const sellerId = product.userId;
+      const res_user = await Api.get(`users/${sellerId}`);
+      setSeller(res_user.data.payload);
+      console.log(seller);
     } catch (e) {
       console.log(e);
     }
