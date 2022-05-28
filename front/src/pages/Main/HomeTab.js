@@ -13,27 +13,36 @@ import CardsContainer from "./CardsContainer";
 const HomeTab = () => {
   const [groupPurchaseList, setGroupPurchaseList] = useState([]);
   const [page, setPage] = useState(1);
-  const [cardPosition, setCardPosition] = useState(0);
+  const [cardPosition, setCardPosition] = useState(1);
+  const [transition, setTransition] = useState("transition: left 0.4s;");
   const lastPage = groupPurchaseList.length;
   const nearbyTitle = "근처에 있는 공동구매에요!";
 
   const handleClickLeft = () => {
+    setTransition("transition: left 0.4s;");
+    setCardPosition((cur) => cur - 1);
     if (page === 1) {
       setPage(lastPage);
-      setCardPosition(lastPage - 1);
+      setTimeout(() => {
+        setTransition("");
+        setCardPosition(lastPage);
+      }, [400]);
     } else {
       setPage((cur) => cur - 1);
-      setCardPosition((cur) => cur - 1);
     }
   };
 
   const handleClickRight = () => {
+    setTransition("transition: left 0.4s;");
+    setCardPosition((cur) => cur + 1);
     if (page === lastPage) {
       setPage(1);
-      setCardPosition(0);
+      setTimeout(() => {
+        setTransition("");
+        setCardPosition(1);
+      }, [400]);
     } else {
       setPage((cur) => cur + 1);
-      setCardPosition((cur) => cur + 1);
     }
   };
 
@@ -55,10 +64,20 @@ const HomeTab = () => {
         </Title>
 
         <SliderContainer>
-          <CardList length={groupPurchaseList.length} left={cardPosition}>
+          <CardList
+            length={groupPurchaseList.length + 2}
+            left={cardPosition}
+            transition={transition}
+          >
+            {groupPurchaseList.length > 0 && (
+              <SliderCard purchase={groupPurchaseList[lastPage - 1]} />
+            )}
             {groupPurchaseList.map((purchase) => (
               <SliderCard purchase={purchase} key={purchase.groupId} />
             ))}
+            {groupPurchaseList.length > 0 && (
+              <SliderCard purchase={groupPurchaseList[0]} />
+            )}
           </CardList>
         </SliderContainer>
 
@@ -123,7 +142,7 @@ const CardList = styled.div`
   left: ${({ left }) => -left * 100 + "%;"}
   display: flex;
   width: calc(100% * ${({ length }) => length});
-  transition: left 0.4s;
+  ${({ transition }) => transition}
 `;
 
 const Pagination = styled.div`
