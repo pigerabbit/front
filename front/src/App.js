@@ -8,6 +8,7 @@ import * as Api from "./api";
 import { login } from "./redux/userSlice";
 
 import MainPage from "./pages/Main/MainPage";
+import MyPage from "pages/My/MyPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -43,6 +44,7 @@ function App() {
       <Container>
         <Routes>
           <Route path="/" element={<MainPage />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </Container>
     </Router>
