@@ -57,7 +57,7 @@ const TopBar = styled.div`
     font-size: 3.5vw;
   }
   @media (min-width: 770px) {
-    font-size: 23px;
+    font-size: 28px;
   }
 
   > div {
