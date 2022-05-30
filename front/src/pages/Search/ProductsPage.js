@@ -30,7 +30,14 @@ const ProductsPage = () => {
   const getProductData = async () => {
     try {
       if (category) {
-        console.log("hi");
+        const data = await Api.get("products", "", {
+          page: 1,
+          perPage: 6,
+          category: category,
+          option: option,
+        });
+        setProducts(data.data.productList);
+        setTotalProductsNum(data.data.len);
       } else {
         const data = await Api.get("products/search", "", {
           page: 1,

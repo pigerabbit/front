@@ -37,7 +37,7 @@ const ProductsTopBar = ({ search, category, setIsOpenSideBar }) => {
       <FontAwesomeIcon
         icon={faArrowLeft}
         onClick={() => {
-          navigate(-1);
+          navigate("/");
         }}
       />
       {category && (
