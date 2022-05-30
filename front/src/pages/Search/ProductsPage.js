@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
-import axios from "axios";
+import * as Api from "api";
 
 import ProductsTopBar from "./ProductsTopBar";
 import ProductCard from "./ProductCard";
@@ -23,6 +20,7 @@ const ProductsPage = () => {
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
   const [option, setOption] = useState("groups");
   const [products, setProducts] = useState([]);
+  const [totalProductsNum, setTotalProductsNum] = useState([]);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -30,14 +28,27 @@ const ProductsPage = () => {
   const search = searchParams.get("search");
 
   const getProductData = async () => {
-    const data = await axios("/data/productsList.json", { method: "GET" });
-    setProducts(data.data.productList);
+    try {
+      if (category) {
+        console.log("hi");
+      } else {
+        const data = await Api.get("products/search", "", {
+          page: 1,
+          perPage: 6,
+          search: search,
+          option: option,
+        });
+        setProducts(data.data.productList);
+        setTotalProductsNum(data.data.len);
+      }
+    } catch (e) {
+      console.log(e.response.data.errorMessage);
+    }
   };
 
   useEffect(() => {
     getProductData();
-    setOption("groups");
-  }, [category, search]);
+  }, [option, category, search]);
 
   return (
     <Container>
@@ -48,7 +59,7 @@ const ProductsPage = () => {
       />
 
       <ProductsInfo>
-        <span>총 120건</span>
+        <span>총 {totalProductsNum}건</span>
         <SelectBox>
           {options.map(({ eng, kor }) => (
             <Option

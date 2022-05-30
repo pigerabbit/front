@@ -9,7 +9,7 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
   return (
-    <Container url={product.images[0]}>
+    <Container url={product.images}>
       <div
         className="image"
         onClick={() => {
