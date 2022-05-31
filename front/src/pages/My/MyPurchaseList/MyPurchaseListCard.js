@@ -9,37 +9,55 @@ const MyPurchaseListCard = ({
   required,
   date,
   review,
+  isOpenTab,
+  setIsOpenPopUpCard,
 }) => {
-  const groupType = type == "normal" ? "택배공구" : "지역공구";
+  const groupType = {
+    home: "택배공구",
+    local: "지역공구",
+    pickup: "픽업공구",
+    ticket: "이용권공구",
+  };
   const groupState = ["진행중", "결제완료", "기간마감"];
   const stateBGColor = ["#00c75a", "#ffb564", "#e8e8e8"];
   const stateColor = ["#fff", "#fff", "#505050"];
 
   return (
     <CardContainer>
-      <p>{date}</p>
+      {!isOpenTab && <p>{date}</p>}
       <CardWrapper>
         <CardImage />
         <CardContent>
           <Title>
-            <strong>{`[${groupType}] `}</strong>
+            <strong>{`[${groupType[type]}] `}</strong>
             {title}
           </Title>
           <State bgColor={stateBGColor[state]} color={stateColor[state]}>
             {groupState[state]}
           </State>
-          {(state === 0 || state == 2) && (
+          {(state === 0 || state === 2) && (
             <span>{`${participants} / ${required} 개`}</span>
           )}
-          <Quantitiy>{`${cnt}개 ${price}원`}</Quantitiy>
+          {isOpenTab ? (
+            <Message>{date}</Message>
+          ) : (
+            <Message>{`${cnt}개 ${price}원`}</Message>
+          )}
         </CardContent>
       </CardWrapper>
-      {state == 0 && <CardButton bgColor="#A0A0A0">참여 취소</CardButton>}
-      {state == 1 && review == true && (
+      {state === 0 && (
+        <CardButton bgColor="#A0A0A0" onClick={() => setIsOpenPopUpCard(true)}>
+          {isOpenTab ? "공구 중지" : "참여 취소"}
+        </CardButton>
+      )}
+      {state === 1 && review === true && (
         <CardButton bgColor="#A0A0A0">후기 완료</CardButton>
       )}
-      {state == 1 && review == false && (
+      {state === 1 && review === false && (
         <CardButton bgColor="#FFB564">후기 작성</CardButton>
+      )}
+      {isOpenTab && state === 2 && (
+        <CardButton bgColor="#A0A0A0">공구 삭제</CardButton>
       )}
     </CardContainer>
   );
@@ -106,7 +124,7 @@ const State = styled.div`
   margin-right: 10px;
 `;
 
-const Quantitiy = styled.p`
+const Message = styled.p`
   font-size: 13px;
   color: #5e5e5e;
   font-weight: 600;
@@ -121,6 +139,7 @@ const CardButton = styled.button`
   padding: 8px 10px;
   border: none;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
   @media only screen and (max-width: 400px) {
     bottom: 35px;
   }

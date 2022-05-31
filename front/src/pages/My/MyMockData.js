@@ -684,7 +684,7 @@ export const FakegroupList = [
 // 0 - 진행중 1- 결제완료 2- 기간마감
 export const FakeParticipategroupList = [
   {
-    groupType: "normal",
+    groupType: "home",
     state: 0,
     title: "싱싱한 왕딸기 공구해요!",
     cnt: 2,
@@ -722,7 +722,7 @@ export const FakeParticipategroupList = [
     purchaseDate: "2022/05/22 (일)",
   },
   {
-    groupType: "normal",
+    groupType: "home",
     state: 2,
     title: "싱싱한 왕딸기 공구해요!",
     cnt: 2,
@@ -763,7 +763,7 @@ export const FakeParticipategroupList = [
 
 export const FakeOpengroupList = [
   {
-    groupType: "normal",
+    groupType: "home",
     title: "싱싱한 왕딸기 공구해요!",
     state: 1,
     review: true,
@@ -792,7 +792,7 @@ export const FakeOpengroupList = [
     dueDate: "2022년 05월 27일 13시까지",
   },
   {
-    groupType: "normal",
+    groupType: "home",
     title: "싱싱한 왕딸기 공구해요!",
     state: 0,
     participants: 3,
@@ -800,7 +800,7 @@ export const FakeOpengroupList = [
     dueDate: "2022년 05월 27일 13시까지",
   },
   {
-    groupType: "normal",
+    groupType: "home",
     title: "싱싱한 왕딸기 공구해요!",
     state: 1,
     review: true,
@@ -829,7 +829,7 @@ export const FakeOpengroupList = [
     dueDate: "2022년 05월 27일 13시까지",
   },
   {
-    groupType: "normal",
+    groupType: "home",
     title: "싱싱한 왕딸기 공구해요!",
     state: 0,
     participants: 3,
