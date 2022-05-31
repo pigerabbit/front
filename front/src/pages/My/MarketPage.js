@@ -33,6 +33,11 @@ const MarketPage = () => {
         <TotalNumber>총 3개</TotalNumber>
 
         <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
+        <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
+        <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
+        <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
+        <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
+        <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
       </Container>
 
       <ConfirmationPopup
@@ -53,7 +58,10 @@ export default MarketPage;
 
 const Container = styled.div`
   box-sizing: border-box;
-  padding-bottom: 120px;
+  padding-bottom: 80px;
+  @media (max-width: 440px) {
+    padding-bottom: 70px;
+  }
   width: 100%;
   display: flex;
   flex-direction: column;
