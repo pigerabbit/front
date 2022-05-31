@@ -122,6 +122,7 @@ const Container = styled.div`
 
 const InfoWrapper = styled.div`
   display: flex;
+  position: relative;
   justify-content: space-between;
   margin: 0 2%;
   > p {
@@ -132,13 +133,14 @@ const InfoWrapper = styled.div`
 const SelectBoxContainer = styled.div`
   position: absolute;
   width: 100px;
-  position: relative;
+  right: 0px;
   display: inline-block;
   border: 1px solid #c4c4c4;
   border-radius: 5px;
   padding: 5px 0 5px 5px;
   line-height: 25px;
   background: #fff;
+  z-index: 11;
 `;
 
 const SelectBoxWrapper = styled.div`
