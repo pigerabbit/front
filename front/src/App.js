@@ -12,6 +12,8 @@ import MyPage from "pages/My/MyPage/MyPage";
 import MarketPage from "pages/My/Market/MarketPage";
 import ReviewsPage from "pages/My/MyReviews/ReviewsPage";
 
+import ScrollToTop from "ScrollToTop";
+
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
 
@@ -43,6 +45,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Container>
         <Routes>
           <Route path="/" element={<MainPage />} />
