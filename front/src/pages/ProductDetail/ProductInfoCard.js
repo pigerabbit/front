@@ -69,6 +69,4 @@ const OpenArrow = styled.i`
 const InfoImg = styled.img`
   width: 100%;
   height: auto;
-
-  background-image: url(img);
 `;
