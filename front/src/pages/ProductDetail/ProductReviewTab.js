@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import * as Api from "api";
+import axios from "axios";
 
 import ProductReviewCard from "./ProductReviewCard";
 
-const ProductReview = ({ product }) => {
+const ProductReviewTab = ({ product }) => {
   const [reviews, setReviews] = useState([]);
   const n = reviews.length;
+
+  const getReviews = async () => {
+    try {
+      const res = await axios.get(`/data/reviews.json`);
+      setReviews(res.data.content);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getReviews();
+  }, []);
 
   return (
     <Container>
@@ -15,12 +30,22 @@ const ProductReview = ({ product }) => {
           <div id="reviewCount">후기 {n}건</div>
           <MyReviewButton>내 후기</MyReviewButton>
         </ReviewTop>
+        {reviews.map((v, i) => (
+          <ProductReviewCard
+            writerId={v.writer}
+            title={v.title}
+            content={v.content}
+            image={v.image}
+            createdAt={v.createdAt}
+            key={i}
+          />
+        ))}
       </Review>
     </Container>
   );
 };
 
-export default ProductReview;
+export default ProductReviewTab;
 
 const Container = styled.div`
   position: relative;

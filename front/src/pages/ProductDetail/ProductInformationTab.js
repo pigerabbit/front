@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import ProductInfoCard from "./ProductInfoCard";
 
-const ProductInformation = ({ product, seller }) => {
+const ProductInformationTab = ({ product, seller }) => {
   const { detail, detailImg, shippingInfo } = product;
   const policy = `교환 및 환불이 필요하신 경우, 상단의 '문의'에 남겨주세요!
   `;
@@ -15,14 +15,19 @@ const ProductInformation = ({ product, seller }) => {
   ];
   return (
     <Container>
-      {info.map((v) => (
-        <ProductInfoCard title={v.title} content={v.content} img={v.img} />
+      {info.map((v, i) => (
+        <ProductInfoCard
+          title={v.title}
+          content={v.content}
+          img={v.img}
+          key={i}
+        />
       ))}
     </Container>
   );
 };
 
-export default ProductInformation;
+export default ProductInformationTab;
 
 const Container = styled.div`
   position: relative;

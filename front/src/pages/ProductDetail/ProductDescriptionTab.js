@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const ProductExplanation = ({ product, seller }) => {
+const ProductDescriptionTab = ({ product, seller }) => {
   const navigate = useNavigate();
 
   const {
@@ -34,7 +34,6 @@ const ProductExplanation = ({ product, seller }) => {
   if (shippingFeeCon > 0) {
     shippingConStr = ` (${shippingFeeConStr}원 이상 무료 배송)`;
   }
-  console.log(shippingConStr);
 
   return (
     <Container>
@@ -84,7 +83,7 @@ const ProductExplanation = ({ product, seller }) => {
   );
 };
 
-export default ProductExplanation;
+export default ProductDescriptionTab;
 
 const Container = styled.div`
   position: relative;
