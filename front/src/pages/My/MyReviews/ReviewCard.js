@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import ConfirmationPopup from "../ConfirmationPopup";
 
-const ReviewCard = () => {
+const ReviewCard = ({ review }) => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const getDate = (date) => {
@@ -15,12 +15,8 @@ const ReviewCard = () => {
     <Container>
       <Content>
         <Title>논산에서 자란 신선한 딸기딸기</Title>
-        <Date>2022.05.04</Date>
-        <Review>
-          딸기가 아주 신선했어요. 배송도 빨라서 좋았습니다. 다음에 또 구매할
-          의사 있어요. 딸기가 아주 신선했어요. 배송도 빨라서 좋았습니다. 다음에
-          또 구매할 의사 있어요. 딸기가 아주 신선했어요.
-        </Review>
+        <Date>{getDate(review.createdAt)}</Date>
+        <Review>{review.content}</Review>
       </Content>
 
       <DeleteButton
