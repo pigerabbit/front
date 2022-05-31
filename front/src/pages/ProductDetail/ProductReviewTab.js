@@ -7,11 +7,14 @@ import ProductReviewCard from "./ProductReviewCard";
 
 const ProductReviewTab = ({ product }) => {
   const [reviews, setReviews] = useState([]);
+  const [myReviews, setMyReviews] = useState([]);
   const n = reviews.length;
 
   const getReviews = async () => {
     try {
       const res = await axios.get(`/data/reviews.json`);
+      // const res = await Api.get(`posts?receiver=${product.id}`);
+      // const resMyReview = await Api.get(`posts/`);
       setReviews(res.data.content);
     } catch (e) {
       console.log(e);
@@ -37,7 +40,7 @@ const ProductReviewTab = ({ product }) => {
             content={v.content}
             image={v.image}
             createdAt={v.createdAt}
-            key={i}
+            key={v.postId}
           />
         ))}
       </Review>
@@ -83,12 +86,12 @@ const Review = styled.div`
 const ReviewTop = styled.div`
   padding-bottom: 20px;
   border-bottom: 2px solid #000000;
-  font-weight: bold;
   display: flex;
   flex-direction: row;
   align-items: center;
 
   .reviewCount {
+    font-weight: bold;
     position: absolute;
     left: 5%;
   }
@@ -101,7 +104,7 @@ const MyReviewButton = styled.div`
   height: 20px;
   border: 1px solid #d0d0d0;
   border-radius: 5px;
-  box-shadow: 1px 1px #d0d0d0;
+  box-shadow: 0.5px 0.5px 0.5px 0.5px #d0d0d0;
   display: flex;
   flex-direction: row;
   align-items: center;
