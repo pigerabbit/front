@@ -62,7 +62,7 @@ export default ProductCard;
 const Container = styled.div`
   background-color: white;
   position: relative;
-  margin-top: 5px;
+  margin-top: 7px;
   box-shadow: 0 3px 3px -3px #c7c7c7;
   width: 100%;
   display: flex;
