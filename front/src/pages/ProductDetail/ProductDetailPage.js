@@ -2,61 +2,24 @@ import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
 import * as Api from "api";
-import axios from "axios";
 
 import { faUser, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ProductTabs from "./ProductTabs";
-import ProductExplanation from "./ProductDescriptionTab";
+import ProductDescriptionTab from "./ProductDescriptionTab";
+import ProductInformationTab from "./ProductInformationTab";
+import ProductReviewTab from "./ProductReviewTab";
+import ProductInquiryTab from "./ProductInquiryTab";
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
-  const [product, setProduct] = useState({
-    _id: "628f8ecb036d5a2aff00705f",
-    userId: "c5783003-712b-40f5-9903-0e81a05e8350",
-    id: "4f92771e-8c93-49e4-b695-196052fec7de",
-    images: "1653575371627287c901c9d1c353f.PNG",
-    category: "meatEgg",
-    name: "철물점에서 파는 계란이라니! 싱싱할 수 밖에!",
-    description:
-      "철물점에서 파는 계란이라니! 싱싱할 수 밖에 없지 않겠습니까? 너무 궁금하져?",
-    descriptionImg: "16535753716287.PNG.png",
-    price: 50000,
-    salePrice: 35000,
-    discountRate: 30,
-    minPurchaseQty: 3,
-    maxPurchaseQty: 3,
-    views: 1,
-    shippingFee: 3000,
-    shippingFeeCon: 30000,
-    detail: "상세 정보",
-    detailImg: "1653575371637img.jpg",
-    shippingInfo: "내용",
-    policy: "교환환불",
-    createdAt: "2022-05-26T14:29:31.693Z",
-    updatedAt: "2022-05-26T14:29:31.693Z",
-    __v: 0,
-  });
-  const [seller, setSeller] = useState({
-    description: "설명이 아직 없습니다. 추가해 주세요.",
-    _id: "628f88ea021dc6fbec6709cd",
-    id: "c5783003-712b-40f5-9903-0e81a05e8350",
-    name: "민호의 철물계란",
-    email: "minho@naver.com",
-    password: "$2b$10$5dpeXZDyd0aKmLzZE7vKyOpReX4hTmr0o7Qoc4Y/3Dw6kWfXMcfmS",
-    business: "철물점",
-    address: "중랑구 면목동",
-    type: "sogongx2",
-    createdAt: "2022-05-26T14:04:26.546Z",
-    updatedAt: "2022-05-26T14:04:26.546Z",
-    __v: 0,
-  });
+  const [product, setProduct] = useState({});
+  const [seller, setSeller] = useState({});
 
   const [currentTab, setCurrentTab] = useState({
-    index: 0,
-    name: "상품설명",
-    content: <ProductExplanation product={product} seller={seller} />,
+    index: -1,
+    name: "fetch전",
   });
 
   const productId = useParams().id;
@@ -64,18 +27,24 @@ const ProductDetailPage = () => {
   const getProductDetail = async () => {
     try {
       const res = await Api.get(`products/${productId}`);
+      const res_user = await Api.get(`users/${res.data.payload.userId}`);
       setProduct(res.data.payload);
-      const sellerId = product.userId;
-      const res_user = await Api.get(`users/${sellerId}`);
-      setSeller(res_user.data.payload);
-      console.log(seller);
+      setSeller(res_user.data);
+      setCurrentTab({
+        index: 0,
+        name: "상품설명",
+      });
     } catch (e) {
-      console.log(e);
+      console.log("product 못 가져옴");
     }
   };
 
   useEffect(() => {
-    getProductDetail();
+    try {
+      getProductDetail();
+    } catch (e) {
+      console.log();
+    }
   }, []);
 
   return (
@@ -109,15 +78,22 @@ const ProductDetailPage = () => {
             </div>
           </ButtonTopContainer>
         </Top>
-        <ProductTabs
-          product={product}
-          seller={seller}
-          currentTab={currentTab}
-          setCurrentTab={setCurrentTab}
-          key={product.id}
-        />
+        <ProductTabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
       </Header>
-      <body>{currentTab.content}</body>
+      <Body>
+        {currentTab.index === 0 && (
+          <ProductDescriptionTab product={product} seller={seller} />
+        )}
+        {currentTab.index === 1 && (
+          <ProductInformationTab product={product} seller={seller} />
+        )}
+        {currentTab.index === 2 && (
+          <ProductReviewTab product={product} seller={seller} />
+        )}
+        {currentTab.index === 3 && (
+          <ProductInquiryTab product={product} seller={seller} />
+        )}
+      </Body>
       <ButtonsContainer>
         <LeftButton position="left">공구 열기</LeftButton>
         <RightButton isFilled="true" position="right">
@@ -139,10 +115,6 @@ const Container = styled.div`
   "::-webkit-scrollbar-track" {
     background: none;
   }
-
-  body {
-    padding: 100px 0 65px 0;
-  }
 `;
 
 const Header = styled.header`
@@ -153,6 +125,10 @@ const Header = styled.header`
   top: 0;
   z-index: 5;
   background-color: #ffffff;
+`;
+
+const Body = styled.div`
+  padding: 100px 0 65px 0;
 `;
 
 const Top = styled.div`
