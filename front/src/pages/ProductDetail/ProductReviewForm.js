@@ -1,4 +1,3 @@
-import { faCropSimple } from "@fortawesome/free-solid-svg-icons";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "api";
