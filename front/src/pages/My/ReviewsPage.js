@@ -37,7 +37,8 @@ const Container = styled.div`
 const TotalNumber = styled.div`
   width: 90%;
   max-width: 550px;
-  margin-top: 10px;
+  margin-top: 15px;
+  margin-bottom: 5px;
   font-size: 2.5vw;
   @media (min-width: 620px) {
     font-size: 16px;

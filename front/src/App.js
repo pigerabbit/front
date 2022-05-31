@@ -63,5 +63,4 @@ const Container = styled.div`
   background-color: #F2F2F2;
   display: flex;
   justify-content: center;
-
 `;
