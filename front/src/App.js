@@ -8,9 +8,9 @@ import * as Api from "./api";
 import { login } from "./redux/userSlice";
 
 import MainPage from "./pages/Main/MainPage";
-import MyPage from "pages/My/MyPage";
-import MarketPage from "pages/My/MarketPage";
-import ReviewsPage from "pages/My/ReviewsPage";
+import MyPage from "pages/My/MyPage/MyPage";
+import MarketPage from "pages/My/Market/MarketPage";
+import ReviewsPage from "pages/My/MyReviews/ReviewsPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);

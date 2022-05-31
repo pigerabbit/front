@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import MyPageLayout from "./MyPageLayout";
+import MyPageLayout from "../MyPageLayout";
 import ReviewCard from "./ReviewCard";
 
 const ReviewsPage = () => {

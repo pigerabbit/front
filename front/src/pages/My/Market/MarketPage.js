@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import * as Api from "api";
 
-import MyPageLayout from "./MyPageLayout";
+import MyPageLayout from "../MyPageLayout";
 import ProductCard from "./ProductCard";
-import ConfirmationPopup from "./ConfirmationPopup";
+import ConfirmationPopup from "../ConfirmationPopup";
 
 const MarketPage = () => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);

@@ -10,7 +10,7 @@ import {
   faFileLines,
 } from "@fortawesome/free-solid-svg-icons";
 
-import MyPageLayout from "./MyPageLayout";
+import MyPageLayout from "../MyPageLayout";
 import InfoEditForm from "./InfoEditForm";
 
 const buttons = [
