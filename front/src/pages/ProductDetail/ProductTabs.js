@@ -1,38 +1,23 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import ProductExplanation from "./ProductDescriptionTab";
-import ProductInformation from "./ProductInformationTab";
-import ProductReview from "./ProductReviewTab";
-import ProductInquiry from "./ProductInquiryTab";
-
-const ProductTabs = ({
-  product,
-  seller,
-  currentTab,
-  setCurrentTab,
-  productId,
-}) => {
+const ProductTabs = ({ currentTab, setCurrentTab }) => {
   const tabArr = [
     {
       index: 0,
       name: "상품설명",
-      content: <ProductExplanation product={product} seller={seller} />,
     },
     {
       index: 1,
       name: "상세정보",
-      content: <ProductInformation product={product} seller={seller} />,
     },
     {
       index: 2,
       name: "후기",
-      content: <ProductReview product={product} seller={seller} />,
     },
     {
       index: 3,
       name: "문의",
-      content: <ProductInquiry product={product} seller={seller} />,
     },
   ];
 
@@ -50,6 +35,7 @@ const ProductTabs = ({
             isActive=""
             index={i}
             curIndex={currentTab.index}
+            key={i}
           >
             {v.name}
           </Tab>
