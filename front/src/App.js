@@ -11,6 +11,7 @@ import MainPage from "./pages/Main/MainPage";
 import MyPage from "pages/My/MyPage/MyPage";
 import MarketPage from "pages/My/Market/MarketPage";
 import ReviewsPage from "pages/My/MyReviews/ReviewsPage";
+import InquiresPage from "pages/My/MyInquires/InquiresPage";
 
 import ScrollToTop from "ScrollToTop";
 
@@ -51,6 +52,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/reviews" element={<ReviewsPage />} />
+          <Route path="/mypage/inquires" element={<InquiresPage />} />
           <Route path="/markets/:id" element={<MarketPage />} />
         </Routes>
       </Container>

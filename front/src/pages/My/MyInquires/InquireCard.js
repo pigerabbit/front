@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import ConfirmationPopup from "../ConfirmationPopup";
 
-const ReviewCard = () => {
+const InquireCard = ({ inquire }) => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const getDate = (date) => {
@@ -14,13 +14,31 @@ const ReviewCard = () => {
   return (
     <Container>
       <Content>
+        <Badge reply={inquire.reply}>
+          {inquire.reply ? "답변완료" : "미답변"}
+        </Badge>
+
         <Title>논산에서 자란 신선한 딸기딸기</Title>
-        <Date>2022.05.04</Date>
-        <Review>
-          딸기가 아주 신선했어요. 배송도 빨라서 좋았습니다. 다음에 또 구매할
-          의사 있어요. 딸기가 아주 신선했어요. 배송도 빨라서 좋았습니다. 다음에
-          또 구매할 의사 있어요. 딸기가 아주 신선했어요.
-        </Review>
+        <Date>{getDate(inquire.createdAt)}</Date>
+        <Inquire reply={inquire.reply}>{inquire.content}</Inquire>
+
+        {inquire.reply && (
+          <Reply>
+            <ReplyTitle>
+              <span>답변</span>
+              <span>2022.05.05</span>
+            </ReplyTitle>
+            <ReplyContent>
+              안녕하세요. 담당자입니다. 문의 주신 상품의 경우, 최소 5묶음부터
+              최대 10묶음까지 구매 가능합니다. 감사합니다.
+            </ReplyContent>
+            <div>
+              ※ 답변 내용은 각 판매사에서 작성되며,
+              <br />
+              소공소공의 서비스/정책과 상이할 수 있습니다.
+            </div>
+          </Reply>
+        )}
       </Content>
 
       <DeleteButton
@@ -35,13 +53,13 @@ const ReviewCard = () => {
         isOpenPopup={isOpenPopup}
         setIsOpenPopup={setIsOpenPopup}
       >
-        <ConfirmationContent>후기를 정말 삭제하시겠습니까?</ConfirmationContent>
+        <ConfirmationContent>문의를 정말 삭제하시겠습니까?</ConfirmationContent>
       </ConfirmationPopup>
     </Container>
   );
 };
 
-export default ReviewCard;
+export default InquireCard;
 
 const Container = styled.div`
   background-color: white;
@@ -67,6 +85,24 @@ const Content = styled.div`
   }
 `;
 
+const Badge = styled.div`
+  border-radius: 5px;
+  width: 12%;
+  max-width: 50px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 6px 5px 6px;
+  font-weight: 600;
+  font-size: 2vw;
+  @media (min-width: 620px) {
+    font-size: 12px;
+  }
+  background-color: ${({ reply }) => (reply ? "#FFB564;" : "#E8E8E8;")};
+  color: ${({ reply }) => (reply ? "white;" : "#505050;")};
+`;
+
 const Title = styled.div`
   margin-bottom: 8px;
   font-size: 3.5vw;
@@ -84,9 +120,10 @@ const Date = styled.div`
   }
 `;
 
-const Review = styled.div`
+const Inquire = styled.div`
   font-size: 2.8vw;
   line-height: 3.8vw;
+  margin-bottom: ${({ reply }) => (reply ? "15px;" : "0px;")};
   @media (min-width: 620px) {
     font-size: 17.5px;
     line-height: 24px;
@@ -120,4 +157,38 @@ const ConfirmationContent = styled.div`
     margin-top: 60px;
     font-size: 24px;
   }
+`;
+
+const Reply = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #fafafa;
+  border-width: 1px 0px;
+  border-style: solid;
+  border-color: #cecece;
+  padding: 3%;
+  font-size: 2.3vw;
+  line-height: 3.5vw;
+  @media (min-width: 620px) {
+    font-size: 15px;
+    line-height: 22px;
+  }
+`;
+
+const ReplyTitle = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  > span:first-child {
+    color: #ffb564;
+  }
+  > span:last-child {
+    color: #606060;
+  }
+`;
+
+const ReplyContent = styled.div`
+  margin-bottom: 10px;
 `;
