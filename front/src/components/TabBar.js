@@ -99,6 +99,7 @@ const Cricle = styled.div`
   @media (max-width: 440px) {
     width: ${({ width }) => width - 20}px;
     height: ${({ width }) => width - 20}px;
+    left: calc(50% - ${({ width }) => (width - 20) / 2}px);
     font-size: 12px;
   }
   border-radius: 50%;
