@@ -26,7 +26,9 @@ const MyPageLayout = ({ children, pageName }) => {
         {pageName}
         <div></div>
       </TopBar>
+
       {children}
+
       <TabBar />
     </Container>
   );
@@ -35,6 +37,7 @@ const MyPageLayout = ({ children, pageName }) => {
 export default MyPageLayout;
 
 const Container = styled.div`
+  position: relative;
   width: 100%;
   max-width: 770px;
   min-width: 360px;

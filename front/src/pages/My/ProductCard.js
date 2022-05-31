@@ -7,7 +7,7 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
-const ProductCard = () => {
+const ProductCard = ({ setIsOpenPopup }) => {
   const [isControllerOpen, setIsControllerOpen] = useState(false);
 
   return (
@@ -37,18 +37,22 @@ const ProductCard = () => {
         />
       </Content>
 
-      {isControllerOpen && (
-        <UpdateController>
-          <ControllerButton>편집하기</ControllerButton>
-          <ControllerButton>판매중지</ControllerButton>
-          <FontAwesomeIcon
-            icon={faCircleXmark}
-            onClick={() => {
-              setIsControllerOpen(false);
-            }}
-          />
-        </UpdateController>
-      )}
+      <UpdateController isControllerOpen={isControllerOpen}>
+        <ControllerButton>편집하기</ControllerButton>
+        <ControllerButton
+          onClick={() => {
+            setIsOpenPopup(true);
+          }}
+        >
+          판매중지
+        </ControllerButton>
+        <FontAwesomeIcon
+          icon={faCircleXmark}
+          onClick={() => {
+            setIsControllerOpen(false);
+          }}
+        />
+      </UpdateController>
     </Container>
   );
 };
@@ -66,6 +70,8 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
+  z-index: 2;
+  background-color: white;
   cursor: pointer;
   position: relative;
   width: 90%;
@@ -151,6 +157,13 @@ const Price = styled.div`
 `;
 
 const UpdateController = styled.div`
+  z-index: 1;
+  opacity: 0;
+  ${({ isControllerOpen }) => {
+    if (isControllerOpen) return "z-index: 3; opacity: 1;";
+  }}
+  transition: opacity 0.4s;
+
   position: absolute;
   width: 100%;
   height: 100%;
