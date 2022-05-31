@@ -73,10 +73,10 @@ const SaleButton = styled.div`
   align-items: center;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 
-  font-size: 2.8vw;
+  font-size: 2.5vw;
   padding: 2.5vw;
   @media (min-width: 770px) {
-    font-size: 22px;
+    font-size: 20px;
     padding: 20px;
   }
 

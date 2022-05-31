@@ -9,12 +9,13 @@ import TabBar from "components/TabBar";
 const MyPageLayout = ({ children, pageName }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(location.pathname);
 
   return (
     <Container>
       <TopBar>
         <div>
-          {!location.pathname === "/mypage" && (
+          {!(location.pathname === "/mypage") && (
             <FontAwesomeIcon
               icon={faArrowLeft}
               onClick={() => {
