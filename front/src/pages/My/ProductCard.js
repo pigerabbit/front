@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsisVertical,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 const ProductCard = () => {
+  const [isControllerOpen, setIsControllerOpen] = useState(false);
+
   return (
     <Container>
       <Content>
@@ -24,8 +29,26 @@ const ProductCard = () => {
           </Price>
         </Information>
 
-        <FontAwesomeIcon icon={faEllipsisVertical} />
+        <FontAwesomeIcon
+          icon={faEllipsisVertical}
+          onClick={() => {
+            setIsControllerOpen(true);
+          }}
+        />
       </Content>
+
+      {isControllerOpen && (
+        <UpdateController>
+          <ControllerButton>편집하기</ControllerButton>
+          <ControllerButton>판매중지</ControllerButton>
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            onClick={() => {
+              setIsControllerOpen(false);
+            }}
+          />
+        </UpdateController>
+      )}
     </Container>
   );
 };
@@ -34,6 +57,7 @@ export default ProductCard;
 
 const Container = styled.div`
   background-color: white;
+  position: relative;
   margin-top: 5px;
   box-shadow: 0 3px 3px -3px #c7c7c7;
   width: 100%;
@@ -123,5 +147,47 @@ const Price = styled.div`
   > div > span:first-child {
     color: #ffb564;
     margin-right: 5px;
+  }
+`;
+
+const UpdateController = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(253, 253, 253, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > svg {
+    cursor: pointer;
+    position: absolute;
+    top: 8%;
+    right: 3%;
+    color: #9f9f9f;
+    font-size: 3.5vw;
+    @media (min-width: 770px) {
+      font-size: 27px;
+    }
+  }
+`;
+
+const ControllerButton = styled.div`
+  cursor: pointer;
+  width: 30%;
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #949494;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+  font-size: 3.2vw;
+  @media (min-width: 620px) {
+    font-size: 20px;
+  }
+
+  & + div {
+    margin-left: 3%;
   }
 `;
