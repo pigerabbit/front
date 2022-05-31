@@ -42,7 +42,7 @@ function App() {
     <Router>
       <Container>
         <Routes>
-          <Route path="/" element={<SearchPage />} />
+          <Route path="/search" element={<SearchPage />} />
         </Routes>
       </Container>
     </Router>

@@ -1,11 +1,15 @@
+import { useState } from "react";
 import styled from "styled-components";
 import {
   faArrowLeft,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
 
 const SearchInputForm = () => {
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const navigate = useNavigate();
   return (
     <SearchInputWrapper>
       <ButtonWrapper>
@@ -14,8 +18,13 @@ const SearchInputForm = () => {
           style={{ fontSize: "20px", color: "#C0C0C0" }}
         />
       </ButtonWrapper>
-      <SearchInput placeholder="검색어를 입력해주세요" />
-      <ButtonWrapper>
+      <SearchInput
+        placeholder="검색어를 입력해주세요"
+        onChange={(e) => setSearchKeyword(e.target.value)}
+      />
+      <ButtonWrapper
+        onClick={() => navigate(`/products?search=${searchKeyword}`)}
+      >
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
           style={{ fontSize: "25px", color: "#f79831" }}
