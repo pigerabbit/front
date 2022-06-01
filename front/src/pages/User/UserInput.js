@@ -9,6 +9,7 @@ import UserButton from "./UserButton";
 const UserInput = ({
   title,
   type,
+  placeholder,
   value,
   setValue,
   isValueValid,
@@ -39,6 +40,7 @@ const UserInput = ({
         <Input
           width={confirmButton && "short"}
           type={type}
+          placeholder={placeholder}
           value={value}
           autoComplete="off"
           onChange={(e) => {
@@ -49,7 +51,7 @@ const UserInput = ({
           <UserButton
             handleClick={handleConfirmButtonClick}
             width={"short"}
-            valid={true}
+            valid={value.length > 0}
           >
             중복 확인
           </UserButton>
@@ -110,8 +112,8 @@ const CheckIcon = styled.div`
   margin-right: -6%;
   color: ${({ valid }) => (valid ? "#70BD86;" : "#E9E9E9;")};
   color: ${({ valid }) => {
-    if (valid) return "#70BD86;";
-    else if (valid === "again") return "#FF6A6A;";
+    if (valid === "again") return "#FF6A6A;";
+    else if (valid) return "#70BD86;";
     else return "#E9E9E9;";
   }}
   transition: color 0.4s;

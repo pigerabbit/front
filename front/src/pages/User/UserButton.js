@@ -30,4 +30,6 @@ cursor: ${({ valid }) => (valid ? "pointer;" : "")};
   @media (min-width: 500px) {
     font-size: 13px;
   }
+
+  transition: all 0.4s;
 `;

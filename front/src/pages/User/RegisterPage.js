@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import * as Api from "api";
 
 import UserTopBar from "./UserTopBar";
 import UserInput from "./UserInput";
@@ -24,7 +23,7 @@ const RegisterPage = ({ children, pageName }) => {
   };
 
   const [isNameValid, setIsNameValid] = useState(false);
-  const isEmailValid = validateEmail(email);
+  const [isEmailValid, setIsEmailValid] = useState(false);
   const isPasswordValid = password.length >= 8;
   const isPasswordSame =
     confirmPassword.length > 0 && password === confirmPassword;
@@ -36,12 +35,31 @@ const RegisterPage = ({ children, pageName }) => {
     isPasswordSame &&
     isAddressValid;
 
+  const handleRegisterClick = async (event) => {
+    event.preventDefault();
+
+    try {
+      await Api.post("users", {
+        name,
+        email,
+        password,
+        address,
+      });
+    } catch (error) {
+      setIsEmailValid("again");
+    }
+  };
+
+  useEffect(() => {
+    setIsEmailValid(validateEmail(email));
+  }, [email]);
+
   return (
     <Container>
       <UserTopBar pageName={"회원가입"} />
       <InputListContainter>
         <UserInput
-          title={"이메일"}
+          title="이메일"
           type="test"
           value={email}
           setValue={setEmail}
@@ -49,8 +67,9 @@ const RegisterPage = ({ children, pageName }) => {
         />
 
         <UserInput
-          title={"비밀번호"}
+          title="비밀번호"
           type="password"
+          placeholder="8자 이상의 비밀번호를 입력해주세요."
           value={password}
           setValue={setPassword}
           isValueValid={isPasswordValid}
@@ -65,7 +84,7 @@ const RegisterPage = ({ children, pageName }) => {
         />
 
         <UserInput
-          title={"이름(닉네임)"}
+          title="이름(닉네임)"
           type="text"
           value={name}
           setValue={setName}
@@ -75,15 +94,19 @@ const RegisterPage = ({ children, pageName }) => {
         />
 
         <UserInput
-          title={"주소"}
+          title="주소"
           type="text"
           value={address}
           setValue={setAddress}
-          isValueVlid={isAddressValid}
+          isValueValid={isAddressValid}
         />
       </InputListContainter>
 
-      <UserButton valid={isFormValid} width={"long"}>
+      <UserButton
+        handleClick={handleRegisterClick}
+        valid={isFormValid}
+        width={"long"}
+      >
         회원가입하기
       </UserButton>
     </Container>
