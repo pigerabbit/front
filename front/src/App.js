@@ -8,6 +8,7 @@ import * as Api from "./api";
 import { login } from "./redux/userSlice";
 
 import MainPage from "./pages/Main/MainPage";
+import RegisterPage from "pages/User/RegisterPage";
 import MyPage from "pages/My/MyPage/MyPage";
 import MarketPage from "pages/My/Market/MarketPage";
 import ReviewsPage from "pages/My/MyReviews/ReviewsPage";
@@ -50,6 +51,7 @@ function App() {
       <Container>
         <Routes>
           <Route path="/" element={<MainPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/reviews" element={<ReviewsPage />} />
           <Route path="/mypage/inquires" element={<InquiresPage />} />
