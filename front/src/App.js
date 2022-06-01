@@ -8,6 +8,7 @@ import * as Api from "./api";
 import { login } from "./redux/userSlice";
 
 import MainPage from "./pages/Main/MainPage";
+import OpenGroupPage from "./pages/Group/openGroup/OpenGroupPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -43,6 +44,7 @@ function App() {
       <Container>
         <Routes>
           <Route path="/" element={<MainPage />} />
+          <Route path="/openGroup/:id" element={<OpenGroupPage />} />
         </Routes>
       </Container>
     </Router>
@@ -53,9 +55,9 @@ export default App;
 
 const Container = styled.div`
   width = 100vw;
-  min-height: 100vh;
+  height: 100vh;
   background-color: #F2F2F2;
   display: flex;
   justify-content: center;
-
+  overflow: hidden;
 `;
