@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import * as Api from "api";
 
 import UserButton from "./UserButton";
 
@@ -10,9 +11,27 @@ const UserInput = ({
   type,
   value,
   setValue,
-  isValueVlid,
+  isValueValid,
+  setIsValueValid,
   confirmButton,
 }) => {
+  const handleConfirmButtonClick = async (e) => {
+    e.preventDefault();
+
+    const data = await Api.get("users/checkName", "value");
+    if (data.data.payload === "none exists") {
+      setIsValueValid(true);
+    } else {
+      setIsValueValid("again");
+    }
+  };
+
+  useEffect(() => {
+    if (setIsValueValid) {
+      setIsValueValid(false);
+    }
+  }, [value]);
+
   return (
     <InputContainer>
       <InputTitle>{title}</InputTitle>
@@ -27,12 +46,16 @@ const UserInput = ({
           }}
         />
         {confirmButton && (
-          <UserButton width={"short"} valid={true}>
+          <UserButton
+            handleClick={handleConfirmButtonClick}
+            width={"short"}
+            valid={true}
+          >
             중복 확인
           </UserButton>
         )}
       </div>
-      <CheckIcon valid={isValueVlid}>
+      <CheckIcon valid={isValueValid}>
         <FontAwesomeIcon icon={faCircleCheck} />
       </CheckIcon>
     </InputContainer>
@@ -86,5 +109,10 @@ const CheckIcon = styled.div`
   right: 0;
   margin-right: -6%;
   color: ${({ valid }) => (valid ? "#70BD86;" : "#E9E9E9;")};
+  color: ${({ valid }) => {
+    if (valid) return "#70BD86;";
+    else if (valid === "again") return "#FF6A6A;";
+    else return "#E9E9E9;";
+  }}
   transition: color 0.4s;
 `;

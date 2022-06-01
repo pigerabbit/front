@@ -45,7 +45,7 @@ const RegisterPage = ({ children, pageName }) => {
           type="test"
           value={email}
           setValue={setEmail}
-          isValueVlid={isEmailValid}
+          isValueValid={isEmailValid}
         />
 
         <UserInput
@@ -53,7 +53,7 @@ const RegisterPage = ({ children, pageName }) => {
           type="password"
           value={password}
           setValue={setPassword}
-          isValueVlid={isPasswordValid}
+          isValueValid={isPasswordValid}
         />
 
         <UserInput
@@ -61,7 +61,7 @@ const RegisterPage = ({ children, pageName }) => {
           type="password"
           value={confirmPassword}
           setValue={setConfirmPassword}
-          isValueVlid={isPasswordSame}
+          isValueValid={isPasswordSame}
         />
 
         <UserInput
@@ -69,7 +69,8 @@ const RegisterPage = ({ children, pageName }) => {
           type="text"
           value={name}
           setValue={setName}
-          isValueVlid={isNameValid}
+          isValueValid={isNameValid}
+          setIsValueValid={setIsNameValid}
           confirmButton={true}
         />
 
@@ -96,7 +97,7 @@ const Container = styled.div`
   width: 100%;
   max-width: 770px;
   min-width: 360px;
-  min-height: 100vh;
+  min-height: 750px;
   background-color: white;
   display: flex;
   flex-direction: column;

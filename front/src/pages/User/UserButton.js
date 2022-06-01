@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-const UserButton = ({ children, valid, width }) => {
+const UserButton = ({ children, handleClick, valid, width }) => {
   return (
-    <Button valid={valid} disabled={!valid} width={width}>
+    <Button onClick={handleClick} valid={valid} disabled={!valid} width={width}>
       {children}
     </Button>
   );
