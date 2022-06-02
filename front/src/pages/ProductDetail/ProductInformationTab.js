@@ -30,13 +30,9 @@ const ProductInformationTab = ({ product, seller }) => {
 export default ProductInformationTab;
 
 const Container = styled.div`
-  position: relative;
   width: 100%;
   min-width: 360px;
   max-width: 770px;
   background-color: #ffffff;
-  "::-webkit-scrollbar-track" {
-    background: none;
-  }
   margin-top: 7px;
 `;
