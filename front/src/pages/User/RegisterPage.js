@@ -14,7 +14,7 @@ const RegisterPage = ({ children, pageName }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-  const [dtailAddress, setDetailAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState("");
   const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
 
   const validateEmail = (email) => {
@@ -30,13 +30,15 @@ const RegisterPage = ({ children, pageName }) => {
   const isPasswordValid = password.length >= 8;
   const isPasswordSame =
     confirmPassword.length > 0 && password === confirmPassword;
-  const isAddressValid = address.length > 0 && dtailAddress.length > 0;
+  const isAddressValid = address.length > 0 && detailAddress.length > 0;
   const isFormValid =
-    isNameValid &&
+    isNameValid === true &&
     isEmailValid &&
     isPasswordValid &&
     isPasswordSame &&
     isAddressValid;
+
+  const navigate = useNavigate();
 
   const handleRegisterClick = async (event) => {
     event.preventDefault();
@@ -46,8 +48,10 @@ const RegisterPage = ({ children, pageName }) => {
         name,
         email,
         password,
-        address,
+        address: address + " " + detailAddress,
       });
+
+      navigate("/login/email");
     } catch (error) {
       setIsEmailValid("again");
     }
@@ -109,7 +113,7 @@ const RegisterPage = ({ children, pageName }) => {
 
         <UserInput
           type="text"
-          value={dtailAddress}
+          value={detailAddress}
           placeholder="상세 주소를 입력해주세요."
           setValue={setDetailAddress}
           noCheck={true}

@@ -21,7 +21,7 @@ const UserInput = ({
   const handleConfirmButtonClick = async (e) => {
     e.preventDefault();
 
-    const data = await Api.get("users/checkName", "value");
+    const data = await Api.get("users/checkName", value);
     if (data.data.payload === "none exists") {
       setIsValueValid(true);
     } else {
