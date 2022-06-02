@@ -15,7 +15,7 @@ const UserTopBar = ({ pageName }) => {
           <FontAwesomeIcon
             icon={faArrowLeft}
             onClick={() => {
-              navigate(-1);
+              navigate("/login");
             }}
           />
         )}

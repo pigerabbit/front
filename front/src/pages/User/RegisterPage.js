@@ -8,7 +8,7 @@ import UserInput from "./UserInput";
 import UserButton from "./UserButton";
 import DaumPost from "./DaumPostCode";
 
-const RegisterPage = ({ children, pageName }) => {
+const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

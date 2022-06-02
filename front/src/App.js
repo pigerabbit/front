@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./reset.css";
@@ -9,6 +9,7 @@ import { login } from "./redux/userSlice";
 
 import MainPage from "./pages/Main/MainPage";
 import LoginPage from "pages/User/LoginPage";
+import EmailLoginPage from "pages/User/EmailLoginPage";
 import RegisterPage from "pages/User/RegisterPage";
 import MyPage from "pages/My/MyPage/MyPage";
 import MarketPage from "pages/My/Market/MarketPage";
@@ -53,6 +54,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/login/email" element={<EmailLoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/reviews" element={<ReviewsPage />} />
