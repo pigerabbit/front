@@ -1,11 +1,7 @@
-import React, { useState, useEffect, createContext } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import "./reset.css";
 import styled from "styled-components";
-
-import * as Api from "./api";
-import { login } from "./redux/userSlice";
 
 import MainPage from "./pages/Main/MainPage";
 import LoginPage from "pages/User/LoginPage";
@@ -18,9 +14,6 @@ import InquiresPage from "pages/My/MyInquires/InquiresPage";
 
 import ScrollToTop from "ScrollToTop";
 import FetchCurrentUser from "FetchCurrentUser";
-
-export const UserStateContext = createContext(null);
-export const DispatchContext = createContext(null);
 
 function App() {
   const wrapFetchUser = (child) => {
