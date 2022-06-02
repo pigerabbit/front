@@ -1,19 +1,32 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "redux/userSlice";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const InfoEditForm = () => {
-  const [name, setName] = useState("");
+  const { user } = useSelector((state) => state.user);
+  const [name, setName] = useState(user?.name);
   const [marketName, setMarketName] = useState("");
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [adress, setAdress] = useState("");
+  const [adress, setAdress] = useState(user?.address);
 
   const newPasswordValid = newPassword.length >= 8;
   const confirmPasswordValid =
     confirmPassword.length > 0 && newPassword === confirmPassword;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("userToken");
+    dispatch(logout());
+    navigate("/login");
+  };
 
   return (
     <Container>
@@ -107,7 +120,7 @@ const InfoEditForm = () => {
       </form>
 
       <OutButtons>
-        <span>로그아웃</span>
+        <span onClick={handleLogout}>로그아웃</span>
         <span>|</span>
         <span>회원탈퇴</span>
       </OutButtons>

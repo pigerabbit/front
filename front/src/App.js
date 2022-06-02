@@ -17,49 +17,35 @@ import ReviewsPage from "pages/My/MyReviews/ReviewsPage";
 import InquiresPage from "pages/My/MyInquires/InquiresPage";
 
 import ScrollToTop from "ScrollToTop";
+import FetchCurrentUser from "FetchCurrentUser";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
 
 function App() {
-  const dispatch = useDispatch();
-
-  const [isFetchCompleted, setIsFetchCompleted] = useState(false);
-
-  const fetchCurrentUser = async () => {
-    try {
-      const res = await Api.get("user/current");
-      const currentUser = res.data;
-
-      dispatch(login(currentUser));
-    } catch {
-      console.log("%c SessionStorage에 토큰 없음.", "color: #d93d1a;");
-    }
-
-    setIsFetchCompleted(true);
+  const wrapFetchUser = (child) => {
+    return <FetchCurrentUser>{child}</FetchCurrentUser>;
   };
 
-  useEffect(() => {
-    fetchCurrentUser();
-  }, []);
-
-  if (!isFetchCompleted) {
-    return "loading...";
-  }
+  const mainPage = wrapFetchUser(<MainPage />);
+  const myPage = wrapFetchUser(<MyPage />);
+  const reviewsPage = wrapFetchUser(<ReviewsPage />);
+  const inquiresPage = wrapFetchUser(<InquiresPage />);
+  const marketPage = wrapFetchUser(<MarketPage />);
 
   return (
     <Router>
       <ScrollToTop />
       <Container>
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          <Route path="/" element={mainPage} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/login/email" element={<EmailLoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/mypage/reviews" element={<ReviewsPage />} />
-          <Route path="/mypage/inquires" element={<InquiresPage />} />
-          <Route path="/markets/:id" element={<MarketPage />} />
+          <Route path="/mypage" element={myPage} />
+          <Route path="/mypage/reviews" element={reviewsPage} />
+          <Route path="/mypage/inquires" element={inquiresPage} />
+          <Route path="/markets/:id" element={marketPage} />
         </Routes>
       </Container>
     </Router>

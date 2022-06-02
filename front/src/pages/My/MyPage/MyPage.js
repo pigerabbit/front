@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -23,14 +24,15 @@ const buttons = [
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
 
   return (
     <MyPageLayout pageName={"my소공"}>
       <Section>
         <Profile>
           <div className="img"></div>
-          <div className="name">김뚜떼</div>
-          <div className="email">elice@test.com</div>
+          <div className="name">{user?.name}</div>
+          <div className="email">{user?.email}</div>
         </Profile>
       </Section>
 
