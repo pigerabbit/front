@@ -6,6 +6,7 @@ import * as Api from "api";
 import UserTopBar from "./UserTopBar";
 import UserInput from "./UserInput";
 import UserButton from "./UserButton";
+import DaumPost from "./DaumPostCode";
 
 const RegisterPage = ({ children, pageName }) => {
   const [email, setEmail] = useState("");
@@ -13,6 +14,8 @@ const RegisterPage = ({ children, pageName }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
+  const [dtailAddress, setDetailAddress] = useState("");
+  const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
 
   const validateEmail = (email) => {
     return email
@@ -27,7 +30,7 @@ const RegisterPage = ({ children, pageName }) => {
   const isPasswordValid = password.length >= 8;
   const isPasswordSame =
     confirmPassword.length > 0 && password === confirmPassword;
-  const isAddressValid = address.length > 0;
+  const isAddressValid = address.length > 0 && dtailAddress.length > 0;
   const isFormValid =
     isNameValid &&
     isEmailValid &&
@@ -99,8 +102,26 @@ const RegisterPage = ({ children, pageName }) => {
           value={address}
           setValue={setAddress}
           isValueValid={isAddressValid}
+          handleClick={() => {
+            setIsDaumPostOpen(true);
+          }}
+        />
+
+        <UserInput
+          type="text"
+          value={dtailAddress}
+          placeholder="상세 주소를 입력해주세요."
+          setValue={setDetailAddress}
+          noCheck={true}
         />
       </InputListContainter>
+
+      {isDaumPostOpen && (
+        <DaumPost
+          setAddress={setAddress}
+          setIsDaumPostOpen={setIsDaumPostOpen}
+        />
+      )}
 
       <UserButton
         handleClick={handleRegisterClick}

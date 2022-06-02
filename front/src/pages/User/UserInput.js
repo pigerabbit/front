@@ -15,6 +15,8 @@ const UserInput = ({
   isValueValid,
   setIsValueValid,
   confirmButton,
+  handleClick,
+  noCheck,
 }) => {
   const handleConfirmButtonClick = async (e) => {
     e.preventDefault();
@@ -34,7 +36,7 @@ const UserInput = ({
   }, [value]);
 
   return (
-    <InputContainer>
+    <InputContainer onClick={handleClick} noCheck={noCheck}>
       <InputTitle>{title}</InputTitle>
       <div>
         <Input
@@ -57,9 +59,12 @@ const UserInput = ({
           </UserButton>
         )}
       </div>
-      <CheckIcon valid={isValueValid}>
-        <FontAwesomeIcon icon={faCircleCheck} />
-      </CheckIcon>
+
+      {!noCheck && (
+        <CheckIcon valid={isValueValid}>
+          <FontAwesomeIcon icon={faCircleCheck} />
+        </CheckIcon>
+      )}
     </InputContainer>
   );
 };
@@ -67,7 +72,7 @@ const UserInput = ({
 export default UserInput;
 
 const InputContainer = styled.div`
-  margin-top: 25px;
+  margin-top: ${({ noCheck }) => (noCheck ? "5px;" : "25px;")}
   position: relative;
   width: 100%;
   margin-bottom: 10px;
