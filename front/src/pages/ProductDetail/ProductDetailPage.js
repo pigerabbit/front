@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import * as Api from "api";
+import axios from "axios";
 
 import { faUser, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,7 +15,11 @@ import ProductReviewTab from "./ProductReviewTab";
 import ProductInquiryTab from "./ProductInquiryTab";
 
 const ProductDetailPage = () => {
+  const { user } = useSelector((state) => state.user, shallowEqual);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
 
@@ -27,9 +33,9 @@ const ProductDetailPage = () => {
   const getProductDetail = async () => {
     try {
       const res = await Api.get(`products/${productId}`);
-      const res_user = await Api.get(`users/${res.data.payload.userId}`);
+      const resUser = await Api.get(`users/${res.data.payload.userId}`);
       setProduct(res.data.payload);
-      setSeller(res_user.data);
+      setSeller(resUser.data);
       setCurrentTab({
         index: 0,
         name: "상품설명",
@@ -111,10 +117,8 @@ const Container = styled.div`
   width: 770px;
   min-width: 360px;
   min-height: 100vh;
+  height: 100vh;
   background-color: #ffffff;
-  "::-webkit-scrollbar-track" {
-    background: none;
-  }
 `;
 
 const Header = styled.header`

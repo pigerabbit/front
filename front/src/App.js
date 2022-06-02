@@ -55,10 +55,16 @@ function App() {
 export default App;
 
 const Container = styled.div`
-  width = 100vw;
+  width: 100vw;
   min-height: 100vh;
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   display: flex;
   justify-content: center;
 
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
 `;
