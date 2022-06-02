@@ -48,7 +48,7 @@ const ProductReviewCard = ({
         </div>
       </Header>
       <Content open={open} image={image}>
-        <div id="content">{content}</div>
+        {content}
       </Content>
       {image && <ReviewImg src={image} alt="리뷰 사진" open={open}></ReviewImg>}
     </Container>
