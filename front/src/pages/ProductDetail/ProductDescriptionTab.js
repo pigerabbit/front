@@ -67,12 +67,14 @@ const ProductDescriptionTab = ({ product, seller }) => {
         </p>
       </InfoContainer>
       <DescriptionContainer>
-        <div>{description}</div>
-        <img
-          id="descriptionImg"
-          src={descriptionImg}
-          alt={name + " 설명 사진"}
-        />
+        {description && <div>{description}</div>}
+        {descriptionImg && (
+          <img
+            id="descriptionImg"
+            src={descriptionImg}
+            alt={name + " 설명 사진"}
+          />
+        )}
         {/* <img
           id="descriptionImg"
           src="/test_images/pigerabbit.png"
@@ -86,14 +88,10 @@ const ProductDescriptionTab = ({ product, seller }) => {
 export default ProductDescriptionTab;
 
 const Container = styled.div`
-  position: relative;
   width: 100%;
   min-width: 360px;
   max-width: 770px;
   background-color: #ffffff;
-  "::-webkit-scrollbar-track" {
-    background: none;
-  }
 `;
 
 const ImgContainer = styled.div`
