@@ -102,7 +102,7 @@ const ImgContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: gray;
+  background-color: #f8f8f8;
 
   #productImg {
     width: auto;
