@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "api";
-import { faCropSimple } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 const ProductReviewForm = ({ productId, setIsWriting }) => {
   const [reviewTitle, setReviewTitle] = useState("");
@@ -13,35 +13,23 @@ const ProductReviewForm = ({ productId, setIsWriting }) => {
     e.preventDefault();
 
     const formData = new FormData();
-    const variables = [
-      {
+
+    if (previewImg) {
+      formData.append("postImg", reviewImg);
+    }
+
+    try {
+      for (const keyValue of formData) console.log(keyValue[1]); // ["img", File] File은 객체
+      //   console.log("formData=====>", formData.get("type"));
+      const res = await Api.post("posts", {
         type: "review",
         receiver: productId,
         title: reviewTitle,
         content: reviewText,
-      },
-    ];
-
-    if (previewImg) {
-      formData.append("file", reviewImg);
-    }
-
-    formData.append("type", "review");
-    formData.append("receiver", 12345);
-    formData.append("title", reviewTitle);
-    formData.append("content", reviewText);
-
-    // formData.append(
-    //   "body",
-    //   new Blob([JSON.stringify(variables)], { type: "application/json" })
-    // );
-
-    try {
-      for (const keyValue of formData) console.log(keyValue[1]); // ["img", File] File은 객체
-      const res = await Api.post(`posts`, formData, {
-        Accept: "application/json",
-        //'Content-Type': 'multipart/form-data' 넣지마시오!!
       });
+      console.log(res.data);
+      const resImg = await Api.postForm(`posts`, formData);
+      console.log(res);
       setIsWriting((cur) => !cur);
     } catch (e) {
       console.log("review post 실패");
@@ -77,7 +65,7 @@ const ProductReviewForm = ({ productId, setIsWriting }) => {
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <Title>후기 쓰기</Title>
         <ReviewContainer>
           <input
@@ -130,7 +118,7 @@ const ProductReviewForm = ({ productId, setIsWriting }) => {
             확인
           </Button>
         </ButtonContainer>
-      </Form>
+      </form>
     </Container>
   );
 };
@@ -146,14 +134,14 @@ const Container = styled.div`
   margin: 2px auto;
   min-height: 350px;
   background-color: #ffffff;
-`;
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 15px;
-  width: 70%;
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 15px;
+    width: 70%;
+  }
 `;
 
 const Title = styled.label`

@@ -20,8 +20,11 @@ const ProductReviewTab = ({ product }) => {
 
   const getReviews = async () => {
     try {
+      console.log(product.id);
       // const res = await axios.get(`/data/reviews.json`);
-      const res = await Api.get(`posts?receiver=${product.id}`);
+      const res = await axios.get(
+        Api.serverUrl + `posts?receiver=${product.id}`
+      );
       // const resMyReview = await Api.get(`posts/${user.id}/reviews`);
       setReviews(res.data.content);
       setMyReviews(reviews.slice(0, 3));
