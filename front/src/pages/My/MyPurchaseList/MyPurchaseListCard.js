@@ -1,47 +1,85 @@
 import styled from "styled-components";
+
+const userId = "7a0e2ad0-7858-4ac8-a815-1657ea1d5d01";
+const groupType = {
+  normal: "택배공구",
+  local: "지역공구",
+  pickup: "픽업공구",
+  ticket: "이용권공구",
+};
+
+const groupState = {
+  0: ["진행중"],
+  1: ["진행중", "모집성공"],
+  "-1": ["기간만료"],
+  2: ["진행중", "결제대기중"],
+  "-2": ["진행중", "결제실패"],
+  3: ["결제완료", "배송중"],
+  "-3": ["결제완료", "배송대기중"],
+  4: ["결제완료", "배송완료"],
+  "-4": ["결제완료", "교환/반품"],
+};
+
 const MyPurchaseListCard = ({
   type,
   state,
   title,
-  cnt,
-  price,
+  reamined,
   participants,
-  required,
-  date,
-  review,
+  deadline,
   isOpenTab,
   setIsOpenPopUpCard,
 }) => {
-  const groupType = {
-    home: "택배공구",
-    local: "지역공구",
-    pickup: "픽업공구",
-    ticket: "이용권공구",
+  const returnBgColor = () => {
+    //진행중
+    if ([-2, 0, 1, 2].includes(state)) {
+      return "#00c75a";
+    }
+    //결제완료
+    else if ([-4, -3, 3, 4].includes(state)) {
+      return "#ffb564";
+    }
+    //기간만료
+    else if (state === -1) {
+      return "#e8e8e8";
+    }
   };
-  const groupState = ["진행중", "결제완료", "기간마감"];
-  const stateBGColor = ["#00c75a", "#ffb564", "#e8e8e8"];
-  const stateColor = ["#fff", "#fff", "#505050"];
+
+  const returnColor = () => {
+    if (state === -1) {
+      return "#505050";
+    } else {
+      return "#fff";
+    }
+  };
+
+  const myInfo = participants.filter((p) => p.userId === userId);
 
   return (
     <CardContainer>
-      {!isOpenTab && <p>{date}</p>}
+      {!isOpenTab && <p>{myInfo[0].participantDate}</p>}
       <CardWrapper>
-        <CardImage />
+        <CardImageWrapper>
+          <CardImage />
+          {groupState[state].length > 1 && (
+            <StateMessage>
+              <p>{groupState[state][1]}</p>
+            </StateMessage>
+          )}
+        </CardImageWrapper>
         <CardContent>
           <Title>
             <strong>{`[${groupType[type]}] `}</strong>
             {title}
           </Title>
-          <State bgColor={stateBGColor[state]} color={stateColor[state]}>
-            {groupState[state]}
+          <State bgColor={() => returnBgColor()} color={() => returnColor()}>
+            {groupState[state][0]}
           </State>
-          {(state === 0 || state === 2) && (
-            <span>{`${participants} / ${required} 개`}</span>
-          )}
+          {(state === 0 || state === 2) && <span>{`${reamined}명 남음`}</span>}
           {isOpenTab ? (
-            <Message>{date}</Message>
+            <Message>{deadline}</Message>
           ) : (
-            <Message>{`${cnt}개 ${price}원`}</Message>
+            <Message>{`${myInfo[0].quantity}개`}</Message>
           )}
         </CardContent>
       </CardWrapper>
@@ -50,10 +88,10 @@ const MyPurchaseListCard = ({
           {isOpenTab ? "공구 중지" : "참여 취소"}
         </CardButton>
       )}
-      {state === 1 && review === true && (
+      {state === 4 && myInfo[0].review === true && (
         <CardButton bgColor="#A0A0A0">후기 완료</CardButton>
       )}
-      {state === 1 && review === false && (
+      {state === 4 && myInfo[0].review === false && (
         <CardButton bgColor="#FFB564">후기 작성</CardButton>
       )}
       {isOpenTab && state === 2 && (
@@ -84,14 +122,40 @@ const CardWrapper = styled.div`
   margin-top: 10px;
 `;
 
-const CardImage = styled.div`
-  background: #c0c0c0;
+const CardImageWrapper = styled.div`
+  position: relative;
   width: 150px;
   height: 110px;
-  border-radius: 10px;
   @media only screen and (max-width: 400px) {
     width: 100px;
     height: 100px;
+  }
+`;
+
+const CardImage = styled.div`
+  background-image: url("./원두.jpeg");
+  background-size: cover;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+`;
+
+const StateMessage = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #a0a0a0;
+  border-radius: 10px;
+  background-color: rgba(160, 160, 160, 0.6);
+  > p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
   }
 `;
 

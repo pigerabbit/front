@@ -1,12 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+//import { useSelector} from "react-redux";
 import styled from "styled-components";
 import TabBar from "components/TabBar";
 import MyWishListTabs from "../MyWishListTabs";
 import ParticipatePurchaseListTab from "./ParticipatePurchaseListTab";
 import OpenPurchaseListTab from "./OpenPurchaseListTab";
+import * as Api from "api";
 
 const MyPurchaseListPage = () => {
+  //userId를 여기서 빼서 각 tab으로 넘기기
+  //const { user } = useSelector((state) => state.user);
+
   const [tab, setTab] = useState("tab1");
+  const [participatedData, setParticipatedData] = useState([]);
+  const [openedData, setOpenedData] = useState([]);
+
+  const getOpenedGroupData = async () => {
+    try {
+      const res = await Api.get("groups/manager/true");
+      setOpenedData(res.data.payload);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getParticipatedGroupData = async () => {
+    try {
+      const res = await Api.get("groups/manager/false");
+      setParticipatedData(res.data.payload);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getOpenedGroupData();
+    getParticipatedGroupData();
+  }, []);
+
   return (
     <Container>
       <WishListTitle>
@@ -17,8 +48,10 @@ const MyPurchaseListPage = () => {
         setTab={setTab}
         tabNames={["내가 참여한 공구", "내가 연 공구"]}
       />
-      {tab === "tab1" && <ParticipatePurchaseListTab />}
-      {tab === "tab2" && <OpenPurchaseListTab />}
+      {tab === "tab1" && (
+        <ParticipatePurchaseListTab participatedData={participatedData} />
+      )}
+      {tab === "tab2" && <OpenPurchaseListTab openedData={openedData} />}
       <TabBar />
     </Container>
   );

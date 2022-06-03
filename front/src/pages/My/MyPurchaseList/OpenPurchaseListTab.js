@@ -1,29 +1,35 @@
 import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import { FakeOpengroupList } from "../MyMockData";
+import { FakeParticipategroupList } from "../MyMockData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import MyPurchaseListCard from "./MyPurchaseListCard";
 
 const options = ["전체보기", "진행중", "결제완료", "기간마감"];
 
-const OpenPurchaseListTab = () => {
+const OpenPurchaseListTab = ({ openedData }) => {
   const [option, setOption] = useState("전체보기");
+  const [totalData, setTotalData] = useState(openedData);
   const [filteredData, setFilteredData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
 
   useEffect(() => {
+    setTotalData(FakeParticipategroupList);
     if (option === "전체보기") {
-      setFilteredData(FakeOpengroupList);
+      setFilteredData(totalData);
     } else if (option === "진행중") {
-      const onProgress = FakeOpengroupList.filter((group) => group.state === 0);
+      const onProgress = totalData.filter((group) =>
+        [-2, 0, 1, 2].includes(group.state)
+      );
       setFilteredData(onProgress);
     } else if (option === "결제완료") {
-      const completed = FakeOpengroupList.filter((group) => group.state === 1);
+      const completed = totalData.filter((group) =>
+        [-4, -3, 3, 4].includes(group.state)
+      );
       setFilteredData(completed);
     } else if (option === "기간마감") {
-      const stopped = FakeOpengroupList.filter((group) => group.state === 2);
+      const stopped = totalData.filter((group) => group.state === -1);
       setFilteredData(stopped);
     }
   }, [option]);
@@ -37,7 +43,7 @@ const OpenPurchaseListTab = () => {
     <Container>
       <InfoWrapper>
         <p>
-          총 <strong>{FakeOpengroupList.length}</strong>개
+          총 <strong>{filteredData.length}</strong>개
         </p>
         <SelectBoxContainer>
           <SelectBoxWrapper>
@@ -58,22 +64,25 @@ const OpenPurchaseListTab = () => {
         </SelectBoxContainer>
       </InfoWrapper>
       <PurchaseListWrapper>
-        {filteredData.map((group, idx) => (
-          <MyPurchaseListCard
-            key={idx}
-            type={group.groupType}
-            state={group.state}
-            title={group.title}
-            cnt={group.cnt}
-            price={group.price}
-            participants={group?.participants}
-            required={group?.requiredParticipants}
-            date={group.dueDate}
-            review={group?.review}
-            isOpenTab={true}
-            setIsOpenPopUpCard={setIsOpenPopUpCard}
-          />
-        ))}
+        {filteredData.length !== 0 &&
+          filteredData.map((group, idx) => (
+            <MyPurchaseListCard
+              key={group.groupId}
+              type={group.groupType}
+              state={group.state}
+              title={group.groupName}
+              reamined={group.remainedPersonnel}
+              participants={group.participants}
+              deadline={group.deadline}
+              isOpenTab={true}
+              setIsOpenPopUpCard={setIsOpenPopUpCard}
+            />
+          ))}
+        {filteredData.length === 0 && (
+          <PurchaseMessage>
+            <p>공구내역이 없습니다</p>
+          </PurchaseMessage>
+        )}
       </PurchaseListWrapper>
       {isOpenPopUpCard && (
         <PopUpCard>
@@ -116,6 +125,7 @@ const Container = styled.div`
 
 const InfoWrapper = styled.div`
   display: flex;
+  position: relative;
   justify-content: space-between;
   margin: 0 2%;
   > p {
@@ -126,7 +136,7 @@ const InfoWrapper = styled.div`
 const SelectBoxContainer = styled.div`
   position: absolute;
   width: 100px;
-  position: relative;
+  right: 0px;
   display: inline-block;
   border: 1px solid #c4c4c4;
   border-radius: 5px;
@@ -202,5 +212,15 @@ const Button = styled.button`
   @media only screen and (max-width: 400px) {
     height: 40px;
     font-size: 15px;
+  }
+`;
+
+const PurchaseMessage = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 25%;
+  > p {
+    color: #c4c4c4;
+    font-size: 30px;
   }
 `;

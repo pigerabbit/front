@@ -7,8 +7,9 @@ import MyPurchaseListCard from "./MyPurchaseListCard";
 
 const options = ["전체보기", "진행중", "결제완료", "기간마감"];
 
-const ParticipatePurchaseListTab = () => {
+const ParticipatePurchaseListTab = ({ participatedData }) => {
   const [option, setOption] = useState("전체보기");
+  const [totalData, setTotalData] = useState(participatedData);
   const [filteredData, setFilteredData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
@@ -19,22 +20,24 @@ const ParticipatePurchaseListTab = () => {
   };
 
   useEffect(() => {
+    setTotalData(FakeParticipategroupList);
     if (option === "전체보기") {
-      setFilteredData(FakeParticipategroupList);
+      setFilteredData(totalData);
     } else if (option === "진행중") {
-      const onProgress = FakeParticipategroupList.filter(
-        (group) => group.state === 0
+      const onProgress = totalData.filter((group) =>
+        [-2, 0, 1, 2].includes(group.state)
       );
+      console.log(onProgress);
       setFilteredData(onProgress);
     } else if (option === "결제완료") {
-      const completed = FakeParticipategroupList.filter(
-        (group) => group.state === 1
+      const completed = totalData.filter((group) =>
+        [-4, -3, 3, 4].includes(group.state)
       );
+      console.log(completed);
       setFilteredData(completed);
     } else if (option === "기간마감") {
-      const stopped = FakeParticipategroupList.filter(
-        (group) => group.state === 1
-      );
+      const stopped = totalData.filter((group) => group.state === -1);
+      console.log(stopped);
       setFilteredData(stopped);
     }
   }, [option]);
@@ -43,7 +46,7 @@ const ParticipatePurchaseListTab = () => {
     <Container>
       <InfoWrapper>
         <p>
-          총 <strong>{FakeParticipategroupList.length}</strong>개
+          총 <strong>{filteredData.length}</strong>개
         </p>
         <SelectBoxContainer>
           <SelectBoxWrapper>
@@ -64,22 +67,25 @@ const ParticipatePurchaseListTab = () => {
         </SelectBoxContainer>
       </InfoWrapper>
       <PurchaseListWrapper>
-        {filteredData.map((group, idx) => (
-          <MyPurchaseListCard
-            key={idx}
-            type={group.groupType}
-            state={group.state}
-            title={group.title}
-            cnt={group.cnt}
-            price={group.price}
-            participants={group?.participants}
-            required={group?.requiredParticipants}
-            date={group.purchaseDate}
-            review={group?.review}
-            isOpenTab={false}
-            setIsOpenPopUpCard={setIsOpenPopUpCard}
-          />
-        ))}
+        {filteredData.length !== 0 &&
+          filteredData.map((group) => (
+            <MyPurchaseListCard
+              key={group.groupId}
+              type={group.groupType}
+              state={group.state}
+              title={group.groupName}
+              reamined={group.remainedPersonnel}
+              participants={group.participants}
+              deadline={group.deadline}
+              isOpenTab={false}
+              setIsOpenPopUpCard={setIsOpenPopUpCard}
+            />
+          ))}
+        {filteredData.length === 0 && (
+          <PurchaseMessage>
+            <p>공구내역이 없습니다</p>
+          </PurchaseMessage>
+        )}
       </PurchaseListWrapper>
       {isOpenPopUpCard && (
         <PopUpCard>
@@ -210,5 +216,15 @@ const Button = styled.button`
   @media only screen and (max-width: 400px) {
     height: 40px;
     font-size: 15px;
+  }
+`;
+
+const PurchaseMessage = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 25%;
+  > p {
+    color: #c4c4c4;
+    font-size: 30px;
   }
 `;
