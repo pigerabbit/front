@@ -101,27 +101,29 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
         </SubmitButton>
       </form>
 
-      <form>
-        <InputContainer>
-          <div>판매처 이름</div>
-          <input
-            type="text"
-            value={businessName}
-            autoComplete="off"
-            onChange={(e) => {
-              setBusinessName(e.target.value);
-            }}
-          />
-          <CheckIcon valid={businessNameValid}>
-            <FontAwesomeIcon icon={faCircleCheck} />
-          </CheckIcon>
-        </InputContainer>
-        <SubmitButton
-          onClick={handleUpdate({ businessName }, setBusinessNameValid)}
-        >
-          판매처 변경
-        </SubmitButton>
-      </form>
+      {user.seller && (
+        <form>
+          <InputContainer>
+            <div>판매처 이름</div>
+            <input
+              type="text"
+              value={businessName}
+              autoComplete="off"
+              onChange={(e) => {
+                setBusinessName(e.target.value);
+              }}
+            />
+            <CheckIcon valid={businessNameValid}>
+              <FontAwesomeIcon icon={faCircleCheck} />
+            </CheckIcon>
+          </InputContainer>
+          <SubmitButton
+            onClick={handleUpdate({ businessName }, setBusinessNameValid)}
+          >
+            판매처 변경
+          </SubmitButton>
+        </form>
+      )}
 
       <form>
         <InputContainer>
