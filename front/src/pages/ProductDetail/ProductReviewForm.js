@@ -3,7 +3,7 @@ import styled from "styled-components";
 import * as Api from "api";
 import axios from "axios";
 
-const ProductReviewForm = ({ productId, setIsWriting }) => {
+const ProductReviewForm = ({ productId, setIsWriting, setReviews }) => {
   const [reviewTitle, setReviewTitle] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [reviewImg, setReviewImg] = useState({});
@@ -12,24 +12,33 @@ const ProductReviewForm = ({ productId, setIsWriting }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-
-    if (previewImg) {
-      formData.append("postImg", reviewImg);
-    }
-
     try {
-      for (const keyValue of formData) console.log(keyValue[1]); // ["img", File] File은 객체
-      //   console.log("formData=====>", formData.get("type"));
       const res = await Api.post("posts", {
         type: "review",
         receiver: productId,
         title: reviewTitle,
         content: reviewText,
       });
-      console.log(res.data);
-      const resImg = await Api.postForm(`posts`, formData);
-      console.log(res);
+      let newReview = res.data.payload;
+
+      if (previewImg) {
+        try {
+          const formData = new FormData();
+          formData.append("postImg", reviewImg);
+          for (const keyValue of formData) console.log(keyValue[1]); // ["img", File] File은 객체
+
+          const resImg = await Api.postImg(
+            `posts/${newReview.postId}/img`,
+            formData
+          );
+          newReview = resImg.data.payload;
+        } catch (e) {
+          console.log("이미지 업로드 실패");
+        }
+      }
+
+      setReviews((cur) => [newReview, ...cur]);
+
       setIsWriting((cur) => !cur);
     } catch (e) {
       console.log("review post 실패");
@@ -41,7 +50,6 @@ const ProductReviewForm = ({ productId, setIsWriting }) => {
     const formData = new FormData();
     formData.append("file", img);
     setReviewImg(img);
-    // for (const keyValue of formData) console.log(keyValue); // ["img", File] File은 객체
     encodeFileToBase64(img);
   };
 

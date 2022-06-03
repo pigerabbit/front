@@ -21,7 +21,7 @@ const ProductReviewCard = ({
   const getWriter = async () => {
     try {
       const res = await Api.get(`users/${writerId}`);
-      setWriter(res.data);
+      setWriter(res.data.payload);
     } catch (e) {
       console.log(e);
     }
@@ -36,7 +36,7 @@ const ProductReviewCard = ({
       <Header>
         {/* <WriterImg src={writer.imageLink} alt="상세정보 사진"></WriterImg> */}
         <WriterImg>
-          <img src={image} alt="사용자 사진" />
+          <img src={writer.imageLink} alt="사용자 사진" />
         </WriterImg>
         <div id="reviewTop">
           <ReviewTitle open={open} image={image}>

@@ -8,7 +8,7 @@ import ProductReviewCard from "./ProductReviewCard";
 import ProductReviewForm from "./ProductReviewForm";
 
 const ProductReviewTab = ({ product }) => {
-  // const { user } = useSelector((state) => state.user, shallowEqual);
+  const { user } = useSelector((state) => state.user, shallowEqual);
   const dispatch = useDispatch();
 
   const [reviews, setReviews] = useState([]);
@@ -20,13 +20,12 @@ const ProductReviewTab = ({ product }) => {
 
   const getReviews = async () => {
     try {
-      console.log(product.id);
       // const res = await axios.get(`/data/reviews.json`);
       const res = await axios.get(
         Api.serverUrl + `posts?receiver=${product.id}`
       );
       // const resMyReview = await Api.get(`posts/${user.id}/reviews`);
-      setReviews(res.data.content);
+      setReviews(res.data.payload);
       setMyReviews(reviews.slice(0, 3));
     } catch (e) {
       console.log(e);
@@ -51,7 +50,11 @@ const ProductReviewTab = ({ product }) => {
           후기 작성하기
         </WriteButton>
       ) : (
-        <ProductReviewForm productId={product.id} setIsWriting={setIsWriting} />
+        <ProductReviewForm
+          productId={product.id}
+          setIsWriting={setIsWriting}
+          setReviews={setReviews}
+        />
       )}
       <Review>
         <ReviewTop>
@@ -73,7 +76,7 @@ const ProductReviewTab = ({ product }) => {
                 writerId={v.writer}
                 title={v.title}
                 content={v.content}
-                image={v.image}
+                image={v.postImg}
                 createdAt={v.createdAt}
                 key={v.postId}
               />

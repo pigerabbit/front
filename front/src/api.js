@@ -63,28 +63,18 @@ async function del(endpoint, params = "") {
   });
 }
 
-async function postForm(endpoint, data) {
+async function postImg(endpoint, data) {
   console.log(`%cPOST 요청: ${serverUrl + endpoint}`, "color: #059c4f;");
   console.log(`%cPOST 요청 이미지 데이터: ${data}`, "color: #059c4f;");
 
   return axios.post(serverUrl + endpoint, data, {
     headers: {
-      // "Content-Type": "application/x-www-form-urlencoded",
       "Content-Type": "multipart/form-data",
-      // Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
     },
   });
 }
 
 // 아래처럼 export한 후, import * as A 방식으로 가져오면,
 // A.get, A.post 로 쓸 수 있음.
-export {
-  get,
-  getNoCache,
-  post,
-  put,
-  patch,
-  del as delete,
-  postForm,
-  serverUrl,
-};
+export { get, getNoCache, post, put, patch, del as delete, postImg, serverUrl };
