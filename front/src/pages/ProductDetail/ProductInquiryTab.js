@@ -73,6 +73,7 @@ const ProductInquiryTab = ({ product }) => {
                 content={v.content}
                 image={v.postImg}
                 createdAt={v.createdAt}
+                commentCount={v.commentCount}
                 key={v.postId}
               />
             ))

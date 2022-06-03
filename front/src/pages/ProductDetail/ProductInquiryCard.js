@@ -8,11 +8,13 @@ const ProductInquiryCard = ({
   content,
   image,
   createdAt,
+  commentCount,
   key,
 }) => {
   const [open, setOpen] = useState(false);
   const [writer, setWriter] = useState({});
   const date = createdAt.split("T")[0];
+  const isReplied = commentCount > 0 ? true : false;
 
   const showDetail = (e) => {
     setOpen((cur) => !cur);
@@ -33,23 +35,20 @@ const ProductInquiryCard = ({
 
   return (
     <Container onClick={showDetail} open={open} image={image}>
-      <Header>
-        {/* <WriterImg src={writer.imageLink} alt="상세정보 사진"></WriterImg> */}
-        <WriterImg>
-          <img src={writer.imageLink} alt="사용자 사진" />
-        </WriterImg>
+      <Header open={open}>
         <div id="inquiryTop">
           <InquiryTitle open={open} image={image}>
             {title}
           </InquiryTitle>
-          <WriterInfo>
-            {writer.name} | {date}
-          </WriterInfo>
+          <InquiryInfo>
+            <ShowReplied isReplied={isReplied}>
+              {isReplied ? "답변완료" : "미답변"}
+            </ShowReplied>{" "}
+            | {writer.name} | {date}
+          </InquiryInfo>
         </div>
       </Header>
-      <Content open={open} image={image}>
-        {content}
-      </Content>
+      {open && <Content>{content}</Content>}
       {image && (
         <InquiryImg src={image} alt="문의 사진" open={open}></InquiryImg>
       )}
@@ -62,94 +61,75 @@ export default ProductInquiryCard;
 const Container = styled.div`
   position: relative;
   width: 100%;
-  margin: 2px auto;
-  min-height: 130px;
-  vertical-align: middle;
+  margin: 2px 0;
   border-bottom: 1px solid #d0d0d0;
-  background-color: ${({ open, image }) =>
-    open === true && image !== null ? "#f8f8fB" : "#ffffff"};
-  cursor: ${({ image }) => (image ? "pointer" : "default")};
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background-color: ${({ open }) => (open ? "#f8f8fB" : "#ffffff")};
+  cursor: pointer;
 
-  @media (max-width: 500px) {
-    cursor: default;
-    background-color: #ffffff;
+  &:hover {
+    background-color: #f8f8fb;
   }
 `;
 
 const Header = styled.div`
   font-size: 16px;
   color: #636363;
-  padding: 20px 0 10px 20px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-`;
-
-const WriterImg = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #d0d0d0;
-  box-shadow: 0.5px 0.5px 0.5px 0.5px #d0d0d0;
-  position: absolute;
-
-  img {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 50%;
-    font-size: 10px;
-  }
+  margin-bottom: ${({ open }) => (!open ? "0px" : "20px")};
 `;
 
 const InquiryTitle = styled.div`
   font-size: 15px;
-  font-weight: bold;
-  margin-left: 50px;
+  margin-left: 20px;
   margin-right: ${({ open, image }) => (!open && image ? "115px" : "10px")};
+  font-weight: ${({ open }) => (!open ? "normal" : "bold")};
 
   @media (max-width: 500px) {
     margin-right: 10px;
   }
 `;
 
-const WriterInfo = styled.div`
+const InquiryInfo = styled.div`
   display: inline-block;
-  margin-left: 50px;
+  margin-left: 20px;
   font-size: 14px;
+  margin-top: 15px;
+`;
+
+const ShowReplied = styled.p`
+  display: inline-block;
+  font-weight: bold;
+  color: ${({ isReplied }) => (isReplied ? "#f79831" : "#636363")};
 `;
 
 const Content = styled.div`
-  margin: ${({ open, image }) =>
-    !open && image ? "0 110px 20px 70px" : "0 20px 20px 70px"};
-  font-size: 15px;
   display: flex;
-  align-items: center;
   flex-direction: row;
-
-  @media (max-width: 500px) {
-    margin: 0 20px 20px 70px;
-  }
+  align-items: center;
+  justify-content: flex-start;
+  margin: 20px 20px 20px 20px;
+  border-top: 1px solid #636363;
+  padding-top: 20px;
+  font-size: 15px;
 `;
 
 const InquiryImg = styled.img`
-  width: ${({ open }) => (!open ? "85px" : "300px")};
-  height: ${({ open }) => (!open ? "85px" : "auto")};
+  width: ${({ open }) => (!open ? "60px" : "150px")};
+  height: ${({ open }) => (!open ? "60px" : "auto")};
   border-radius: 10px;
   margin-bottom: ${({ open }) => (!open ? "0px" : "20px")};
   position: ${({ open }) => (!open ? "absolute" : "relative")};
   top: ${({ open }) => (!open ? "20px" : "0px")};
   right: 10px;
-  margin-left: ${({ open }) => (!open ? "auto" : "80px")};
+  margin-left: ${({ open }) => (!open ? "auto" : "25px")};
   align-items: center;
 
-  @media (max-width: 500px) {
+  /* @media (max-width: 500px) {
     width: 270px;
     height: auto;
     position: relative;
     top: 0px;
     margin: 0 0 20px 80px;
-  }
+  } */
 `;
