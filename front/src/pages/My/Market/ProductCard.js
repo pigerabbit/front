@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,52 +8,70 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
-const ProductCard = ({ setIsOpenPopup }) => {
+const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
+  const { user } = useSelector((state) => state.user);
+  const { id } = useParams();
   const [isControllerOpen, setIsControllerOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   return (
     <Container>
       <Content>
-        <Image />
+        <Image url={product.images} />
 
-        <Information>
+        <Information
+          onClick={() => {
+            navigate(`/products/${product.id}`);
+          }}
+        >
           <Title>
-            <span>[자연농장]</span>
-            <span>강원도산 햇감자</span>
+            <span>[{product.businessName}]</span>
+            <span>{product.name}</span>
           </Title>
           <Price>
-            <span>10000원</span>
+            <span>{product.price.toLocaleString()}원</span>
             <div>
-              <span>10%</span>
-              <span>9000원</span>
+              <span>
+                {Math.floor(
+                  (product.price - product.salePrice) / 100
+                ).toLocaleString()}
+                %
+              </span>
+              <span>{product.salePrice.toLocaleString()}원</span>
             </div>
           </Price>
         </Information>
 
-        <FontAwesomeIcon
-          icon={faEllipsisVertical}
-          onClick={() => {
-            setIsControllerOpen(true);
-          }}
-        />
+        {user.id === id && (
+          <FontAwesomeIcon
+            icon={faEllipsisVertical}
+            onClick={() => {
+              SetCurrentProduct(product.id);
+              setIsControllerOpen(true);
+            }}
+          />
+        )}
       </Content>
 
-      <UpdateController isControllerOpen={isControllerOpen}>
-        <ControllerButton>편집하기</ControllerButton>
-        <ControllerButton
-          onClick={() => {
-            setIsOpenPopup(true);
-          }}
-        >
-          판매중지
-        </ControllerButton>
-        <FontAwesomeIcon
-          icon={faCircleXmark}
-          onClick={() => {
-            setIsControllerOpen(false);
-          }}
-        />
-      </UpdateController>
+      {user.id === id && (
+        <UpdateController isControllerOpen={isControllerOpen}>
+          <ControllerButton>편집</ControllerButton>
+          <ControllerButton
+            onClick={() => {
+              setIsOpenPopup(true);
+            }}
+          >
+            판매 삭제
+          </ControllerButton>
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            onClick={() => {
+              setIsControllerOpen(false);
+            }}
+          />
+        </UpdateController>
+      )}
     </Container>
   );
 };
@@ -107,7 +126,6 @@ const Image = styled.div`
   }
   border-radius: 10px;
   background-image: url(${({ url }) => url});
-  background-image: url("https://post-phinf.pstatic.net/MjAxODAxMDNfMTkg/MDAxNTE0OTQwOTExMzE2.xrXUnUWpJLkKxnPPKO0j5i9oIdfJgSsdg-Rl1tWzm3Eg.Wc9UVWfKdk4P-T4_qZUwFU3Rw97HWDjWAc0X-qgolmAg.JPEG/2015-05-19-10%3B53%3B24.jpg?type=w1200");
   background-size: cover;
   background-position: center;
 `;

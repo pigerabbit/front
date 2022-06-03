@@ -22,15 +22,14 @@ const MyButtons = () => {
     { text: "찜 목록", icon: faHeart, url: "/whishlist" },
     { text: "공구내역", icon: faFileLines, url: "/purchaselist" },
     {
-      text: user.seller ? "나의 판매" : "사업자 인증하기",
+      text: user?.seller ? "나의 판매" : "사업자 인증하기",
       icon: faStore,
-      url: user.seller ? "/markets/:id" : "/businessauth",
+      url: user?.seller ? `/markets/${user.id}` : "/businessauth",
     },
   ];
 
   return (
     <>
-      {" "}
       <Buttons>
         {buttons.map(({ text, icon, url }, idx) => (
           <Button

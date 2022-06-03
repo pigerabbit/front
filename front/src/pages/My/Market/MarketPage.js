@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
@@ -10,41 +11,61 @@ import ProductCard from "./ProductCard";
 import ConfirmationPopup from "../ConfirmationPopup";
 
 const MarketPage = () => {
+  const { user } = useSelector((state) => state.user);
+  const { id } = useParams();
   const [isOpenPopup, setIsOpenPopup] = useState(false);
-  // const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [currentProduct, SetCurrentProduct] = useState("");
 
-  // const getProductData = async () => {
-  //   const data = Api.get("markets", "bac0461f-5def-41bd-a74d-5d11ec91dd7c");
-  //   console.log(data);
-  // };
+  const getProductData = async () => {
+    const res = await Api.get("markets", id);
+    setProducts(res.data.payload);
+  };
 
-  // useEffect(() => {
-  //   getProductData();
-  // }, []);
+  const handleDeleteProduct = () => {
+    setProducts((currentList) => {
+      const index = currentList.findIndex((cur) => cur.id === currentProduct);
+      const copy = [...currentList];
+      copy.splice(index, 1);
+      return copy;
+    });
+
+    setIsOpenPopup(false);
+
+    Api.delete(`products/${currentProduct}`);
+  };
+
+  useEffect(() => {
+    getProductData();
+  }, []);
 
   return (
-    <MyPageLayout pageName={"판매처 이름"}>
+    <MyPageLayout pageName={products[0]?.businessName}>
       <Container>
-        <SaleButton>
-          <FontAwesomeIcon icon={faCirclePlus} />
-          판매 등록하기
-        </SaleButton>
+        {user?.id === id && (
+          <SaleButton>
+            <FontAwesomeIcon icon={faCirclePlus} />
+            판매 등록하기
+          </SaleButton>
+        )}
 
-        <TotalNumber>총 3개</TotalNumber>
+        <TotalNumber>총 {products.length}개</TotalNumber>
 
-        <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
-        <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
-        <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
-        <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
-        <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
-        <ProductCard setIsOpenPopup={setIsOpenPopup}></ProductCard>
+        {products.map((product) => (
+          <ProductCard
+            product={product}
+            SetCurrentProduct={SetCurrentProduct}
+            setIsOpenPopup={setIsOpenPopup}
+            key={product.id}
+          ></ProductCard>
+        ))}
       </Container>
 
       <ConfirmationPopup
-        handleClickButton={() => console.log("hi")}
+        handleButtonClick={handleDeleteProduct}
         isOpenPopup={isOpenPopup}
         setIsOpenPopup={setIsOpenPopup}
-        buttonContent="판매중지"
+        buttonContent="판매 삭제"
       >
         <ConfirmationContent>
           <span>판매를 정말 중지하시겠습니까?</span>

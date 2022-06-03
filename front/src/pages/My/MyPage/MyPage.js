@@ -43,7 +43,7 @@ const MyPage = () => {
     <MyPageLayout pageName={"my소공"}>
       <Section>
         <Profile>
-          <ProfileImg url={user.imageLink}></ProfileImg>
+          <ProfileImg url={user?.imageLink}></ProfileImg>
           <div className="name">{user?.name}</div>
           <div className="email">{user?.email}</div>
         </Profile>
