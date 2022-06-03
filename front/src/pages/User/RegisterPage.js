@@ -6,7 +6,7 @@ import * as Api from "api";
 import UserTopBar from "./UserTopBar";
 import UserInput from "./UserInput";
 import UserButton from "./UserButton";
-import DaumPost from "./DaumPostCode";
+import DaumPost from "../../components/DaumPostCode";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");

@@ -7,6 +7,8 @@ import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import * as Api from "api";
 
+import DaumPost from "components/DaumPostCode";
+
 const InfoEditForm = ({ setIsOpenPopup }) => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user?.name);
@@ -14,12 +16,18 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [address, setAddress] = useState(user?.address);
+  const [address, setAddress] = useState(user?.address.split(") ")[0] + ")");
+  const [detailAddress, setDetailAddress] = useState(
+    user?.address.split(") ")[1]
+  );
+
+  const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
 
   const [nameValid, setNameValid] = useState(name);
   const [businessNameValid, setBusinessNameValid] = useState(businessName);
   const [passwordValid, setPasswordValid] = useState(false);
-  const [addressValid, setAddressValid] = useState(address);
+  const addressValid = address.length > 0;
+  const detailAddressValid = detailAddress.length > 0;
   const newPasswordValid = newPassword.length >= 8;
   const confirmPasswordValid =
     confirmPassword.length > 0 && newPassword === confirmPassword;
@@ -75,10 +83,6 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
     setPasswordValid(currentPassword?.length >= 8);
   }, [currentPassword]);
 
-  useEffect(() => {
-    setAddressValid(address?.length > 0);
-  }, [address]);
-
   return (
     <Container>
       <form>
@@ -96,7 +100,10 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
-        <SubmitButton onClick={handleUpdate({ name }, setNameValid)}>
+        <SubmitButton
+          onClick={handleUpdate({ name }, setNameValid)}
+          disabled={!nameValid}
+        >
           이름 변경
         </SubmitButton>
       </form>
@@ -119,6 +126,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
           </InputContainer>
           <SubmitButton
             onClick={handleUpdate({ businessName }, setBusinessNameValid)}
+            disabled={!businessNameValid}
           >
             판매처 변경
           </SubmitButton>
@@ -175,6 +183,9 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             setPasswordValid,
             true
           )}
+          disabled={
+            !(passwordValid && newPasswordValid && confirmPasswordValid)
+          }
         >
           비밀번호 변경
         </SubmitButton>
@@ -190,15 +201,42 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             onChange={(e) => {
               setAddress(e.target.value);
             }}
+            onClick={() => {
+              setIsDaumPostOpen(true);
+            }}
           />
           <CheckIcon valid={addressValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
-        <SubmitButton onClick={handleUpdate({ address }, setAddressValid)}>
+        <InputContainer>
+          <div>상세주소</div>
+          <input
+            type="text"
+            value={detailAddress}
+            autoComplete="off"
+            onChange={(e) => {
+              setDetailAddress(e.target.value);
+            }}
+          />
+          <CheckIcon valid={detailAddressValid}>
+            <FontAwesomeIcon icon={faCircleCheck} />
+          </CheckIcon>
+        </InputContainer>
+        <SubmitButton
+          onClick={handleUpdate({ address: address + " " + detailAddress })}
+          disabled={!(addressValid && detailAddressValid)}
+        >
           주소 변경
         </SubmitButton>
       </form>
+
+      {isDaumPostOpen && (
+        <DaumPost
+          setAddress={setAddress}
+          setIsDaumPostOpen={setIsDaumPostOpen}
+        />
+      )}
 
       <OutButtons>
         <span onClick={handleLogout}>로그아웃</span>
@@ -284,8 +322,9 @@ const CheckIcon = styled.div`
   transition: color 0.4s;
 `;
 
-const SubmitButton = styled.div`
-  cursor: pointer;
+const SubmitButton = styled.button`
+  ${({ disabled }) => !disabled && "cursor: pointer;"}
+  border: none;
   margin-bottom: 10px;
   width: 24%;
   height: 7vw;

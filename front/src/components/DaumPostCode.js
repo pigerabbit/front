@@ -42,8 +42,10 @@ const DaumPost = ({ setAddress, setIsDaumPostOpen }) => {
 export default DaumPost;
 
 const Container = styled.div`
-  border: 2px solid green;
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 12;
   width: 100%;
   height: 100%;
   display: flex;
