@@ -52,6 +52,9 @@ const EmailLoginPage = () => {
       ) {
         setIsPasswordValid("again");
         setPasswordErrMessage(error.response.data);
+      } else if (error.response.data === "해당 계정은 이미 탈퇴하였습니다.") {
+        setIsEmailValid("again");
+        setEmailErrMessage(error.response.data);
       }
     }
   };
