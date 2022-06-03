@@ -11,16 +11,19 @@ const BusinessAuthPage = () => {
   const [businessNumber, setBusinessNumber] = useState("");
   const [representative, setRepresentative] = useState("");
   const [openingDate, setOpeningDate] = useState("");
+  const [businessAddress, setBusinessAddress] = useState("");
   const [businessName, setBusinessName] = useState("");
 
   const businessNumberValid = businessNumber.length > 0;
   const representativeValid = representative.length > 0;
   const openingDateValid = openingDate.length > 0;
+  const businessAddressValid = businessAddress.length > 0;
   const businessNameValid = businessName.length > 0;
   const isFormValid =
     businessNumberValid &&
     representativeValid &&
     openingDateValid &&
+    businessAddressValid &&
     businessNameValid;
 
   const handleAuthClick = () => {};
@@ -52,6 +55,14 @@ const BusinessAuthPage = () => {
           value={openingDate}
           setValue={setOpeningDate}
           isValueValid={openingDateValid}
+        />
+
+        <UserInput
+          title="사업장 주소"
+          type="text"
+          value={businessAddress}
+          setValue={setBusinessAddress}
+          isValueValid={businessAddressValid}
         />
 
         <UserInput
