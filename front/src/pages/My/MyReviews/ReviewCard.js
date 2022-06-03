@@ -7,14 +7,20 @@ import ConfirmationPopup from "../ConfirmationPopup";
 const ReviewCard = ({ review }) => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
+  const navigate = useNavigate();
+
   const getDate = (date) => {
     return `${date.slice(0, 4)}.${date.slice(5, 7)}.${date.slice(8, 10)}`;
   };
 
   return (
     <Container>
-      <Content>
-        <Title>논산에서 자란 신선한 딸기딸기</Title>
+      <Content
+        onClick={() => {
+          navigate(`/products/${review.receiver}`);
+        }}
+      >
+        <Title>{review.title}</Title>
         <Date>{getDate(review.createdAt)}</Date>
         <Review>{review.content}</Review>
       </Content>
