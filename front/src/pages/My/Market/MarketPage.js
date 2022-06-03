@@ -44,6 +44,7 @@ const MarketPage = () => {
         handleClickButton={() => console.log("hi")}
         isOpenPopup={isOpenPopup}
         setIsOpenPopup={setIsOpenPopup}
+        buttonContent="판매중지"
       >
         <ConfirmationContent>
           <span>판매를 정말 중지하시겠습니까?</span>

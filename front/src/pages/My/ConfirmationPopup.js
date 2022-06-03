@@ -3,16 +3,17 @@ import styled from "styled-components";
 
 const ConfirmationPopup = ({
   children,
-  handleClickButton,
+  handleButtonClick,
   isOpenPopup,
   setIsOpenPopup,
+  buttonContent,
 }) => {
   return (
     <Container isOpenPopup={isOpenPopup}>
       {children}
       <ButtonsContainer>
-        <Button isCancel={false} onClick={handleClickButton}>
-          판매중지
+        <Button isCancel={false} onClick={handleButtonClick}>
+          {buttonContent}
         </Button>
         <Button
           isCancel={true}
@@ -30,7 +31,7 @@ const ConfirmationPopup = ({
 export default ConfirmationPopup;
 
 const Container = styled.div`
-z-index: 4;
+  z-index: 4;
   position: fixed;
   bottom: ${({ isOpenPopup }) => {
     if (isOpenPopup) return "0;";

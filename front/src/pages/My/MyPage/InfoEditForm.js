@@ -7,7 +7,7 @@ import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import * as Api from "api";
 
-const InfoEditForm = () => {
+const InfoEditForm = ({ setIsOpenPopup }) => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user?.name);
   const [businessName, setBusinessName] = useState(user?.businessName || "");
@@ -201,7 +201,13 @@ const InfoEditForm = () => {
       <OutButtons>
         <span onClick={handleLogout}>로그아웃</span>
         <span>|</span>
-        <span>회원탈퇴</span>
+        <span
+          onClick={() => {
+            setIsOpenPopup(true);
+          }}
+        >
+          회원탈퇴
+        </span>
       </OutButtons>
     </Container>
   );

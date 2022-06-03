@@ -52,6 +52,7 @@ const InquireCard = ({ inquire }) => {
       <ConfirmationPopup
         isOpenPopup={isOpenPopup}
         setIsOpenPopup={setIsOpenPopup}
+        buttonContent="삭제"
       >
         <ConfirmationContent>문의를 정말 삭제하시겠습니까?</ConfirmationContent>
       </ConfirmationPopup>

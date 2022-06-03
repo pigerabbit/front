@@ -30,6 +30,7 @@ const ReviewCard = ({ review }) => {
       <ConfirmationPopup
         isOpenPopup={isOpenPopup}
         setIsOpenPopup={setIsOpenPopup}
+        buttonContent="삭제"
       >
         <ConfirmationContent>후기를 정말 삭제하시겠습니까?</ConfirmationContent>
       </ConfirmationPopup>
