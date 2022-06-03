@@ -257,18 +257,3 @@ const Button = styled.button`
   background-color: ${({ id }) => (id === "cancel" ? "#ffffff" : "#ff9b2f")};
   color: ${({ id }) => (id === "submit" ? "#ffffff" : "#000000")};
 `;
-
-const UploadButton = styled.div`
-  #buttonForFile {
-    width: 90%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px auto;
-    padding: 2px 10px;
-    height: 35px;
-    border: 2px dotted #636363;
-    font-size: 13px;
-    font-weight: bold;
-  }
-`;
