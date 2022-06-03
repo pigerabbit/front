@@ -44,7 +44,7 @@ const MyButtons = () => {
           </Button>
         ))}
       </Buttons>
-      {!user.seller && (
+      {!user?.seller && (
         <span>사업자임을 인증하면 상품을 판매할 수 있습니다.</span>
       )}
     </>

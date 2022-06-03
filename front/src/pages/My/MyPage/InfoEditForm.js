@@ -26,8 +26,8 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
   const [nameValid, setNameValid] = useState(name);
   const [businessNameValid, setBusinessNameValid] = useState(businessName);
   const [passwordValid, setPasswordValid] = useState(false);
-  const addressValid = address.length > 0;
-  const detailAddressValid = detailAddress.length > 0;
+  const addressValid = address?.length > 0;
+  const detailAddressValid = detailAddress?.length > 0;
   const newPasswordValid = newPassword.length >= 8;
   const confirmPasswordValid =
     confirmPassword.length > 0 && newPassword === confirmPassword;
@@ -108,7 +108,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
         </SubmitButton>
       </form>
 
-      {user.seller && (
+      {user?.seller && (
         <form>
           <InputContainer>
             <div>판매처 이름</div>

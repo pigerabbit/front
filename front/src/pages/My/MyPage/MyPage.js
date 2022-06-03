@@ -24,9 +24,9 @@ const MyPage = () => {
     if (!password) return setInputBorderColor("#FFB564");
 
     try {
-      dispatch(logout());
-      navigate("/login");
       await Api.delete("users", user.id, { password });
+      navigate("/login");
+      dispatch(logout());
       sessionStorage.removeItem("userToken");
     } catch (e) {
       setPassword("");
@@ -45,7 +45,7 @@ const MyPage = () => {
         <Profile>
           <ProfileImg url={user?.imageLink}></ProfileImg>
           <div className="name">
-            {user.seller && `${user.businessName}, `}
+            {user?.seller && `${user?.businessName}, `}
             {user?.name}
           </div>
           <div className="email">{user?.email}</div>
