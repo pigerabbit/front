@@ -10,6 +10,8 @@ import UserButton from "./UserButton";
 const EmailLoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailErrMessage, setEmailErrMessage] = useState("");
+  const [passwordErrMessage, setPasswordErrMessage] = useState("");
 
   const validateEmail = (email) => {
     return email
@@ -43,21 +45,25 @@ const EmailLoginPage = () => {
         "해당 계정은 가입 내역이 없습니다. 다시 한 번 확인해 주세요."
       ) {
         setIsEmailValid("again");
+        setEmailErrMessage(error.response.data);
       } else if (
         error.response.data ===
         "비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요."
       ) {
         setIsPasswordValid("again");
+        setPasswordErrMessage(error.response.data);
       }
     }
   };
 
   useEffect(() => {
     setIsEmailValid(validateEmail(email));
+    setEmailErrMessage("");
   }, [email]);
 
   useEffect(() => {
     setIsPasswordValid(password.length >= 8);
+    setPasswordErrMessage("");
   }, [password]);
 
   return (
@@ -71,6 +77,7 @@ const EmailLoginPage = () => {
           value={email}
           setValue={setEmail}
           isValueValid={isEmailValid}
+          errMessage={emailErrMessage}
         />
 
         <UserInput
@@ -79,6 +86,7 @@ const EmailLoginPage = () => {
           value={password}
           setValue={setPassword}
           isValueValid={isPasswordValid}
+          errMessage={passwordErrMessage}
         />
       </InputListContainter>
 

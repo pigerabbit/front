@@ -17,6 +17,8 @@ const UserInput = ({
   confirmButton,
   handleClick,
   noCheck,
+  errMessage,
+  setErrMessage,
 }) => {
   const handleConfirmButtonClick = async (e) => {
     e.preventDefault();
@@ -26,6 +28,7 @@ const UserInput = ({
       setIsValueValid(true);
     } else {
       setIsValueValid("again");
+      setErrMessage("이미 존재하는 닉네임입니다.");
     }
   };
 
@@ -33,11 +36,16 @@ const UserInput = ({
     if (setIsValueValid) {
       setIsValueValid(false);
     }
+    if (setErrMessage) {
+      setErrMessage("");
+    }
   }, [value]);
 
   return (
     <InputContainer onClick={handleClick} noCheck={noCheck}>
-      <InputTitle>{title}</InputTitle>
+      <InputTitle>
+        {title} <span>{errMessage}</span>
+      </InputTitle>
       <div>
         <Input
           width={confirmButton && "short"}
@@ -89,6 +97,14 @@ const InputContainer = styled.div`
 const InputTitle = styled.div`
   margin-bottom: 5px;
   font-weight: 600;
+
+  > span {
+    color: #ff6a6a;
+    font-size: 2.3vw;
+    @media (min-width: 500px) {
+      font-size: 11.5px;
+    }
+  }
 `;
 
 const Input = styled.input`

@@ -15,6 +15,9 @@ const RegisterPage = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
+
+  const [nameErrMessage, setNameErrMessage] = useState("");
+  const [emailErrMessage, setEmailErrMessage] = useState("");
   const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
 
   const validateEmail = (email) => {
@@ -54,11 +57,13 @@ const RegisterPage = () => {
       navigate("/login/email");
     } catch (error) {
       setIsEmailValid("again");
+      setEmailErrMessage("이미 존재하는 이메일입니다.");
     }
   };
 
   useEffect(() => {
     setIsEmailValid(validateEmail(email));
+    setEmailErrMessage("");
   }, [email]);
 
   return (
@@ -71,6 +76,7 @@ const RegisterPage = () => {
           value={email}
           setValue={setEmail}
           isValueValid={isEmailValid}
+          errMessage={emailErrMessage}
         />
 
         <UserInput
@@ -98,6 +104,8 @@ const RegisterPage = () => {
           isValueValid={isNameValid}
           setIsValueValid={setIsNameValid}
           confirmButton={true}
+          errMessage={nameErrMessage}
+          setErrMessage={setNameErrMessage}
         />
 
         <UserInput
