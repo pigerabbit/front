@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "redux/userSlice";
+import { logout, update } from "redux/userSlice";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import * as Api from "api";
 
 const InfoEditForm = () => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user?.name);
-  const [marketName, setMarketName] = useState("");
-  const [password, setPassword] = useState("");
+  const [businessName, setBusinessName] = useState(user?.businessName || "");
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [adress, setAdress] = useState(user?.address);
+  const [address, setAddress] = useState(user?.address);
 
+  const [nameValid, setNameValid] = useState(name);
+  const [businessNameValid, setBusinessNameValid] = useState(businessName);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [addressValid, setAddressValid] = useState(address);
   const newPasswordValid = newPassword.length >= 8;
   const confirmPasswordValid =
     confirmPassword.length > 0 && newPassword === confirmPassword;
@@ -28,6 +33,52 @@ const InfoEditForm = () => {
     navigate("/login");
   };
 
+  const isEmptyValue = (obj) => {
+    if (obj.constructor === Object && Object.values(obj)[0].length === 0) {
+      return true;
+    }
+    return false;
+  };
+
+  const handleUpdate = (updateValueObj, setValueValid, password = false) => {
+    return async () => {
+      try {
+        if (isEmptyValue(updateValueObj)) return;
+
+        const url = password
+          ? `users/${user.id}/changePassword`
+          : `users/${user.id}`;
+        const res = await Api.put(url, updateValueObj);
+
+        if (!password) {
+          dispatch(update(res.data.payload));
+        } else {
+          setCurrentPassword("");
+          setNewPassword("");
+          setConfirmPassword("");
+        }
+      } catch (error) {
+        setValueValid("again");
+      }
+    };
+  };
+
+  useEffect(() => {
+    setNameValid(name?.length > 0);
+  }, [name]);
+
+  useEffect(() => {
+    setBusinessNameValid(businessName?.length > 0);
+  }, [businessName]);
+
+  useEffect(() => {
+    setPasswordValid(currentPassword?.length >= 8);
+  }, [currentPassword]);
+
+  useEffect(() => {
+    setAddressValid(address?.length > 0);
+  }, [address]);
+
   return (
     <Container>
       <form>
@@ -35,14 +86,19 @@ const InfoEditForm = () => {
           <div>이름</div>
           <input
             type="text"
-            value={name}
+            value={name || ""}
             autoComplete="off"
             onChange={(e) => {
               setName(e.target.value);
             }}
           />
+          <CheckIcon valid={nameValid}>
+            <FontAwesomeIcon icon={faCircleCheck} />
+          </CheckIcon>
         </InputContainer>
-        <SubmitButton>이름 변경</SubmitButton>
+        <SubmitButton onClick={handleUpdate({ name }, setNameValid)}>
+          이름 변경
+        </SubmitButton>
       </form>
 
       <form>
@@ -50,14 +106,21 @@ const InfoEditForm = () => {
           <div>판매처 이름</div>
           <input
             type="text"
-            value={marketName}
+            value={businessName}
             autoComplete="off"
             onChange={(e) => {
-              setMarketName(e.target.value);
+              setBusinessName(e.target.value);
             }}
           />
+          <CheckIcon valid={businessNameValid}>
+            <FontAwesomeIcon icon={faCircleCheck} />
+          </CheckIcon>
         </InputContainer>
-        <SubmitButton>판매처 변경</SubmitButton>
+        <SubmitButton
+          onClick={handleUpdate({ businessName }, setBusinessNameValid)}
+        >
+          판매처 변경
+        </SubmitButton>
       </form>
 
       <form>
@@ -65,12 +128,15 @@ const InfoEditForm = () => {
           <div>현재 비밀번호</div>
           <input
             type="password"
-            value={password}
+            value={currentPassword}
             autoComplete="off"
             onChange={(e) => {
-              setPassword(e.target.value);
+              setCurrentPassword(e.target.value);
             }}
           />
+          <CheckIcon valid={passwordValid}>
+            <FontAwesomeIcon icon={faCircleCheck} />
+          </CheckIcon>
         </InputContainer>
         <InputContainer>
           <div>신규 비밀번호</div>
@@ -101,7 +167,15 @@ const InfoEditForm = () => {
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
-        <SubmitButton>비밀번호 변경</SubmitButton>
+        <SubmitButton
+          onClick={handleUpdate(
+            { currentPassword, newPassword },
+            setPasswordValid,
+            true
+          )}
+        >
+          비밀번호 변경
+        </SubmitButton>
       </form>
 
       <form>
@@ -109,14 +183,19 @@ const InfoEditForm = () => {
           <div>주소</div>
           <input
             type="text"
-            value={adress}
+            value={address}
             autoComplete="off"
             onChange={(e) => {
-              setAdress(e.target.value);
+              setAddress(e.target.value);
             }}
           />
+          <CheckIcon valid={addressValid}>
+            <FontAwesomeIcon icon={faCircleCheck} />
+          </CheckIcon>
         </InputContainer>
-        <SubmitButton>주소 변경</SubmitButton>
+        <SubmitButton onClick={handleUpdate({ address }, setAddressValid)}>
+          주소 변경
+        </SubmitButton>
       </form>
 
       <OutButtons>
@@ -190,7 +269,8 @@ const CheckIcon = styled.div`
   right: 0;
   margin-right: -5%;
   color: ${({ valid }) => {
-    if (valid) return "#70BD86;";
+    if (valid === "again") return "#FF6A6A;";
+    else if (valid) return "#70BD86;";
     else return "#E9E9E9;";
   }};
   transition: color 0.4s;

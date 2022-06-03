@@ -131,7 +131,6 @@ const CheckIcon = styled.div`
   top: 54%;
   right: 0;
   margin-right: -6%;
-  color: ${({ valid }) => (valid ? "#70BD86;" : "#E9E9E9;")};
   color: ${({ valid }) => {
     if (valid === "again") return "#FF6A6A;";
     else if (valid) return "#70BD86;";
