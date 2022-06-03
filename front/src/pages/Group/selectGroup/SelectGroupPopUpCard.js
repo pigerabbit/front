@@ -2,7 +2,7 @@ import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled, { keyframes } from "styled-components";
 
-const OpenGroupPopUpCard = ({ setIsOpen, setIsChecked }) => {
+const SelectGroupPopUpCard = ({ setIsOpen, setIsChecked }) => {
   const handleClick = () => {
     setIsChecked(true);
     setIsOpen(false);
@@ -34,7 +34,7 @@ const OpenGroupPopUpCard = ({ setIsOpen, setIsChecked }) => {
   );
 };
 
-export default OpenGroupPopUpCard;
+export default SelectGroupPopUpCard;
 
 const PopupAnimation = keyframes`
   from{

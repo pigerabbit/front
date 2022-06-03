@@ -1,11 +1,11 @@
-import { useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const groupTypes = {
-  "지역 공구": "동네로 보내드립니다.(동네에서 픽업)",
-  "택배 공구": "택배로 보내드립니다.(주소지로 배송)",
-  "픽업 공구": "상품의 판매처에서 직접 픽업합니다.",
-  "이용권 공구": "이용권을 공동 구매하여 사용합니다.",
+  "지역 공구": ["동네로 보내드립니다.(동네에서 픽업)", "local"],
+  "택배 공구": ["택배로 보내드립니다.(주소지로 배송)", "normal"],
+  "픽업 공구": ["상품의 판매처에서 직접 픽업합니다.", "pickup"],
+  "이용권 공구": ["이용권을 공동 구매하여 사용합니다.", "ticket"],
 };
 
 const productTypes = {
@@ -14,23 +14,25 @@ const productTypes = {
   ticket: ["이용권 공구"],
 };
 
-const OpenGroupTypes = () => {
-  //const location = useLocation();
-  //const type = location.state;
-  const type = "normal";
+const SelectGroupTypes = ({ type, productId }) => {
+  const navigate = useNavigate();
   return (
     <Container>
       {Object.entries(groupTypes).map(([key, value]) => (
-        <ButtonContainer key={key} isActive={productTypes[type].includes(key)}>
+        <ButtonContainer
+          key={key}
+          isActive={productTypes[type].includes(key)}
+          onClick={() => navigate(`/group/open/${productId}?type=${value[1]}`)}
+        >
           <Title>{key}</Title>
-          <Description>{value}</Description>
+          <Description>{value[0]}</Description>
         </ButtonContainer>
       ))}
     </Container>
   );
 };
 
-export default OpenGroupTypes;
+export default SelectGroupTypes;
 
 const Container = styled.div`
   width: 100%;

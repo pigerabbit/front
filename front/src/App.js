@@ -8,6 +8,7 @@ import * as Api from "./api";
 import { login } from "./redux/userSlice";
 
 import MainPage from "./pages/Main/MainPage";
+import SelectGroupPage from "./pages/Group/selectGroup/SelectGroupPage";
 import OpenGroupPage from "./pages/Group/openGroup/OpenGroupPage";
 
 export const UserStateContext = createContext(null);
@@ -44,7 +45,8 @@ function App() {
       <Container>
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/openGroup/:id" element={<OpenGroupPage />} />
+          <Route path="/group/select/:id" element={<SelectGroupPage />} />
+          <Route path="/group/open/:id" element={<OpenGroupPage />} />
         </Routes>
       </Container>
     </Router>

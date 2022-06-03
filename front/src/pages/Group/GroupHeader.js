@@ -3,14 +3,12 @@ import { faUser, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
-const OpenGroupHeader = () => {
+const GroupHeader = ({ headerTitle }) => {
   const navigate = useNavigate();
   return (
     <Header>
       <GoBack onClick={() => navigate("/products")} />
-      <Title>
-        <span>소공소공</span> 공구열기
-      </Title>
+      <Title>{headerTitle}</Title>
       <ButtonTopContainer>
         <div
           id="home"
@@ -39,7 +37,7 @@ const OpenGroupHeader = () => {
   );
 };
 
-export default OpenGroupHeader;
+export default GroupHeader;
 
 const Header = styled.header`
   position: fixed;
@@ -75,9 +73,6 @@ const Title = styled.p`
   padding: 20px 0;
   vertical-align: middle;
   text-align: center;
-  > span {
-    color: #f79831;
-  }
   @media (max-width: 500px) {
     margin-left: 5%;
     font-size: 20px;
