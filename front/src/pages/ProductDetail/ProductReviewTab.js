@@ -25,7 +25,7 @@ const ProductReviewTab = ({ product }) => {
         Api.serverUrl + `posts?receiver=${product.id}`
       );
       // const resMyReview = await Api.get(`posts/${user.id}/reviews`);
-      setReviews(res.data.payload);
+      setReviews(res.data.payload.filter((v) => v.type === "review"));
       setMyReviews(reviews.slice(0, 3));
     } catch (e) {
       console.log(e);
