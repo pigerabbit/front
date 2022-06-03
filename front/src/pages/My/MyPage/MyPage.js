@@ -43,7 +43,7 @@ const MyPage = () => {
     <MyPageLayout pageName={"my소공"}>
       <Section>
         <Profile>
-          <div className="img"></div>
+          <ProfileImg url={user.imageLink}></ProfileImg>
           <div className="name">{user?.name}</div>
           <div className="email">{user?.email}</div>
         </Profile>
@@ -113,15 +113,6 @@ const Profile = styled.div`
   flex-direction: column;
   align-items: center;
 
-  .img {
-    background-color: #ededed;
-    width: 18vw;
-    max-width: 140px;
-    height: 18vw;
-    max-height: 140px;
-    border-radius: 50%;
-  }
-
   .name {
     margin: 2.8vw 0;
     @media (min-width: 770px) {
@@ -140,6 +131,17 @@ const Profile = styled.div`
       font-size: 18px;
     }
   }
+`;
+
+const ProfileImg = styled.div`
+  background-image: url(${({ url }) => url});
+  background-size: cover;
+  background-position: center;
+  width: 18vw;
+  max-width: 140px;
+  height: 18vw;
+  max-height: 140px;
+  border-radius: 50%;
 `;
 
 const ConfirmationContent = styled.div`
