@@ -15,7 +15,9 @@ const UserTopBar = ({ pageName }) => {
           <FontAwesomeIcon
             icon={faArrowLeft}
             onClick={() => {
-              navigate("/login");
+              location.pathname === "/businessauth"
+                ? navigate("/mypage")
+                : navigate("/login");
             }}
           />
         )}

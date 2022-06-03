@@ -72,7 +72,7 @@ const RegisterPage = () => {
       <InputListContainter>
         <UserInput
           title="이메일"
-          type="test"
+          type="text"
           value={email}
           setValue={setEmail}
           isValueValid={isEmailValid}
