@@ -23,6 +23,7 @@ const OpenGroupPage = () => {
   const productId = params.id;
 
   const [product, setProduct] = useState({});
+
   const fetchProduct = async () => {
     try {
       const res = await axios.get(
@@ -46,8 +47,16 @@ const OpenGroupPage = () => {
     <Container>
       <GroupHeader headerTitle={headerTitle[type]} />
       <Content>
-        <OpenGroupBasicInfo product={product} type={type} />
-        <OpenGroupDetailInfo product={product} type={type} />
+        {product && (
+          <>
+            <OpenGroupBasicInfo product={product} type={type} />
+            <OpenGroupDetailInfo
+              minCount={product.minPurchaseQty}
+              maxCount={product.maxPurchaseQty}
+              type={type}
+            />
+          </>
+        )}
       </Content>
     </Container>
   );
