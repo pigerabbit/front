@@ -8,7 +8,7 @@ import ProductReviewCard from "./ProductReviewCard";
 import ProductReviewForm from "./ProductReviewForm";
 
 const ProductReviewTab = ({ product }) => {
-  const { user } = useSelector((state) => state.user, shallowEqual);
+  // const { user } = useSelector((state) => state.user, shallowEqual);
   const dispatch = useDispatch();
 
   const [reviews, setReviews] = useState([]);
@@ -20,8 +20,8 @@ const ProductReviewTab = ({ product }) => {
 
   const getReviews = async () => {
     try {
-      const res = await axios.get(`/data/reviews.json`);
-      // const res = await Api.get(`posts?receiver=${product.id}`);
+      // const res = await axios.get(`/data/reviews.json`);
+      const res = await Api.get(`posts?receiver=${product.id}`);
       // const resMyReview = await Api.get(`posts/${user.id}/reviews`);
       setReviews(res.data.content);
       setMyReviews(reviews.slice(0, 3));

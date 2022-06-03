@@ -50,7 +50,7 @@ const ProductDescriptionTab = ({ product, seller }) => {
           navigate("/store");
         }}
       >
-        {seller.name}
+        {seller.businessName}
         <GoSeller />
       </Seller>
       <InfoContainer>

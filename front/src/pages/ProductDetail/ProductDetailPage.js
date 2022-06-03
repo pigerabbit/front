@@ -15,10 +15,10 @@ import ProductReviewTab from "./ProductReviewTab";
 import ProductInquiryTab from "./ProductInquiryTab";
 
 const ProductDetailPage = () => {
-  const { user } = useSelector((state) => state.user, shallowEqual);
+  // const { user } = useSelector((state) => state.user, shallowEqual);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
@@ -33,9 +33,11 @@ const ProductDetailPage = () => {
   const getProductDetail = async () => {
     try {
       const res = await Api.get(`products/${productId}`);
-      const resUser = await Api.get(`users/${res.data.payload.userId}`);
-      setProduct(res.data.payload);
-      setSeller(resUser.data);
+      const resUser = await Api.get(
+        `users/${res.data.payload.resultProduct.userId}`
+      );
+      setProduct(res.data.payload.resultProduct);
+      setSeller(resUser.data.payload);
       setCurrentTab({
         index: 0,
         name: "상품설명",
