@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-const userId = "7a0e2ad0-7858-4ac8-a815-1657ea1d5d01";
 const groupType = {
   normal: "택배공구",
   local: "지역공구",
@@ -22,6 +21,7 @@ const groupState = {
 
 const MyPurchaseListCard = ({
   type,
+  userId,
   state,
   title,
   reamined,

@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import { FakeParticipategroupList } from "../MyMockData";
+//import { FakeParticipategroupList } from "../MyMockData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import MyPurchaseListCard from "./MyPurchaseListCard";
 
 const options = ["전체보기", "진행중", "결제완료", "기간마감"];
 
-const ParticipatePurchaseListTab = ({ participatedData }) => {
+const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
   const [option, setOption] = useState("전체보기");
   const [totalData, setTotalData] = useState(participatedData);
   const [filteredData, setFilteredData] = useState([]);
@@ -20,7 +20,7 @@ const ParticipatePurchaseListTab = ({ participatedData }) => {
   };
 
   useEffect(() => {
-    setTotalData(FakeParticipategroupList);
+    setTotalData(participatedData);
     if (option === "전체보기") {
       setFilteredData(totalData);
     } else if (option === "진행중") {
@@ -71,6 +71,7 @@ const ParticipatePurchaseListTab = ({ participatedData }) => {
           filteredData.map((group) => (
             <MyPurchaseListCard
               key={group.groupId}
+              userId={userId}
               type={group.groupType}
               state={group.state}
               title={group.groupName}

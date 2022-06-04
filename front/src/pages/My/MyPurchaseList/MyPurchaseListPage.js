@@ -8,8 +8,7 @@ import OpenPurchaseListTab from "./OpenPurchaseListTab";
 import * as Api from "api";
 
 const MyPurchaseListPage = () => {
-  //userId를 여기서 빼서 각 tab으로 넘기기
-  //const { user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   const [tab, setTab] = useState("tab1");
   const [participatedData, setParticipatedData] = useState([]);
@@ -49,9 +48,14 @@ const MyPurchaseListPage = () => {
         tabNames={["내가 참여한 공구", "내가 연 공구"]}
       />
       {tab === "tab1" && (
-        <ParticipatePurchaseListTab participatedData={participatedData} />
+        <ParticipatePurchaseListTab
+          participatedData={participatedData}
+          userId={user.id}
+        />
       )}
-      {tab === "tab2" && <OpenPurchaseListTab openedData={openedData} />}
+      {tab === "tab2" && (
+        <OpenPurchaseListTab openedData={openedData} userId={user.id} />
+      )}
       <TabBar />
     </Container>
   );
