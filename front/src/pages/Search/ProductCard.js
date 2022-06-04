@@ -23,7 +23,7 @@ const ProductCard = ({ product }) => {
         }}
       >
         <div className="title">
-          [{product.store}] {product.name}
+          [{product.businessName}] {product.name}
         </div>
 
         <div className="price">
@@ -37,7 +37,7 @@ const ProductCard = ({ product }) => {
         </div>
       </Information>
 
-      <FontAwesomeIcon icon={fullHeart} />
+      <FontAwesomeIcon icon={Heart} />
     </Container>
   );
 };

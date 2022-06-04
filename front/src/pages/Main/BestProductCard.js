@@ -5,24 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 
-const category = {
-  fruitVegetable: "과일·채소",
-  cereal: "견과·쌀",
-  seafood: "수산·해산·건어물",
-  meatEgg: "정육·달걀",
-  noddleSpice: "면·양념·오일",
-  drink: "생수·음료·우유",
-  coffeeAlcohol: "커피·주류",
-  living: "생활용품·리빙",
-  kitchen: "주방용품",
-  other: "기타",
-};
-
 const BestProductCard = ({ product, index }) => {
   const navigate = useNavigate();
   const [wish, setWish] = useState(product.wish);
-
-  console.log(product);
 
   return (
     <Container wish={wish}>
@@ -39,7 +24,7 @@ const BestProductCard = ({ product, index }) => {
         }}
       >
         <Title>
-          <span>[{category[product.category]}]</span>
+          <span>[{product.businessName}]</span>
           <span>{product.name}</span>
         </Title>
         <Price>
