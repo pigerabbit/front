@@ -45,7 +45,7 @@ const MyPage = () => {
         <Profile>
           <ProfileImg url={user?.imageLink}></ProfileImg>
           <div className="name">
-            {user?.seller && `${user?.businessName}, `}
+            {user?.seller && `${user?.business[0].businessName}, `}
             {user?.name}
           </div>
           <div className="email">{user?.email}</div>
