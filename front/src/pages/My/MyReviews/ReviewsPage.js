@@ -11,8 +11,10 @@ const ReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
 
   const getReviews = async () => {
-    const res = await Api.get("posts", `${user.id}/review`);
-    setReviews(res.data.payload);
+    if (user) {
+      const res = await Api.get("posts", `${user.id}/review`);
+      setReviews(res.data.payload);
+    }
   };
 
   useEffect(() => {
@@ -22,11 +24,21 @@ const ReviewsPage = () => {
   return (
     <MyPageLayout pageName={"나의 후기"}>
       <Container>
-        <TotalNumber>총 3건</TotalNumber>
+        <TotalNumber>총 {reviews.length}건</TotalNumber>
 
         {reviews.map((review) => (
           <ReviewCard review={review} key={review.postId} />
         ))}
+
+        {reviews.length === 0 && (
+          <NoReviewContainer>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/noContent.svg`}
+              alt="no nearby"
+            />
+            작성된 후기가 없습니다.
+          </NoReviewContainer>
+        )}
       </Container>
     </MyPageLayout>
   );
@@ -52,5 +64,21 @@ const TotalNumber = styled.div`
   font-size: 2.5vw;
   @media (min-width: 620px) {
     font-size: 16px;
+  }
+`;
+
+const NoReviewContainer = styled.div`
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 3vw;
+  @media (min-width: 650px) {
+    font-size: 20px;
+  }
+
+  > img {
+    width: 50%;
+    margin-bottom: 5%;
   }
 `;
