@@ -40,7 +40,7 @@ const MarketPage = () => {
   }, []);
 
   return (
-    <MyPageLayout pageName={products[0]?.businessName}>
+    <MyPageLayout pageName={user?.business[0].businessName}>
       <Container>
         {user?.id === id && (
           <SaleButton>
@@ -49,7 +49,9 @@ const MarketPage = () => {
           </SaleButton>
         )}
 
-        <TotalNumber>총 {products.length}개</TotalNumber>
+        {products.length > 0 && (
+          <TotalNumber>총 {products.length}개</TotalNumber>
+        )}
 
         {products.map((product) => (
           <ProductCard
@@ -60,6 +62,16 @@ const MarketPage = () => {
           ></ProductCard>
         ))}
       </Container>
+
+      {products.length === 0 && (
+        <NoReviewContainer>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/noSale.svg`}
+            alt="no nearby"
+          />
+          등록된 판매가 없습니다.
+        </NoReviewContainer>
+      )}
 
       <ConfirmationPopup
         handleButtonClick={handleDeleteProduct}
@@ -142,5 +154,21 @@ const ConfirmationContent = styled.div`
     margin-top: 45px;
     font-size: 22px;
     line-height: 30px;
+  }
+`;
+
+const NoReviewContainer = styled.div`
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 3vw;
+  @media (min-width: 650px) {
+    font-size: 20px;
+  }
+
+  > img {
+    width: 50%;
+    margin-bottom: 5%;
   }
 `;
