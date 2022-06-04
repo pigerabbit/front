@@ -18,6 +18,7 @@ import ScrollToTop from "ScrollToTop";
 import FetchCurrentUser from "FetchCurrentUser";
 import MyWishListPage from "pages/My/MyWishList/MyWishListPage";
 import MyPurchaseListPage from "pages/My/MyPurchaseList/MyPurchaseListPage";
+import SearchPage from "./pages/Search/SearchPage";
 
 function App() {
   const wrapFetchUser = (child) => {
@@ -33,6 +34,7 @@ function App() {
   const productPage = wrapFetchUser(<ProductsPage />);
   const mywishlistPage = wrapFetchUser(<MyWishListPage />);
   const mypurchaselistPage = wrapFetchUser(<MyPurchaseListPage />);
+  const searchPage = wrapFetchUser(<SearchPage />);
 
   return (
     <Router>
@@ -51,6 +53,7 @@ function App() {
           <Route path="/products" element={productPage} />
           <Route path="/wishlist" element={mywishlistPage} />
           <Route path="/purchaselist" element={mypurchaselistPage} />
+          <Route path="/search" element={searchPage} />
         </Routes>
       </Container>
     </Router>
