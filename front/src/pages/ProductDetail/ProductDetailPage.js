@@ -68,7 +68,7 @@ const ProductDetailPage = () => {
                 <div
                   id="home"
                   onClick={() => {
-                    navigate("/home");
+                    navigate("/");
                   }}
                 >
                   <FontAwesomeIcon
@@ -79,7 +79,7 @@ const ProductDetailPage = () => {
                 <div
                   id="user"
                   onClick={() => {
-                    navigate("/user");
+                    navigate("/mypage");
                   }}
                 >
                   <FontAwesomeIcon
