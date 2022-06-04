@@ -8,7 +8,12 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
-const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
+const ProductCard = ({
+  product,
+  SetCurrentProduct,
+  setIsOpenPopup,
+  setPopupMessage,
+}) => {
   const { user } = useSelector((state) => state.user);
   const { id } = useParams();
   const [isControllerOpen, setIsControllerOpen] = useState(false);
@@ -32,12 +37,7 @@ const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
           <Price>
             <span>{product.price.toLocaleString()}원</span>
             <div>
-              <span>
-                {Math.floor(
-                  (product.price - product.salePrice) / 100
-                ).toLocaleString()}
-                %
-              </span>
+              <span>{product.discountRate.toLocaleString()}%</span>
               <span>{product.salePrice.toLocaleString()}원</span>
             </div>
           </Price>
@@ -59,6 +59,15 @@ const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
           <ControllerButton>편집</ControllerButton>
           <ControllerButton
             onClick={() => {
+              setPopupMessage(["pause", "중단", "유지"]);
+              setIsOpenPopup(true);
+            }}
+          >
+            판매 중지
+          </ControllerButton>
+          <ControllerButton
+            onClick={() => {
+              setPopupMessage(["delete", "삭제", "취소"]);
               setIsOpenPopup(true);
             }}
           >
@@ -205,7 +214,7 @@ const UpdateController = styled.div`
 
 const ControllerButton = styled.div`
   cursor: pointer;
-  width: 30%;
+  width: 22%;
   height: 40%;
   display: flex;
   justify-content: center;

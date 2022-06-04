@@ -14,12 +14,17 @@ const MarketPage = () => {
   const { user } = useSelector((state) => state.user);
   const { id } = useParams();
   const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState(["delete", "삭제", "취소"]);
   const [products, setProducts] = useState([]);
   const [currentProduct, SetCurrentProduct] = useState("");
 
   const getProductData = async () => {
     const res = await Api.get("markets", id);
     setProducts(res.data.payload);
+  };
+
+  const handlePauseProduct = () => {
+    console.log("일지중지!");
   };
 
   const handleDeleteProduct = () => {
@@ -58,6 +63,7 @@ const MarketPage = () => {
             product={product}
             SetCurrentProduct={SetCurrentProduct}
             setIsOpenPopup={setIsOpenPopup}
+            setPopupMessage={setPopupMessage}
             key={product.id}
           ></ProductCard>
         ))}
@@ -74,14 +80,18 @@ const MarketPage = () => {
       )}
 
       <ConfirmationPopup
-        handleButtonClick={handleDeleteProduct}
+        handleButtonClick={
+          popupMessage[0] === "delete"
+            ? handleDeleteProduct
+            : handlePauseProduct
+        }
         isOpenPopup={isOpenPopup}
         setIsOpenPopup={setIsOpenPopup}
-        buttonContent="판매 삭제"
+        buttonContent={`판매 ${popupMessage[1]}`}
       >
         <ConfirmationContent>
-          <span>판매를 정말 중지하시겠습니까?</span>
-          <span>현재 오픈된 공동구매들은 모두 취소됩니다.</span>
+          <span>판매를 정말 {popupMessage[1]}하시겠습니까?</span>
+          <span>현재 오픈된 공동구매들은 모두 {popupMessage[2]}됩니다.</span>
         </ConfirmationContent>
       </ConfirmationPopup>
     </MyPageLayout>
