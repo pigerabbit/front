@@ -20,6 +20,7 @@ const ProductsPage = () => {
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
   const [option, setOption] = useState("groups");
   const [products, setProducts] = useState([]);
+  const [noProduct, setNoProduct] = useState(false);
   const [totalProductsNum, setTotalProductsNum] = useState([]);
 
   const location = useLocation();
@@ -50,7 +51,8 @@ const ProductsPage = () => {
         setTotalProductsNum(res.data.len);
       }
     } catch (e) {
-      console.log(e.response.data.errorMessage);
+      setProducts([]);
+      setTotalProductsNum(0);
     }
   };
 
@@ -59,7 +61,7 @@ const ProductsPage = () => {
   }, [option, category, search]);
 
   return (
-    <Container>
+    <Container noProduct={products.length === 0}>
       <ProductsTopBar
         search={search}
         category={category}
@@ -89,6 +91,16 @@ const ProductsPage = () => {
         ))}
       </ProductsCardContainer>
 
+      {products.length === 0 && (
+        <NoProductContainer>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/noProduct.svg`}
+            alt="no product"
+          />
+          <span>상품이 존재하지 않습니다.</span>
+        </NoProductContainer>
+      )}
+
       <SideBar
         title={"카테고리"}
         isOpenSideBar={isOpenSideBar}
@@ -105,7 +117,7 @@ const ProductsPage = () => {
 export default ProductsPage;
 
 const Container = styled.div`
-  padding-bottom: 130px;
+  padding-bottom: ${({ noProduct }) => (noProduct ? "0;" : "130px;")}
   position: relative;
   width: 100%;
   max-width: 770px;
@@ -161,5 +173,26 @@ const ProductsCardContainer = styled.div`
   grid-gap: 15px;
   @media (min-width: 600px) {
     grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+const NoProductContainer = styled.div`
+  width: 100%;
+  max-width: 770px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > img {
+    width: 50%;
+  }
+
+  > span {
+    margin-top: 50px;
+    font-size: 4vw;
+    @media (min-width: 770px) {
+      font-size: 32px;
+    }
   }
 `;
