@@ -67,10 +67,6 @@ const Container = styled.div`
   padding-bottom: 30px;
   background-color: ${({ open }) => (open ? "#f8f8fB" : "#ffffff")};
   cursor: pointer;
-
-  &:hover {
-    background-color: #f8f8fb;
-  }
 `;
 
 const Header = styled.div`
