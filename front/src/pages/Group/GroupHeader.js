@@ -13,7 +13,7 @@ const GroupHeader = ({ headerTitle }) => {
         <div
           id="home"
           onClick={() => {
-            navigate("/home");
+            navigate("/");
           }}
         >
           <FontAwesomeIcon
@@ -24,7 +24,7 @@ const GroupHeader = ({ headerTitle }) => {
         <div
           id="user"
           onClick={() => {
-            navigate("/user");
+            navigate("/mypage");
           }}
         >
           <FontAwesomeIcon
