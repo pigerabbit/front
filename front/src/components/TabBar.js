@@ -159,7 +159,6 @@ const Tab = styled.div`
   @media (max-width: 440px) {
     font-size: 10px;
   }
-
   span {
     margin-top: 10px;
   }

@@ -16,6 +16,8 @@ import ProductsPage from "./pages/Search/ProductsPage";
 
 import ScrollToTop from "ScrollToTop";
 import FetchCurrentUser from "FetchCurrentUser";
+import MyWishListPage from "pages/My/MyWishList/MyWishListPage";
+import MyPurchaseListPage from "pages/My/MyPurchaseList/MyPurchaseListPage";
 
 function App() {
   const wrapFetchUser = (child) => {
@@ -29,6 +31,8 @@ function App() {
   const marketPage = wrapFetchUser(<MarketPage />);
   const businessAuthPage = wrapFetchUser(<BusinessAuthPage />);
   const productPage = wrapFetchUser(<ProductsPage />);
+  const mywishlistPage = wrapFetchUser(<MyWishListPage />);
+  const mypurchaselistPage = wrapFetchUser(<MyPurchaseListPage />);
 
   return (
     <Router>
@@ -45,6 +49,8 @@ function App() {
           <Route path="/mypage/inquires" element={inquiresPage} />
           <Route path="/markets/:id" element={marketPage} />
           <Route path="/products" element={productPage} />
+          <Route path="/wishlist" element={mywishlistPage} />
+          <Route path="/purchaselist" element={mypurchaselistPage} />
         </Routes>
       </Container>
     </Router>
@@ -59,4 +65,8 @@ const Container = styled.div`
   background-color: #F2F2F2;
   display: flex;
   justify-content: center;
+<<<<<<< HEAD
+=======
+  overflow: hidden;
+>>>>>>> list-front
 `;
