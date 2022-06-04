@@ -66,7 +66,7 @@ const ProductInquiryTab = ({ product }) => {
           )}
         </InquiryTop>
         {!showMyInquiries
-          ? inquiries.map((v, i) => (
+          ? inquiries.map((v) => (
               <ProductInquiryCard
                 writerId={v.writer}
                 title={v.title}
@@ -74,16 +74,19 @@ const ProductInquiryTab = ({ product }) => {
                 image={v.postImg}
                 createdAt={v.createdAt}
                 commentCount={v.commentCount}
+                postId={v.postId}
                 key={v.postId}
               />
             ))
-          : myInquiries.map((v, i) => (
+          : myInquiries.map((v) => (
               <ProductInquiryCard
                 writerId={v.writer}
                 title={v.title}
                 content={v.content}
                 image={v.image}
                 createdAt={v.createdAt}
+                commentCount={v.commentCount}
+                postId={v.postId}
                 key={v.postId}
               />
             ))}
