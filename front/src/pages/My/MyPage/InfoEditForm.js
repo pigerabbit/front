@@ -12,7 +12,9 @@ import DaumPost from "components/DaumPostCode";
 const InfoEditForm = ({ setIsOpenPopup }) => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user?.name);
-  const [businessName, setBusinessName] = useState(user?.businessName || "");
+  const [businessName, setBusinessName] = useState(
+    user?.business[0].businessName || ""
+  );
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
