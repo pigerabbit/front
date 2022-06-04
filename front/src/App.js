@@ -12,6 +12,7 @@ import MyPage from "pages/My/MyPage/MyPage";
 import MarketPage from "pages/My/Market/MarketPage";
 import ReviewsPage from "pages/My/MyReviews/ReviewsPage";
 import InquiresPage from "pages/My/MyInquires/InquiresPage";
+import ProductsPage from "./pages/Search/ProductsPage";
 
 import ScrollToTop from "ScrollToTop";
 import FetchCurrentUser from "FetchCurrentUser";
@@ -27,6 +28,7 @@ function App() {
   const inquiresPage = wrapFetchUser(<InquiresPage />);
   const marketPage = wrapFetchUser(<MarketPage />);
   const businessAuthPage = wrapFetchUser(<BusinessAuthPage />);
+  const productPage = wrapFetchUser(<ProductsPage />);
 
   return (
     <Router>
@@ -42,6 +44,7 @@ function App() {
           <Route path="/mypage/reviews" element={reviewsPage} />
           <Route path="/mypage/inquires" element={inquiresPage} />
           <Route path="/markets/:id" element={marketPage} />
+          <Route path="/products" element={productPage} />
         </Routes>
       </Container>
     </Router>
