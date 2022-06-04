@@ -65,7 +65,7 @@ const Container = styled.div`
   vertical-align: middle;
   border-bottom: 1px solid #d0d0d0;
   background-color: ${({ open, image }) =>
-    open === true && image ? "#f8f8fB" : "#ffffff"};
+    open && image ? "#f8f8fB" : "#ffffff"};
   cursor: ${({ image }) => (image ? "pointer" : "default")};
 
   @media (max-width: 500px) {
