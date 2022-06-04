@@ -22,7 +22,7 @@ const ProductReviewTab = ({ product }) => {
     try {
       // const res = await axios.get(`/data/reviews.json`);
       const res = await axios.get(
-        Api.serverUrl + `posts?receiver=${product.id}`
+        Api.serverUrl + `posts?receiver=${product.id}&type=review`
       );
       // const resMyReview = await Api.get(`posts/${user.id}/reviews`);
       setReviews(res.data.payload.filter((v) => v.type === "review"));

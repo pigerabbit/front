@@ -21,7 +21,7 @@ const ProductInquiryTab = ({ product }) => {
   const getInquiries = async () => {
     try {
       const res = await axios.get(
-        Api.serverUrl + `posts?receiver=${product.id}`
+        Api.serverUrl + `posts?receiver=${product.id}&type=cs`
       );
       setInquiries(res.data.payload.filter((v) => v.type === "cs"));
       setMyInquiries(myInquiries.slice(0, 3));
