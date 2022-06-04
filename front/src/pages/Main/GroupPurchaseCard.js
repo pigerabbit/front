@@ -26,7 +26,7 @@ const GroupPurchaseCard = ({ purchase }) => {
 
   return (
     <Container>
-      <Image url={product.images} />
+      <Image url={product?.images} />
       <Information>
         <CardTitle>
           <span>
@@ -35,9 +35,9 @@ const GroupPurchaseCard = ({ purchase }) => {
           <span>{purchase.groupName}</span>
         </CardTitle>
         <Price>
-          <span>{Math.floor((product.price - product.salePrice) / 100)}%</span>
-          <span>{product.salePrice}원</span>
-          <span>{product.price}원</span>
+          <span>{product?.discountRate}%</span>
+          <span>{product?.salePrice}원</span>
+          <span>{product?.price}원</span>
         </Price>
         <Deadline>
           <div>
