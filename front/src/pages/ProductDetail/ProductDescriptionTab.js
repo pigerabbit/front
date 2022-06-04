@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import * as Api from "api";
 
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ProductDescriptionTab = ({ product, seller }) => {
   const navigate = useNavigate();
+
+  const [wish, setWish] = useState(false);
 
   const {
     name,
@@ -35,6 +39,29 @@ const ProductDescriptionTab = ({ product, seller }) => {
     shippingConStr = ` (${shippingFeeConStr}원 이상 무료 배송)`;
   }
 
+  const putWish = async () => {
+    try {
+      const res = await Api.put(`toggle/product/${product.id}`);
+      setWish((cur) => !cur);
+    } catch (e) {
+      console.log("wish put 실패");
+    }
+  };
+
+  const getWish = async () => {
+    try {
+      const res = await Api.get("toggle/products");
+      if (res.data.indexOf(product.id) !== -1) setWish(true);
+      else setWish(false);
+    } catch (e) {
+      console.log("wish get 실패");
+    }
+  };
+
+  useEffect(() => {
+    getWish();
+  }, []);
+
   return (
     <Container>
       <ImgContainer>
@@ -50,11 +77,15 @@ const ProductDescriptionTab = ({ product, seller }) => {
           navigate("/store");
         }}
       >
-        {seller.businessName}
+        {seller.business[0].businessName}
         <GoSeller />
       </Seller>
       <InfoContainer>
         {name}
+        <span onClick={putWish}>
+          {wish && <FontAwesomeIcon icon={fullHeart} size="1x" />}
+          {!wish && <FontAwesomeIcon icon={Heart} size="1x" />}
+        </span>
         <PriceInfo>
           <DiscountRate>{discountRateStr}%</DiscountRate>
           <Price>
@@ -133,6 +164,12 @@ const InfoContainer = styled.div`
   #shippingFee {
     margin-top: 10px;
     font-size: 13px;
+  }
+
+  span {
+    position: absolute;
+    right: 30px;
+    color: #ff0000;
   }
 `;
 
