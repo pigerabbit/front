@@ -15,6 +15,7 @@ import InquiresPage from "pages/My/MyInquires/InquiresPage";
 import ProductsPage from "./pages/Search/ProductsPage";
 import SelectGroupPage from "./pages/Group/selectGroup/SelectGroupPage";
 import OpenGroupPage from "./pages/Group/openGroup/OpenGroupPage";
+import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
 
 import ScrollToTop from "ScrollToTop";
 import FetchCurrentUser from "FetchCurrentUser";
@@ -39,6 +40,7 @@ function App() {
   const searchPage = wrapFetchUser(<SearchPage />);
   const selectgrouPage = wrapFetchUser(<SelectGroupPage />);
   const opengroupPage = wrapFetchUser(<OpenGroupPage />);
+  const productdetailPage = wrapFetchUser(<ProductDetailPage />);
 
   return (
     <Router>
@@ -60,6 +62,7 @@ function App() {
           <Route path="/search" element={searchPage} />
           <Route path="/group/select/:id" element={selectgrouPage} />
           <Route path="/group/open/:id" element={opengroupPage} />
+          <Route path="/products/:id" element={productdetailPage} />
         </Routes>
       </Container>
     </Router>
@@ -69,9 +72,16 @@ function App() {
 export default App;
 
 const Container = styled.div`
-  width = 100vw;
-  height: 100vh;
-  background-color: #F2F2F2;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f2f2f2;
   display: flex;
   justify-content: center;
+
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
 `;
