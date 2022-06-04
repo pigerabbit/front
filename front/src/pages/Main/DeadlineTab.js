@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import * as Api from "api";
 
 import CardContainer from "./CardsContainer";
 
 const DeadlineTab = () => {
-  const [groupPurchaseList, setGroupPurchaseList] = useState([]);
+  const [personGroupList, setPersonGroupList] = useState([]);
+  const [timeGroupList, setTimeGroupList] = useState([]);
   const productDeadlineTitle = "달성 인원이 얼마 남지 않았어요!";
-  const timeDeadlineTitle = "3일 이내 마감되는 공동구매에요!";
+  const timeDeadlineTitle = "24시간 이내 마감되는 공동구매에요!";
 
   const getGroupPurchaseData = async () => {
-    const data = await axios("/data/groupList.json", { method: "GET" });
-    setGroupPurchaseList(data.data.groupList);
+    const getPersonGroupList = Api.get("groups/sort/remainedPersonnel");
+    const getTimeGroupList = Api.get("groups/sort/remainedTime");
+
+    const [personRes, timeRes] = await Promise.all([
+      getPersonGroupList,
+      getTimeGroupList,
+    ]);
+
+    setPersonGroupList(personRes.data.payload);
+    setTimeGroupList(timeRes.data.payload);
   };
 
   useEffect(() => {
@@ -22,12 +31,12 @@ const DeadlineTab = () => {
     <Container>
       <CardContainer
         title={productDeadlineTitle}
-        groupPurchaseList={groupPurchaseList}
+        groupPurchaseList={personGroupList}
       ></CardContainer>
 
       <CardContainer
         title={timeDeadlineTitle}
-        groupPurchaseList={groupPurchaseList}
+        groupPurchaseList={timeGroupList}
       ></CardContainer>
     </Container>
   );

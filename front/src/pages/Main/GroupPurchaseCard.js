@@ -3,35 +3,21 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
-import axios from "axios";
+import * as Api from "api";
 
-// styles props 예시
-// const styles = {
-//     cardHeight: "85px;",
-//     titleSize: 14,
-//     priceSize: 12,
-//     deadlineSize: 12,
-//   };
-const url =
-  "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500";
-
-const GroupPurchaseCard = ({ styles, purchase }) => {
+const GroupPurchaseCard = ({ purchase }) => {
   const [product, setProduct] = useState({});
 
-  const deadline = `${purchase.deadline.substr(
-    0,
-    4
-  )}년 ${purchase.deadline.substr(5, 2)}월 ${purchase.deadline.substr(
-    8,
-    2
-  )}일까지`;
+  const getDeadline = (date) => {
+    return `${date.substr(0, 4)}년 ${date.substr(5, 2)}월 ${date.substr(
+      8,
+      2
+    )}일 ${date.substr(11, 2)}시까지`;
+  };
 
   const getProductData = async () => {
-    const data = await axios("/data/productsList.json", { method: "GET" });
-    const index = data.data.productList.findIndex(
-      (product) => product.id === purchase.productId
-    );
-    setProduct(data.data.productList[index]);
+    const res = await Api.get("products", purchase.productId);
+    setProduct(res.data.payload.resultProduct);
   };
 
   useEffect(() => {
@@ -40,28 +26,28 @@ const GroupPurchaseCard = ({ styles, purchase }) => {
 
   return (
     <Container>
-      <Image height={styles.cardHeight} url={url} />
+      <Image url={product.images} />
       <Information>
-        <CardTitle size={styles.titleSize}>
+        <CardTitle>
           <span>
             {purchase.groupType === "local" ? purchase.location : "택배공구"}
           </span>
-          <span>싱싱한 왕딸기 공구해요!</span>
+          <span>{purchase.groupName}</span>
         </CardTitle>
-        <Price size={styles.priceSize}>
+        <Price>
           <span>{Math.floor((product.price - product.salePrice) / 100)}%</span>
           <span>{product.salePrice}원</span>
           <span>{product.price}원</span>
         </Price>
-        <Deadline size={styles.deadlineSize}>
+        <Deadline>
           <div>
-            <span>3개</span>
+            <span>{purchase.remainedPersonnel}개</span>
             <span> 남음</span>
           </div>
-          <span>{deadline}</span>
+          <span>{getDeadline(purchase.deadline)}</span>
         </Deadline>
       </Information>
-      <FontAwesomeIcon icon={fullHeart} size="1x" />
+      <FontAwesomeIcon icon={Heart} size="1x" />
     </Container>
   );
 };
@@ -82,12 +68,12 @@ const Container = styled.div`
 `;
 
 const Image = styled.div`
-width: ${({ height }) => height}
-height: ${({ height }) => height}
-border-radius:5px;
-background-image: url(${({ url }) => url});
-background-size: 100%;
-background-position: center;
+  width: 85px;
+  height: 85px;
+  border-radius: 5px;
+  background-image: url(${({ url }) => url});
+  background-size: 100%;
+  background-position: center;
 `;
 
 const Information = styled.div`
@@ -104,18 +90,18 @@ const CardTitle = styled.div`
   flex-direction: column;
 
   > span:first-child {
-    font-size: ${({ size }) => size * 0.85 + "px;"}
+    font-size: 12px;
     font-weight: 600;
     margin-bottom: 2px;
   }
 
   > span:last-child {
-    font-size: ${({ size }) => size + "px;"}
+    font-size: 14px;
   }
 `;
 
 const Price = styled.div`
-  font-size: ${({ size }) => size + "px;"}
+  font-size: 12px;
   font-weight: 600;
 
   > span:first-child {
@@ -124,7 +110,7 @@ const Price = styled.div`
   }
 
   > span:last-child {
-    font-size: ${({ size }) => size * 0.95 + "px;"}
+    font-size: 11.4px;
     color: #b1b1b1;
     text-decoration-line: line-through;
     margin-left: 5px;
@@ -132,8 +118,7 @@ const Price = styled.div`
 `;
 
 const Deadline = styled.div`
-  font-size: ${({ size }) => size + "px;"};
-
+  font-size: 12px;
   > div {
     margin-bottom: 3px;
     > span:first-child {

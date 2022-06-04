@@ -12,13 +12,6 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
   const last = groupPurchaseList.length;
   const totalPage = last / 4;
 
-  const CardStyles = {
-    cardHeight: "85px;",
-    titleSize: 14,
-    priceSize: 12,
-    deadlineSize: 12,
-  };
-
   const handleButtonClick = () => {
     if (to === last) {
       setFrom(0);
@@ -38,7 +31,7 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
       <CardList>
         {groupPurchaseList.slice(from, to).map((purchase, idx) => (
           <CardContainer key={purchase.groupId}>
-            <GroupPurchaseCard styles={CardStyles} purchase={purchase} />
+            <GroupPurchaseCard purchase={purchase} />
             {idx < 3 && <div className="line" />}
           </CardContainer>
         ))}
