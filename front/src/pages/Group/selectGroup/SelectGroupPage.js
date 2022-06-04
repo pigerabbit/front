@@ -31,7 +31,7 @@ const SelectGroupPage = () => {
   const fetchProduct = async () => {
     try {
       const res = await Api.get(`products/${productId}`);
-      setProduct(res.data.payload.resultProduct);
+      setProduct(res.data.payload);
     } catch (err) {
       console.log(err);
     }
