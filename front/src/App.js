@@ -13,6 +13,8 @@ import MarketPage from "pages/My/Market/MarketPage";
 import ReviewsPage from "pages/My/MyReviews/ReviewsPage";
 import InquiresPage from "pages/My/MyInquires/InquiresPage";
 import ProductsPage from "./pages/Search/ProductsPage";
+import SelectGroupPage from "./pages/Group/selectGroup/SelectGroupPage";
+import OpenGroupPage from "./pages/Group/openGroup/OpenGroupPage";
 
 import ScrollToTop from "ScrollToTop";
 import FetchCurrentUser from "FetchCurrentUser";
@@ -35,6 +37,8 @@ function App() {
   const mywishlistPage = wrapFetchUser(<MyWishListPage />);
   const mypurchaselistPage = wrapFetchUser(<MyPurchaseListPage />);
   const searchPage = wrapFetchUser(<SearchPage />);
+  const selectgrouPage = wrapFetchUser(<SelectGroupPage />);
+  const opengroupPage = wrapFetchUser(<OpenGroupPage />);
 
   return (
     <Router>
@@ -54,6 +58,8 @@ function App() {
           <Route path="/wishlist" element={mywishlistPage} />
           <Route path="/purchaselist" element={mypurchaselistPage} />
           <Route path="/search" element={searchPage} />
+          <Route path="/group/select/:id" element={selectgrouPage} />
+          <Route path="/group/open/:id" element={opengroupPage} />
         </Routes>
       </Container>
     </Router>
@@ -64,7 +70,7 @@ export default App;
 
 const Container = styled.div`
   width = 100vw;
-  min-height: 100vh;
+  height: 100vh;
   background-color: #F2F2F2;
   display: flex;
   justify-content: center;
