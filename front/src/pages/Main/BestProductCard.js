@@ -1,20 +1,34 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 
-import { useNavigate } from "react-router-dom";
+const category = {
+  fruitVegetable: "과일·채소",
+  cereal: "견과·쌀",
+  seafood: "수산·해산·건어물",
+  meatEgg: "정육·달걀",
+  noddleSpice: "면·양념·오일",
+  drink: "생수·음료·우유",
+  coffeeAlcohol: "커피·주류",
+  living: "생활용품·리빙",
+  kitchen: "주방용품",
+  other: "기타",
+};
 
 const BestProductCard = ({ product, index }) => {
   const navigate = useNavigate();
   const [wish, setWish] = useState(product.wish);
 
+  console.log(product);
+
   return (
     <Container wish={wish}>
       <span>{index + 1}</span>
       <Image
-        url={product.images[0]}
+        url={product.images}
         onClick={() => {
           navigate(`/products/${product.id}`);
         }}
@@ -25,15 +39,13 @@ const BestProductCard = ({ product, index }) => {
         }}
       >
         <Title>
-          <span>[{product.store}]</span>
+          <span>[{category[product.category]}]</span>
           <span>{product.name}</span>
         </Title>
         <Price>
           <span>{product.price}원</span>
           <div className="sale-price">
-            <span>
-              {Math.floor((product.price - product.salePrice) / 100)}%
-            </span>
+            <span>{product.discountRate}%</span>
             <span>{product.salePrice}원</span>
           </div>
         </Price>
@@ -43,8 +55,8 @@ const BestProductCard = ({ product, index }) => {
           setWish((cur) => !cur);
         }}
       >
-        {wish && <FontAwesomeIcon icon={fullHeart} size="1x" />}
-        {!wish && <FontAwesomeIcon icon={Heart} size="1x" />}
+        {wish && <FontAwesomeIcon icon={fullHeart} />}
+        {!wish && <FontAwesomeIcon icon={Heart} />}
       </span>
     </Container>
   );

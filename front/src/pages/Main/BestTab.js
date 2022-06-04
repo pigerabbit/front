@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import * as Api from "api";
 
 import BestProductCard from "./BestProductCard";
 
@@ -8,8 +8,8 @@ const BestTab = () => {
   const [products, setProducts] = useState([]);
 
   const getProductData = async () => {
-    const data = await axios("/data/productsList.json", { method: "GET" });
-    setProducts(data.data.productList);
+    const res = await Api.get("products/main/top");
+    setProducts(res.data.payload);
   };
 
   useEffect(() => {
