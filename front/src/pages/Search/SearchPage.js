@@ -5,14 +5,19 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 import SearchCurrent from "./SearchCurrent";
 import SearchInputForm from "./SearchInputForm";
 import SearchTrending from "./SearchTrending";
 import SearchGroupCard from "./SearchGroupCard";
 
+const userId =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiYmQ2YWU0NC00M2E2LTQ0MWYtODI1Ni1kMDJmZjI3ZmFkODQiLCJpYXQiOjE2NTQyMzIxMTZ9.5dtSBicHD486FYK-iDQkh48EmldfqoP6aMBO_dhlc1A";
+
 const SearchPage = () => {
   const [IsTrendingPage, setIsTrendingPage] = useState(true);
+  const [deadlineProduct, setDeadlineProduct] = useState({});
   const slideRef = useRef(null);
 
   useEffect(() => {
@@ -21,6 +26,23 @@ const SearchPage = () => {
       IsTrendingPage ? 0 : 1
     }00%)`;
   }, [IsTrendingPage]);
+
+  const fetchProducts = async () => {
+    const res = await axios.get(
+      "http://localhost:5000/groups/sort/remainedTime",
+      {
+        headers: {
+          Authorization: `Bearer ${userId}`,
+        },
+      }
+    );
+    const deadlineProducts = res.data.payload;
+    const randomNum = Math.floor(Math.random() * deadlineProducts.length);
+    setDeadlineProduct(deadlineProducts[randomNum]);
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <Container>
@@ -50,12 +72,12 @@ const SearchPage = () => {
       <DeadLineContainer>
         <h3>마감 임박</h3>
         <SearchGroupCard
-          name="싱싱한 왕딸기 공구해요!"
+          name={deadlineProduct.groupName}
           price="10000"
           salePrice="9000"
           discountRate="10"
-          leftParticipants="3"
-          deadline="2022년 05월 28일 13시"
+          leftParticipants={deadlineProduct.remainedPersonnel}
+          deadline={deadlineProduct.deadline}
         />
       </DeadLineContainer>
     </Container>
