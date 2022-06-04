@@ -20,7 +20,6 @@ const ProductsPage = () => {
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
   const [option, setOption] = useState("groups");
   const [products, setProducts] = useState([]);
-  const [noProduct, setNoProduct] = useState(false);
   const [totalProductsNum, setTotalProductsNum] = useState([]);
 
   const location = useLocation();
