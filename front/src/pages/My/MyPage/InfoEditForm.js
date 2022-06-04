@@ -3,13 +3,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout, update } from "redux/userSlice";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleCheck,
+  faCheck,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import * as Api from "api";
 
 import DaumPost from "components/DaumPostCode";
 
-const InfoEditForm = ({ setIsOpenPopup }) => {
+const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user?.name);
   const [businessName, setBusinessName] = useState(
@@ -43,6 +47,38 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
     navigate("/login");
   };
 
+  const unShowIcon = () => {
+    setTimeout(() => {
+      setConfirmationIcon((cur) => {
+        return { ...cur, show: false };
+      });
+    }, 1600);
+  };
+
+  const CompleteIconShow = () => {
+    setConfirmationIcon({
+      show: true,
+      backgroundColor: "#70BD86;",
+      color: "white",
+      icon: faCheck,
+      text: "완료!",
+    });
+
+    unShowIcon();
+  };
+
+  const AgainIconShow = () => {
+    setConfirmationIcon({
+      show: true,
+      backgroundColor: "#FF6A6A;",
+      color: "white",
+      icon: faXmark,
+      text: "다시!",
+    });
+
+    unShowIcon();
+  };
+
   const isEmptyValue = (obj) => {
     if (obj.constructor === Object && Object.values(obj)[0].length === 0) {
       return true;
@@ -67,8 +103,11 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
           setNewPassword("");
           setConfirmPassword("");
         }
+
+        CompleteIconShow();
       } catch (error) {
         setValueValid("again");
+        AgainIconShow();
       }
     };
   };
@@ -87,7 +126,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
 
   return (
     <Container>
-      <form>
+      <form onSubmit={(e) => e.preventDefault()}>
         <InputContainer>
           <div>이름</div>
           <input
@@ -111,7 +150,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
       </form>
 
       {user?.seller && (
-        <form>
+        <form onSubmit={(e) => e.preventDefault()}>
           <InputContainer>
             <div>판매처 이름</div>
             <input
@@ -135,7 +174,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
         </form>
       )}
 
-      <form>
+      <form onSubmit={(e) => e.preventDefault()}>
         <InputContainer>
           <div>현재 비밀번호</div>
           <input
@@ -193,7 +232,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
         </SubmitButton>
       </form>
 
-      <form>
+      <form onSubmit={(e) => e.preventDefault()}>
         <InputContainer>
           <div>주소</div>
           <input
