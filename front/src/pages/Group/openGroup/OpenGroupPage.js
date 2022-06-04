@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 import GroupHeader from "../GroupHeader";
 import OpenGroupBasicInfo from "./OpenGroupBasicInfo";
 import OpenGroupDetailInfo from "./OpenGroupDetailInfo";
@@ -19,29 +17,7 @@ const OpenGroupPage = () => {
   const query = new URLSearchParams(location.search);
   const type = query.get("type");
 
-  const params = useParams();
-  const productId = params.id;
-
-  const [product, setProduct] = useState({});
-
-  const fetchProduct = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:5000/products/${productId}`,
-        {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiYmQ2YWU0NC00M2E2LTQ0MWYtODI1Ni1kMDJmZjI3ZmFkODQiLCJpYXQiOjE2NTQyMzIxMTZ9.5dtSBicHD486FYK-iDQkh48EmldfqoP6aMBO_dhlc1A `,
-          },
-        }
-      );
-      setProduct(res.data.payload.resultProduct);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
-    fetchProduct();
-  }, []);
+  const { product } = location.state;
 
   return (
     <Container>
@@ -50,11 +26,7 @@ const OpenGroupPage = () => {
         {product && (
           <>
             <OpenGroupBasicInfo product={product} type={type} />
-            <OpenGroupDetailInfo
-              minCount={product.minPurchaseQty}
-              maxCount={product.maxPurchaseQty}
-              type={type}
-            />
+            <OpenGroupDetailInfo product={product} type={type} />
           </>
         )}
       </Content>

@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import GroupHeader from "../GroupHeader";
 import SelectGroupTypes from "./SelectGroupTypes";
 import SelectGroupPopUpCard from "./SelectGroupPopUpCard";
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as Api from "api";
 
 const SelectGroupPage = () => {
   //const location = useLocation();
@@ -17,6 +18,7 @@ const SelectGroupPage = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [product, setProduct] = useState({});
 
   const handleClick = () => {
     if (!isChecked) {
@@ -25,6 +27,18 @@ const SelectGroupPage = () => {
       setIsChecked(false);
     }
   };
+
+  const fetchProduct = async () => {
+    try {
+      const res = await Api.get(`products/${productId}`);
+      setProduct(res.data.payload.resultProduct);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    fetchProduct();
+  }, []);
 
   return (
     <Container>
@@ -46,7 +60,7 @@ const SelectGroupPage = () => {
           <span>확인했습니다</span>
         </ConfirmButton>
       </PleaseNoteContainer>
-      <SelectGroupTypes type={type} productId={productId} />
+      <SelectGroupTypes type={type} product={product} />
       <PleaseNoteDetail>
         <FontAwesomeIcon
           icon={faAngleUp}

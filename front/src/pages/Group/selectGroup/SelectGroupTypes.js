@@ -14,7 +14,7 @@ const productTypes = {
   ticket: ["이용권 공구"],
 };
 
-const SelectGroupTypes = ({ type, productId }) => {
+const SelectGroupTypes = ({ type, product }) => {
   const navigate = useNavigate();
   return (
     <Container>
@@ -22,7 +22,11 @@ const SelectGroupTypes = ({ type, productId }) => {
         <ButtonContainer
           key={key}
           isActive={productTypes[type].includes(key)}
-          onClick={() => navigate(`/group/open/${productId}?type=${value[1]}`)}
+          onClick={() =>
+            navigate(`/group/open/${product.id}?type=${value[1]}`, {
+              state: { product: product },
+            })
+          }
         >
           <Title>{key}</Title>
           <Description>{value[0]}</Description>

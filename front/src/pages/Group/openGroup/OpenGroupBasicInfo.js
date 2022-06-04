@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const OpenGroupBasicInfo = ({ product, type }) => {
-  console.log(product);
   return (
     <Container>
       <p>공구 기본 정보</p>
