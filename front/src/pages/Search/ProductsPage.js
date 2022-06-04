@@ -37,8 +37,8 @@ const ProductsPage = () => {
           option: option,
         });
 
-        setProducts(res.data.resultList);
-        setTotalProductsNum(res.data.len);
+        setProducts(res.data.payload.resultList);
+        setTotalProductsNum(res.data.payload.len);
       } else {
         const res = await Api.get("products/search", "", {
           page: 1,
@@ -46,8 +46,8 @@ const ProductsPage = () => {
           search: search,
           option: option,
         });
-        setProducts(res.data.resultList);
-        setTotalProductsNum(res.data.len);
+        setProducts(res.data.payload.resultList);
+        setTotalProductsNum(res.data.payload.len);
       }
     } catch (e) {
       setProducts([]);
@@ -60,7 +60,7 @@ const ProductsPage = () => {
   }, [option, category, search]);
 
   return (
-    <Container noProduct={products.length === 0}>
+    <Container noProduct={products?.length === 0}>
       <ProductsTopBar
         search={search}
         category={category}
@@ -90,7 +90,7 @@ const ProductsPage = () => {
         ))}
       </ProductsCardContainer>
 
-      {products.length === 0 && (
+      {products?.length === 0 && (
         <NoProductContainer>
           <img
             src={`${process.env.PUBLIC_URL}/images/noProduct.svg`}
