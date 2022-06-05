@@ -9,7 +9,7 @@ const FetchCurrentUser = ({ children }) => {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
-  const fetchCurrentUser = async () => {
+  const fetchUser = async () => {
     try {
       if (!user) {
         const res = await Api.get("user/current");
@@ -23,7 +23,7 @@ const FetchCurrentUser = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchCurrentUser();
+    fetchUser();
   }, []);
 
   return <>{children}</>;
