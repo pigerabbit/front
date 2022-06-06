@@ -13,7 +13,11 @@ const OpenGroupDetailInfo = ({ product, type }) => {
   const formatDate = (hour) => {
     const date = new Date();
     date.setHours(date.getHours() + hour);
-    const dueDate = `${date.toLocaleDateString("ko-KR")} `
+    const dueDate = `${date.toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })} `
       .split(". ")
       .join("-")
       .slice(0, -1);
