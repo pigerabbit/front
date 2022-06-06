@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const SearchTrending = () => {
+  const navigate = useNavigate();
   const [trendingKeyword, setTrendingKeyword] = useState([
     "피클",
     "라이스 페이퍼",
@@ -18,7 +20,10 @@ const SearchTrending = () => {
     <Container>
       <h4>인기검색어</h4>
       {trendingKeyword.map((keyword, idx) => (
-        <KeywordWrapper key={idx}>
+        <KeywordWrapper
+          key={idx}
+          onClick={() => navigate(`/products?search=${keyword}`)}
+        >
           <KeywordNumber>{idx + 1}</KeywordNumber>
           <span>{keyword}</span>
         </KeywordWrapper>
@@ -44,6 +49,7 @@ const Container = styled.div`
 const KeywordWrapper = styled.div`
   width: 100%;
   margin: 25px 0;
+  cursor: pointer;
   @media only screen and (max-height: 760px) {
     margin: 18px 0;
   }
