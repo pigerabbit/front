@@ -3,18 +3,10 @@ import styled from "styled-components";
 import * as Api from "api";
 
 import CardContainer from "./CardsContainer";
-import ConfirmationIcon from "components/ConfirmationIcon";
 
-const DeadlineTab = () => {
+const DeadlineTab = ({ setConfirmationIcon }) => {
   const [personGroupList, setPersonGroupList] = useState([]);
   const [timeGroupList, setTimeGroupList] = useState([]);
-  const [confirmationIcon, setConfirmationIcon] = useState({
-    show: false,
-    backgroundColor: "#70BD86;",
-    color: "",
-    icon: "",
-    text: "",
-  });
   const productDeadlineTitle = "달성 인원이 얼마 남지 않았어요!";
   const timeDeadlineTitle = "24시간 이내 마감되는 공동구매에요!";
 
@@ -37,8 +29,6 @@ const DeadlineTab = () => {
 
   return (
     <Container>
-      {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
-
       <CardContainer
         title={productDeadlineTitle}
         groupPurchaseList={personGroupList}

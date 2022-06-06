@@ -4,8 +4,15 @@ import * as Api from "api";
 
 import BestProductCard from "./BestProductCard";
 
-const BestTab = () => {
+const BestTab = ({ setConfirmationIcon }) => {
   const [products, setProducts] = useState([]);
+  // const [confirmationIcon, setConfirmationIcon] = useState({
+  //   show: false,
+  //   backgroundColor: "#70BD86;",
+  //   color: "",
+  //   icon: "",
+  //   text: "",
+  // });
 
   const getProductData = async () => {
     const res = await Api.get("products/main/top");
@@ -23,7 +30,12 @@ const BestTab = () => {
         <span>BEST 10</span>
       </Title>
       {products.map((product, index) => (
-        <BestProductCard product={product} index={index} key={product.id} />
+        <BestProductCard
+          product={product}
+          index={index}
+          setConfirmationIcon={setConfirmationIcon}
+          key={product.id}
+        />
       ))}
     </Container>
   );

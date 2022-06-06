@@ -4,10 +4,54 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
+import * as Api from "api";
 
-const BestProductCard = ({ product, index }) => {
+const BestProductCard = ({ product, index, setConfirmationIcon }) => {
   const navigate = useNavigate();
-  const [wish, setWish] = useState(product.wish);
+  const [wish, setWish] = useState(product.toggle ? true : false);
+
+  const unShowIcon = () => {
+    setTimeout(() => {
+      setConfirmationIcon((cur) => {
+        return { ...cur, show: false };
+      });
+    }, 1600);
+  };
+
+  const confirmWish = () => {
+    setConfirmationIcon({
+      show: true,
+      backgroundColor: "#FF6A6A;",
+      color: "white",
+      icon: fullHeart,
+      text: "찜!",
+    });
+
+    unShowIcon();
+  };
+
+  const confirmUnwish = () => {
+    setConfirmationIcon({
+      show: true,
+      backgroundColor: "#ABABAB;",
+      color: "white",
+      icon: fullHeart,
+      text: "찜 취소",
+    });
+
+    unShowIcon();
+  };
+
+  const handleToggle = async () => {
+    if (!wish) {
+      confirmWish();
+    } else {
+      confirmUnwish();
+    }
+
+    await Api.put(`toggle/product/${product.id}`);
+    setWish((cur) => !cur);
+  };
 
   return (
     <Container wish={wish}>
@@ -35,11 +79,7 @@ const BestProductCard = ({ product, index }) => {
           </div>
         </Price>
       </Information>
-      <span
-        onClick={() => {
-          setWish((cur) => !cur);
-        }}
-      >
+      <span onClick={handleToggle}>
         {wish && <FontAwesomeIcon icon={fullHeart} />}
         {!wish && <FontAwesomeIcon icon={Heart} />}
       </span>

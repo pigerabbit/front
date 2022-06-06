@@ -10,7 +10,7 @@ import axios from "axios";
 import SliderCard from "./SliderCard";
 import CardsContainer from "./CardsContainer";
 
-const HomeTab = () => {
+const HomeTab = ({ setConfirmationIcon }) => {
   const [groupPurchaseList, setGroupPurchaseList] = useState([]);
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
@@ -93,6 +93,7 @@ const HomeTab = () => {
       <CardsContainer
         title={nearbyTitle}
         groupPurchaseList={groupPurchaseList}
+        setConfirmationIcon={setConfirmationIcon}
       />
     </Container>
   );

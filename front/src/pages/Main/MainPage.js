@@ -10,11 +10,19 @@ import SideBar from "../../components/SideBar";
 import Category from "../../components/Category";
 import Notice from "./Notice";
 import TabBar from "components/TabBar";
+import ConfirmationIcon from "components/ConfirmationIcon";
 
 const MainPage = () => {
   const [tab, setTab] = useState("home");
   const [sideBarTitle, setSideBarTitle] = useState("카테고리");
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
+  const [confirmationIcon, setConfirmationIcon] = useState({
+    show: false,
+    backgroundColor: "#70BD86;",
+    color: "",
+    icon: "",
+    text: "",
+  });
 
   return (
     <Container>
@@ -23,10 +31,14 @@ const MainPage = () => {
         setIsOpenSideBar={setIsOpenSideBar}
       />
 
+      {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
+
       <Tabs tab={tab} setTab={setTab} />
-      {tab === "home" && <HomeTab />}
-      {tab === "best" && <BestTab />}
-      {tab === "deadline" && <DeadlineTab />}
+      {tab === "home" && <HomeTab setConfirmationIcon={setConfirmationIcon} />}
+      {tab === "best" && <BestTab setConfirmationIcon={setConfirmationIcon} />}
+      {tab === "deadline" && (
+        <DeadlineTab setConfirmationIcon={setConfirmationIcon} />
+      )}
 
       <SideBar
         title={sideBarTitle}
