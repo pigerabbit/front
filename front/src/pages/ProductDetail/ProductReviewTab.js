@@ -15,7 +15,6 @@ const ProductReviewTab = ({ product }) => {
   const [isWriting, setIsWriting] = useState(false);
   const [showMyReviews, setShowMyReviews] = useState(false);
 
-  const n = reviews.length;
   const isSeller = product.userId === user.id;
 
   const getReviews = async () => {
@@ -23,9 +22,12 @@ const ProductReviewTab = ({ product }) => {
       const res = await axios.get(
         Api.serverUrl + `posts?receiver=${product.id}&type=review`
       );
-      const resMyReview = await Api.get(`posts/${user.id}/review`);
       setReviews(res.data.payload.filter((v) => v.type === "review"));
-      setMyReviews(resMyReview.data.payload);
+      setMyReviews(
+        res.data.payload.filter(
+          (v) => v.type === "review" && v.writer === user.id
+        )
+      );
     } catch (e) {
       console.log(e);
     }
@@ -40,25 +42,28 @@ const ProductReviewTab = ({ product }) => {
 
   return (
     <Container>
-      {!isWriting ? (
-        <WriteButton
-          onClick={() => {
-            setIsWriting((cur) => !cur);
-          }}
-        >
-          후기 작성하기
-        </WriteButton>
-      ) : (
-        <ProductReviewForm
-          productId={product.id}
-          setIsWriting={setIsWriting}
-          setReviews={setReviews}
-          setMyReviews={setMyReviews}
-        />
-      )}
+      {!isSeller &&
+        (!isWriting ? (
+          <WriteButton
+            onClick={() => {
+              setIsWriting((cur) => !cur);
+            }}
+          >
+            후기 작성하기
+          </WriteButton>
+        ) : (
+          <ProductReviewForm
+            productId={product.id}
+            setIsWriting={setIsWriting}
+            setReviews={setReviews}
+            setMyReviews={setMyReviews}
+          />
+        ))}
       <Review>
         <ReviewTop>
-          <div id="reviewCount">후기 {n}건</div>
+          <div id="reviewCount">
+            후기 {showMyReviews ? myReviews.length : reviews.length}건
+          </div>
           {myReviews.length > 0 && (
             <MyReviewButton
               onClick={() => {

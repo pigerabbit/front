@@ -16,16 +16,16 @@ const ProductInquiryTab = ({ product }) => {
   const [showMyInquiries, setShowMyInquiries] = useState(false);
 
   const isSeller = product.userId === user.id;
-  const n = inquiries.length;
 
   const getInquiries = async () => {
     try {
       const res = await axios.get(
         Api.serverUrl + `posts?receiver=${product.id}&type=cs`
       );
-      const resMyInquiries = await Api.get(`posts/${user.id}/cs`);
       setInquiries(res.data.payload.filter((v) => v.type === "cs"));
-      setMyInquiries(resMyInquiries.data.payload);
+      setMyInquiries(
+        res.data.payload.filter((v) => v.type === "cs" && v.writer === user.id)
+      );
     } catch (e) {
       console.log(e);
     }
@@ -37,31 +37,34 @@ const ProductInquiryTab = ({ product }) => {
 
   return (
     <Container>
-      {!isWriting ? (
-        <WriteButton
-          onClick={() => {
-            setIsWriting((cur) => !cur);
-          }}
-        >
-          문의 작성하기
-        </WriteButton>
-      ) : (
-        <ProductInquiryForm
-          productId={product.id}
-          setIsWriting={setIsWriting}
-          setInquiries={setInquiries}
-          setMyInquiries={setMyInquiries}
-        />
-      )}
+      {!isSeller &&
+        (!isWriting ? (
+          <WriteButton
+            onClick={() => {
+              setIsWriting((cur) => !cur);
+            }}
+          >
+            문의 작성하기
+          </WriteButton>
+        ) : (
+          <ProductInquiryForm
+            productId={product.id}
+            setIsWriting={setIsWriting}
+            setInquiries={setInquiries}
+            setMyInquiries={setMyInquiries}
+          />
+        ))}
       <Inquiry>
         <InquiryTop>
-          <div id="inquiryCount">문의 {n}건</div>
+          <div id="inquiryCount">
+            문의 {showMyInquiries ? myInquiries.length : inquiries.length}건
+          </div>
           {myInquiries.length > 0 && (
             <MyInquiryButton
               onClick={() => {
                 setShowMyInquiries((cur) => !cur);
               }}
-              showMyInquirys={setShowMyInquiries}
+              showMyInquiries={showMyInquiries}
             >
               내 문의
             </MyInquiryButton>
