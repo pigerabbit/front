@@ -20,7 +20,7 @@ const TabBar = () => {
         <LeftRight>
           <Tab
             onClick={() => {
-              navigate("/");
+              navigate("/board");
             }}
           >
             <FontAwesomeIcon icon={faComments} size="2x" />
@@ -38,7 +38,7 @@ const TabBar = () => {
         <LeftRight>
           <Tab
             onClick={() => {
-              navigate("/purchasedetail");
+              navigate("/purchaselist");
             }}
           >
             <FontAwesomeIcon icon={faFileLines} size="2x" />

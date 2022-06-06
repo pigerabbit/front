@@ -1,50 +1,50 @@
-import React, { useState, useEffect, useReducer, createContext } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import "./reset.css";
 import styled from "styled-components";
 
-import * as Api from "./api";
-import { login } from "./redux/userSlice";
-
 import MainPage from "./pages/Main/MainPage";
 import ProductsPage from "./pages/Search/ProductsPage";
+import LoginPage from "pages/User/LoginPage";
+import EmailLoginPage from "pages/User/EmailLoginPage";
+import RegisterPage from "pages/User/RegisterPage";
+import BusinessAuthPage from "pages/User/BusinessAuthPage";
+import MyPage from "pages/My/MyPage/MyPage";
+import MarketPage from "pages/My/Market/MarketPage";
+import ReviewsPage from "pages/My/MyReviews/ReviewsPage";
+import InquiresPage from "pages/My/MyInquires/InquiresPage";
 
-export const UserStateContext = createContext(null);
-export const DispatchContext = createContext(null);
+import ScrollToTop from "ScrollToTop";
+import FetchCurrentUser from "FetchCurrentUser";
 
 function App() {
-  const dispatch = useDispatch();
-
-  const [isFetchCompleted, setIsFetchCompleted] = useState(false);
-
-  const fetchCurrentUser = async () => {
-    try {
-      const res = await Api.get("user/current");
-      const currentUser = res.data;
-
-      dispatch(login(currentUser));
-    } catch {
-      console.log("%c SessionStorage에 토큰 없음.", "color: #d93d1a;");
-    }
-
-    setIsFetchCompleted(true);
+  const wrapFetchUser = (child) => {
+    return <FetchCurrentUser>{child}</FetchCurrentUser>;
   };
 
-  useEffect(() => {
-    fetchCurrentUser();
-  }, []);
-
-  if (!isFetchCompleted) {
-    return "loading...";
-  }
+  const mainPage = wrapFetchUser(<MainPage />);
+  const productsPage = wrapFetchUser(<ProductsPage />);
+  const myPage = wrapFetchUser(<MyPage />);
+  const reviewsPage = wrapFetchUser(<ReviewsPage />);
+  const inquiresPage = wrapFetchUser(<InquiresPage />);
+  const marketPage = wrapFetchUser(<MarketPage />);
+  const businessAuthPage = wrapFetchUser(<BusinessAuthPage />);
 
   return (
     <Router>
+      <ScrollToTop />
       <Container>
         <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/" element={mainPage} />
+          <Route path="/products" element={productsPage} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login/email" element={<EmailLoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/businessauth" element={businessAuthPage} />
+          <Route path="/mypage" element={myPage} />
+          <Route path="/mypage/reviews" element={reviewsPage} />
+          <Route path="/mypage/inquires" element={inquiresPage} />
+          <Route path="/markets/:id" element={marketPage} />
         </Routes>
       </Container>
     </Router>
@@ -59,5 +59,4 @@ const Container = styled.div`
   background-color: #F2F2F2;
   display: flex;
   justify-content: center;
-
 `;
