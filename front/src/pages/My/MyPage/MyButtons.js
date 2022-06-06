@@ -9,6 +9,7 @@ import {
   faComments,
   faHeart,
   faFileLines,
+  faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 
 const MyButtons = () => {
@@ -26,23 +27,31 @@ const MyButtons = () => {
       icon: faStore,
       url: user?.seller ? `/markets/${user.id}` : "/businessauth",
     },
+    user?.seller && {
+      text: "판매처 수정",
+      icon: faPencil,
+      url: "/businessauth",
+    },
   ];
 
   return (
     <>
-      <Buttons>
-        {buttons.map(({ text, icon, url }, idx) => (
-          <Button
-            key={text}
-            areaName={idx}
-            onClick={() => {
-              navigate(url);
-            }}
-          >
-            <FontAwesomeIcon icon={icon} />
-            <span>{text}</span>
-          </Button>
-        ))}
+      <Buttons seller={user?.seller}>
+        {buttons.map(
+          (button, idx) =>
+            button && (
+              <Button
+                key={button.text}
+                areaName={idx}
+                onClick={() => {
+                  navigate(button.url);
+                }}
+              >
+                <FontAwesomeIcon icon={button.icon} />
+                <span>{button.text}</span>
+              </Button>
+            )
+        )}
       </Buttons>
       {!user?.seller && (
         <span>사업자임을 인증하면 상품을 판매할 수 있습니다.</span>
@@ -58,7 +67,10 @@ const Buttons = styled.div`
   max-width: 450px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-areas: "reviews inquires" "whish purchaseList" "market market";
+  grid-template-areas: ${({ seller }) =>
+    seller
+      ? `"reviews inquires" "whish purchaseList" "market update";`
+      : `"reviews inquires" "whish purchaseList" "market market";`}
   grid-gap: 15px;
 `;
 
@@ -78,6 +90,7 @@ const Button = styled.div`
     if (areaName === 2) return "grid-area: whish;";
     if (areaName === 3) return "grid-area: purchaseList;";
     if (areaName === 4) return "grid-area: market;";
+    if (areaName === 5) return "grid-area: update;";
   }}
   font-size: 3.5vw;
   @media (min-width: 500px) {
