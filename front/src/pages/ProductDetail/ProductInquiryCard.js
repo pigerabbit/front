@@ -103,6 +103,8 @@ const ProductInquiryCard = ({
                   id="replyForm"
                   postId={postId}
                   setShowReply={setShowReply}
+                  setComment={setComment}
+                  setIsReplied={setIsReplied}
                 />
               </div>
             )}
