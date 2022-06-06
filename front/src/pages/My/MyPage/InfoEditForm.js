@@ -17,7 +17,7 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user?.name);
   const [businessName, setBusinessName] = useState(
-    user?.business[0].businessName || ""
+    (user?.business && user?.business[0].businessName) || ""
   );
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
