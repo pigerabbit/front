@@ -13,6 +13,8 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
+  //공구 중지 버튼 눌렀을 때 cancelDataId에 해당 공구 id가 저장됨 - handleStopGroupClick에서 이용하면 됨
+  const [cancelDataId, setCancelDataId] = useState("");
 
   useEffect(() => {
     setTotalData(openedData);
@@ -69,6 +71,7 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
           filteredData.map((group, idx) => (
             <MyPurchaseListCard
               key={group.groupId}
+              groupId={group.groupId}
               userId={userId}
               type={group.groupType}
               state={group.state}

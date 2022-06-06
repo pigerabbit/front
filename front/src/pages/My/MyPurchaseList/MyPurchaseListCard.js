@@ -21,6 +21,7 @@ const groupState = {
 
 const MyPurchaseListCard = ({
   type,
+  groupId,
   userId,
   state,
   title,
@@ -29,6 +30,7 @@ const MyPurchaseListCard = ({
   deadline,
   isOpenTab,
   setIsOpenPopUpCard,
+  setCancelDataId,
 }) => {
   const returnBgColor = () => {
     //진행중
@@ -45,7 +47,7 @@ const MyPurchaseListCard = ({
     }
   };
 
-  const returnColor = () => {
+  const returnFontColor = () => {
     if (state === -1) {
       return "#505050";
     } else {
@@ -54,6 +56,11 @@ const MyPurchaseListCard = ({
   };
 
   const myInfo = participants.filter((p) => p.userId === userId);
+
+  const handleClick = () => {
+    setIsOpenPopUpCard(true);
+    setCancelDataId(groupId);
+  };
 
   return (
     <CardContainer>
@@ -72,7 +79,10 @@ const MyPurchaseListCard = ({
             <strong>{`[${groupType[type]}] `}</strong>
             {title}
           </Title>
-          <State bgColor={() => returnBgColor()} color={() => returnColor()}>
+          <State
+            bgColor={() => returnBgColor()}
+            fontColor={() => returnFontColor()}
+          >
             {groupState[state][0]}
           </State>
           {(state === 0 || state === 2) && <span>{`${remained}명 남음`}</span>}
@@ -83,8 +93,8 @@ const MyPurchaseListCard = ({
           )}
         </CardContent>
       </CardWrapper>
-      {state === 0 && isOpenTab && (
-        <CardButton bgColor="#A0A0A0" onClick={() => setIsOpenPopUpCard(true)}>
+      {state === 0 && (
+        <CardButton bgColor="#A0A0A0" onClick={() => handleClick()}>
           {isOpenTab ? "공구 중지" : "참여 취소"}
         </CardButton>
       )}
@@ -176,7 +186,7 @@ const Title = styled.p`
 
 const State = styled.div`
   background: ${(props) => props.bgColor};
-  color: ${(props) => props.color};
+  color: ${(props) => props.fontColor};
   width: 70px;
   height: 25px;
   display: inline-block;

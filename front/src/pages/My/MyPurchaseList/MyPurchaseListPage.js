@@ -17,7 +17,8 @@ const MyPurchaseListPage = () => {
   const getOpenedGroupData = async () => {
     try {
       const res = await Api.get("groups/manager/true");
-      setOpenedData(res.data.payload);
+      const data = res.data.payload;
+      setOpenedData(data);
     } catch (err) {
       console.log(err);
     }
@@ -26,16 +27,21 @@ const MyPurchaseListPage = () => {
   const getParticipatedGroupData = async () => {
     try {
       const res = await Api.get("groups/manager/false");
-      setParticipatedData(res.data.payload);
+      const data = res.data.payload;
+      setParticipatedData(data);
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
-    getOpenedGroupData();
     getParticipatedGroupData();
+    getOpenedGroupData();
   }, []);
+
+  if (participatedData.length == 0) {
+    return "loading...";
+  }
 
   return (
     <Container>
@@ -50,11 +56,11 @@ const MyPurchaseListPage = () => {
       {tab === "tab1" && (
         <ParticipatePurchaseListTab
           participatedData={participatedData}
-          userId={user.id}
+          userId={user?.id}
         />
       )}
       {tab === "tab2" && (
-        <OpenPurchaseListTab openedData={openedData} userId={user.id} />
+        <OpenPurchaseListTab openedData={openedData} userId={user?.id} />
       )}
       <TabBar />
     </Container>
