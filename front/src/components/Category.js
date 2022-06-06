@@ -29,13 +29,15 @@ const category = [
   { eng: "other", kor: "기타", icon: faCircleExclamation },
 ];
 
-const Category = ({ setIsOpenSideBar }) => {
+const Category = ({ setIsOpenSideBar, setProducts, setPage }) => {
   const navigate = useNavigate();
 
   const handleClick = (eng) => {
     return () => {
       if (setIsOpenSideBar) {
         setIsOpenSideBar(false);
+        setProducts([]);
+        setPage(0);
       }
       navigate(`/products?category=${eng}`);
     };

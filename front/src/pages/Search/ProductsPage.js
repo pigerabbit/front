@@ -140,7 +140,11 @@ const ProductsPage = () => {
         isOpenSideBar={isOpenSideBar}
         setIsOpenSideBar={setIsOpenSideBar}
       >
-        <Category setIsOpenSideBar={setIsOpenSideBar} />
+        <Category
+          setIsOpenSideBar={setIsOpenSideBar}
+          setProducts={setProducts}
+          setPage={setPage}
+        />
       </SideBar>
 
       <TabBar />
