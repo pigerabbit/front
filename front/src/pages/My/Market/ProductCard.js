@@ -8,12 +8,7 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
-const ProductCard = ({
-  product,
-  SetCurrentProduct,
-  setIsOpenPopup,
-  setPopupMessage,
-}) => {
+const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
   const { user } = useSelector((state) => state.user);
   const { id } = useParams();
   const [isControllerOpen, setIsControllerOpen] = useState(false);
@@ -59,15 +54,6 @@ const ProductCard = ({
           <ControllerButton>편집</ControllerButton>
           <ControllerButton
             onClick={() => {
-              setPopupMessage(["pause", "중단", "유지"]);
-              setIsOpenPopup(true);
-            }}
-          >
-            판매 중지
-          </ControllerButton>
-          <ControllerButton
-            onClick={() => {
-              setPopupMessage(["delete", "삭제", "취소"]);
               setIsOpenPopup(true);
             }}
           >
@@ -214,7 +200,7 @@ const UpdateController = styled.div`
 
 const ControllerButton = styled.div`
   cursor: pointer;
-  width: 22%;
+  width: 30%;
   height: 40%;
   display: flex;
   justify-content: center;

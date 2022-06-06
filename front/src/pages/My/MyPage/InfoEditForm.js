@@ -149,31 +149,6 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
         </SubmitButton>
       </form>
 
-      {user?.seller && (
-        <form onSubmit={(e) => e.preventDefault()}>
-          <InputContainer>
-            <div>판매처 이름</div>
-            <input
-              type="text"
-              value={businessName}
-              autoComplete="off"
-              onChange={(e) => {
-                setBusinessName(e.target.value);
-              }}
-            />
-            <CheckIcon valid={businessNameValid}>
-              <FontAwesomeIcon icon={faCircleCheck} />
-            </CheckIcon>
-          </InputContainer>
-          <SubmitButton
-            onClick={handleUpdate({ businessName }, setBusinessNameValid)}
-            disabled={!businessNameValid}
-          >
-            판매처 변경
-          </SubmitButton>
-        </form>
-      )}
-
       <form onSubmit={(e) => e.preventDefault()}>
         <InputContainer>
           <div>현재 비밀번호</div>

@@ -1,41 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import * as Api from "api";
 
 import MyPageLayout from "../MyPageLayout";
 import InquireCard from "./InquireCard";
-
-const mock = [
-  {
-    postId: "6d497fca-487c-4ed7-9326-ce2e771e6b3d",
-    type: "cs",
-    authorizedUsers: [
-      "41fbbc80-66ea-47f4-9828-5ed6b03ccef8",
-      "vd2de8b59-2a46-4eed-b209-0f6834988171",
-    ],
-    writer: "41fbbc80-66ea-47f4-9828-5ed6b03ccef8",
-    receiver: "vd2de8b59-2a46-4eed-b209-0f6834988171",
-    content: "최대 얼마나 구매 가능한가요?",
-    postImg: null,
-    removed: false,
-    createdAt: "2022-05-29T12:12:42.219Z",
-    reply: false,
-  },
-  {
-    postId: "6d497fca-487c-4ed7-9326-ce2e771e6b3a",
-    type: "cs",
-    authorizedUsers: [
-      "41fbbc80-66ea-47f4-9828-5ed6b03ccef8",
-      "vd2de8b59-2a46-4eed-b209-0f6834988171",
-    ],
-    writer: "41fbbc80-66ea-47f4-9828-5ed6b03ccef8",
-    receiver: "vd2de8b59-2a46-4eed-b209-0f6834988171",
-    content: "최대 얼마나 구매 가능한가요?",
-    postImg: null,
-    removed: false,
-    createdAt: "2022-05-29T12:12:42.219Z",
-    reply: true,
-  },
-];
+import { useSelector } from "react-redux";
 
 const options = [
   { eng: "all", kor: "전체보기" },
@@ -45,12 +14,32 @@ const options = [
 
 const InquiresPage = () => {
   const [option, setOption] = useState("all");
+  const [inquires, setInquires] = useState([]);
+  const { user } = useSelector((state) => state.user);
+
+  const getInquires = async () => {
+    const res = await Api.get(`posts/${user?.id}/cs`);
+    setInquires(res.data.payload.postList);
+  };
+
+  const deleteAnInquire = (id) => {
+    const index = inquires.findIndex((inquire) => inquire.post.postId === id);
+    setInquires((cur) => {
+      const copy = [...cur];
+      copy.splice(index, 1);
+      return copy;
+    });
+  };
+
+  useEffect(() => {
+    getInquires();
+  }, []);
 
   return (
     <MyPageLayout pageName={"나의 문의"}>
       <Container>
         <Info>
-          <TotalNumber>총 3건</TotalNumber>
+          <TotalNumber>총 {inquires.length}건</TotalNumber>
           <SelectBox>
             {options.map(({ eng, kor }) => (
               <Option
@@ -66,9 +55,23 @@ const InquiresPage = () => {
           </SelectBox>
         </Info>
 
-        {mock.map((inquire) => (
-          <InquireCard inquire={inquire} key={inquire.postId} />
+        {inquires.map((inquire) => (
+          <InquireCard
+            inquire={inquire}
+            key={inquire.post.postId}
+            deleteAnInquire={deleteAnInquire}
+          />
         ))}
+
+        {inquires.length === 0 && (
+          <NoReviewContainer>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/noContent.svg`}
+              alt="no nearby"
+            />
+            작성된 문의가 없습니다.
+          </NoReviewContainer>
+        )}
       </Container>
     </MyPageLayout>
   );
@@ -125,5 +128,21 @@ const Option = styled.div`
   font-size: 2vw;
   @media (min-width: 640px) {
     font-size: 13px;
+  }
+`;
+
+const NoReviewContainer = styled.div`
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 3vw;
+  @media (min-width: 650px) {
+    font-size: 20px;
+  }
+
+  > img {
+    width: 50%;
+    margin-bottom: 5%;
   }
 `;

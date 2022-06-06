@@ -10,6 +10,15 @@ const ReviewsPage = () => {
   const { user } = useSelector((state) => state.user);
   const [reviews, setReviews] = useState([]);
 
+  const deleteReview = (id) => {
+    const index = reviews.findIndex((review) => review.postId === id);
+    setReviews((cur) => {
+      const copy = [...cur];
+      copy.splice(index, 1);
+      return copy;
+    });
+  };
+
   const getReviews = async () => {
     if (user) {
       const res = await Api.get("posts", `${user.id}/review`);
@@ -27,7 +36,11 @@ const ReviewsPage = () => {
         <TotalNumber>총 {reviews.length}건</TotalNumber>
 
         {reviews.map((review) => (
-          <ReviewCard review={review} key={review.postId} />
+          <ReviewCard
+            review={review}
+            deleteReview={deleteReview}
+            key={review.postId}
+          />
         ))}
 
         {reviews.length === 0 && (
