@@ -19,7 +19,7 @@ const MyButtons = () => {
   const buttons = [
     { text: "나의 후기", icon: faCommentDots, url: "/mypage/reviews" },
     { text: "나의 문의", icon: faComments, url: "/mypage/inquires" },
-    { text: "찜 목록", icon: faHeart, url: "/whishlist" },
+    { text: "찜 목록", icon: faHeart, url: "/wishlist" },
     { text: "공구내역", icon: faFileLines, url: "/purchaselist" },
     {
       text: user?.seller ? "나의 판매" : "사업자 인증하기",
