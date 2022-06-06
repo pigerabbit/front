@@ -5,15 +5,12 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
+import * as Api from "api";
 
 import SearchCurrent from "./SearchCurrent";
 import SearchInputForm from "./SearchInputForm";
 import SearchTrending from "./SearchTrending";
 import SearchGroupCard from "./SearchGroupCard";
-
-const userId =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJiYmQ2YWU0NC00M2E2LTQ0MWYtODI1Ni1kMDJmZjI3ZmFkODQiLCJpYXQiOjE2NTQyMzIxMTZ9.5dtSBicHD486FYK-iDQkh48EmldfqoP6aMBO_dhlc1A";
 
 const SearchPage = () => {
   const [IsTrendingPage, setIsTrendingPage] = useState(true);
@@ -28,14 +25,7 @@ const SearchPage = () => {
   }, [IsTrendingPage]);
 
   const fetchProducts = async () => {
-    const res = await axios.get(
-      "http://localhost:5000/groups/sort/remainedTime",
-      {
-        headers: {
-          Authorization: `Bearer ${userId}`,
-        },
-      }
-    );
+    const res = await Api.get("groups/sort/remainedTime");
     const deadlineProducts = res.data.payload;
     const randomNum = Math.floor(Math.random() * deadlineProducts.length);
     setDeadlineProduct(deadlineProducts[randomNum]);
@@ -69,17 +59,19 @@ const SearchPage = () => {
           />
         </NextBtn>
       )}
-      <DeadLineContainer>
-        <h3>마감 임박</h3>
-        <SearchGroupCard
-          name={deadlineProduct.groupName}
-          price="10000"
-          salePrice="9000"
-          discountRate="10"
-          leftParticipants={deadlineProduct.remainedPersonnel}
-          deadline={deadlineProduct.deadline}
-        />
-      </DeadLineContainer>
+      {deadlineProduct && (
+        <DeadLineContainer>
+          <h3>마감 임박</h3>
+          <SearchGroupCard
+            name={deadlineProduct.groupName}
+            price="10000"
+            salePrice="9000"
+            discountRate="10"
+            leftParticipants={deadlineProduct.remainedPersonnel}
+            deadline={deadlineProduct.deadline}
+          />
+        </DeadLineContainer>
+      )}
     </Container>
   );
 };

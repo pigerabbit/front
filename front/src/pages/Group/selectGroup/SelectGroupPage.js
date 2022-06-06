@@ -60,7 +60,7 @@ const SelectGroupPage = () => {
           <span>확인했습니다</span>
         </ConfirmButton>
       </PleaseNoteContainer>
-      <SelectGroupTypes type={type} product={product} />
+      <SelectGroupTypes type={type} product={product} isChecked={isChecked} />
       <PleaseNoteDetail>
         <FontAwesomeIcon
           icon={faAngleUp}
@@ -99,7 +99,7 @@ const Container = styled.div`
 const PleaseNoteContainer = styled.div`
   margin-top: 60px;
   margin-left: 5%;
-  padding: 5% 10%;
+  padding: 3% 5%;
   font-size: 18px;
   line-height: 25px;
   > p {
@@ -112,7 +112,7 @@ const PleaseNoteContainer = styled.div`
   }
   @media (max-width: 500px) {
     font-size: 15px;
-    padding: 10% 5%;
+    padding: 3% 5%;
   }
 `;
 

@@ -1,16 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { productList } from "./SearchMockData";
 import SearchProductCard from "./SearchProductCard";
+import * as Api from "api";
 
 const SearchCurrent = () => {
-  const [currentKeyword, setCurrentKeyword] = useState([
-    "냅킨",
-    "감자",
-    "샐러드",
-    "삼겹살",
-    "딸기",
-  ]);
+  const [currentKeyword, setCurrentKeyword] = useState([]);
+  const fetchSearchWords = async () => {
+    try {
+      const res = await Api.get("toggle/searchWords");
+      setCurrentKeyword(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    fetchSearchWords();
+  }, []);
   return (
     <Container>
       <CurrentKeywordContainer>
@@ -19,6 +25,7 @@ const SearchCurrent = () => {
           {currentKeyword.map((k, idx) => (
             <Keyword key={idx}>{k}</Keyword>
           ))}
+          {currentKeyword.length === 0 && <p>검색 기록이 없습니다.</p>}
         </CurrentKeywordWrapper>
       </CurrentKeywordContainer>
       <CurrentProductContainer>
@@ -82,6 +89,10 @@ const CurrentKeywordWrapper = styled.div`
   }
   @media only screen and (max-height: 760px) {
     margin: 18px 0;
+  }
+  > p {
+    margin-top: 10px;
+    color: #a0a0a0;
   }
 `;
 

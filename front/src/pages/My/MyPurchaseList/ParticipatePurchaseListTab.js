@@ -4,6 +4,7 @@ import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import MyPurchaseListCard from "./MyPurchaseListCard";
+import * as Api from "api";
 
 const options = ["전체보기", "진행중", "결제완료", "기간마감"];
 
@@ -13,10 +14,22 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
+  const [cancelDataId, setCancelDataId] = useState("");
 
-  const handleClick = (option) => {
+  const handleOptionClick = (option) => {
     setOption(option);
     setIsOpen(false);
+  };
+
+  const handleCancelGroupClick = async () => {
+    try {
+      await Api.put(`groups/${cancelDataId}/participate/out`);
+      const data = filteredData.filter((data) => data.groupId === cancelDataId);
+      setFilteredData(data);
+      setIsOpenPopUpCard(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -27,20 +40,17 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
       const onProgress = totalData.filter((group) =>
         [-2, 0, 1, 2].includes(group.state)
       );
-      console.log(onProgress);
       setFilteredData(onProgress);
     } else if (option === "결제완료") {
       const completed = totalData.filter((group) =>
         [-4, -3, 3, 4].includes(group.state)
       );
-      console.log(completed);
       setFilteredData(completed);
     } else if (option === "기간마감") {
       const stopped = totalData.filter((group) => group.state === -1);
-      console.log(stopped);
       setFilteredData(stopped);
     }
-  }, [option]);
+  }, [option, totalData]);
 
   return (
     <Container>
@@ -58,7 +68,7 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
           {options.map((option) => (
             <Option
               key={option}
-              onClick={() => handleClick(option)}
+              onClick={() => handleOptionClick(option)}
               open={isOpen ? "block" : "none"}
             >
               {option}
@@ -71,15 +81,17 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
           filteredData.map((group) => (
             <MyPurchaseListCard
               key={group.groupId}
+              groupId={group.groupId}
               userId={userId}
               type={group.groupType}
               state={group.state}
               title={group.groupName}
-              reamined={group.remainedPersonnel}
+              remained={group.remainedPersonnel}
               participants={group.participants}
               deadline={group.deadline}
               isOpenTab={false}
               setIsOpenPopUpCard={setIsOpenPopUpCard}
+              setCancelDataId={setCancelDataId}
             />
           ))}
         {filteredData.length === 0 && (
@@ -92,7 +104,9 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
         <PopUpCard>
           <h3>공동구매 참여를 정말 취소하시겠습니까?</h3>
           <ButtonWrapper>
-            <Button bgColor="#FFB564">참여 취소하기</Button>
+            <Button bgColor="#FFB564" onClick={() => handleCancelGroupClick()}>
+              참여 취소하기
+            </Button>
             <Button bgColor="#D0D0D0" onClick={() => setIsOpenPopUpCard(false)}>
               닫기
             </Button>

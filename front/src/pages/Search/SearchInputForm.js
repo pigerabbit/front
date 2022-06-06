@@ -10,17 +10,26 @@ import { useNavigate } from "react-router-dom";
 const SearchInputForm = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
+
+  const handleKeyPress = (key) => {
+    if (key === "Enter") {
+      navigate(`/products?search=${searchKeyword}`);
+    }
+  };
+
   return (
     <SearchInputWrapper>
       <ButtonWrapper>
         <FontAwesomeIcon
           icon={faArrowLeft}
           style={{ fontSize: "20px", color: "#C0C0C0" }}
+          onClick={() => navigate("/")}
         />
       </ButtonWrapper>
       <SearchInput
         placeholder="검색어를 입력해주세요"
         onChange={(e) => setSearchKeyword(e.target.value)}
+        onKeyPress={(e) => handleKeyPress(e.key)}
       />
       <ButtonWrapper
         onClick={() => navigate(`/products?search=${searchKeyword}`)}

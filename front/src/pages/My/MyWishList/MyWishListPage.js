@@ -1,12 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import TabBar from "components/TabBar";
 import MyWishListTabs from "../MyWishListTabs";
 import GroupWishListTab from "./GroupWishListTab";
 import ProductWishListTab from "./ProductWishListTab";
+import * as Api from "api";
 
 const MyWishListPage = () => {
   const [tab, setTab] = useState("tab1");
+
+  // const fetchWishGroups = async () => {
+  //   const res = await Api.get("toggle/groups");
+  //   console.log(res.data);
+  // };
+
+  // const fetchWishProducts = async () => {
+  //   const res = await Api.get("toggle/products");
+  //   console.log(res.data);
+  // };
+
+  // useEffect(() => {
+  //   fetchWishGroups();
+  //   fetchWishProducts();
+  // });
+
   return (
     <Container>
       <WishListTitle>
