@@ -62,7 +62,7 @@ const ProductReviewCard = ({
       isReplied={isReplied}
       isSeller={isSeller}
     >
-      <Header>
+      <Header mobile={isSeller && open && !showReply && !isReplied}>
         {/* <WriterImg src={writer.imageLink} alt="상세정보 사진"></WriterImg> */}
         <WriterImg>
           <img src={writer.imageLink} alt="사용자 사진" />
@@ -166,6 +166,10 @@ const Header = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+
+  @media (max-width: 500px) {
+    margin-right: ${({ mobile }) => (mobile ? "80px" : "0px")};
+  }
 `;
 
 const WriterImg = styled.div`
