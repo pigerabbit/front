@@ -8,6 +8,7 @@ import ProductCard from "./ProductCard";
 import SideBar from "components/SideBar";
 import Category from "components/Category";
 import TabBar from "components/TabBar";
+import ConfirmationIcon from "components/ConfirmationIcon";
 
 const options = [
   { eng: "groups", kor: "추천순" },
@@ -21,6 +22,13 @@ const ProductsPage = () => {
   const [option, setOption] = useState("groups");
   const [products, setProducts] = useState([]);
   const [totalProductsNum, setTotalProductsNum] = useState([]);
+  const [confirmationIcon, setConfirmationIcon] = useState({
+    show: false,
+    backgroundColor: "#70BD86;",
+    color: "",
+    icon: "",
+    text: "",
+  });
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -84,9 +92,15 @@ const ProductsPage = () => {
         </SelectBox>
       </ProductsInfo>
 
+      {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
+
       <ProductsCardContainer>
         {products.map((product) => (
-          <ProductCard product={product} key={product.id} />
+          <ProductCard
+            product={product}
+            setConfirmationIcon={setConfirmationIcon}
+            key={product.id}
+          />
         ))}
       </ProductsCardContainer>
 

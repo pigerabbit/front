@@ -1,15 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
+import * as Api from "api";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, setConfirmationIcon }) => {
+  const [wish, setWish] = useState(product.toggle ? true : false);
+
   const navigate = useNavigate();
 
+  const unShowIcon = () => {
+    setTimeout(() => {
+      setConfirmationIcon((cur) => {
+        return { ...cur, show: false };
+      });
+    }, 1600);
+  };
+
+  const confirmWish = () => {
+    setConfirmationIcon({
+      show: true,
+      backgroundColor: "#FF6A6A;",
+      color: "white",
+      icon: fullHeart,
+      text: "찜!",
+    });
+
+    unShowIcon();
+  };
+
+  const confirmUnwish = () => {
+    setConfirmationIcon({
+      show: true,
+      backgroundColor: "#ABABAB;",
+      color: "white",
+      icon: fullHeart,
+      text: "찜 취소",
+    });
+
+    unShowIcon();
+  };
+
+  const handleToggle = async () => {
+    if (!wish) {
+      confirmWish();
+    } else {
+      confirmUnwish();
+    }
+
+    await Api.put(`toggle/product/${product.id}`);
+    setWish((cur) => !cur);
+  };
+
   return (
-    <Container url={product.images}>
+    <Container url={product.images} wish={wish}>
       <div
         className="image"
         onClick={() => {
@@ -37,7 +83,8 @@ const ProductCard = ({ product }) => {
         </div>
       </Information>
 
-      <FontAwesomeIcon icon={Heart} />
+      {wish && <FontAwesomeIcon icon={fullHeart} onClick={handleToggle} />}
+      {!wish && <FontAwesomeIcon icon={Heart} onClick={handleToggle} />}
     </Container>
   );
 };
@@ -75,6 +122,10 @@ const Container = styled.div`
     position: absolute;
     right: 5px;
     bottom: 5px;
+    color: ${({ wish }) => {
+      if (wish) return "#FF6A6A;";
+      else return "#9c9c9c;";
+    }};
   }
 `;
 
