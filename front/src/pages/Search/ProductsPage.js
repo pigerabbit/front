@@ -79,7 +79,7 @@ const ProductsPage = () => {
 
   useEffect(() => {
     getProductData();
-  }, [option, category, search, page]);
+  }, [category, search, page]);
 
   return (
     <Container noProduct={products?.length === 0}>
@@ -98,6 +98,8 @@ const ProductsPage = () => {
               selected={option === eng}
               onClick={() => {
                 setOption(eng);
+                setProducts([]);
+                setPage(0);
               }}
             >
               {kor}
