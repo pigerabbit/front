@@ -54,7 +54,7 @@ const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
       confirmUnwish();
     }
 
-    await Api.put(`toggle/group/${purchase.groupId}`);
+    await Api.put(`toggle/group/${purchase._id}`);
     setWish((cur) => !cur);
   };
 
