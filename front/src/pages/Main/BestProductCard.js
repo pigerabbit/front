@@ -68,7 +68,7 @@ const BestProductCard = ({ product, index, setConfirmationIcon }) => {
         }}
       >
         <Title>
-          <span>[{product.businessName}]</span>
+          <span>[{product.userInfo.business[0].businessName}]</span>
           <span>{product.name}</span>
         </Title>
         <Price>
