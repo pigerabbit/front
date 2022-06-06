@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProductCommentCard = ({ createdAt, content }) => {
+const ProductCommentCard = ({ createdAt, content, reverse = null }) => {
   const date = createdAt.split("T")[0];
 
   return (
-    <Container>
-      <Comment>
+    <Container reverse={reverse}>
+      <Comment reverse={reverse}>
         <div id="header">
           <span id="title">답변</span> <span id="date">{date}</span>
         </div>
@@ -29,23 +29,8 @@ const Container = styled.div`
   background-color: #f8f8fb;
   padding: 5px 0;
 
-  #replyText {
-    overflow: auto;
-    outline: none;
-
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-
-    resize: none;
-
-    word-spacing: 0;
-
-    width: 80%;
-    margin: 8px auto;
-    background-color: #ffffff;
-    border: 1px solid #d0d0d0;
-    padding: 10px;
+  @media (max-width: 500px) {
+    background-color: ${({ reverse }) => (reverse ? "#ffffff" : "#f8f8fb")};
   }
 `;
 
@@ -54,6 +39,10 @@ const Comment = styled.div`
   background-color: #ffffff;
   margin: 0 auto;
   font-size: 15px;
+
+  @media (max-width: 500px) {
+    background-color: ${({ reverse }) => (reverse ? "#f8f8fb" : "#ffffff")};
+  }
 
   #header {
     margin: 20px;
