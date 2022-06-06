@@ -1,21 +1,22 @@
 import styled from "styled-components";
-import { FakegroupList } from "../MyMockData";
 import MyWishListCard from "./MyWishListCard";
 
-const GroupWishListTab = () => {
+const GroupWishListTab = ({ groups }) => {
   return (
     <Container>
       <Count>
-        총 <strong>{FakegroupList.length}</strong>개
+        총 <strong>{groups.length}</strong>개
       </Count>
       <GroupWishListWrapper>
-        {FakegroupList.map((group) => (
+        {groups.map((group) => (
           <MyWishListCard
-            title={group.title}
-            price={group.price}
-            salePrice={group.salePrcie}
-            discountRate={group.discountRate}
-            leftParticipants={group.leftParticipants}
+            key={group.groupId}
+            title={group.groupName}
+            images={group.productInfo.images}
+            price={group.productInfo.price}
+            salePrice={group.productInfo.salePrice}
+            discountRate={group.productInfo.discountRate}
+            leftParticipants={group.remainedPeronnel}
             deadline={group.deadline}
             contentPercent={["55%", "55%"]}
           />

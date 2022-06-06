@@ -8,21 +8,22 @@ import * as Api from "api";
 
 const MyWishListPage = () => {
   const [tab, setTab] = useState("tab1");
+  const [groups, setGroups] = useState([]);
 
-  // const fetchWishGroups = async () => {
-  //   const res = await Api.get("toggle/groups");
-  //   console.log(res.data);
-  // };
+  const fetchWishGroups = async () => {
+    const res = await Api.get("toggle/groups");
+    setGroups(res.data);
+  };
 
   // const fetchWishProducts = async () => {
   //   const res = await Api.get("toggle/products");
   //   console.log(res.data);
   // };
 
-  // useEffect(() => {
-  //   fetchWishGroups();
-  //   fetchWishProducts();
-  // });
+  useEffect(() => {
+    fetchWishGroups();
+    //fetchWishProducts();
+  }, []);
 
   return (
     <Container>
@@ -34,7 +35,7 @@ const MyWishListPage = () => {
         setTab={setTab}
         tabNames={["공동구매", "판매상품"]}
       />
-      {tab === "tab1" && <GroupWishListTab />}
+      {tab === "tab1" && <GroupWishListTab groups={groups} />}
       {tab === "tab2" && <ProductWishListTab />}
       <TabBar />
     </Container>

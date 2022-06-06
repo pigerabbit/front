@@ -1,30 +1,21 @@
 import styled from "styled-components";
-
-const groupType = {
-  normal: "택배공구",
-  local: "지역공구",
-  pickup: "픽업공구",
-  ticket: "이용권공구",
-};
-
-const groupState = {
-  0: ["진행중"],
-  1: ["진행중", "모집성공"],
-  "-1": ["기간만료"],
-  2: ["진행중", "결제대기중"],
-  "-2": ["진행중", "결제실패"],
-  3: ["결제완료", "배송중"],
-  "-3": ["결제완료", "배송대기중"],
-  4: ["결제완료", "배송완료"],
-  "-4": ["결제완료", "교환/반품"],
-};
+import {
+  groupType,
+  groupState,
+  returnBgColor,
+  returnFontColor,
+  formatDate,
+  formatParticipateDate,
+} from "../MyPageModule";
 
 const MyPurchaseListCard = ({
   type,
+  images,
   groupId,
   userId,
   state,
   title,
+  price,
   remained,
   participants,
   deadline,
@@ -32,29 +23,6 @@ const MyPurchaseListCard = ({
   setIsOpenPopUpCard,
   setCancelDataId,
 }) => {
-  const returnBgColor = () => {
-    //진행중
-    if ([-2, 0, 1, 2].includes(state)) {
-      return "#00c75a";
-    }
-    //결제완료
-    else if ([-4, -3, 3, 4].includes(state)) {
-      return "#ffb564";
-    }
-    //기간만료
-    else if (state === -1) {
-      return "#e8e8e8";
-    }
-  };
-
-  const returnFontColor = () => {
-    if (state === -1) {
-      return "#505050";
-    } else {
-      return "#fff";
-    }
-  };
-
   const myInfo = participants.filter((p) => p.userId === userId);
 
   const handleClick = () => {
@@ -64,10 +32,10 @@ const MyPurchaseListCard = ({
 
   return (
     <CardContainer>
-      {!isOpenTab && <p>{myInfo[0].participantDate}</p>}
+      {!isOpenTab && <p>{formatParticipateDate(myInfo[0].participantDate)}</p>}
       <CardWrapper>
         <CardImageWrapper>
-          <CardImage />
+          <CardImage images={images} />
           {groupState[state].length > 1 && (
             <StateMessage>
               <p>{groupState[state][1]}</p>
@@ -80,16 +48,18 @@ const MyPurchaseListCard = ({
             {title}
           </Title>
           <State
-            bgColor={() => returnBgColor()}
-            fontColor={() => returnFontColor()}
+            bgColor={() => returnBgColor(state)}
+            fontColor={() => returnFontColor(state)}
           >
             {groupState[state][0]}
           </State>
-          {(state === 0 || state === 2) && <span>{`${remained}명 남음`}</span>}
+          {(state === 0 || state === 2) && <span>{`${remained}개 남음`}</span>}
           {isOpenTab ? (
-            <Message>{deadline}</Message>
+            <Message>{formatDate(deadline)}</Message>
           ) : (
-            <Message>{`${myInfo[0].quantity}개`}</Message>
+            <Message>{`${myInfo[0].quantity}개 ${
+              myInfo[0].quantity * price
+            }원`}</Message>
           )}
         </CardContent>
       </CardWrapper>
@@ -143,7 +113,8 @@ const CardImageWrapper = styled.div`
 `;
 
 const CardImage = styled.div`
-  background-image: url("./원두.jpeg");
+  background-color: #c4c4c4;
+  background-image: url(${(props) => props.images});
   background-size: cover;
   border-radius: 10px;
   width: 100%;

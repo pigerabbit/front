@@ -74,6 +74,7 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
               groupId={group.groupId}
               userId={userId}
               type={group.groupType}
+              images={group.productInfo.images}
               state={group.state}
               title={group.groupName}
               remained={group.remainedPersonnel}
