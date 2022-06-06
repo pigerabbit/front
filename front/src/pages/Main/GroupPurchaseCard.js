@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
@@ -6,8 +6,6 @@ import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
 const GroupPurchaseCard = ({ purchase }) => {
-  const [product, setProduct] = useState({});
-
   const getDeadline = (date) => {
     return `${date.substr(0, 4)}년 ${date.substr(5, 2)}월 ${date.substr(
       8,
@@ -15,18 +13,9 @@ const GroupPurchaseCard = ({ purchase }) => {
     )}일 ${date.substr(11, 2)}시까지`;
   };
 
-  const getProductData = async () => {
-    const res = await Api.get("products", purchase.productId);
-    setProduct(res.data.payload.resultProduct);
-  };
-
-  useEffect(() => {
-    getProductData();
-  }, []);
-
   return (
     <Container>
-      <Image url={product?.images} />
+      <Image url={purchase?.productInfo?.images} />
       <Information>
         <CardTitle>
           <span>
@@ -35,16 +24,16 @@ const GroupPurchaseCard = ({ purchase }) => {
           <span>{purchase.groupName}</span>
         </CardTitle>
         <Price>
-          <span>{product?.discountRate}%</span>
-          <span>{product?.salePrice}원</span>
-          <span>{product?.price}원</span>
+          <span>{purchase?.productInfo?.discountRate}%</span>
+          <span>{purchase?.productInfo?.salePrice}원</span>
+          <span>{purchase?.productInfo?.price}원</span>
         </Price>
         <Deadline>
           <div>
-            <span>{purchase.remainedPersonnel}개</span>
+            <span>{purchase?.remainedPersonnel}개</span>
             <span> 남음</span>
           </div>
-          <span>{getDeadline(purchase.deadline)}</span>
+          <span>{getDeadline(purchase?.deadline)}</span>
         </Deadline>
       </Information>
       <FontAwesomeIcon icon={Heart} size="1x" />
