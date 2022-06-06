@@ -16,6 +16,7 @@ const ProductReviewTab = ({ product }) => {
   const [showMyReviews, setShowMyReviews] = useState(false);
 
   const n = reviews.length;
+  const isSeller = product.userId === user.id;
 
   const getReviews = async () => {
     try {
@@ -72,6 +73,7 @@ const ProductReviewTab = ({ product }) => {
         {!showMyReviews
           ? reviews.map((v, i) => (
               <ProductReviewCard
+                key={v.postId}
                 postId={v.postId}
                 writerId={v.writer}
                 title={v.title}
@@ -79,11 +81,12 @@ const ProductReviewTab = ({ product }) => {
                 image={v.postImg}
                 createdAt={v.createdAt}
                 commentCount={v.commentCount}
-                key={v.postId}
+                isSeller={isSeller}
               />
             ))
           : myReviews.map((v, i) => (
               <ProductReviewCard
+                key={v.postId}
                 postId={v.postId}
                 writerId={v.writer}
                 title={v.title}
@@ -91,7 +94,6 @@ const ProductReviewTab = ({ product }) => {
                 image={v.image}
                 createdAt={v.createdAt}
                 commentCount={v.commentCount}
-                key={v.postId}
               />
             ))}
       </Review>

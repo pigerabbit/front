@@ -1,20 +1,31 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "api";
+import axios from "axios";
+
+import ProductReplyForm from "./ProductReplyForm";
+import ProductCommentCard from "./ProductCommentCard";
 
 const ProductReviewCard = ({
+  postId,
   writerId,
   title,
   content,
   image,
   createdAt,
-  key,
+  commentCount,
+  isSeller,
 }) => {
-  const [open, setOpen] = useState(false);
   const [writer, setWriter] = useState({});
+  const [comment, setComment] = useState({});
+
+  const [open, setOpen] = useState(false);
+  const [showReply, setShowReply] = useState(false);
+  const [isReplied, setIsReplied] = useState(commentCount > 0 ? true : false);
   const date = createdAt.split("T")[0];
 
   const showDetail = (e) => {
+    if (e.target.id.includes("reply")) return;
     setOpen((cur) => !cur);
   };
 
@@ -27,12 +38,29 @@ const ProductReviewCard = ({
     }
   };
 
+  const getComments = async () => {
+    try {
+      const res = await axios.get(
+        Api.serverUrl + `posts?receiver=${postId}&type=comment`
+      );
+      setComment(res.data.payload[0]);
+    } catch (e) {
+      console.log("댓글 못 불러옴");
+    }
+  };
+
   useEffect(() => {
     getWriter();
+    if (commentCount > 0) getComments();
   }, []);
 
   return (
-    <Container onClick={showDetail} open={open} image={image}>
+    <Container
+      onClick={showDetail}
+      open={open}
+      image={image}
+      isReplied={isReplied}
+    >
       <Header>
         {/* <WriterImg src={writer.imageLink} alt="상세정보 사진"></WriterImg> */}
         <WriterImg>
@@ -47,10 +75,47 @@ const ProductReviewCard = ({
           </WriterInfo>
         </div>
       </Header>
+      {isSeller && open && !showReply && !isReplied && (
+        <button
+          id="replyButton"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowReply(true);
+          }}
+        >
+          답변하기
+        </button>
+      )}
       <Content open={open} image={image}>
         {content}
       </Content>
       {image && <ReviewImg src={image} alt="리뷰 사진" open={open}></ReviewImg>}
+
+      {open && (
+        <div>
+          {showReply && !isReplied && (
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <ProductReplyForm
+                id="replyForm"
+                postId={postId}
+                setShowReply={setShowReply}
+                setComment={setComment}
+                setIsReplied={setIsReplied}
+              />
+            </div>
+          )}
+          {isReplied && (
+            <ProductCommentCard
+              createdAt={comment.createdAt}
+              content={comment.content}
+            />
+          )}
+        </div>
+      )}
     </Container>
   );
 };
@@ -64,13 +129,23 @@ const Container = styled.div`
   min-height: 130px;
   vertical-align: middle;
   border-bottom: 1px solid #d0d0d0;
-  background-color: ${({ open, image }) =>
-    open && image ? "#f8f8fB" : "#ffffff"};
+  background-color: ${({ open, image, isReplied }) =>
+    open && (image || isReplied) ? "#f8f8fB" : "#ffffff"};
   cursor: ${({ image }) => (image ? "pointer" : "default")};
 
   @media (max-width: 500px) {
     cursor: default;
     background-color: #ffffff;
+  }
+
+  #replyButton {
+    position: absolute;
+    right: 20px;
+    width: 70px;
+    height: 30px;
+    color: #ffffff;
+    border: none;
+    background-color: #ababab;
   }
 `;
 

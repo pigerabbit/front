@@ -15,6 +15,7 @@ const ProductInquiryTab = ({ product }) => {
   const [isWriting, setIsWriting] = useState(false);
   const [showMyInquiries, setShowMyInquiries] = useState(false);
 
+  const isSeller = product.userId === user.id;
   const n = inquiries.length;
 
   const getInquiries = async () => {
@@ -69,6 +70,7 @@ const ProductInquiryTab = ({ product }) => {
         {!showMyInquiries
           ? inquiries.map((v) => (
               <ProductInquiryCard
+                key={v.postId}
                 writerId={v.writer}
                 title={v.title}
                 content={v.content}
@@ -76,11 +78,12 @@ const ProductInquiryTab = ({ product }) => {
                 createdAt={v.createdAt}
                 commentCount={v.commentCount}
                 postId={v.postId}
-                key={v.postId}
+                isSeller={isSeller}
               />
             ))
           : myInquiries.map((v) => (
               <ProductInquiryCard
+                key={v.postId}
                 writerId={v.writer}
                 title={v.title}
                 content={v.content}
@@ -88,7 +91,6 @@ const ProductInquiryTab = ({ product }) => {
                 createdAt={v.createdAt}
                 commentCount={v.commentCount}
                 postId={v.postId}
-                key={v.postId}
               />
             ))}
       </Inquiry>
