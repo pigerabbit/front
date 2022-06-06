@@ -62,7 +62,7 @@ const ProductDetailPage = () => {
         <>
           <Header>
             <Top>
-              <GoBack onClick={() => navigate("/products")} />
+              <GoBack onClick={() => navigate(-1)} />
               <ProductTitle>{product.name}</ProductTitle>
               <ButtonTopContainer>
                 <div
