@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "api";
@@ -6,13 +6,21 @@ import * as Api from "api";
 import UserTopBar from "./UserTopBar";
 import UserInput from "./UserInput";
 import UserButton from "./UserButton";
+import { useSelector } from "react-redux";
 
 const BusinessAuthPage = () => {
+  const { user } = useSelector((state) => state.user);
   const [businessNumber, setBusinessNumber] = useState("");
-  const [representative, setRepresentative] = useState("");
+  const [representative, setRepresentative] = useState(
+    (user?.business && user?.business[0].ownerName) || ""
+  );
   const [openingDate, setOpeningDate] = useState("");
-  const [businessAddress, setBusinessAddress] = useState("");
-  const [businessName, setBusinessName] = useState("");
+  const [businessAddress, setBusinessAddress] = useState(
+    (user?.business && user?.business[0].businessLocation) || ""
+  );
+  const [businessName, setBusinessName] = useState(
+    (user?.business && user?.business[0].businessName) || ""
+  );
 
   const businessNumberValid = businessNumber.length > 0;
   const representativeValid = representative.length > 0;
@@ -30,7 +38,7 @@ const BusinessAuthPage = () => {
 
   return (
     <Container>
-      <UserTopBar pageName={"사업자 인증"} />
+      <UserTopBar pageName={user?.business ? "판매처 수정" : "사업자 인증"} />
 
       <InputListContainter>
         <UserInput
@@ -80,7 +88,7 @@ const BusinessAuthPage = () => {
         valid={isFormValid}
         width={"long"}
       >
-        사업자 인증하기
+        {user?.business ? "판매처 수정하기" : "사업자 인증하기"}
       </UserButton>
     </Container>
   );
