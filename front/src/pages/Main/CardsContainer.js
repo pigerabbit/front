@@ -5,7 +5,7 @@ import { faArrowRotateLeft } from "@fortawesome/free-solid-svg-icons";
 
 import GroupPurchaseCard from "./GroupPurchaseCard";
 
-const CardsContainer = ({ title, groupPurchaseList }) => {
+const CardsContainer = ({ title, groupPurchaseList, setConfirmationIcon }) => {
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(4);
   const [page, setPage] = useState(1);
@@ -31,7 +31,10 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
       <CardList>
         {groupPurchaseList.slice(from, to).map((purchase, idx) => (
           <CardContainer key={purchase.groupId}>
-            <GroupPurchaseCard purchase={purchase} />
+            <GroupPurchaseCard
+              purchase={purchase}
+              setConfirmationIcon={setConfirmationIcon}
+            />
             {idx < 3 && <div className="line" />}
           </CardContainer>
         ))}

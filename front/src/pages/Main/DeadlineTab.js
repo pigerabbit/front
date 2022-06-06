@@ -4,7 +4,7 @@ import * as Api from "api";
 
 import CardContainer from "./CardsContainer";
 
-const DeadlineTab = () => {
+const DeadlineTab = ({ setConfirmationIcon }) => {
   const [personGroupList, setPersonGroupList] = useState([]);
   const [timeGroupList, setTimeGroupList] = useState([]);
   const productDeadlineTitle = "달성 인원이 얼마 남지 않았어요!";
@@ -32,11 +32,13 @@ const DeadlineTab = () => {
       <CardContainer
         title={productDeadlineTitle}
         groupPurchaseList={personGroupList}
+        setConfirmationIcon={setConfirmationIcon}
       ></CardContainer>
 
       <CardContainer
         title={timeDeadlineTitle}
         groupPurchaseList={timeGroupList}
+        setConfirmationIcon={setConfirmationIcon}
       ></CardContainer>
     </Container>
   );

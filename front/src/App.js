@@ -29,12 +29,12 @@ function App() {
   };
 
   const mainPage = wrapFetchUser(<MainPage />);
+  const productsPage = wrapFetchUser(<ProductsPage />);
   const myPage = wrapFetchUser(<MyPage />);
   const reviewsPage = wrapFetchUser(<ReviewsPage />);
   const inquiresPage = wrapFetchUser(<InquiresPage />);
   const marketPage = wrapFetchUser(<MarketPage />);
   const businessAuthPage = wrapFetchUser(<BusinessAuthPage />);
-  const productPage = wrapFetchUser(<ProductsPage />);
   const mywishlistPage = wrapFetchUser(<MyWishListPage />);
   const mypurchaselistPage = wrapFetchUser(<MyPurchaseListPage />);
   const searchPage = wrapFetchUser(<SearchPage />);
@@ -48,6 +48,7 @@ function App() {
       <Container>
         <Routes>
           <Route path="/" element={mainPage} />
+          <Route path="/products" element={productsPage} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/login/email" element={<EmailLoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
@@ -56,7 +57,6 @@ function App() {
           <Route path="/mypage/reviews" element={reviewsPage} />
           <Route path="/mypage/inquires" element={inquiresPage} />
           <Route path="/markets/:id" element={marketPage} />
-          <Route path="/products" element={productPage} />
           <Route path="/wishlist" element={mywishlistPage} />
           <Route path="/purchaselist" element={mypurchaselistPage} />
           <Route path="/search" element={searchPage} />

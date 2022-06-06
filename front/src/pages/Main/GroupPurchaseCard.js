@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
-const GroupPurchaseCard = ({ purchase }) => {
-  const [product, setProduct] = useState({});
+const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
+  const [wish, setWish] = useState(purchase?.toggle === 0 ? false : true);
 
   const getDeadline = (date) => {
     return `${date.substr(0, 4)}년 ${date.substr(5, 2)}월 ${date.substr(
@@ -15,18 +15,52 @@ const GroupPurchaseCard = ({ purchase }) => {
     )}일 ${date.substr(11, 2)}시까지`;
   };
 
-  const getProductData = async () => {
-    const res = await Api.get("products", purchase.productId);
-    setProduct(res.data.payload.resultProduct);
+  const unShowIcon = () => {
+    setTimeout(() => {
+      setConfirmationIcon((cur) => {
+        return { ...cur, show: false };
+      });
+    }, 1600);
   };
 
-  useEffect(() => {
-    getProductData();
-  }, []);
+  const confirmWish = () => {
+    setConfirmationIcon({
+      show: true,
+      backgroundColor: "#FF6A6A;",
+      color: "white",
+      icon: fullHeart,
+      text: "찜!",
+    });
+
+    unShowIcon();
+  };
+
+  const confirmUnwish = () => {
+    setConfirmationIcon({
+      show: true,
+      backgroundColor: "#ABABAB;",
+      color: "white",
+      icon: fullHeart,
+      text: "찜 취소",
+    });
+
+    unShowIcon();
+  };
+
+  const handleToggle = async () => {
+    if (!wish) {
+      confirmWish();
+    } else {
+      confirmUnwish();
+    }
+
+    await Api.put(`toggle/group/${purchase._id}`);
+    setWish((cur) => !cur);
+  };
 
   return (
-    <Container>
-      <Image url={product?.images} />
+    <Container wish={wish}>
+      <Image url={purchase?.productInfo?.images} />
       <Information>
         <CardTitle>
           <span>
@@ -35,19 +69,21 @@ const GroupPurchaseCard = ({ purchase }) => {
           <span>{purchase.groupName}</span>
         </CardTitle>
         <Price>
-          <span>{product?.discountRate}%</span>
-          <span>{product?.salePrice}원</span>
-          <span>{product?.price}원</span>
+          <span>{purchase?.productInfo?.discountRate}%</span>
+          <span>{purchase?.productInfo?.salePrice}원</span>
+          <span>{purchase?.productInfo?.price}원</span>
         </Price>
         <Deadline>
           <div>
-            <span>{purchase.remainedPersonnel}개</span>
+            <span>{purchase?.remainedPersonnel}개</span>
             <span> 남음</span>
           </div>
-          <span>{getDeadline(purchase.deadline)}</span>
+          <span>{getDeadline(purchase?.deadline)}</span>
         </Deadline>
       </Information>
-      <FontAwesomeIcon icon={Heart} size="1x" />
+
+      {!wish && <FontAwesomeIcon icon={Heart} onClick={handleToggle} />}
+      {wish && <FontAwesomeIcon icon={fullHeart} onClick={handleToggle} />}
     </Container>
   );
 };
@@ -64,6 +100,10 @@ const Container = styled.div`
     position: absolute;
     right: 0;
     bottom: 0;
+    color: ${({ wish }) => {
+      if (wish) return "#FF6A6A;";
+      else return "#9c9c9c;";
+    }};
   }
 `;
 
