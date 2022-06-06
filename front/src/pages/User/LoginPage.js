@@ -12,7 +12,7 @@ const LoginPage = () => {
       <UserTopBar pageName={"로그인"} />
 
       <ContentContainer>
-        <Title>소공소공</Title>
+        <Title>동구라미</Title>
 
         <SocialButtonContainer>
           <SocialButton></SocialButton>
@@ -31,7 +31,7 @@ const LoginPage = () => {
         </ButtonContainter>
 
         <ButtonContainter>
-          <span>아직 소공소공 회원이 아니신가요?</span>
+          <span>아직 동구라미 회원이 아니신가요?</span>
           <MoveButton
             onClick={() => {
               navigate("/register");

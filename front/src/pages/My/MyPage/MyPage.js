@@ -48,7 +48,7 @@ const MyPage = () => {
   }, [password]);
 
   return (
-    <MyPageLayout pageName={"my소공"}>
+    <MyPageLayout pageName={"my동구"}>
       {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
 
       <Section>
