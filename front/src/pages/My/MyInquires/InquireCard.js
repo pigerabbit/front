@@ -1,37 +1,47 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import * as Api from "api";
 
 import ConfirmationPopup from "../ConfirmationPopup";
 
-const InquireCard = ({ inquire }) => {
+const InquireCard = ({ inquire, deleteAnInquire }) => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
+  const navigate = useNavigate();
+
   const getDate = (date) => {
-    return `${date.slice(0, 4)}.${date.slice(5, 7)}.${date.slice(8, 10)}`;
+    if (date)
+      return `${date.slice(0, 4)}.${date.slice(5, 7)}.${date.slice(8, 10)}`;
+  };
+
+  const handleDelete = async () => {
+    deleteAnInquire(inquire.post.postId);
+    await Api.delete("posts", inquire.post.postId);
   };
 
   return (
     <Container>
-      <Content>
-        <Badge reply={inquire.reply}>
-          {inquire.reply ? "답변완료" : "미답변"}
+      <Content
+        onClick={() => {
+          navigate(`/products/${inquire.post.receiver}`);
+        }}
+      >
+        <Badge reply={inquire?.post.reply}>
+          {inquire?.post.reply ? "답변완료" : "미답변"}
         </Badge>
 
         <Title>논산에서 자란 신선한 딸기딸기</Title>
-        <Date>{getDate(inquire.createdAt)}</Date>
-        <Inquire reply={inquire.reply}>{inquire.content}</Inquire>
+        <Date>{getDate(inquire?.post.createdAt)}</Date>
+        <Inquire reply={inquire?.post.reply}>{inquire?.post.content}</Inquire>
 
-        {inquire.reply && (
+        {inquire?.post.reply && (
           <Reply>
             <ReplyTitle>
               <span>답변</span>
-              <span>2022.05.05</span>
+              <span>{getDate(inquire?.commentList[0].createdAt)}</span>
             </ReplyTitle>
-            <ReplyContent>
-              안녕하세요. 담당자입니다. 문의 주신 상품의 경우, 최소 5묶음부터
-              최대 10묶음까지 구매 가능합니다. 감사합니다.
-            </ReplyContent>
+            <ReplyContent>{inquire?.commentList[0].content}</ReplyContent>
             <div>
               ※ 답변 내용은 각 판매사에서 작성되며,
               <br />
@@ -53,6 +63,7 @@ const InquireCard = ({ inquire }) => {
         isOpenPopup={isOpenPopup}
         setIsOpenPopup={setIsOpenPopup}
         buttonContent="삭제"
+        handleButtonClick={handleDelete}
       >
         <ConfirmationContent>문의를 정말 삭제하시겠습니까?</ConfirmationContent>
       </ConfirmationPopup>
