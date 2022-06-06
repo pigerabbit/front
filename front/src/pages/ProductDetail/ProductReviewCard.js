@@ -134,7 +134,8 @@ const Container = styled.div`
   border-bottom: 1px solid #d0d0d0;
   background-color: ${({ open, image, isReplied, isSeller }) =>
     open && (image || isReplied || isSeller) ? "#f8f8fB" : "#ffffff"};
-  cursor: ${({ image }) => (image ? "pointer" : "default")};
+  cursor: ${({ image, isReplied, isSeller }) =>
+    image || isReplied || isSeller ? "pointer" : "default"};
   padding-bottom: ${({ open, isReplied }) =>
     open && isReplied ? "30px" : "0px"};
 
