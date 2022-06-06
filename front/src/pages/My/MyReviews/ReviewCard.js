@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import * as Api from "api";
 
 import ConfirmationPopup from "../ConfirmationPopup";
 
-const ReviewCard = ({ review }) => {
+const ReviewCard = ({ review, deleteReview }) => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const navigate = useNavigate();
 
   const getDate = (date) => {
     return `${date.slice(0, 4)}.${date.slice(5, 7)}.${date.slice(8, 10)}`;
+  };
+
+  const handleDelete = async () => {
+    deleteReview(review.postId);
+    await Api.delete("posts", review.postId);
   };
 
   return (
@@ -37,6 +43,7 @@ const ReviewCard = ({ review }) => {
         isOpenPopup={isOpenPopup}
         setIsOpenPopup={setIsOpenPopup}
         buttonContent="삭제"
+        handleButtonClick={handleDelete}
       >
         <ConfirmationContent>후기를 정말 삭제하시겠습니까?</ConfirmationContent>
       </ConfirmationPopup>
