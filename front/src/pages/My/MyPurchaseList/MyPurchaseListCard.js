@@ -24,7 +24,7 @@ const MyPurchaseListCard = ({
   userId,
   state,
   title,
-  reamined,
+  remained,
   participants,
   deadline,
   isOpenTab,
@@ -75,7 +75,7 @@ const MyPurchaseListCard = ({
           <State bgColor={() => returnBgColor()} color={() => returnColor()}>
             {groupState[state][0]}
           </State>
-          {(state === 0 || state === 2) && <span>{`${reamined}명 남음`}</span>}
+          {(state === 0 || state === 2) && <span>{`${remained}명 남음`}</span>}
           {isOpenTab ? (
             <Message>{deadline}</Message>
           ) : (
@@ -83,7 +83,7 @@ const MyPurchaseListCard = ({
           )}
         </CardContent>
       </CardWrapper>
-      {state === 0 && (
+      {state === 0 && isOpenTab && (
         <CardButton bgColor="#A0A0A0" onClick={() => setIsOpenPopUpCard(true)}>
           {isOpenTab ? "공구 중지" : "참여 취소"}
         </CardButton>

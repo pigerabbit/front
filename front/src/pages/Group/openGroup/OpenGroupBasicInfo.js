@@ -37,6 +37,10 @@ const OpenGroupBasicInfo = ({ product, type }) => {
               <p>{product.shippingFee}원</p>
             </Line>
           )}
+          <Line>
+            <h3>공구 성사 개수</h3>
+            <p>{product.minPurchaseQty}개</p>
+          </Line>
         </Content>
       </Wrapper>
     </Container>
@@ -94,12 +98,13 @@ const Line = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 5%;
+  margin-bottom: 7%;
   box-sizing: border-box;
   padding: 0 10%;
   > h3 {
-    width: 100px;
+    width: 200px;
     display: inline-block;
+    font-size: 18px;
   }
   > p {
     width: 150px;

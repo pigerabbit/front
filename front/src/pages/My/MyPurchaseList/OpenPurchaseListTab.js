@@ -34,11 +34,12 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
     }
   }, [option]);
 
-  const handleClick = (option) => {
+  const handleOptionClick = (option) => {
     setOption(option);
     setIsOpen(false);
   };
 
+  const handleStopGroupClick = async () => {};
   return (
     <Container>
       <InfoWrapper>
@@ -55,7 +56,7 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
           {options.map((option) => (
             <Option
               key={option}
-              onClick={() => handleClick(option)}
+              onClick={() => handleOptionClick(option)}
               open={isOpen ? "block" : "none"}
             >
               {option}
@@ -72,7 +73,7 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
               type={group.groupType}
               state={group.state}
               title={group.groupName}
-              reamined={group.remainedPersonnel}
+              remained={group.remainedPersonnel}
               participants={group.participants}
               deadline={group.deadline}
               isOpenTab={true}
@@ -89,7 +90,9 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
         <PopUpCard>
           <h3>공동구매를 정말 중지하시겠습니까?</h3>
           <ButtonWrapper>
-            <Button bgColor="#FFB564">공구 중지하기</Button>
+            <Button bgColor="#FFB564" onClick={() => handleStopGroupClick()}>
+              공구 중지하기
+            </Button>
             <Button bgColor="#D0D0D0" onClick={() => setIsOpenPopUpCard(false)}>
               닫기
             </Button>
@@ -136,6 +139,7 @@ const InfoWrapper = styled.div`
 
 const SelectBoxContainer = styled.div`
   position: absolute;
+  z-index: 10;
   width: 100px;
   right: 0px;
   display: inline-block;

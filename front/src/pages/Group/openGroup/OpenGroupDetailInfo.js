@@ -26,6 +26,16 @@ const OpenGroupDetailInfo = ({ product, type }) => {
     return `${dueDate} ${dueTime}`;
   };
 
+  const [count, setCount] = useState(0);
+  const [groupName, setGroupName] = useState("");
+  const [location, setLocation] = useState("");
+  const [hour, setHour] = useState(12);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const groupNameValid = groupName.length > 0;
+  const locationValid = location.length > 0;
+  const isValid = groupNameValid && locationValid;
+
   const postOpenGroup = async () => {
     try {
       const deadline = formatDate(hour);
@@ -36,7 +46,6 @@ const OpenGroupDetailInfo = ({ product, type }) => {
         state: 0,
         groupName,
         deadline,
-        totalQuantity: totalCount,
         quantity: count,
       });
       if (res.data.success) {
@@ -46,17 +55,6 @@ const OpenGroupDetailInfo = ({ product, type }) => {
       console.log(err);
     }
   };
-
-  const [count, setCount] = useState(0);
-  const [totalCount, setTotalCount] = useState(product.minPurchaseQty);
-  const [groupName, setGroupName] = useState("");
-  const [location, setLocation] = useState("");
-  const [hour, setHour] = useState(12);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const groupNameValid = groupName.length > 0;
-  const locationValid = location.length > 0;
-  const isValid = groupNameValid && locationValid;
 
   return (
     <>
@@ -72,27 +70,6 @@ const OpenGroupDetailInfo = ({ product, type }) => {
             />
           </Line>
           <Line>
-            <h3>공구 개수</h3>
-            <CounterWrapper>
-              <Counter>
-                <button
-                  disabled={totalCount <= product.minPurchaseQty}
-                  onClick={() => setTotalCount((prev) => prev - 1)}
-                >
-                  <FontAwesomeIcon icon={faMinus} />
-                </button>
-                <span>{totalCount}</span>
-                <button
-                  disabled={totalCount > product.maxPurchaseQty}
-                  onClick={() => setTotalCount((prev) => prev + 1)}
-                >
-                  <FontAwesomeIcon icon={faPlus} />
-                </button>
-              </Counter>
-              <span>{`최대 ${product.maxPurchaseQty}개 가능`}</span>
-            </CounterWrapper>
-          </Line>
-          <Line>
             <h3>공구 참여 개수</h3>
             <CounterWrapper>
               <Counter>
@@ -104,12 +81,13 @@ const OpenGroupDetailInfo = ({ product, type }) => {
                 </button>
                 <span>{count}</span>
                 <button
-                  disabled={count > totalCount}
+                  disabled={count > product.minPurchaseQty}
                   onClick={() => setCount((prev) => prev + 1)}
                 >
                   <FontAwesomeIcon icon={faPlus} />
                 </button>
               </Counter>
+              <span>{`최대 ${product.minPurchaseQty}개 가능`}</span>
             </CounterWrapper>
           </Line>
           <Line>
@@ -135,8 +113,12 @@ const OpenGroupDetailInfo = ({ product, type }) => {
         </Content>
       </DetailInfoContainer>
       <ButtonWrapper>
-        <Button disabled={!isValid} valid={isValid}>
-          확인
+        <Button
+          disabled={!isValid}
+          valid={isValid}
+          onClick={() => postOpenGroup()}
+        >
+          공구 열기
         </Button>
       </ButtonWrapper>
     </>
@@ -168,7 +150,7 @@ const Line = styled.div`
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  margin-bottom: 2%;
+  margin-bottom: 5%;
   padding: 0 5%;
   > h3 {
     width: 100px;
