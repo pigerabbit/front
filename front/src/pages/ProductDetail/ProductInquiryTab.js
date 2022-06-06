@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useSelector } from "react-redux";
 import * as Api from "api";
 import axios from "axios";
 
@@ -8,8 +8,7 @@ import ProductInquiryCard from "./ProductInquiryCard";
 import ProductInquiryForm from "./ProductInquiryForm";
 
 const ProductInquiryTab = ({ product }) => {
-  const { user } = useSelector((state) => state.user, shallowEqual);
-  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
   const [inquiries, setInquiries] = useState([]);
   const [myInquiries, setMyInquiries] = useState([]);
@@ -23,8 +22,9 @@ const ProductInquiryTab = ({ product }) => {
       const res = await axios.get(
         Api.serverUrl + `posts?receiver=${product.id}&type=cs`
       );
+      const resMyInquiries = await Api.get(`posts/${user.id}/cs`);
       setInquiries(res.data.payload.filter((v) => v.type === "cs"));
-      setMyInquiries(myInquiries.slice(0, 3));
+      setMyInquiries(resMyInquiries.data.payload);
     } catch (e) {
       console.log(e);
     }
@@ -49,6 +49,7 @@ const ProductInquiryTab = ({ product }) => {
           productId={product.id}
           setIsWriting={setIsWriting}
           setInquiries={setInquiries}
+          setMyInquiries={setMyInquiries}
         />
       )}
       <Inquiry>

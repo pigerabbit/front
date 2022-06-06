@@ -3,7 +3,12 @@ import styled from "styled-components";
 import * as Api from "api";
 import axios from "axios";
 
-const ProductReviewForm = ({ productId, setIsWriting, setReviews }) => {
+const ProductReviewForm = ({
+  productId,
+  setIsWriting,
+  setReviews,
+  setMyReviews,
+}) => {
   const [reviewTitle, setReviewTitle] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [reviewImg, setReviewImg] = useState({});
@@ -38,6 +43,7 @@ const ProductReviewForm = ({ productId, setIsWriting, setReviews }) => {
       }
 
       setReviews((cur) => [newReview, ...cur]);
+      setMyReviews((cur) => [newReview, ...cur]);
 
       setIsWriting((cur) => !cur);
     } catch (e) {

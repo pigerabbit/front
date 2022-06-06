@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 
-const ProductInquiryForm = ({ productId, setIsWriting, setInquiries }) => {
+const ProductInquiryForm = ({
+  productId,
+  setIsWriting,
+  setInquiries,
+  setMyInquiries,
+}) => {
   const [inquiryTitle, setInquiryTitle] = useState("");
   const [inquiryText, setInquiryText] = useState("");
   const [inquiryImg, setInquiryImg] = useState({});
@@ -37,6 +42,7 @@ const ProductInquiryForm = ({ productId, setIsWriting, setInquiries }) => {
       }
 
       setInquiries((cur) => [newInquiry, ...cur]);
+      setMyInquiries((cur) => [newInquiry, ...cur]);
 
       setIsWriting((cur) => !cur);
     } catch (e) {
