@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import { formatDate } from "../MyPageModule";
 
 const MyWishListCard = ({
   title,
+  images,
   price,
   salePrice,
   discountRate,
@@ -12,13 +14,13 @@ const MyWishListCard = ({
   return (
     <CardContainer>
       <CardWrapper>
-        <CardImage />
+        <CardImage images={images} />
         <CardContent contentPercent={contentPercent}>
           <Name>{title}</Name>
           <Price>{`${price}원`}</Price>
           <DiscountRate>{`${discountRate}%`}</DiscountRate>
           <SalePrice>{`${salePrice}원`}</SalePrice>
-          {deadline && <Deadline>{`${deadline}까지`}</Deadline>}
+          {deadline && <Deadline>{`${formatDate(deadline)}`}</Deadline>}
         </CardContent>
         {leftParticipants && (
           <Leftparticipants>{`${leftParticipants}개 남음`}</Leftparticipants>
@@ -45,7 +47,9 @@ const CardWrapper = styled.div`
 `;
 
 const CardImage = styled.div`
-  background: #c0c0c0;
+  background-color: #c0c0c0;
+  background-image: url(${(props) => props.images});
+  background-size: cover;
   width: 150px;
   height: 110px;
   border-radius: 10px;
