@@ -9,6 +9,7 @@ import SideBar from "components/SideBar";
 import Category from "components/Category";
 import TabBar from "components/TabBar";
 import ConfirmationIcon from "components/ConfirmationIcon";
+import InfiniteScroll from "./InfiniteScroll";
 
 const options = [
   { eng: "groups", kor: "추천순" },
@@ -21,7 +22,10 @@ const ProductsPage = () => {
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
   const [option, setOption] = useState("groups");
   const [products, setProducts] = useState([]);
-  const [totalProductsNum, setTotalProductsNum] = useState([]);
+  const [totalProductsNum, setTotalProductsNum] = useState(0);
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(100);
+  // const [loading, setLoading] = useState(false);
   const [confirmationIcon, setConfirmationIcon] = useState({
     show: false,
     backgroundColor: "#70BD86;",
@@ -36,27 +40,37 @@ const ProductsPage = () => {
   const search = searchParams.get("search");
 
   const getProductData = async () => {
+    if (page === 0) return;
+
+    if (page > totalPage) return;
+
     try {
+      // setLoading(true);
+
       if (category) {
         const res = await Api.get("products", "", {
-          page: 1,
+          page: page,
           perPage: 6,
           category: category,
           option: option,
         });
 
-        setProducts(res.data.payload.resultList);
+        setProducts((cur) => [...cur, ...res.data.payload.resultList]);
         setTotalProductsNum(res.data.payload.len);
+        setTotalPage(res.data.payload.totalPage);
       } else {
         const res = await Api.get("products/search", "", {
-          page: 1,
+          page: page,
           perPage: 6,
           search: search,
           option: option,
         });
         setProducts(res.data.payload.resultList);
         setTotalProductsNum(res.data.payload.len);
+        setTotalPage(res.data.payload.totalPage);
       }
+
+      // setLoading(false);
     } catch (e) {
       setProducts([]);
       setTotalProductsNum(0);
@@ -65,7 +79,7 @@ const ProductsPage = () => {
 
   useEffect(() => {
     getProductData();
-  }, [option, category, search]);
+  }, [option, category, search, page]);
 
   return (
     <Container noProduct={products?.length === 0}>
@@ -95,14 +109,19 @@ const ProductsPage = () => {
       {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
 
       <ProductsCardContainer>
-        {products.map((product) => (
-          <ProductCard
-            product={product}
-            setConfirmationIcon={setConfirmationIcon}
-            key={product.id}
-          />
-        ))}
+        <>
+          {products.map((product) => (
+            <ProductCard
+              product={product}
+              setConfirmationIcon={setConfirmationIcon}
+              key={product.id}
+            />
+          ))}
+        </>
       </ProductsCardContainer>
+
+      {/* {loading && <Loading>로딩중</Loading>} */}
+      <InfiniteScroll setPage={setPage} />
 
       {products?.length === 0 && (
         <NoProductContainer>
@@ -130,7 +149,7 @@ const ProductsPage = () => {
 export default ProductsPage;
 
 const Container = styled.div`
-  padding-bottom: ${({ noProduct }) => (noProduct ? "0;" : "130px;")}
+  padding-bottom: ${({ noProduct }) => (noProduct ? "0;" : "100px;")}
   position: relative;
   width: 100%;
   max-width: 770px;
@@ -187,6 +206,11 @@ const ProductsCardContainer = styled.div`
   @media (min-width: 600px) {
     grid-template-columns: repeat(3, 1fr);
   }
+`;
+
+const Loading = styled.div`
+  border: 2px solid blue;
+  width: 100%;
 `;
 
 const NoProductContainer = styled.div`
