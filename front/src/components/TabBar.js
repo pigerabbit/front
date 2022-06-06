@@ -50,7 +50,7 @@ const TabBar = () => {
             }}
           >
             <FontAwesomeIcon icon={faUser} size="2x" />
-            <span>my소공</span>
+            <span>my동구</span>
           </Tab>
         </LeftRight>
       </Container>
@@ -66,7 +66,7 @@ const TabBar = () => {
         }}
       >
         <FontAwesomeIcon icon={faHouseChimney} size="2x" />
-        <span>소공소공</span>
+        <span>동구라미</span>
       </Cricle>
     </>
   );
