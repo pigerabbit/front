@@ -31,7 +31,7 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
           {inquire?.post.reply ? "답변완료" : "미답변"}
         </Badge>
 
-        <Title>논산에서 자란 신선한 딸기딸기</Title>
+        <Title>{inquire?.post.title}</Title>
         <Date>{getDate(inquire?.post.createdAt)}</Date>
         <Inquire reply={inquire?.post.reply}>{inquire?.post.content}</Inquire>
 
