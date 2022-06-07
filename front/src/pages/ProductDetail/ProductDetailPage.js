@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import * as Api from "api";
 import axios from "axios";
 
@@ -16,11 +15,6 @@ import ProductInquiryTab from "./ProductInquiryTab";
 import JoinGroupWindow from "./JoinGroupWindow";
 
 const ProductDetailPage = () => {
-  // const { user } = useSelector((state) => state.user, shallowEqual);
-
-  const navigate = useNavigate();
-  // const dispatch = useDispatch();
-
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
 
@@ -29,6 +23,8 @@ const ProductDetailPage = () => {
     index: -1,
     name: "fetch전",
   });
+
+  const navigate = useNavigate();
 
   const productId = useParams().id;
 
@@ -58,70 +54,67 @@ const ProductDetailPage = () => {
 
   return (
     <Container>
-      {!showJoinGroup ? (
-        <>
-          <Header>
-            <Top>
-              <GoBack onClick={() => navigate(-1)} />
-              <ProductTitle>{product.name}</ProductTitle>
-              <ButtonTopContainer>
-                <div
-                  id="home"
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={faHome}
-                    style={{ fontSize: "20px", color: "#f79831" }}
-                  />
-                </div>
-                <div
-                  id="user"
-                  onClick={() => {
-                    navigate("/mypage");
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={faUser}
-                    style={{ fontSize: "20px", color: "#f79831" }}
-                  />
-                </div>
-              </ButtonTopContainer>
-            </Top>
-            <ProductTabs
-              currentTab={currentTab}
-              setCurrentTab={setCurrentTab}
-            />
-          </Header>
-          <Body>
-            {currentTab.index === 0 && (
-              <ProductDescriptionTab product={product} seller={seller} />
-            )}
-            {currentTab.index === 1 && (
-              <ProductInformationTab product={product} seller={seller} />
-            )}
-            {currentTab.index === 2 && (
-              <ProductReviewTab product={product} seller={seller} />
-            )}
-            {currentTab.index === 3 && (
-              <ProductInquiryTab product={product} seller={seller} />
-            )}
-          </Body>
-          <ButtonsContainer>
-            <LeftButton position="left">공구 열기</LeftButton>
-            <RightButton
-              isFilled="true"
-              position="right"
-              onClick={() => setShowJoinGroup((cur) => !cur)}
+      <Header>
+        <Top>
+          <GoBack onClick={() => navigate(-1)} />
+          <ProductTitle>{product.name}</ProductTitle>
+          <ButtonTopContainer>
+            <div
+              id="home"
+              onClick={() => {
+                navigate("/");
+              }}
             >
-              공구 참여하기
-            </RightButton>
-          </ButtonsContainer>
-        </>
-      ) : (
-        <JoinGroupWindow />
-      )}
+              <FontAwesomeIcon
+                icon={faHome}
+                style={{ fontSize: "20px", color: "#f79831" }}
+              />
+            </div>
+            <div
+              id="user"
+              onClick={() => {
+                navigate("/mypage");
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faUser}
+                style={{ fontSize: "20px", color: "#f79831" }}
+              />
+            </div>
+          </ButtonTopContainer>
+        </Top>
+        <ProductTabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
+      </Header>
+      <Body>
+        {currentTab.index === 0 && (
+          <ProductDescriptionTab product={product} seller={seller} />
+        )}
+        {currentTab.index === 1 && (
+          <ProductInformationTab product={product} seller={seller} />
+        )}
+        {currentTab.index === 2 && (
+          <ProductReviewTab product={product} seller={seller} />
+        )}
+        {currentTab.index === 3 && (
+          <ProductInquiryTab product={product} seller={seller} />
+        )}
+        {showJoinGroup && (
+          <JoinGroupWindow
+            productId={product.id}
+            setShowJoinGroup={setShowJoinGroup}
+          />
+        )}
+      </Body>
+      <ButtonsContainer>
+        <LeftButton position="left">공구 열기</LeftButton>
+        <RightButton
+          isFilled="true"
+          position="right"
+          onClick={() => setShowJoinGroup((cur) => !cur)}
+        >
+          공구 참여하기
+        </RightButton>
+      </ButtonsContainer>
     </Container>
   );
 };
