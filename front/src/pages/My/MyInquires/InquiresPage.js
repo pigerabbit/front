@@ -18,7 +18,9 @@ const InquiresPage = () => {
   const { user } = useSelector((state) => state.user);
 
   const getInquires = async () => {
-    const res = await Api.get(`posts/${user?.id}/cs`);
+    const params = option === "all" ? {} : { reply: option };
+
+    const res = await Api.get(`posts/${user?.id}/cs`, "", params);
     setInquires(res.data.payload.postList);
   };
 
@@ -33,7 +35,7 @@ const InquiresPage = () => {
 
   useEffect(() => {
     getInquires();
-  }, []);
+  }, [option]);
 
   return (
     <MyPageLayout pageName={"나의 문의"}>
