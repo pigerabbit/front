@@ -41,7 +41,7 @@ const ProductDescriptionTab = ({ product, seller }) => {
 
   const putWish = async () => {
     try {
-      const res = await Api.put(`toggle/product/${product.id}`);
+      const res = await Api.put(`toggle/product/${product._id}`);
       setWish((cur) => !cur);
     } catch (e) {
       console.log("wish put 실패");
@@ -51,7 +51,8 @@ const ProductDescriptionTab = ({ product, seller }) => {
   const getWish = async () => {
     try {
       const res = await Api.get("toggle/products");
-      if (res.data.indexOf(product.id) !== -1) setWish(true);
+      if (res.data.filter((v) => v._id === product._id).length > 0)
+        setWish(true);
       else setWish(false);
     } catch (e) {
       console.log("wish get 실패");
