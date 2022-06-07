@@ -69,7 +69,7 @@ const ProductCard = ({ product, setConfirmationIcon }) => {
         }}
       >
         <div className="title">
-          [{product.userInfo.business[0].businessName}] {product.name}
+          [{product?.userInfo?.business[0].businessName}] {product.name}
         </div>
 
         <div className="price">
