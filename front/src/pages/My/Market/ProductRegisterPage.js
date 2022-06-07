@@ -22,7 +22,6 @@ const ProductRegisterPage = () => {
   const [detailInfo, setDetailInfo] = useState("");
   const [detailInfoImage, setDetailInfoImage] = useState("");
   const [shippingInfo, setShippingInfo] = useState("");
-  const [refundInfo, setRefundInfo] = useState("");
 
   const productNameValid = productName.length > 0;
   const productImageValid = productImage.length > 0;
@@ -40,7 +39,6 @@ const ProductRegisterPage = () => {
   const detailInfoValid = detailInfo.length > 0;
   const detailInfoImageValid = detailInfoImage.length > 0;
   const shippingInfoValid = shippingInfo.length > 0;
-  const refundInfoValid = refundInfo.length > 0;
 
   const setCommaNum = (setValue) => {
     return (value) => {
@@ -184,15 +182,6 @@ const ProductRegisterPage = () => {
           valueValid={shippingInfoValid}
           width={65}
         />
-
-        <ProductInput
-          title="교환 및 환불 안내"
-          type="text"
-          value={refundInfo}
-          setValue={setRefundInfo}
-          valueValid={refundInfoValid}
-          width={65}
-        />
       </Section>
 
       <Section />
@@ -208,6 +197,9 @@ const Section = styled.div`
   background-color: white;
   width: 100%;
   padding: 38px 10%;
+  @media (max-width: 440px) {
+    padding: 32px 10%;
+  }
   box-shadow: 0 3px 3px -3px #c7c7c7;
   display: flex;
   flex-direction: column;
