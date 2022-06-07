@@ -56,10 +56,7 @@ const TopBar = styled.div`
   box-shadow: 0 3px 3px -3px #c7c7c7;
   color: #939393;
   font-size: 4.5vw;
-  @media (min-width: 500px) {
-    font-size: 3.5vw;
-  }
-  @media (min-width: 770px) {
+  @media (min-width: 700px) {
     font-size: 28px;
   }
 
