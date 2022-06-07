@@ -36,7 +36,7 @@ function App() {
           <Route path="/" element={mainPage} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/login/email" element={<EmailLoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/register/user" element={<RegisterPage />} />
           <Route path="/businessauth" element={businessAuthPage} />
           <Route path="/mypage" element={myPage} />
           <Route path="/mypage/reviews" element={reviewsPage} />
