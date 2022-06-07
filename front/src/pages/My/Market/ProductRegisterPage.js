@@ -81,7 +81,7 @@ const ProductRegisterPage = () => {
           value={productName}
           setValue={setProductName}
           valueValid={productNameValid}
-          width={75}
+          width={65}
         />
 
         <ProductInput
@@ -91,7 +91,7 @@ const ProductRegisterPage = () => {
           value={productImage}
           setValue={setProductImage}
           valueValid={productImageValid}
-          width={75}
+          width={65}
         />
 
         <ProductInput
@@ -120,7 +120,7 @@ const ProductRegisterPage = () => {
           value={description}
           setValue={setDescription}
           valueValid={descriptionValid}
-          width={75}
+          width={65}
         />
 
         <ProductInput
@@ -173,7 +173,7 @@ const ProductRegisterPage = () => {
           value={detailInfo}
           setValue={setDetailInfo}
           valueValid={detailInfoValid}
-          width={75}
+          width={65}
         />
 
         <ProductInput
@@ -182,7 +182,7 @@ const ProductRegisterPage = () => {
           value={shippingInfo}
           setValue={setShippingInfo}
           valueValid={shippingInfoValid}
-          width={75}
+          width={65}
         />
 
         <ProductInput
@@ -191,7 +191,7 @@ const ProductRegisterPage = () => {
           value={refundInfo}
           setValue={setRefundInfo}
           valueValid={refundInfoValid}
-          width={75}
+          width={65}
         />
       </Section>
 

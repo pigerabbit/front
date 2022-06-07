@@ -54,7 +54,7 @@ const InputContainer = styled.div`
 `;
 
 const Title = styled.div`
-  width: 20%;
+  width: 30%;
   height: 100%;
   display: flex;
   justify-content: flex-start;
