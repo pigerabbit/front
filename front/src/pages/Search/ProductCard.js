@@ -50,7 +50,7 @@ const ProductCard = ({ product, setConfirmationIcon }) => {
       confirmUnwish();
     }
 
-    await Api.put(`toggle/product/${product.id}`);
+    await Api.put(`toggle/product/${product._id}`);
     setWish((cur) => !cur);
   };
 

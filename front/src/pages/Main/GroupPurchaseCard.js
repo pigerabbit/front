@@ -9,6 +9,8 @@ const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
   const [wish, setWish] = useState(purchase?.toggle === 0 ? false : true);
 
   const getDeadline = (date) => {
+    if (!date) return;
+
     return `${date.substr(0, 4)}년 ${date.substr(5, 2)}월 ${date.substr(
       8,
       2
