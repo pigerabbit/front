@@ -28,6 +28,7 @@ const ReviewCard = ({ review, deleteReview }) => {
       >
         <Title>{review.title}</Title>
         <Date>{getDate(review.createdAt)}</Date>
+        {review.postImg && <Image url={review.postImg} />}
         <Review>{review.content}</Review>
       </Content>
 
@@ -71,6 +72,10 @@ const Content = styled.div`
   position: relative;
   width: 85%;
   max-width: 550px;
+
+  display: flex;
+  flex-direction: column;
+
   margin: 3.5vw 0;
   @media (min-width: 770px) {
     margin: 28px 0;
@@ -101,6 +106,19 @@ const Review = styled.div`
     font-size: 17.5px;
     line-height: 24px;
   }
+`;
+
+const Image = styled.div`
+  width: 70%;
+  height: 52vw;
+  max-height: 340px;
+  margin-left: 15%;
+  margin-bottom: 10px;
+  box-shadow: 0 0 8px #f3f3f3;
+
+  background-image: url(${({ url }) => url});
+  background-size: cover;
+  background-position: center;
 `;
 
 const DeleteButton = styled.div`
