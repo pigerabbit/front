@@ -14,8 +14,26 @@ const ProductReviewTab = ({ product }) => {
   const [myReviews, setMyReviews] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
   const [showMyReviews, setShowMyReviews] = useState(false);
+  const [writable, setWritable] = useState(false);
 
   const isSeller = product.userId === user.id;
+
+  const checkBuying = async () => {
+    try {
+      const check = await Api.get(`groups/productId/${product.id}`);
+      const myBuying = check.data.payload
+        .filter((v) => v.state === 5)
+        .map((v) => v.participants)
+        .reduce((prev, cur) => [...prev, ...cur])
+        .filter((v) => (v) => v.userId === user.id);
+
+      if (myBuying.length > 0 && myBuying.length > myReviews.length)
+        setWritable(true);
+      else setWritable(false);
+    } catch (e) {
+      console.log("구매 기록 get 실패");
+    }
+  };
 
   const getReviews = async () => {
     try {
@@ -28,6 +46,7 @@ const ProductReviewTab = ({ product }) => {
           (v) => v.type === "review" && v.writer === user.id
         )
       );
+      console.log(myReviews);
     } catch (e) {
       console.log(e);
     }
@@ -38,11 +57,13 @@ const ProductReviewTab = ({ product }) => {
 
   useEffect(() => {
     getReviews();
+    checkBuying();
   }, []);
 
   return (
     <Container>
       {!isSeller &&
+        writable &&
         (!isWriting ? (
           <WriteButton
             onClick={() => {
@@ -55,6 +76,7 @@ const ProductReviewTab = ({ product }) => {
           <ProductReviewForm
             productId={product.id}
             setIsWriting={setIsWriting}
+            setWritable={setWritable}
             setReviews={setReviews}
             setMyReviews={setMyReviews}
           />

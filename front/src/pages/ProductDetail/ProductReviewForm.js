@@ -6,6 +6,7 @@ import axios from "axios";
 const ProductReviewForm = ({
   productId,
   setIsWriting,
+  setWritable,
   setReviews,
   setMyReviews,
 }) => {
@@ -44,7 +45,7 @@ const ProductReviewForm = ({
 
       setReviews((cur) => [newReview, ...cur]);
       setMyReviews((cur) => [newReview, ...cur]);
-
+      setWritable((cur) => !cur);
       setIsWriting((cur) => !cur);
     } catch (e) {
       console.log("review post 실패");
