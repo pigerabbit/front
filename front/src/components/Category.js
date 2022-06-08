@@ -50,7 +50,7 @@ const subscribeCategory = [
   { eng: "class", kor: "공방·클래스", icon: faHand },
   { eng: "game", kor: "오락·여가·레저", icon: faGamepad },
   { eng: "culture", kor: "문화·예술", icon: faTicket },
-  { eng: "other", kor: "기타", icon: faCircleExclamation },
+  { eng: "else", kor: "기타", icon: faCircleExclamation },
 ];
 
 const options = [
