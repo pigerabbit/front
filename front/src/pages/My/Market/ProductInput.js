@@ -24,6 +24,9 @@ const ProductInput = ({
         autoComplete="off"
         required
         onChange={(e) => {
+          if (type === "file") {
+            setValue(e.target.files[0]);
+          }
           setValue(e.target.value);
         }}
       />
