@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { productList } from "../MyMockData";
 import MyWishListCard from "./MyWishListCard";
 
 const ProductWishListTab = ({ products }) => {
