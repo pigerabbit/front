@@ -1,36 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Api from "api";
 import SelectBox from "../../../components/SeletBox";
+import { formatDate, options } from "../GroupModule";
 
 const OpenGroupDetailInfo = ({ product, type }) => {
   const navigate = useNavigate();
-  const options = [12, 24, 36, 48, 60, 72];
-
-  const formatDate = (hour) => {
-    const date = new Date();
-    date.setHours(date.getHours() + hour);
-    const dueDate = `${date.toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    })} `
-      .split(". ")
-      .join("-")
-      .slice(0, -1);
-    const dueTime = date.toLocaleTimeString("ko-KR", {
-      hourCycle: "h23",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-    return `${dueDate} ${dueTime}`;
-  };
-
-  console.log(formatDate(72));
 
   const [count, setCount] = useState(0);
   const [groupName, setGroupName] = useState("");
@@ -96,7 +74,7 @@ const OpenGroupDetailInfo = ({ product, type }) => {
               <span>{`최대 ${product.minPurchaseQty}개 가능`}</span>
             </CounterWrapper>
           </Line>
-          {type !== "ticket" && (
+          {type !== "coupon" && (
             <Line>
               <h3>공구 주소</h3>
               <input

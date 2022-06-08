@@ -3,12 +3,7 @@ import styled from "styled-components";
 import GroupHeader from "../GroupHeader";
 import OpenGroupBasicInfo from "./OpenGroupBasicInfo";
 import OpenGroupDetailInfo from "./OpenGroupDetailInfo";
-
-const headerTitle = {
-  local: "지역 공구",
-  normal: "택배 공구",
-  ticket: "이용권 공구",
-};
+import { headerTitle } from "../GroupModule";
 
 const OpenGroupPage = () => {
   const location = useLocation();

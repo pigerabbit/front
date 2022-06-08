@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import GroupHeader from "../GroupHeader";
 import SelectGroupTypes from "./SelectGroupTypes";
@@ -9,9 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Api from "api";
 
 const SelectGroupPage = () => {
-  //const location = useLocation();
-  //const type = location.state;
-  const type = "normal";
+  const location = useLocation();
+  const type = location.state;
 
   const params = useParams();
   const productId = params.id;
@@ -40,7 +39,6 @@ const SelectGroupPage = () => {
   useEffect(() => {
     fetchProduct();
   }, []);
-
   return (
     <Container>
       <GroupHeader headerTitle="공구 열기" />

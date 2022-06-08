@@ -1,16 +1,6 @@
 import styled, { css } from "styled-components";
 import { useNavigate } from "react-router-dom";
-
-const groupTypes = {
-  "지역 공구": ["동네로 보내드립니다.(동네에서 픽업)", "local"],
-  "택배 공구": ["택배로 보내드립니다.(주소지로 배송)", "normal"],
-  "이용권 공구": ["이용권을 공동 구매하여 사용합니다.", "ticket"],
-};
-
-const productTypes = {
-  normal: ["지역 공구", "택배 공구"],
-  ticket: ["이용권 공구"],
-};
+import { groupTypes, productTypes } from "../GroupModule";
 
 const SelectGroupTypes = ({ type, product, isChecked }) => {
   const navigate = useNavigate();
