@@ -12,7 +12,7 @@ import ProductDescriptionTab from "./ProductDescriptionTab";
 import ProductInformationTab from "./ProductInformationTab";
 import ProductReviewTab from "./ProductReviewTab";
 import ProductInquiryTab from "./ProductInquiryTab";
-import JoinGroupWindow from "./JoinGroupWindow";
+import JoinGroupWindow from "pages/Group/joinGroup/JoinGroupWindow";
 
 const ProductDetailPage = () => {
   const [product, setProduct] = useState({});
@@ -101,6 +101,7 @@ const ProductDetailPage = () => {
         {showJoinGroup && (
           <JoinGroupWindow
             productId={product.id}
+            minPurchaseQty={product.minPurchaseQty}
             setShowJoinGroup={setShowJoinGroup}
           />
         )}
