@@ -8,7 +8,7 @@ import SelectBox from "../../../components/SeletBox";
 
 const OpenGroupDetailInfo = ({ product, type }) => {
   const navigate = useNavigate();
-  const options = [12, 24, 36];
+  const options = [12, 24, 36, 48, 60, 72];
 
   const formatDate = (hour) => {
     const date = new Date();
@@ -29,6 +29,8 @@ const OpenGroupDetailInfo = ({ product, type }) => {
     });
     return `${dueDate} ${dueTime}`;
   };
+
+  console.log(formatDate(72));
 
   const [count, setCount] = useState(0);
   const [groupName, setGroupName] = useState("");
@@ -94,14 +96,16 @@ const OpenGroupDetailInfo = ({ product, type }) => {
               <span>{`최대 ${product.minPurchaseQty}개 가능`}</span>
             </CounterWrapper>
           </Line>
-          <Line>
-            <h3>공구 주소</h3>
-            <input
-              type="text"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-            />
-          </Line>
+          {type !== "ticket" && (
+            <Line>
+              <h3>공구 주소</h3>
+              <input
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </Line>
+          )}
           <Line>
             <h3>공구 기간</h3>
             <SelectBoxContainer>

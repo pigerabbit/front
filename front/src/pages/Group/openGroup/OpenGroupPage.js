@@ -7,7 +7,6 @@ import OpenGroupDetailInfo from "./OpenGroupDetailInfo";
 const headerTitle = {
   local: "지역 공구",
   normal: "택배 공구",
-  pickup: "픽업 공구",
   ticket: "이용권 공구",
 };
 
