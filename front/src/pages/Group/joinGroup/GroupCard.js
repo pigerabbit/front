@@ -21,16 +21,26 @@ const GroupCard = ({ group, minPurchaseQty }) => {
       Math.floor((new Date(deadline) - new Date()) / 1000, 10)
     ) * 1000
   );
-  const [date, hours, minutes, seconds] = [
+  let [date, hours, minutes, seconds] = [
     remain.getDate() - 1,
-    `${remain.getHours() - 18 < 10 ? "0" : ""}${remain.getHours() - 18}`,
-    `${remain.getMinutes() < 10 ? "0" : ""}${remain.getMinutes()}`,
+    `${remain.getHours() - 18}`,
+    `${remain.getMinutes()}`,
     `${remain.getSeconds() < 10 ? "0" : ""}${remain.getSeconds()}`,
   ];
+
+  if (hours < 0) {
+    date -= 1;
+    hours = 23;
+  }
+
   const remainText =
     date > 0
-      ? `${date}일 ${hours}:${minutes}:${seconds}`
-      : `${hours}:${minutes}:${seconds}`;
+      ? `${date}일 ${hours < 10 ? "0" : ""}${hours}:${
+          minutes < 10 ? "0" : ""
+        }${minutes}:${seconds < 10 ? "0" : ""}${seconds}`
+      : `${hours < 10 ? "0" : ""}${hours}:${
+          minutes < 10 ? "0" : ""
+        }${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 
   const currentPeople = minPurchaseQty - group.remainedPersonnel;
 
