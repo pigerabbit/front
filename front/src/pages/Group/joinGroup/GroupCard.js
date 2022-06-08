@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useInterval } from "./hooks";
 import styled from "styled-components";
 
@@ -15,6 +15,8 @@ const useResultOfIntervalCalculator = (calculator, delay) => {
 const groupTypes = { normal: "택배", local: "지역", ticket: "이용권" };
 
 const GroupCard = ({ group, minPurchaseQty }) => {
+  const [isValidate, setIsValidate] = useState(false);
+
   const deadline = group.deadline.replace(" ", "T") + ".000Z";
   const remain = new Date(
     useResultOfIntervalCalculator(() =>
@@ -23,8 +25,8 @@ const GroupCard = ({ group, minPurchaseQty }) => {
   );
   let [date, hours, minutes, seconds] = [
     remain.getDate() - 1,
-    `${remain.getHours() - 18}`,
-    `${remain.getMinutes()}`,
+    remain.getHours() - 18,
+    `${remain.getMinutes() < 10 ? "0" : ""}${remain.getMinutes()}`,
     `${remain.getSeconds() < 10 ? "0" : ""}${remain.getSeconds()}`,
   ];
 
@@ -35,13 +37,8 @@ const GroupCard = ({ group, minPurchaseQty }) => {
 
   const remainText =
     date > 0
-      ? `${date}일 ${hours < 10 ? "0" : ""}${hours}:${
-          minutes < 10 ? "0" : ""
-        }${minutes}:${seconds < 10 ? "0" : ""}${seconds}`
-      : `${hours < 10 ? "0" : ""}${hours}:${
-          minutes < 10 ? "0" : ""
-        }${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-
+      ? `${date}일 ${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`
+      : `${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`;
   const currentPeople = minPurchaseQty - group.remainedPersonnel;
 
   return (
@@ -56,7 +53,7 @@ const GroupCard = ({ group, minPurchaseQty }) => {
       <JoinButton>참여하기</JoinButton>
       <Current>
         {currentPeople} / {minPurchaseQty}
-        <Remain>{remainText}</Remain>
+        {remain.getFullYear() === 1970 && <Remain>{remainText}</Remain>}
       </Current>
     </Container>
   );
