@@ -125,7 +125,7 @@ const Container = styled.div`
   max-width: 770px;
   background-color: #ffffff;
 
-  margin-top: 7px;
+  padding: 7px 0;
 `;
 
 const ImgContainer = styled.div`
