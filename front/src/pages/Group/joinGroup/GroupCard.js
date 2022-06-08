@@ -15,8 +15,6 @@ const useResultOfIntervalCalculator = (calculator, delay) => {
 const groupTypes = { normal: "택배", local: "지역", ticket: "이용권" };
 
 const GroupCard = ({ group, minPurchaseQty }) => {
-  const [isValidate, setIsValidate] = useState(false);
-
   const deadline = group.deadline.replace(" ", "T") + ".000Z";
   const remain = new Date(
     useResultOfIntervalCalculator(() =>
@@ -140,6 +138,9 @@ const Current = styled.div`
   font-weight: bold;
   color: #ff0000;
   margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   @media (max-width: 500px) {
     font-size: 18px;
