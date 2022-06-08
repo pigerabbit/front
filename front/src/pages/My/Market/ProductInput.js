@@ -12,6 +12,7 @@ const ProductInput = ({
   valueValid,
   width,
   unit,
+  check,
 }) => {
   return (
     <InputContainer width={width}>
@@ -33,9 +34,11 @@ const ProductInput = ({
 
       {unit && <Unit>{unit}</Unit>}
 
-      <CheckIcon valid={valueValid} width={width}>
-        <FontAwesomeIcon icon={faCircleCheck} />
-      </CheckIcon>
+      {check && (
+        <CheckIcon valid={valueValid} width={width}>
+          <FontAwesomeIcon icon={faCircleCheck} />
+        </CheckIcon>
+      )}
     </InputContainer>
   );
 };

@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 
 const ProductRegisterPage = () => {
   const { state } = useLocation();
+
   const [productType, setProductType] = useState(
     (!state && "parcel") ||
       (state?.productType === "post" && "parcel") ||
@@ -44,16 +45,28 @@ const ProductRegisterPage = () => {
   const salePriceValid =
     Number(salePrice.replaceAll(",", "")) > 0 &&
     Number(price.replaceAll(",", "")) > Number(salePrice.replaceAll(",", ""));
-  const descriptionValid = description.length > 0;
-  const descriptionImageValid = descriptionImage.length > 0;
+  const descriptionValid =
+    description.length > 0 || descriptionImage.length > 0;
   const minPurchaseQtyValid = Number(minPurchaseQty) > 0;
   const maxPurchaseQtyValid = Number(maxPurchaseQty) > Number(minPurchaseQty);
   const shippingFeeValid = shippingFee.length > 0;
   const shippingFeeConValid = shippingFeeCon.length > 0;
   const useByValid = Number(useBy) > 0;
-  const detailInfoValid = detailInfo.length > 0;
-  const detailInfoImageValid = detailInfoImage.length > 0;
+  const detailInfoValid = detailInfo.length > 0 || detailInfoImage.length > 0;
   const shippingInfoValid = shippingInfo.length > 0;
+
+  const formValid =
+    productNameValid &&
+    productImageValid &&
+    priceValid &&
+    salePriceValid &&
+    descriptionValid &&
+    minPurchaseQtyValid &&
+    maxPurchaseQtyValid &&
+    (productType === "parcel"
+      ? shippingFeeValid && shippingFeeConValid && shippingInfoValid
+      : useByValid) &&
+    detailInfoValid;
 
   const setCommaNum = (setValue) => {
     return (value) => {
@@ -100,6 +113,7 @@ const ProductRegisterPage = () => {
             setValue={setProductName}
             valueValid={productNameValid}
             width={65}
+            check={true}
           />
 
           <ProductInput
@@ -110,6 +124,7 @@ const ProductRegisterPage = () => {
             setValue={setProductImage}
             valueValid={productImageValid}
             width={65}
+            check={true}
           />
 
           <ProductInput
@@ -119,6 +134,7 @@ const ProductRegisterPage = () => {
             setValue={setCommaNum(setPrice)}
             valueValid={priceValid}
             width={25}
+            check={true}
             unit="원"
           />
 
@@ -129,6 +145,7 @@ const ProductRegisterPage = () => {
             setValue={setCommaNum(setSalePrice)}
             valueValid={salePriceValid}
             width={25}
+            check={true}
             unit="원"
           />
 
@@ -139,6 +156,7 @@ const ProductRegisterPage = () => {
             setValue={setDescription}
             valueValid={descriptionValid}
             width={65}
+            check={true}
           />
 
           <ProductInput
@@ -147,8 +165,8 @@ const ProductRegisterPage = () => {
             accept="image/*"
             value={descriptionImage}
             setValue={setDescriptionImage}
-            valueValid={descriptionImageValid}
             width={65}
+            check={false}
           />
 
           <ProductInput
@@ -158,6 +176,7 @@ const ProductRegisterPage = () => {
             setValue={setMinPurchaseQty}
             valueValid={minPurchaseQtyValid}
             width={25}
+            check={true}
             unit="개"
           />
 
@@ -168,6 +187,7 @@ const ProductRegisterPage = () => {
             setValue={setMaxPurchaseQty}
             valueValid={maxPurchaseQtyValid}
             width={25}
+            check={true}
             unit="개"
           />
 
@@ -180,6 +200,7 @@ const ProductRegisterPage = () => {
                 setValue={setCommaNum(setShippingFee)}
                 valueValid={shippingFeeValid}
                 width={25}
+                check={true}
                 unit="원"
               />
 
@@ -190,6 +211,7 @@ const ProductRegisterPage = () => {
                 setValue={setCommaNum(setShippingFeeCon)}
                 valueValid={shippingFeeConValid}
                 width={25}
+                check={true}
                 unit="원 이상"
               />
             </>
@@ -203,6 +225,7 @@ const ProductRegisterPage = () => {
               setValue={setUseBy}
               valueValid={useByValid}
               width={25}
+              check={true}
               unit="일 이내"
             />
           )}
@@ -218,6 +241,7 @@ const ProductRegisterPage = () => {
             setValue={setDetailInfo}
             valueValid={detailInfoValid}
             width={65}
+            check={true}
           />
 
           <ProductInput
@@ -226,8 +250,8 @@ const ProductRegisterPage = () => {
             accept="image/*"
             value={detailInfoImage}
             setValue={setDetailInfoImage}
-            valueValid={detailInfoImageValid}
             width={65}
+            check={false}
           />
 
           {productType === "parcel" && (
@@ -238,11 +262,14 @@ const ProductRegisterPage = () => {
               setValue={setShippingInfo}
               valueValid={shippingInfoValid}
               width={65}
+              check={true}
             />
           )}
         </Section>
 
-        <SubmitButtom type="submit">등록하기</SubmitButtom>
+        <SubmitButtom type="submit" disabled={!formValid}>
+          등록하기
+        </SubmitButtom>
       </form>
 
       <Section />
@@ -307,14 +334,14 @@ const Option = styled.div`
 `;
 
 const SubmitButtom = styled.button`
-  cursor: pointer;
+  ${({ disabled }) => !disabled && "cursor: pointer;"};
   box-sizing: border-box;
   width: 40%;
   margin: 3% 30% 8% 30%;
   padding: 3%;
   border: none;
   border-radius: 5px;
-  background-color: #ffb564;
+  background-color: ${({ disabled }) => (disabled ? "#D0D0D0" : "#ffb564;")};
   color: white;
 
   font-size: 3.8vw;
