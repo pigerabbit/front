@@ -51,7 +51,13 @@ const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
 
       {user.id === id && (
         <UpdateController isControllerOpen={isControllerOpen}>
-          <ControllerButton>편집</ControllerButton>
+          <ControllerButton
+            onClick={() => {
+              navigate("/register/product", { state: product });
+            }}
+          >
+            편집
+          </ControllerButton>
           <ControllerButton
             onClick={() => {
               setIsOpenPopup(true);

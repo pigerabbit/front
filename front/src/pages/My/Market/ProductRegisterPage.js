@@ -4,24 +4,39 @@ import * as Api from "api";
 
 import MyPageLayout from "../MyPageLayout";
 import ProductInput from "./ProductInput";
+import { useLocation } from "react-router-dom";
 
 const ProductRegisterPage = () => {
-  const [productType, setProductType] = useState("parcel");
-
-  const [productName, setProductName] = useState("");
-  const [productImage, setProductImage] = useState("");
-  const [price, setPrice] = useState("");
-  const [salePrice, setSalePrice] = useState("");
-  const [description, setDescription] = useState("");
+  const { state } = useLocation();
+  const [productType, setProductType] = useState(
+    (!state && "parcel") ||
+      (state?.productType === "post" && "parcel") ||
+      "subscribe"
+  );
+  const [productName, setProductName] = useState(state?.name || "");
+  const [productImage, setProductImage] = useState(state?.images || "");
+  const [price, setPrice] = useState(state?.price.toLocaleString() || "");
+  const [salePrice, setSalePrice] = useState(
+    state?.salePrice.toLocaleString() || ""
+  );
+  const [description, setDescription] = useState(state?.description || "");
   const [descriptionImage, setDescriptionImage] = useState("");
-  const [minPurchaseQty, setMinPurchaseQty] = useState("");
-  const [maxPurchaseQty, setMaxPurchaseQty] = useState("");
-  const [shippingFee, setShippingFee] = useState("");
-  const [shippingFeeCon, setShippingFeeCon] = useState("");
+  const [minPurchaseQty, setMinPurchaseQty] = useState(
+    state?.minPurchaseQty || ""
+  );
+  const [maxPurchaseQty, setMaxPurchaseQty] = useState(
+    state?.maxPurchaseQty || ""
+  );
+  const [shippingFee, setShippingFee] = useState(
+    state?.shippingFee.toLocaleString() || ""
+  );
+  const [shippingFeeCon, setShippingFeeCon] = useState(
+    state?.shippingFeeCon.toLocaleString() || ""
+  );
   const [useBy, setUseBy] = useState("");
-  const [detailInfo, setDetailInfo] = useState("");
+  const [detailInfo, setDetailInfo] = useState(state?.detail || "");
   const [detailInfoImage, setDetailInfoImage] = useState("");
-  const [shippingInfo, setShippingInfo] = useState("");
+  const [shippingInfo, setShippingInfo] = useState(state?.shippingInfo || "");
 
   const productNameValid = productName.length > 0;
   const productImageValid = productImage.length > 0;
