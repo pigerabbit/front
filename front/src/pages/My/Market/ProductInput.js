@@ -10,10 +10,27 @@ const ProductInput = ({
   value,
   setValue,
   valueValid,
+  setImage,
   width,
   unit,
   check,
 }) => {
+  const encodeFileToBase64 = (fileBlob) => {
+    try {
+      const reader = new FileReader();
+      reader.readAsDataURL(fileBlob);
+      return new Promise((resolve) => {
+        reader.onload = () => {
+          setImage(reader.result);
+
+          resolve();
+        };
+      });
+    } catch (e) {
+      console.log("preview 생성 실패");
+    }
+  };
+
   return (
     <InputContainer width={width}>
       <Title>{title}</Title>
@@ -23,10 +40,12 @@ const ProductInput = ({
         accept={accept}
         value={value}
         autoComplete="off"
-        required
         onChange={(e) => {
           if (type === "file") {
-            setValue(e.target.files[0]);
+            const img = e.target.files;
+            setValue(img);
+
+            if (setImage) encodeFileToBase64(img[0]);
           }
           setValue(e.target.value);
         }}
@@ -60,7 +79,7 @@ const InputContainer = styled.div`
 `;
 
 const Title = styled.div`
-  width: 30%;
+  width: 29%;
   height: 100%;
   display: flex;
   justify-content: flex-start;
@@ -96,9 +115,9 @@ const Unit = styled.span`
 `;
 
 const CheckIcon = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
+  position: absolute;
+  left: -22px;
+  top: 25%;
 
   color: ${({ valid }) => {
     if (valid === "again") return "#FF6A6A;";

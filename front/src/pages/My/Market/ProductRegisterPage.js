@@ -5,6 +5,7 @@ import * as Api from "api";
 import MyPageLayout from "../MyPageLayout";
 import ProductInput from "./ProductInput";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const ProductRegisterPage = () => {
   const { state } = useLocation();
@@ -16,6 +17,7 @@ const ProductRegisterPage = () => {
   );
   const [productName, setProductName] = useState(state?.name || "");
   const [productImage, setProductImage] = useState(state?.images || "");
+  const [previewImg, setPreviewImg] = useState("");
   const [price, setPrice] = useState(state?.price.toLocaleString() || "");
   const [salePrice, setSalePrice] = useState(
     state?.salePrice.toLocaleString() || ""
@@ -112,7 +114,7 @@ const ProductRegisterPage = () => {
             value={productName}
             setValue={setProductName}
             valueValid={productNameValid}
-            width={65}
+            width={70}
             check={true}
           />
 
@@ -123,9 +125,12 @@ const ProductRegisterPage = () => {
             value={productImage}
             setValue={setProductImage}
             valueValid={productImageValid}
-            width={65}
+            setImage={setPreviewImg}
+            width={70}
             check={true}
           />
+
+          {previewImg && <PreviewImage src={previewImg} />}
 
           <ProductInput
             title="정가"
@@ -155,7 +160,7 @@ const ProductRegisterPage = () => {
             value={description}
             setValue={setDescription}
             valueValid={descriptionValid}
-            width={65}
+            width={70}
             check={true}
           />
 
@@ -165,7 +170,7 @@ const ProductRegisterPage = () => {
             accept="image/*"
             value={descriptionImage}
             setValue={setDescriptionImage}
-            width={65}
+            width={70}
             check={false}
           />
 
@@ -240,7 +245,7 @@ const ProductRegisterPage = () => {
             value={detailInfo}
             setValue={setDetailInfo}
             valueValid={detailInfoValid}
-            width={65}
+            width={70}
             check={true}
           />
 
@@ -250,7 +255,7 @@ const ProductRegisterPage = () => {
             accept="image/*"
             value={detailInfoImage}
             setValue={setDetailInfoImage}
-            width={65}
+            width={70}
             check={false}
           />
 
@@ -261,7 +266,7 @@ const ProductRegisterPage = () => {
               value={shippingInfo}
               setValue={setShippingInfo}
               valueValid={shippingInfoValid}
-              width={65}
+              width={70}
               check={true}
             />
           )}
@@ -331,6 +336,13 @@ const Option = styled.div`
   & + div {
     margin-left: 3%;
   }
+`;
+
+const PreviewImage = styled.img`
+  box-shadow: 0 0 4px #d0d0d0;
+  margin-left: 20%;
+  margin-bottom: 10px;
+  width: 60%;
 `;
 
 const SubmitButtom = styled.button`
