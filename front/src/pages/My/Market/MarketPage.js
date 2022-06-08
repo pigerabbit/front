@@ -19,7 +19,7 @@ const MarketPage = () => {
 
   const getProductData = async () => {
     const res = await Api.get("markets", id);
-    setProducts(res.data.payload);
+    setProducts(res.data.payload.resultList);
   };
 
   const handleDeleteProduct = () => {
