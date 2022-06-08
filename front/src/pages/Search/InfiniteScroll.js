@@ -11,9 +11,9 @@ const InfiniteScroll = ({ setPage }) => {
 
   useEffect(() => {
     fetchMoreObserver.observe(trigger.current);
-    return () => {
-      fetchMoreObserver.unobserve(trigger.current);
-    };
+    // return () => {
+    //   fetchMoreObserver.unobserve(trigger.current);
+    // };
   }, []);
 
   return <Ref ref={trigger} />;
@@ -22,6 +22,8 @@ const InfiniteScroll = ({ setPage }) => {
 export default InfiniteScroll;
 
 const Ref = styled.div`
+  border: 3px solid white;
+  z-index: 1;
   position: absolute;
   bottom: 0;
 `;

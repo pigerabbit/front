@@ -49,7 +49,7 @@ const BestProductCard = ({ product, index, setConfirmationIcon }) => {
       confirmUnwish();
     }
 
-    await Api.put(`toggle/product/${product.id}`);
+    await Api.put(`toggle/product/${product._id}`);
     setWish((cur) => !cur);
   };
 
@@ -68,7 +68,7 @@ const BestProductCard = ({ product, index, setConfirmationIcon }) => {
         }}
       >
         <Title>
-          <span>[{product.businessName}]</span>
+          <span>[{product.userInfo.business[0].businessName}]</span>
           <span>{product.name}</span>
         </Title>
         <Price>

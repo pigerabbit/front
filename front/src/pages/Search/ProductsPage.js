@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import * as Api from "api";
 
 import ProductsTopBar from "./ProductsTopBar";
@@ -22,10 +22,10 @@ const ProductsPage = () => {
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
   const [option, setOption] = useState("groups");
   const [products, setProducts] = useState([]);
-  const [totalProductsNum, setTotalProductsNum] = useState(0);
-  const [page, setPage] = useState(0);
+  const [totalProductsNum, setTotalProductsNum] = useState(1);
+  const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(100);
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [confirmationIcon, setConfirmationIcon] = useState({
     show: false,
     backgroundColor: "#70BD86;",
@@ -45,7 +45,7 @@ const ProductsPage = () => {
     if (page > totalPage) return;
 
     try {
-      // setLoading(true);
+      setLoading(true);
 
       if (category) {
         const res = await Api.get("products", "", {
@@ -65,21 +65,36 @@ const ProductsPage = () => {
           search: search,
           option: option,
         });
-        setProducts(res.data.payload.resultList);
+
+        setProducts((cur) => [...cur, ...res.data.payload.resultList]);
         setTotalProductsNum(res.data.payload.len);
         setTotalPage(res.data.payload.totalPage);
       }
-
-      // setLoading(false);
     } catch (e) {
       setProducts([]);
       setTotalProductsNum(0);
     }
+    setLoading(false);
   };
+
+  const useDidMountEffect = (func, deps) => {
+    const didMount = useRef(false);
+
+    useEffect(() => {
+      if (didMount.current) func();
+      else didMount.current = true;
+    }, deps);
+  };
+
+  useDidMountEffect(() => {
+    setProducts([]);
+    setTotalPage(100);
+    setPage(0);
+  }, [category, search]);
 
   useEffect(() => {
     getProductData();
-  }, [category, search, page]);
+  }, [page]);
 
   return (
     <Container noProduct={products?.length === 0}>
@@ -98,8 +113,8 @@ const ProductsPage = () => {
               selected={option === eng}
               onClick={() => {
                 setOption(eng);
-                setProducts([]);
                 setPage(0);
+                setProducts([]);
               }}
             >
               {kor}
@@ -122,10 +137,19 @@ const ProductsPage = () => {
         </>
       </ProductsCardContainer>
 
-      {/* {loading && <Loading>로딩중</Loading>} */}
-      <InfiniteScroll setPage={setPage} />
+      {loading && (
+        <Loading>
+          <div></div>
+          <div></div>
+          <div></div>
+        </Loading>
+      )}
 
-      {products?.length === 0 && (
+      {totalProductsNum !== 0 && !loading && (
+        <InfiniteScroll setPage={setPage} />
+      )}
+
+      {totalProductsNum === 0 && !loading && (
         <NoProductContainer>
           <img
             src={`${process.env.PUBLIC_URL}/images/noProduct.svg`}
@@ -155,7 +179,7 @@ const ProductsPage = () => {
 export default ProductsPage;
 
 const Container = styled.div`
-  padding-bottom: ${({ noProduct }) => (noProduct ? "0;" : "100px;")}
+  padding-bottom: ${({ noProduct }) => (noProduct ? "0;" : "110px;")}
   position: relative;
   width: 100%;
   max-width: 770px;
@@ -163,6 +187,9 @@ const Container = styled.div`
   min-height: 100vh;
   background-color: #ffffff;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ProductsInfo = styled.div`
@@ -202,7 +229,6 @@ const Option = styled.div`
 
 const ProductsCardContainer = styled.div`
   width: 84%;
-  margin-left: 8%;
   @media (min-width: 600px) {
     margin-top: 50px;
   }
@@ -214,9 +240,40 @@ const ProductsCardContainer = styled.div`
   }
 `;
 
+const rotate = keyframes`
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(180deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
 const Loading = styled.div`
-  border: 2px solid blue;
-  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: ${rotate} 2s linear infinite;
+
+  > div {
+    background-color: #f79831;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
 `;
 
 const NoProductContainer = styled.div`
