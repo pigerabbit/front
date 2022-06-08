@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useInterval } from "./hooks";
 import styled from "styled-components";
 
@@ -15,6 +16,7 @@ const useResultOfIntervalCalculator = (calculator, delay) => {
 const groupTypes = { normal: "택배", local: "지역", ticket: "이용권" };
 
 const GroupCard = ({ group, minPurchaseQty }) => {
+  const navigate = useNavigate();
   const deadline = group.deadline.replace(" ", "T") + ".000Z";
   const remain = new Date(
     useResultOfIntervalCalculator(() =>
@@ -48,7 +50,13 @@ const GroupCard = ({ group, minPurchaseQty }) => {
         <h3>{group.groupName ? group.groupName : "임시 이름입니다"}</h3>
         {group.location && <p>({group.location})</p>}
       </GroupInfo>
-      <JoinButton>참여하기</JoinButton>
+      <JoinButton
+        onClick={() => {
+          navigate(`/groups/${group.groupId}`);
+        }}
+      >
+        참여하기
+      </JoinButton>
       <Current>
         {currentPeople} / {minPurchaseQty}
         {remain.getFullYear() === 1970 && <Remain>{remainText}</Remain>}

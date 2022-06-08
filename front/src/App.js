@@ -8,6 +8,7 @@ import * as Api from "./api";
 import { login } from "./redux/userSlice";
 
 import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
+import GroupDetailPage from "pages/Group/joinGroup/GroupDetailPage";
 import MainPage from "./pages/Main/MainPage";
 
 export const UserStateContext = createContext(null);
@@ -45,6 +46,7 @@ function App() {
         <Routes>
           {/* 예시페이지 만들어났습니다. 이름 바꿔서 쓰세요~ */}
           <Route path="/products/:id" element={<ProductDetailPage />} />
+          <Route path="/groups/:id" element={<GroupDetailPage />} />
           <Route path="/" element={<MainPage />} />
         </Routes>
       </Container>
