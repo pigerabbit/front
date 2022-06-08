@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import MyPurchaseListCard from "./MyPurchaseListCard";
 
-const options = ["전체보기", "진행중", "결제완료", "기간마감"];
+const options = ["전체보기", "진행중", "결제완료", "기간마감", "공구취소"];
 
 const OpenPurchaseListTab = ({ openedData, userId }) => {
   const [option, setOption] = useState("전체보기");
@@ -22,19 +22,24 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
       setFilteredData(totalData);
     } else if (option === "진행중") {
       const onProgress = totalData.filter((group) =>
-        [-2, 0, 1, 2].includes(group.state)
+        [-3, 0, 1, 2].includes(group.state)
       );
       setFilteredData(onProgress);
     } else if (option === "결제완료") {
       const completed = totalData.filter((group) =>
-        [-4, -3, 3, 4].includes(group.state)
+        [-5, -4, 3, 4, 5].includes(group.state)
       );
       setFilteredData(completed);
     } else if (option === "기간마감") {
       const stopped = totalData.filter((group) => group.state === -1);
       setFilteredData(stopped);
+    } else if (option === "공구취소") {
+      const canceled = totalData.filter((group) =>
+        [-7, -6].includes(group.state)
+      );
+      setFilteredData(canceled);
     }
-  }, [option]);
+  }, [option, totalData]);
 
   const handleOptionClick = (option) => {
     setOption(option);
@@ -68,7 +73,7 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
       </InfoWrapper>
       <PurchaseListWrapper>
         {filteredData.length !== 0 &&
-          filteredData.map((group, idx) => (
+          filteredData.map((group) => (
             <MyPurchaseListCard
               key={group.groupId}
               groupId={group.groupId}

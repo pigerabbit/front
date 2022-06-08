@@ -18,7 +18,6 @@ const MyPurchaseListPage = () => {
     try {
       const res = await Api.get("groups/manager/true");
       const data = res.data.payload;
-      console.log(data);
       setOpenedData(data);
     } catch (err) {
       console.log(err);
@@ -40,9 +39,9 @@ const MyPurchaseListPage = () => {
     getOpenedGroupData();
   }, []);
 
-  if (participatedData.length == 0) {
-    return "loading...";
-  }
+  // if (participatedData.length == 0) {
+  //   return "loading...";
+  // }
 
   return (
     <Container>

@@ -68,13 +68,13 @@ const MyPurchaseListCard = ({
           {isOpenTab ? "공구 중지" : "참여 취소"}
         </CardButton>
       )}
-      {state === 4 && myInfo[0].review === true && (
+      {state === 5 && myInfo[0].review === true && (
         <CardButton bgColor="#A0A0A0">후기 완료</CardButton>
       )}
-      {state === 4 && myInfo[0].review === false && (
+      {state === 5 && myInfo[0].review === false && (
         <CardButton bgColor="#FFB564">후기 작성</CardButton>
       )}
-      {isOpenTab && state === 2 && (
+      {isOpenTab && state === -1 && (
         <CardButton bgColor="#A0A0A0">공구 삭제</CardButton>
       )}
     </CardContainer>
