@@ -6,13 +6,6 @@ import BestProductCard from "./BestProductCard";
 
 const BestTab = ({ setConfirmationIcon }) => {
   const [products, setProducts] = useState([]);
-  // const [confirmationIcon, setConfirmationIcon] = useState({
-  //   show: false,
-  //   backgroundColor: "#70BD86;",
-  //   color: "",
-  //   icon: "",
-  //   text: "",
-  // });
 
   const getProductData = async () => {
     const res = await Api.get("products/main/top");

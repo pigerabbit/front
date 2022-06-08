@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCarrot,
@@ -23,8 +24,6 @@ import {
   faGamepad,
   faTicket,
 } from "@fortawesome/free-solid-svg-icons";
-
-import { useNavigate } from "react-router-dom";
 
 const parcelCategory = [
   { eng: "fruitVegetable", kor: "과일·채소", icon: faCarrot },
