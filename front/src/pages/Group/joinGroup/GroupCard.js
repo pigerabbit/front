@@ -32,7 +32,7 @@ const GroupCard = ({ group, minPurchaseQty }) => {
 
   if (hours < 0) {
     date -= 1;
-    hours = 23;
+    hours += 24;
   }
 
   const remainText =
@@ -40,6 +40,9 @@ const GroupCard = ({ group, minPurchaseQty }) => {
       ? `${date}일 ${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`
       : `${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`;
   const currentPeople = minPurchaseQty - group.remainedPersonnel;
+
+  const aboutToClose =
+    hours < 12 || group.remainedPersonnel / minPurchaseQty < 0.1;
 
   return (
     <Container>
@@ -57,7 +60,7 @@ const GroupCard = ({ group, minPurchaseQty }) => {
       >
         참여하기
       </JoinButton>
-      <Current>
+      <Current aboutToClose={aboutToClose}>
         {currentPeople} / {minPurchaseQty}
         {remain.getFullYear() === 1970 && <Remain>{remainText}</Remain>}
       </Current>
@@ -86,11 +89,11 @@ const GroupType = styled.div`
   background-color: ${({ type }) => {
     switch (type) {
       case "normal":
-        return "#0000ff";
+        return "#D3613B";
       case "local":
-        return "#ff0000";
+        return "#F5CB47";
       case "ticket":
-        return "#00ff00";
+        return "#82AF50";
       default:
         return "#d0d0d0";
     }
@@ -144,7 +147,7 @@ const Current = styled.div`
   right: 140px;
   font-size: 25px;
   font-weight: bold;
-  color: #ff0000;
+  color: ${({ aboutToClose }) => (aboutToClose ? "#ff0000" : "#000000")};
   margin: 10px 0;
   display: flex;
   flex-direction: column;
@@ -183,7 +186,6 @@ const JoinButton = styled.button`
 const Remain = styled.div`
   margin-top: 5px;
   font-weight: bold;
-  color: #ff0000;
   text-align: left;
   font-size: 18px;
 
