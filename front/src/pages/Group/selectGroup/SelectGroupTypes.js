@@ -10,8 +10,8 @@ const SelectGroupTypes = ({ type, product, isChecked }) => {
         <ButtonContainer
           isActive={productTypes[type].includes(key) && isChecked}
           onClick={() =>
-            navigate(`/group/open/${product.id}?type=${value[1]}`, {
-              state: { product: product },
+            navigate(`/group/open?type=${value[1]}`, {
+              state: product,
             })
           }
         >

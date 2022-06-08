@@ -1,23 +1,19 @@
-import { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import GroupHeader from "../GroupHeader";
 import SelectGroupTypes from "./SelectGroupTypes";
 import SelectGroupPopUpCard from "./SelectGroupPopUpCard";
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as Api from "api";
 
 const SelectGroupPage = () => {
   const location = useLocation();
-  const type = location.state;
-
-  const params = useParams();
-  const productId = params.id;
+  const product = location.state;
+  const type = product.productType;
 
   const [isOpen, setIsOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [product, setProduct] = useState({});
 
   const handleClick = () => {
     if (!isChecked) {
@@ -27,18 +23,6 @@ const SelectGroupPage = () => {
     }
   };
 
-  const fetchProduct = async () => {
-    try {
-      const res = await Api.get(`products/${productId}`);
-      console.log(res.data);
-      setProduct(res.data.payload);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
-    fetchProduct();
-  }, []);
   return (
     <Container>
       <GroupHeader headerTitle="공구 열기" />

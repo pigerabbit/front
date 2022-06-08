@@ -55,7 +55,6 @@ const ProductDetailPage = () => {
       console.log();
     }
   }, []);
-
   return (
     <Container>
       {!showJoinGroup ? (
@@ -112,18 +111,12 @@ const ProductDetailPage = () => {
             <LeftButton
               position="left"
               onClick={() => {
-                navigate(`/group/select/${product.id}`);
+                navigate(`/group/select`, { state: product });
               }}
             >
               공구 열기
             </LeftButton>
-            <RightButton
-              isFilled="true"
-              position="right"
-              onClick={() => {
-                navigate(`/group/select/${product.id}`);
-              }}
-            >
+            <RightButton isFilled="true" position="right">
               공구 참여하기
             </RightButton>
           </ButtonsContainer>

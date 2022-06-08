@@ -11,7 +11,7 @@ const OpenGroupPage = () => {
   const query = new URLSearchParams(location.search);
   const type = query.get("type");
 
-  const { product } = location.state;
+  const product = location.state;
 
   return (
     <Container>

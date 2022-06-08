@@ -60,8 +60,8 @@ function App() {
           <Route path="/wishlist" element={mywishlistPage} />
           <Route path="/purchaselist" element={mypurchaselistPage} />
           <Route path="/search" element={searchPage} />
-          <Route path="/group/select/:id" element={selectgrouPage} />
-          <Route path="/group/open/:id" element={opengroupPage} />
+          <Route path="/group/select" element={selectgrouPage} />
+          <Route path="/group/open" element={opengroupPage} />
           <Route path="/products/:id" element={productdetailPage} />
         </Routes>
       </Container>
