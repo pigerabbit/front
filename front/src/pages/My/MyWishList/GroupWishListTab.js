@@ -16,7 +16,7 @@ const GroupWishListTab = ({ groups }) => {
             price={group.productInfo.price}
             salePrice={group.productInfo.salePrice}
             discountRate={group.productInfo.discountRate}
-            leftParticipants={group.remainedPeronnel}
+            leftParticipants={group.remainedPersonnel}
             deadline={group.deadline}
             contentPercent={["55%", "55%"]}
           />

@@ -2,16 +2,17 @@ import styled from "styled-components";
 import { productList } from "../MyMockData";
 import MyWishListCard from "./MyWishListCard";
 
-const ProductWishListTab = () => {
+const ProductWishListTab = ({ products }) => {
   return (
     <Container>
       <Count>
-        총 <strong>{productList.length}</strong>개
+        총 <strong>{products.length}</strong>개
       </Count>
       <ProductWishListWrapper>
-        {productList.map((product) => (
+        {products.map((product) => (
           <MyWishListCard
             key={product.id}
+            images={product.images}
             title={product.name}
             price={product.price}
             salePrice={product.salePrice}

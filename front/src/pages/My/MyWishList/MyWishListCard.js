@@ -49,11 +49,12 @@ const CardWrapper = styled.div`
 const CardImage = styled.div`
   background-color: #c0c0c0;
   background-image: url(${(props) => props.images});
-  background-size: cover;
+  background-size: 150px 110px;
   width: 150px;
   height: 110px;
   border-radius: 10px;
   @media only screen and (max-width: 400px) {
+    background-size: 100px 100px;
     width: 100px;
     height: 100px;
   }
