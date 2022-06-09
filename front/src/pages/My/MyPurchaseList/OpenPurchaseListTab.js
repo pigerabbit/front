@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-//import { FakeParticipategroupList } from "../MyMockData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import MyPurchaseListCard from "./MyPurchaseListCard";
@@ -87,6 +86,7 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
               deadline={group.deadline}
               isOpenTab={true}
               setIsOpenPopUpCard={setIsOpenPopUpCard}
+              setCancelDataId={setCancelDataId}
             />
           ))}
         {filteredData.length === 0 && (

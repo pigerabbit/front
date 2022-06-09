@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import {
   groupType,
   groupState,
@@ -23,6 +24,7 @@ const MyPurchaseListCard = ({
   setIsOpenPopUpCard,
   setCancelDataId,
 }) => {
+  const navigate = useNavigate();
   const myInfo = participants.filter((p) => p.userId === userId);
 
   const handleClick = () => {
@@ -72,7 +74,9 @@ const MyPurchaseListCard = ({
         <CardButton bgColor="#A0A0A0">후기 완료</CardButton>
       )}
       {state === 5 && myInfo[0].review === false && (
-        <CardButton bgColor="#FFB564">후기 작성</CardButton>
+        <CardButton bgColor="#FFB564" onClick={() => navigate("/")}>
+          후기 작성
+        </CardButton>
       )}
       {isOpenTab && state === -1 && (
         <CardButton bgColor="#A0A0A0">공구 삭제</CardButton>
