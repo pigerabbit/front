@@ -21,7 +21,7 @@ function App() {
   const fetchCurrentUser = async () => {
     try {
       const res = await Api.get("user/current");
-      const currentUser = res.data;
+      const currentUser = res.data.payload;
 
       dispatch(login(currentUser));
     } catch {

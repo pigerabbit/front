@@ -118,7 +118,7 @@ const ProductReviewTab = ({ product }) => {
                 writerId={v.writer}
                 title={v.title}
                 content={v.content}
-                image={v.image}
+                image={v.postImg}
                 createdAt={v.createdAt}
                 commentCount={v.commentCount}
               />
