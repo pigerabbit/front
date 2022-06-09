@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import MyPurchaseListCard from "./MyPurchaseListCard";
+import * as Api from "api";
 
 const options = ["전체보기", "진행중", "결제완료", "기간마감", "공구취소"];
 
@@ -12,7 +13,6 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
   const [filteredData, setFilteredData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
-  //공구 중지 버튼 눌렀을 때 cancelDataId에 해당 공구 id가 저장됨 - handleStopGroupClick에서 이용하면 됨
   const [cancelDataId, setCancelDataId] = useState("");
 
   useEffect(() => {
@@ -45,7 +45,16 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
     setIsOpen(false);
   };
 
-  const handleStopGroupClick = async () => {};
+  const handleStopGroupClick = async () => {
+    try {
+      await Api.put(`groups/${cancelDataId}/participate/out`);
+      const data = filteredData.filter((data) => data.groupId !== cancelDataId);
+      setFilteredData(data);
+      setIsOpenPopUpCard(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Container>
       <InfoWrapper>
@@ -76,9 +85,10 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
             <MyPurchaseListCard
               key={group.groupId}
               groupId={group.groupId}
+              productId={group.productId}
               userId={userId}
               type={group.groupType}
-              images={group.productInfo.images}
+              images={group.productInfo?.images}
               state={group.state}
               title={group.groupName}
               remained={group.remainedPersonnel}
@@ -185,7 +195,7 @@ const PurchaseListWrapper = styled.div`
 
 const PopUpCard = styled.div`
   position: fixed;
-  z-index: 5;
+  z-index: 11;
   width: 100%;
   max-width: 770px;
   min-width: 360px;

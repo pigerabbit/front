@@ -13,6 +13,7 @@ const MyPurchaseListCard = ({
   type,
   images,
   groupId,
+  productId,
   userId,
   state,
   title,
@@ -74,7 +75,10 @@ const MyPurchaseListCard = ({
         <CardButton bgColor="#A0A0A0">후기 완료</CardButton>
       )}
       {state === 5 && myInfo[0].review === false && (
-        <CardButton bgColor="#FFB564" onClick={() => navigate("/")}>
+        <CardButton
+          bgColor="#FFB564"
+          onClick={() => navigate(`products/${productId}`)}
+        >
           후기 작성
         </CardButton>
       )}
