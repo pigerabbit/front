@@ -44,10 +44,12 @@ const ProductRegisterPage = () => {
     state?.maxPurchaseQty || ""
   );
   const [shippingFee, setShippingFee] = useState(
-    state?.shippingFee.toLocaleString() || ""
+    state?.shippingFee === 0 ? "" : state?.shippingFee?.toLocaleString() || ""
   );
   const [shippingFeeCon, setShippingFeeCon] = useState(
-    state?.shippingFeeCon.toLocaleString() || ""
+    state?.shippingFee === 0
+      ? ""
+      : state?.shippingFeeCon?.toLocaleString() || ""
   );
   const [useBy, setUseBy] = useState(state?.dueDate || "");
   const [detailInfo, setDetailInfo] = useState(state?.detail || "");
@@ -58,19 +60,21 @@ const ProductRegisterPage = () => {
   const [shippingInfo, setShippingInfo] = useState(state?.shippingInfo || "");
 
   const productNameValid = productName.length > 0;
-  const productImageValid = productImage;
+  const productImageValid = productImage || previewImg;
   const categoryValid = category.length > 0;
   const priceValid = Number(price.replaceAll(",", "")) > 0;
   const salePriceValid =
     Number(salePrice.replaceAll(",", "")) > 0 &&
     Number(price.replaceAll(",", "")) > Number(salePrice.replaceAll(",", ""));
-  const descriptionValid = description.length > 0 || descriptionImage;
+  const descriptionValid =
+    description.length > 0 || descriptionImage || descriptionPreviewImg;
   const minPurchaseQtyValid = Number(minPurchaseQty) > 0;
   const maxPurchaseQtyValid = Number(maxPurchaseQty) > Number(minPurchaseQty);
   const shippingFeeValid = shippingFee.length > 0;
   const shippingFeeConValid = shippingFeeCon.length > 0;
   const useByValid = Number(useBy) > 0;
-  const detailInfoValid = detailInfo.length > 0 || detailInfoImage;
+  const detailInfoValid =
+    detailInfo.length > 0 || detailInfoImage || DetailInfoPreviewImg;
   const shippingInfoValid = shippingInfo.length > 0;
 
   const formValid =
@@ -124,8 +128,14 @@ const ProductRegisterPage = () => {
     };
 
     try {
-      const res = await Api.post("products", bodyData);
-      const productId = res.data.payload.resultProduct.id;
+      let productId = state?.id || "";
+
+      if (!state) {
+        const res = await Api.post("products", bodyData);
+        productId = res.data.payload.resultProduct.id;
+      } else {
+        await Api.put(`products/${productId}`, bodyData);
+      }
 
       try {
         const ImagesFormData = new FormData();
@@ -137,18 +147,18 @@ const ProductRegisterPage = () => {
         const detailImageFormData = new FormData();
         detailImageFormData.append("detailImg", detailInfoImage);
 
-        const imagesReq = Api.postImg(
-          `products/${productId}/images`,
-          ImagesFormData
-        );
-        const descriptionImgReq = Api.postImg(
-          `products/${productId}/descriptionImg`,
-          descriptionImageFormData
-        );
-        const detailImgReq = Api.postImg(
-          `products/${productId}/detailImg`,
-          detailImageFormData
-        );
+        const imagesReq = productImage
+          ? Api.postImg(`products/${productId}/images`, ImagesFormData)
+          : null;
+        const descriptionImgReq = descriptionImage
+          ? Api.postImg(
+              `products/${productId}/descriptionImg`,
+              descriptionImageFormData
+            )
+          : null;
+        const detailImgReq = detailInfoImage
+          ? Api.postImg(`products/${productId}/detailImg`, detailImageFormData)
+          : null;
 
         await Promise.all([imagesReq, descriptionImgReq, detailImgReq]);
 
@@ -211,7 +221,7 @@ const ProductRegisterPage = () => {
             value={productImage}
             setValue={setProductImage}
             valueValid={productImageValid}
-            setImage={setPreviewImg}
+            setPreviewImage={setPreviewImg}
             width={70}
             check={true}
           />
@@ -268,7 +278,7 @@ const ProductRegisterPage = () => {
             accept="image/*"
             value={descriptionImage}
             setValue={setDescriptionImage}
-            setImage={setDescriptionPreviewImg}
+            setPreviewImage={setDescriptionPreviewImg}
             width={70}
             check={false}
           />
@@ -358,7 +368,7 @@ const ProductRegisterPage = () => {
             accept="image/*"
             value={detailInfoImage}
             setValue={setDetailInfoImage}
-            setImage={setDetailInfoPreviewImg}
+            setPreviewImage={setDetailInfoPreviewImg}
             width={70}
             check={false}
           />

@@ -10,7 +10,7 @@ const ProductInput = ({
   value,
   setValue,
   valueValid,
-  setImage,
+  setPreviewImage,
   width,
   unit,
   check,
@@ -24,13 +24,31 @@ const ProductInput = ({
       reader.readAsDataURL(fileBlob);
       return new Promise((resolve) => {
         reader.onload = () => {
-          setImage(reader.result);
+          setPreviewImage(reader.result);
 
           resolve();
         };
       });
     } catch (e) {
       console.log("preview 생성 실패");
+    }
+  };
+
+  const handleChange = (e) => {
+    if (type === "file") {
+      setFileValue(e.target.value);
+
+      const img = e.target.files[0];
+      if (!img) {
+        setPreviewImage("");
+        setValue("");
+        return;
+      }
+      setValue(img);
+
+      if (setPreviewImage) encodeFileToBase64(img);
+    } else {
+      setValue(e.target.value);
     }
   };
 
@@ -44,17 +62,7 @@ const ProductInput = ({
           accept={accept}
           value={type !== "file" ? value : fileValue}
           autoComplete="off"
-          onChange={(e) => {
-            if (type === "file") {
-              const img = e.target.files[0];
-              setValue(img);
-              setFileValue(e.target.value);
-
-              if (setImage) encodeFileToBase64(img);
-            } else {
-              setValue(e.target.value);
-            }
-          }}
+          onChange={handleChange}
         />
       ) : (
         <Textarea
