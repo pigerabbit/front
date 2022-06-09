@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import encodeFileToBase64 from "utils/encodeFileToBase64";
 
 const ProductInput = ({
   title,
@@ -18,22 +19,6 @@ const ProductInput = ({
 }) => {
   const [fileValue, setFileValue] = useState("");
 
-  const encodeFileToBase64 = (fileBlob) => {
-    try {
-      const reader = new FileReader();
-      reader.readAsDataURL(fileBlob);
-      return new Promise((resolve) => {
-        reader.onload = () => {
-          setPreviewImage(reader.result);
-
-          resolve();
-        };
-      });
-    } catch (e) {
-      console.log("preview 생성 실패");
-    }
-  };
-
   const handleChange = (e) => {
     if (type === "file") {
       setFileValue(e.target.value);
@@ -46,7 +31,7 @@ const ProductInput = ({
       }
       setValue(img);
 
-      if (setPreviewImage) encodeFileToBase64(img);
+      if (setPreviewImage) encodeFileToBase64(img, setPreviewImage);
     } else {
       setValue(e.target.value);
     }

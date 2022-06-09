@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "api";
+import getKeyByValue from "utils/getKeyByValue";
 
 import MyPageLayout from "../MyPageLayout";
 import ProductInput from "./ProductInput";
@@ -99,10 +100,6 @@ const ProductRegisterPage = () => {
       if (isNaN(removedCommaValue)) return;
       setValue(removedCommaValue.toLocaleString());
     };
-  };
-
-  const getKeyByValue = (obj, value) => {
-    return Object.keys(obj).find((key) => obj[key] === value);
   };
 
   const handleSubmit = async (e) => {
