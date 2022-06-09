@@ -21,8 +21,8 @@ const ProductRegisterPage = () => {
       "subscribe"
   );
   const [productName, setProductName] = useState(state?.name || "");
-  const [productImage, setProductImage] = useState(state?.images || "");
-  const [previewImg, setPreviewImg] = useState("");
+  const [productImage, setProductImage] = useState("");
+  const [previewImg, setPreviewImg] = useState(state?.images || "");
   const [category, setCategory] = useState(
     state?.productType === "post"
       ? parcelCategory[state?.category]
@@ -34,6 +34,9 @@ const ProductRegisterPage = () => {
   );
   const [description, setDescription] = useState(state?.description || "");
   const [descriptionImage, setDescriptionImage] = useState("");
+  const [descriptionPreviewImg, setDescriptionPreviewImg] = useState(
+    state?.descriptionImg || ""
+  );
   const [minPurchaseQty, setMinPurchaseQty] = useState(
     state?.minPurchaseQty || ""
   );
@@ -49,6 +52,9 @@ const ProductRegisterPage = () => {
   const [useBy, setUseBy] = useState(state?.dueDate || "");
   const [detailInfo, setDetailInfo] = useState(state?.detail || "");
   const [detailInfoImage, setDetailInfoImage] = useState("");
+  const [DetailInfoPreviewImg, setDetailInfoPreviewImg] = useState(
+    state?.detailImg || ""
+  );
   const [shippingInfo, setShippingInfo] = useState(state?.shippingInfo || "");
 
   const productNameValid = productName.length > 0;
@@ -262,9 +268,14 @@ const ProductRegisterPage = () => {
             accept="image/*"
             value={descriptionImage}
             setValue={setDescriptionImage}
+            setImage={setDescriptionPreviewImg}
             width={70}
             check={false}
           />
+
+          {descriptionPreviewImg && (
+            <PreviewImage src={descriptionPreviewImg} />
+          )}
 
           <ProductInput
             title="공동구매 성립 수량"
@@ -347,9 +358,12 @@ const ProductRegisterPage = () => {
             accept="image/*"
             value={detailInfoImage}
             setValue={setDetailInfoImage}
+            setImage={setDetailInfoPreviewImg}
             width={70}
             check={false}
           />
+
+          {DetailInfoPreviewImg && <PreviewImage src={DetailInfoPreviewImg} />}
 
           {productType === "parcel" && (
             <ProductInput
