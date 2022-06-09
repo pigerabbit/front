@@ -7,11 +7,16 @@ import {
   faEllipsisVertical,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { parcelCategory, subscribeCategory } from "./category";
 
 const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
   const { user } = useSelector((state) => state.user);
   const { id } = useParams();
   const [isControllerOpen, setIsControllerOpen] = useState(false);
+  const categoryKor =
+    product.productType === "post"
+      ? parcelCategory[product.category]
+      : subscribeCategory[product.category];
 
   const navigate = useNavigate();
 
@@ -26,7 +31,7 @@ const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
           }}
         >
           <Title>
-            <span>[{product.businessName}]</span>
+            <span>[{categoryKor}]</span>
             <span>{product.name}</span>
           </Title>
           <Price>
@@ -150,6 +155,13 @@ const Title = styled.div`
 
   > span {
     margin-bottom: 5px;
+  }
+
+  > span:first-child {
+    font-size: 2.5vw;
+    @media (min-width: 620px) {
+      font-size: 16px;
+    }
   }
 `;
 
