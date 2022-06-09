@@ -30,9 +30,16 @@ const JoinGroupWindow = ({ productId, setShowJoinGroup, minPurchaseQty }) => {
           />
         </div>
         <h3>공구 참여하기</h3>
-        {groups.map((v) => (
-          <GroupCard group={v} minPurchaseQty={minPurchaseQty} />
-        ))}
+        {groups.length > 0 ? (
+          groups.map((v) => (
+            <GroupCard group={v} minPurchaseQty={minPurchaseQty} />
+          ))
+        ) : (
+          <Message>
+            <p>현재 열린 공구가 없습니다.</p>
+            <p>상품을 구매하시려면 공구를 열어주세요.</p>
+          </Message>
+        )}
       </CardContainer>
     </Container>
   );
@@ -114,5 +121,14 @@ const Cancel = styled.div`
   }
   :after {
     transform: rotate(-45deg);
+  }
+`;
+
+const Message = styled.div`
+  font-size: 22px;
+  font-weight: bold;
+  color: #636363;
+  > p {
+    margin: 10px auto;
   }
 `;
