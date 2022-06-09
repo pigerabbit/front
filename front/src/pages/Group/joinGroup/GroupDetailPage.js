@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import * as Api from "api";
 import axios from "axios";
 
@@ -231,99 +231,5 @@ const RightButton = styled.div`
 
   &:hover {
     background-color: #636363;
-  }
-`;
-
-const ImgContainer = styled.div`
-  width: 95%;
-  margin: 0 auto;
-  height: 360px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: #f8f8f8;
-
-  #productImg {
-    width: auto;
-    height: 360px;
-  }
-`;
-
-const Seller = styled.div`
-  margin: 20px 0 15px 20px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-`;
-
-const GoSeller = styled.i`
-  border: solid black;
-  border-width: 0 1px 1px 0;
-  display: inline-block;
-  padding: 5px;
-  margin-left: 5px;
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-`;
-
-const InfoContainer = styled.div`
-  margin-left: 20px;
-
-  #shippingFee {
-    margin-top: 10px;
-    font-size: 13px;
-  }
-
-  span {
-    position: absolute;
-    right: 30px;
-    color: #ff0000;
-  }
-`;
-
-const PriceInfo = styled.div`
-  margin-top: 13px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-`;
-
-const DiscountRate = styled.div`
-  display: inline-block;
-  font-size: 34px;
-  color: #ff9b2f;
-`;
-
-const Price = styled.div`
-  display: inline-block;
-  margin-left: 10px;
-  #salePrice {
-    font-weight: bold;
-    font-size: 20px;
-  }
-  #price {
-    margin-top: 5px;
-    font-size: 15px;
-    color: #636363;
-    text-decoration: line-through solid 1px;
-  }
-`;
-
-const DescriptionContainer = styled.div`
-  position: relative;
-  margin: 15px auto;
-  padding-top: 15px;
-  width: 95%;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
-  border-top: 1px solid #d0d0d0;
-
-  img {
-    width: 100%;
-    height: auto;
   }
 `;
