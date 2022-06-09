@@ -65,7 +65,7 @@ const OpenGroupDetailInfo = ({ product, type }) => {
                 </button>
                 <span>{count}</span>
                 <button
-                  disabled={count > product.minPurchaseQty}
+                  disabled={count >= product.minPurchaseQty}
                   onClick={() => setCount((prev) => prev + 1)}
                 >
                   <FontAwesomeIcon icon={faPlus} />
