@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-import { createSerializableStateInvariantMiddleware } from "@reduxjs/toolkit";
 
 const ProductInput = ({
   title,
@@ -17,6 +16,8 @@ const ProductInput = ({
   check,
   handleClick,
 }) => {
+  const [fileValue, setFileValue] = useState("");
+
   const encodeFileToBase64 = (fileBlob) => {
     try {
       const reader = new FileReader();
@@ -41,16 +42,18 @@ const ProductInput = ({
           width={width}
           type={type}
           accept={accept}
-          value={value}
+          value={type !== "file" ? value : fileValue}
           autoComplete="off"
           onChange={(e) => {
             if (type === "file") {
               const img = e.target.files[0];
               setValue(img);
+              setFileValue(e.target.value);
 
               if (setImage) encodeFileToBase64(img);
+            } else {
+              setValue(e.target.value);
             }
-            setValue(e.target.value);
           }}
         />
       ) : (

@@ -49,7 +49,7 @@ const ProductRegisterPage = () => {
   const [shippingInfo, setShippingInfo] = useState(state?.shippingInfo || "");
 
   const productNameValid = productName.length > 0;
-  const productImageValid = productImage.length > 0;
+  const productImageValid = productImage;
   const categoryValid = category.length > 0;
   const priceValid = Number(price.replaceAll(",", "")) > 0;
   const salePriceValid =
@@ -119,12 +119,13 @@ const ProductRegisterPage = () => {
       const res = await Api.post("products", bodyData);
       const productId = res.data.payload.resultProduct.id;
 
-      // try {
-      //   const formData = new FormData();
-      //   formData.append("images", productImage);
+      try {
+        console.log(productImage);
+        const formData = new FormData();
+        formData.append("images", productImage);
 
-      //   await Api.postImg(`products/${productId}/images`, formData);
-      // } catch (e) {}
+        await Api.postImg(`products/${productId}/images`, formData);
+      } catch (e) {}
     } catch (error) {}
   };
 
