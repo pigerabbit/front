@@ -12,6 +12,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ProductDetailTop from "./GroupInfoTop";
+import CommentsArea from "./CommentsArea";
 
 const GroupDetailPage = () => {
   const [group, setGroup] = useState({});
@@ -82,6 +83,7 @@ const GroupDetailPage = () => {
       {isFetched && (
         <Body>
           <ProductDetailTop group={group} product={product} seller={seller} />
+          <CommentsArea group={group} product={product} seller={seller} />
         </Body>
       )}
       <ButtonsContainer>
@@ -121,7 +123,7 @@ const Header = styled.header`
 `;
 
 const Body = styled.div`
-  padding-bottom: 65px;
+  padding-bottom: 73px;
 `;
 
 const Top = styled.div`
