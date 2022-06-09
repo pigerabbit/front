@@ -67,11 +67,6 @@ const ProductDescriptionTab = ({ product, seller }) => {
     <Container>
       <ImgContainer>
         <img id="productImg" src={images} alt={product.name + " 사진"} />
-        {/* <img
-          id="productImg"
-          src="/test_images/strawberry.jpeg"
-          alt={product.name + " 사진"}
-        /> */}
       </ImgContainer>
       <Seller
         onClick={() => {
@@ -107,11 +102,6 @@ const ProductDescriptionTab = ({ product, seller }) => {
             alt={name + " 설명 사진"}
           />
         )}
-        {/* <img
-          id="descriptionImg"
-          src="/test_images/pigerabbit.png"
-          alt={name + " 설명 사진"}
-        /> */}
       </DescriptionContainer>
     </Container>
   );
