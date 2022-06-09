@@ -11,7 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import ProductDetailTop from "./ProductDetailTop";
+import ProductDetailTop from "./GroupInfoTop";
 
 const GroupDetailPage = () => {
   const [group, setGroup] = useState({});
@@ -20,8 +20,6 @@ const GroupDetailPage = () => {
   const [isFetched, setIsFetched] = useState(false);
 
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const imminent = searchParams.get("imminent");
 
   const groupId = useParams().id;
 

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import * as Api from "api";
 
 const ProductDetailTop = ({ group, product, seller }) => {
   const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+  const imminent = searchParams.get("imminent");
 
   const {
     name,
@@ -52,7 +55,10 @@ const ProductDetailTop = ({ group, product, seller }) => {
         {group.groupName}
         <span>
           <p>~ {group.deadline}</p>
-          <Deadline></Deadline>
+          <Deadline>
+            {imminent && <p id="imminent">"마감 임박"</p>}
+            <p id="remain">{group.remainedPersonnel}개</p> 남음
+          </Deadline>
         </span>
         <PriceInfo>
           <DiscountRate>{discountRateStr}%</DiscountRate>
@@ -148,7 +154,27 @@ const InfoContainer = styled.div`
   }
 `;
 
-const Deadline = styled.div``;
+const Deadline = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  margin-top: 10px;
+  color: #000000;
+
+  font-size: 23px;
+
+  #imminent {
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 13px;
+    margin-right: 5px;
+  }
+
+  #remain {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+`;
 
 const PriceInfo = styled.div`
   margin-top: 13px;
