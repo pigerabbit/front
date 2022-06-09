@@ -37,14 +37,15 @@ const ProductReviewForm = ({
             `posts/${newReview.postId}/img`,
             formData
           );
-          newReview = resImg.data.payload;
+          setReviews((cur) => [resImg.data.payload.post, ...cur]);
+          setMyReviews((cur) => [resImg.data.payload.post, ...cur]);
         } catch (e) {
           console.log("이미지 업로드 실패");
         }
+      } else {
+        setReviews((cur) => [newReview, ...cur]);
+        setMyReviews((cur) => [newReview, ...cur]);
       }
-
-      setReviews((cur) => [newReview, ...cur]);
-      setMyReviews((cur) => [newReview, ...cur]);
       setWritable((cur) => !cur);
       setIsWriting((cur) => !cur);
     } catch (e) {

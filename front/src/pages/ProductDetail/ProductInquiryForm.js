@@ -35,14 +35,16 @@ const ProductInquiryForm = ({
             `posts/${newInquiry.postId}/img`,
             formData
           );
-          newInquiry = resImg.data.payload;
+
+          setInquiries((cur) => [resImg.data.payload.post, ...cur]);
+          setMyInquiries((cur) => [resImg.data.payload.post, ...cur]);
         } catch (e) {
           console.log("이미지 업로드 실패");
         }
+      } else {
+        setInquiries((cur) => [newInquiry, ...cur]);
+        setMyInquiries((cur) => [newInquiry, ...cur]);
       }
-
-      setInquiries((cur) => [newInquiry, ...cur]);
-      setMyInquiries((cur) => [newInquiry, ...cur]);
 
       setIsWriting((cur) => !cur);
     } catch (e) {

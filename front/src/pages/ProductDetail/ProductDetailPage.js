@@ -31,7 +31,6 @@ const ProductDetailPage = () => {
   const getProductDetail = async () => {
     try {
       const res = await Api.get(`products/${productId}`);
-      console.log(res.data.payload.userId);
       const resUser = await Api.get(`users/${res.data.payload.userId}`);
       setProduct(res.data.payload);
       setSeller(resUser.data.payload);
