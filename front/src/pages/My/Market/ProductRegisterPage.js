@@ -159,7 +159,6 @@ const ProductRegisterPage = () => {
             title="카테고리"
             type="text"
             value={category}
-            setValue={setCategory}
             valueValid={categoryValid}
             width={25}
             check={true}
@@ -192,7 +191,7 @@ const ProductRegisterPage = () => {
 
           <ProductInput
             title="상품 설명"
-            type="text"
+            type="textarea"
             value={description}
             setValue={setDescription}
             valueValid={descriptionValid}
@@ -277,7 +276,7 @@ const ProductRegisterPage = () => {
 
           <ProductInput
             title="상세 정보"
-            type="text"
+            type="textarea"
             value={detailInfo}
             setValue={setDetailInfo}
             valueValid={detailInfoValid}
@@ -298,7 +297,7 @@ const ProductRegisterPage = () => {
           {productType === "parcel" && (
             <ProductInput
               title="배송 안내"
-              type="text"
+              type="textarea"
               value={shippingInfo}
               setValue={setShippingInfo}
               valueValid={shippingInfoValid}

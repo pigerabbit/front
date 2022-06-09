@@ -33,24 +33,35 @@ const ProductInput = ({
   };
 
   return (
-    <InputContainer width={width} onClick={onClick}>
+    <InputContainer width={width} type={type} onClick={onClick}>
       <Title>{title}</Title>
-      <Input
-        width={width}
-        type={type}
-        accept={accept}
-        value={value}
-        autoComplete="off"
-        onChange={(e) => {
-          if (type === "file") {
-            const img = e.target.files;
-            setValue(img);
+      {type !== "textarea" ? (
+        <Input
+          width={width}
+          type={type}
+          accept={accept}
+          value={value}
+          autoComplete="off"
+          onChange={(e) => {
+            if (type === "file") {
+              const img = e.target.files;
+              setValue(img);
 
-            if (setImage) encodeFileToBase64(img[0]);
-          }
-          setValue(e.target.value);
-        }}
-      />
+              if (setImage) encodeFileToBase64(img[0]);
+            }
+            setValue(e.target.value);
+          }}
+        />
+      ) : (
+        <Textarea
+          rows="10"
+          width={width}
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+          }}
+        />
+      )}
 
       {unit && <Unit>{unit}</Unit>}
 
@@ -71,8 +82,7 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   margin-bottom: 10px;
-  height: 7vw;
-  max-height: 35px;
+  ${({ type }) => type !== "textarea" && "height: 7vw; max-height: 35px;"}
   font-size: 3vw;
   @media (min-width: 500px) {
     font-size: 15px;
@@ -81,7 +91,8 @@ const InputContainer = styled.div`
 
 const Title = styled.div`
   width: 29%;
-  height: 100%;
+  height: 7vw;
+  max-height: 35px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -109,6 +120,24 @@ const Input = styled.input`
   }
 `;
 
+const Textarea = styled.textarea`
+  padding: 8px 5px;
+  width: ${({ width }) => width + "%;"};
+  height: 100%;
+  background-color: #fbfbfb;
+  border: 1px solid #e6e6e6;
+  box-sizing: border-box;
+  font-size: 2.5vw;
+  @media (min-width: 500px) {
+    font-size: 13px;
+  }
+  resize: none;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
 const Unit = styled.span`
   margin-left: 10px;
   display: flex;
@@ -118,7 +147,10 @@ const Unit = styled.span`
 const CheckIcon = styled.div`
   position: absolute;
   left: -22px;
-  top: 25%;
+  top: 1.6vw;
+  @media (min-width: 500px) {
+    top: 9px;
+  }
 
   color: ${({ valid }) => {
     if (valid === "again") return "#FF6A6A;";
