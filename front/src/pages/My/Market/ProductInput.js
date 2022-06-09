@@ -14,6 +14,7 @@ const ProductInput = ({
   width,
   unit,
   check,
+  onClick,
 }) => {
   const encodeFileToBase64 = (fileBlob) => {
     try {
@@ -32,7 +33,7 @@ const ProductInput = ({
   };
 
   return (
-    <InputContainer width={width}>
+    <InputContainer width={width} onClick={onClick}>
       <Title>{title}</Title>
       <Input
         width={width}

@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "api";
 
 import MyPageLayout from "../MyPageLayout";
 import ProductInput from "./ProductInput";
-import { useLocation } from "react-router-dom";
+import CategoryPopup from "./CategoryPopup";
+import { parcelCategory, subscribeCategory } from "./category";
 import axios from "axios";
 
 const ProductRegisterPage = () => {
   const { state } = useLocation();
 
+  const [isOpenCategoryPopup, setIsCategoryPopup] = useState(false);
   const [productType, setProductType] = useState(
     (!state && "parcel") ||
       (state?.productType === "post" && "parcel") ||
@@ -18,6 +21,11 @@ const ProductRegisterPage = () => {
   const [productName, setProductName] = useState(state?.name || "");
   const [productImage, setProductImage] = useState(state?.images || "");
   const [previewImg, setPreviewImg] = useState("");
+  const [category, setCategory] = useState(
+    state?.productType === "post"
+      ? parcelCategory[state?.category]
+      : subscribeCategory[state?.category] || ""
+  );
   const [price, setPrice] = useState(state?.price.toLocaleString() || "");
   const [salePrice, setSalePrice] = useState(
     state?.salePrice.toLocaleString() || ""
@@ -43,6 +51,7 @@ const ProductRegisterPage = () => {
 
   const productNameValid = productName.length > 0;
   const productImageValid = productImage.length > 0;
+  const categoryValid = category.length > 0;
   const priceValid = Number(price.replaceAll(",", "")) > 0;
   const salePriceValid =
     Number(salePrice.replaceAll(",", "")) > 0 &&
@@ -60,6 +69,7 @@ const ProductRegisterPage = () => {
   const formValid =
     productNameValid &&
     productImageValid &&
+    categoryValid &&
     priceValid &&
     salePriceValid &&
     descriptionValid &&
@@ -86,19 +96,32 @@ const ProductRegisterPage = () => {
 
   return (
     <MyPageLayout pageName={!state ? "판매 등록" : "판매 편집"}>
+      {isOpenCategoryPopup && (
+        <CategoryPopup
+          setIsCategoryPopup={setIsCategoryPopup}
+          setCategory={setCategory}
+          productType={productType}
+        />
+      )}
       <form onSubmit={handleSubmit}>
         <Section>
           <Title>판매 유형</Title>
           <OptionContainer>
             <Option
               selected={productType === "parcel"}
-              onClick={() => setProductType("parcel")}
+              onClick={() => {
+                setProductType("parcel");
+                setCategory("");
+              }}
             >
               택배 공동구매
             </Option>
             <Option
               selected={productType === "subscribe"}
-              onClick={() => setProductType("subscribe")}
+              onClick={() => {
+                setProductType("subscribe");
+                setCategory("");
+              }}
             >
               이용권 공동구매
             </Option>
@@ -131,6 +154,19 @@ const ProductRegisterPage = () => {
           />
 
           {previewImg && <PreviewImage src={previewImg} />}
+
+          <ProductInput
+            title="카테고리"
+            type="text"
+            value={category}
+            setValue={setCategory}
+            valueValid={categoryValid}
+            width={25}
+            check={true}
+            onClick={() => {
+              setIsCategoryPopup(true);
+            }}
+          />
 
           <ProductInput
             title="정가"
@@ -340,9 +376,9 @@ const Option = styled.div`
 
 const PreviewImage = styled.img`
   box-shadow: 0 0 4px #d0d0d0;
-  margin-left: 20%;
+  margin-left: 28%;
   margin-bottom: 10px;
-  width: 60%;
+  width: 70%;
 `;
 
 const SubmitButtom = styled.button`
