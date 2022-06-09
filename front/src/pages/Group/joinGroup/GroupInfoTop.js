@@ -156,6 +156,7 @@ const Deadline = styled.div`
   display: flex;
   flex-direction: row;
   align-items: baseline;
+  justify-content: flex-end;
   margin-top: 10px;
   color: #000000;
 
@@ -166,11 +167,19 @@ const Deadline = styled.div`
     font-weight: bold;
     font-size: 13px;
     margin-right: 5px;
+
+    @media (max-width: 500px) {
+      font-size: 11px;
+    }
   }
 
   #remain {
     font-weight: bold;
     margin-right: 5px;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 18px;
   }
 `;
 
