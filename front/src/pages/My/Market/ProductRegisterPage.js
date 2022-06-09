@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "api";
 
@@ -7,9 +7,12 @@ import MyPageLayout from "../MyPageLayout";
 import ProductInput from "./ProductInput";
 import CategoryPopup from "./CategoryPopup";
 import { parcelCategory, subscribeCategory } from "./category";
+import { useSelector } from "react-redux";
 
 const ProductRegisterPage = () => {
+  const { user } = useSelector((state) => state.user);
   const { state } = useLocation();
+  const navigate = useNavigate();
 
   const [isOpenCategoryPopup, setIsCategoryPopup] = useState(false);
   const [productType, setProductType] = useState(
@@ -55,14 +58,13 @@ const ProductRegisterPage = () => {
   const salePriceValid =
     Number(salePrice.replaceAll(",", "")) > 0 &&
     Number(price.replaceAll(",", "")) > Number(salePrice.replaceAll(",", ""));
-  const descriptionValid =
-    description.length > 0 || descriptionImage.length > 0;
+  const descriptionValid = description.length > 0 || descriptionImage;
   const minPurchaseQtyValid = Number(minPurchaseQty) > 0;
   const maxPurchaseQtyValid = Number(maxPurchaseQty) > Number(minPurchaseQty);
   const shippingFeeValid = shippingFee.length > 0;
   const shippingFeeConValid = shippingFeeCon.length > 0;
   const useByValid = Number(useBy) > 0;
-  const detailInfoValid = detailInfo.length > 0 || detailInfoImage.length > 0;
+  const detailInfoValid = detailInfo.length > 0 || detailInfoImage;
   const shippingInfoValid = shippingInfo.length > 0;
 
   const formValid =
@@ -120,11 +122,31 @@ const ProductRegisterPage = () => {
       const productId = res.data.payload.resultProduct.id;
 
       try {
-        console.log(productImage);
-        const formData = new FormData();
-        formData.append("images", productImage);
+        const ImagesFormData = new FormData();
+        ImagesFormData.append("images", productImage);
 
-        await Api.postImg(`products/${productId}/images`, formData);
+        const descriptionImageFormData = new FormData();
+        descriptionImageFormData.append("descriptionImg", descriptionImage);
+
+        const detailImageFormData = new FormData();
+        detailImageFormData.append("detailImg", detailInfoImage);
+
+        const imagesReq = Api.postImg(
+          `products/${productId}/images`,
+          ImagesFormData
+        );
+        const descriptionImgReq = Api.postImg(
+          `products/${productId}/descriptionImg`,
+          descriptionImageFormData
+        );
+        const detailImgReq = Api.postImg(
+          `products/${productId}/detailImg`,
+          detailImageFormData
+        );
+
+        await Promise.all([imagesReq, descriptionImgReq, detailImgReq]);
+
+        navigate(`/markets/${user.id}`);
       } catch (e) {}
     } catch (error) {}
   };
