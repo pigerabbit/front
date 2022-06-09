@@ -34,7 +34,7 @@ const LoginPage = () => {
           <span>아직 동구라미 회원이 아니신가요?</span>
           <MoveButton
             onClick={() => {
-              navigate("/register");
+              navigate("/register/user");
             }}
           >
             회원가입

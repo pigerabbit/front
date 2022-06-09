@@ -104,7 +104,7 @@ const EmailLoginPage = () => {
         <span>비밀번호 찾기</span>
         <span
           onClick={() => {
-            navigate("/register");
+            navigate("/register/user");
           }}
         >
           이메일로 회원가입

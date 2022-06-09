@@ -68,9 +68,6 @@ async function del(endpoint, params = "", data = {}) {
 }
 
 async function postImg(endpoint, data) {
-  console.log(`%cPOST 요청: ${serverUrl + endpoint}`, "color: #059c4f;");
-  console.log(`%cPOST 요청 이미지 데이터: ${data}`, "color: #059c4f;");
-
   return axios.post(serverUrl + endpoint, data, {
     headers: {
       "Content-Type": "multipart/form-data",

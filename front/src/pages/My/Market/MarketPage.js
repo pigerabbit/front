@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,9 +17,11 @@ const MarketPage = () => {
   const [products, setProducts] = useState([]);
   const [currentProduct, SetCurrentProduct] = useState("");
 
+  const navigate = useNavigate();
+
   const getProductData = async () => {
     const res = await Api.get("markets", id);
-    setProducts(res.data.payload);
+    setProducts(res.data.payload.resultList);
   };
 
   const handleDeleteProduct = () => {
@@ -40,10 +42,17 @@ const MarketPage = () => {
   }, []);
 
   return (
-    <MyPageLayout pageName={user?.business[0].businessName}>
+    <MyPageLayout
+      pageName={user?.business[0].businessName}
+      previousPage="/mypage"
+    >
       <Container>
         {user?.id === id && (
-          <SaleButton>
+          <SaleButton
+            onClick={() => {
+              navigate("/register/product");
+            }}
+          >
             <FontAwesomeIcon icon={faCirclePlus} />
             판매 등록하기
           </SaleButton>
