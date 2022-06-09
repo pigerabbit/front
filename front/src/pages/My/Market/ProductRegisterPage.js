@@ -168,7 +168,10 @@ const ProductRegisterPage = () => {
   };
 
   return (
-    <MyPageLayout pageName={!state ? "판매 등록" : "판매 편집"}>
+    <MyPageLayout
+      pageName={!state ? "판매 등록" : "판매 편집"}
+      previousPage={`/markets/${user.id}`}
+    >
       {isOpenCategoryPopup && (
         <CategoryPopup
           setIsCategoryPopup={setIsCategoryPopup}

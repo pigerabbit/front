@@ -42,7 +42,10 @@ const MarketPage = () => {
   }, []);
 
   return (
-    <MyPageLayout pageName={user?.business[0].businessName}>
+    <MyPageLayout
+      pageName={user?.business[0].businessName}
+      previousPage="/mypage"
+    >
       <Container>
         {user?.id === id && (
           <SaleButton

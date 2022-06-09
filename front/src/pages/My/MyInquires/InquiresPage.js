@@ -38,7 +38,7 @@ const InquiresPage = () => {
   }, [option]);
 
   return (
-    <MyPageLayout pageName={"나의 문의"}>
+    <MyPageLayout pageName={"나의 문의"} previousPage="/mypage">
       <Container>
         <Info>
           <TotalNumber>총 {inquires.length}건</TotalNumber>

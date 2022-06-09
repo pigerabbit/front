@@ -1,24 +1,23 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import TabBar from "components/TabBar";
 
-const MyPageLayout = ({ children, pageName }) => {
+const MyPageLayout = ({ children, pageName, previousPage }) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   return (
     <Container>
       <TopBar>
         <div>
-          {!(location.pathname === "/mypage") && (
+          {previousPage !== "none" && (
             <FontAwesomeIcon
               icon={faArrowLeft}
               onClick={() => {
-                navigate(-1);
+                navigate(previousPage);
               }}
             />
           )}
