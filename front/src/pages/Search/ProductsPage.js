@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import * as Api from "api";
@@ -10,6 +10,8 @@ import Category from "components/Category";
 import TabBar from "components/TabBar";
 import ConfirmationIcon from "components/ConfirmationIcon";
 import InfiniteScroll from "./InfiniteScroll";
+
+import useDidMountEffect from "hooks/useDidMountEffect";
 
 const options = [
   { eng: "groups", kor: "추천순" },
@@ -75,15 +77,6 @@ const ProductsPage = () => {
       setTotalProductsNum(0);
     }
     setLoading(false);
-  };
-
-  const useDidMountEffect = (func, deps) => {
-    const didMount = useRef(false);
-
-    useEffect(() => {
-      if (didMount.current) func();
-      else didMount.current = true;
-    }, deps);
   };
 
   useDidMountEffect(() => {
