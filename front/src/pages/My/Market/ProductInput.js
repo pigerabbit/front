@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { createSerializableStateInvariantMiddleware } from "@reduxjs/toolkit";
 
 const ProductInput = ({
   title,
@@ -14,7 +15,7 @@ const ProductInput = ({
   width,
   unit,
   check,
-  onClick,
+  handleClick,
 }) => {
   const encodeFileToBase64 = (fileBlob) => {
     try {
@@ -33,7 +34,7 @@ const ProductInput = ({
   };
 
   return (
-    <InputContainer width={width} type={type} onClick={onClick}>
+    <InputContainer width={width} type={type} onClick={handleClick}>
       <Title>{title}</Title>
       {type !== "textarea" ? (
         <Input
@@ -44,10 +45,10 @@ const ProductInput = ({
           autoComplete="off"
           onChange={(e) => {
             if (type === "file") {
-              const img = e.target.files;
+              const img = e.target.files[0];
               setValue(img);
 
-              if (setImage) encodeFileToBase64(img[0]);
+              if (setImage) encodeFileToBase64(img);
             }
             setValue(e.target.value);
           }}

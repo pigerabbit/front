@@ -7,7 +7,6 @@ import MyPageLayout from "../MyPageLayout";
 import ProductInput from "./ProductInput";
 import CategoryPopup from "./CategoryPopup";
 import { parcelCategory, subscribeCategory } from "./category";
-import axios from "axios";
 
 const ProductRegisterPage = () => {
   const { state } = useLocation();
@@ -90,8 +89,43 @@ const ProductRegisterPage = () => {
     };
   };
 
-  const handleSubmit = (e) => {
+  const getKeyByValue = (obj, value) => {
+    return Object.keys(obj).find((key) => obj[key] === value);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const bodyData = {
+      productType: productType === "parcel" ? "post" : "coupon",
+      name: productName,
+      category: getKeyByValue(
+        productType === "parcel" ? parcelCategory : subscribeCategory,
+        category
+      ),
+      price: Number(price.replaceAll(",", "")),
+      salePrice: Number(salePrice.replaceAll(",", "")),
+      description,
+      minPurchaseQty: Number(minPurchaseQty),
+      maxPurchaseQty: Number(maxPurchaseQty),
+      shippingFee: Number(shippingFee.replaceAll(",", "")),
+      shippingFeeCon: Number(shippingFeeCon.replaceAll(",", "")),
+      dueDate: useBy,
+      detail: detailInfo,
+      shippingInfo,
+    };
+
+    try {
+      const res = await Api.post("products", bodyData);
+      const productId = res.data.payload.resultProduct.id;
+
+      // try {
+      //   const formData = new FormData();
+      //   formData.append("images", productImage);
+
+      //   await Api.postImg(`products/${productId}/images`, formData);
+      // } catch (e) {}
+    } catch (error) {}
   };
 
   return (
@@ -162,7 +196,7 @@ const ProductRegisterPage = () => {
             valueValid={categoryValid}
             width={25}
             check={true}
-            onClick={() => {
+            handleClick={() => {
               setIsCategoryPopup(true);
             }}
           />
