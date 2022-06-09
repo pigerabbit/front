@@ -72,13 +72,11 @@ const ProductDetailTop = ({ group, product, seller }) => {
         </p>
       </InfoContainer>
       <DescriptionContainer>
-        {description && <div>{description}</div>}
-        {descriptionImg && (
-          <img
-            id="descriptionImg"
-            src={descriptionImg}
-            alt={name + " 설명 사진"}
-          />
+        {group.location && (
+          <Location>
+            <h3>픽업 주소</h3>
+            <p>{group.location}</p>
+          </Location>
         )}
       </DescriptionContainer>
     </Container>
@@ -219,5 +217,12 @@ const DescriptionContainer = styled.div`
   img {
     width: 100%;
     height: auto;
+  }
+`;
+
+const Location = styled.div`
+  font-size: 15px;
+  > h3 {
+    margin-bottom: 10px;
   }
 `;
