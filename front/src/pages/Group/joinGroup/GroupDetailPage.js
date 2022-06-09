@@ -1,37 +1,49 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import * as Api from "api";
 import axios from "axios";
 
-import { faUser, faHome } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faHome,
+  faHeart as fullHeart,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import ProductDescriptionTab from "pages/ProductDetail/ProductDescriptionTab";
+import ProductDetailTop from "./ProductDetailTop";
 
 const GroupDetailPage = () => {
+  const [group, setGroup] = useState({});
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
+  const [isFetched, setIsFetched] = useState(false);
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const imminent = searchParams.get("imminent");
 
-  const productId = useParams().id;
+  const groupId = useParams().id;
 
-  const getProductDetail = async () => {
+  const getGroupDetail = async () => {
     try {
-      const res = await Api.get(`products/${productId}`);
-      console.log(res.data.payload.userId);
-      const resUser = await Api.get(`users/${res.data.payload.userId}`);
-      setProduct(res.data.payload);
+      const res = await Api.get(`groups/groupId/${groupId}`);
+      setGroup(res.data.payload[0]);
+      console.log(res.data.payload[0]);
+      setProduct(res.data.payload[0].productInfo);
+      const resUser = await Api.get(
+        `users/${res.data.payload[0].productInfo.userId}`
+      );
       setSeller(resUser.data.payload);
+      setIsFetched(true);
     } catch (e) {
-      console.log("product 못 가져옴");
+      console.log("group 못 가져옴");
     }
   };
 
   useEffect(() => {
     try {
-      getProductDetail();
+      getGroupDetail();
     } catch (e) {
       console.log();
     }
@@ -69,11 +81,18 @@ const GroupDetailPage = () => {
           </ButtonTopContainer>
         </Top>
       </Header>
-      <Body>
-        <ProductDescriptionTab product={product} seller={seller} />
-      </Body>
+      {isFetched && (
+        <Body>
+          <ProductDetailTop group={group} product={product} seller={seller} />
+        </Body>
+      )}
       <ButtonsContainer>
-        <LeftButton position="left">찜하기</LeftButton>
+        <LeftButton position="left">
+          <p>
+            <FontAwesomeIcon icon={fullHeart} size="1x" />
+          </p>
+          찜 하기
+        </LeftButton>
         <RightButton isFilled="true" position="right">
           구매하기
         </RightButton>
@@ -104,7 +123,7 @@ const Header = styled.header`
 `;
 
 const Body = styled.div`
-  padding: 100px 0 65px 0;
+  padding-bottom: 65px;
 `;
 
 const Top = styled.div`
@@ -188,6 +207,10 @@ const LeftButton = styled.div`
   color: #f79831;
   border: 2px solid #f79831;
 
+  > p {
+    margin-right: 5px;
+  }
+
   &:hover {
     color: #636363;
     border-color: #636363;
@@ -210,5 +233,99 @@ const RightButton = styled.div`
 
   &:hover {
     background-color: #636363;
+  }
+`;
+
+const ImgContainer = styled.div`
+  width: 95%;
+  margin: 0 auto;
+  height: 360px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f8f8;
+
+  #productImg {
+    width: auto;
+    height: 360px;
+  }
+`;
+
+const Seller = styled.div`
+  margin: 20px 0 15px 20px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+const GoSeller = styled.i`
+  border: solid black;
+  border-width: 0 1px 1px 0;
+  display: inline-block;
+  padding: 5px;
+  margin-left: 5px;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+`;
+
+const InfoContainer = styled.div`
+  margin-left: 20px;
+
+  #shippingFee {
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  span {
+    position: absolute;
+    right: 30px;
+    color: #ff0000;
+  }
+`;
+
+const PriceInfo = styled.div`
+  margin-top: 13px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const DiscountRate = styled.div`
+  display: inline-block;
+  font-size: 34px;
+  color: #ff9b2f;
+`;
+
+const Price = styled.div`
+  display: inline-block;
+  margin-left: 10px;
+  #salePrice {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  #price {
+    margin-top: 5px;
+    font-size: 15px;
+    color: #636363;
+    text-decoration: line-through solid 1px;
+  }
+`;
+
+const DescriptionContainer = styled.div`
+  position: relative;
+  margin: 15px auto;
+  padding-top: 15px;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  border-top: 1px solid #d0d0d0;
+
+  img {
+    width: 100%;
+    height: auto;
   }
 `;
