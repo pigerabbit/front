@@ -141,7 +141,7 @@ const Header = styled.header`
 `;
 
 const Body = styled.div`
-  padding: 100px 0 65px 0;
+  padding: 100px 0 75px 0;
 `;
 
 const Top = styled.div`
