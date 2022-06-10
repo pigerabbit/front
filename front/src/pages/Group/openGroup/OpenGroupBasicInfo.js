@@ -23,10 +23,10 @@ const OpenGroupBasicInfo = ({ product, type }) => {
                 <h3>이름</h3>
                 <p>{}</p>
             </Line> */}
-          <Line>
+          {/* <Line>
             <h3>사업자명</h3>
             <p>{product.businessName}</p>
-          </Line>
+          </Line> */}
           {/* <Line>
                 <h3>사업장 주소</h3>
                 <p>{}</p>
@@ -38,7 +38,7 @@ const OpenGroupBasicInfo = ({ product, type }) => {
             </Line>
           )}
           <Line>
-            <h3>공구 성사 개수</h3>
+            <h3>공구 개수</h3>
             <p>{product.minPurchaseQty}개</p>
           </Line>
         </Content>
@@ -56,7 +56,7 @@ const Container = styled.div`
   margin-bottom: 3%;
   border-radius: 10px;
   box-sizing: border-box;
-  padding: 2%;
+  padding: 4% 0% 4% 4%;
   > p {
     font-size: 18px;
     color: #f79831;
@@ -88,7 +88,7 @@ const Image = styled.div`
 `;
 
 const Content = styled.div`
-  width: 50%;
+  width: 60%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -112,6 +112,7 @@ const Line = styled.div`
   }
   @media (max-width: 500px) {
     > h3 {
+      width: 140px;
       font-size: 15px;
     }
     > p {

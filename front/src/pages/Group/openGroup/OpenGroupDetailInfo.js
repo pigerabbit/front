@@ -54,7 +54,7 @@ const OpenGroupDetailInfo = ({ product, type }) => {
             />
           </Line>
           <Line>
-            <h3>공구 참여 개수</h3>
+            <h3>참여 개수</h3>
             <CounterWrapper>
               <Counter>
                 <button
@@ -119,7 +119,7 @@ const DetailInfoContainer = styled.div`
   border: 2px solid #f79831;
   border-radius: 10px;
   box-sizing: border-box;
-  padding: 2%;
+  padding: 4%;
   > p {
     font-size: 18px;
     color: #f79831;
@@ -128,6 +128,7 @@ const DetailInfoContainer = styled.div`
 `;
 
 const Content = styled.div`
+  margin-top: 15px;
   padding: 3% 0;
 `;
 
@@ -153,6 +154,7 @@ const Line = styled.div`
   @media (max-width: 500px) {
     > h3 {
       font-size: 15px;
+      margin-right: 5px;
     }
     > p {
       font-size: 13px;
@@ -202,6 +204,11 @@ const Button = styled.button`
   color: #fff;
   cursor: ${(props) => (props.valid ? "pointer" : "")};
   background-color: ${(props) => (props.valid ? "#FFB564" : "#D0D0D0")};
+  @media (max-width: 500px) {
+    margin-top: 6px;
+    height: 70%;
+    font-size: 20px;
+  }
 `;
 
 const SelectBoxContainer = styled.div`
