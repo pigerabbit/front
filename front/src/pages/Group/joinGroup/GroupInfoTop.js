@@ -56,7 +56,7 @@ const ProductDetailTop = ({ group, product, seller }) => {
         <span>
           <p>~ {group.deadline}</p>
           <Deadline>
-            {imminent && <p id="imminent">"마감 임박"</p>}
+            {imminent === "true" && <p id="imminent">"마감 임박"</p>}
             <p id="remain">{group.remainedPersonnel}개</p> 남음
           </Deadline>
         </span>
@@ -214,9 +214,8 @@ const Price = styled.div`
 
 const DescriptionContainer = styled.div`
   position: relative;
-  margin: 15px auto;
+  margin: 15px 20px;
   padding-top: 15px;
-  width: 95%;
   display: flex;
   flex-direction: column;
   align-items: start;
