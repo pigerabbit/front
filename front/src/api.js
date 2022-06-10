@@ -55,11 +55,15 @@ async function patch(endpoint, params = "", data) {
   });
 }
 
-async function del(endpoint, params = "") {
+async function del(endpoint, params = "", data = {}) {
+  const bodyData = JSON.stringify(data);
+
   return axios.delete(serverUrl + endpoint + "/" + params, {
     headers: {
       Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      "Content-Type": "application/json",
     },
+    data: bodyData,
   });
 }
 
