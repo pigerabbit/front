@@ -16,9 +16,6 @@ import DaumPost from "components/DaumPostCode";
 const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user?.name);
-  const [businessName, setBusinessName] = useState(
-    (user?.business && user?.business[0].businessName) || ""
-  );
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -30,7 +27,6 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
   const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
 
   const [nameValid, setNameValid] = useState(name);
-  const [businessNameValid, setBusinessNameValid] = useState(businessName);
   const [passwordValid, setPasswordValid] = useState(false);
   const addressValid = address?.length > 0;
   const detailAddressValid = detailAddress?.length > 0;
@@ -115,10 +111,6 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
   useEffect(() => {
     setNameValid(name?.length > 0);
   }, [name]);
-
-  useEffect(() => {
-    setBusinessNameValid(businessName?.length > 0);
-  }, [businessName]);
 
   useEffect(() => {
     setPasswordValid(currentPassword?.length >= 8);

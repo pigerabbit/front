@@ -31,7 +31,7 @@ const ReviewsPage = () => {
   }, []);
 
   return (
-    <MyPageLayout pageName={"나의 후기"}>
+    <MyPageLayout pageName={"나의 후기"} previousPage="/mypage">
       <Container>
         <TotalNumber>총 {reviews.length}건</TotalNumber>
 
