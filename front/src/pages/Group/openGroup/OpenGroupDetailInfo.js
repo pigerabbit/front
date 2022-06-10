@@ -18,7 +18,8 @@ const OpenGroupDetailInfo = ({ product, type }) => {
 
   const groupNameValid = groupName.length > 0;
   const locationValid = location.length > 0;
-  const isValid = groupNameValid && locationValid;
+  const isValid =
+    type === "coupon" ? groupNameValid : groupNameValid && locationValid;
 
   const postOpenGroup = async () => {
     try {
