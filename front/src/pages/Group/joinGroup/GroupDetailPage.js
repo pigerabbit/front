@@ -123,7 +123,7 @@ const Header = styled.header`
 `;
 
 const Body = styled.div`
-  padding-bottom: 73px;
+  padding-bottom: 80px;
 `;
 
 const Top = styled.div`
