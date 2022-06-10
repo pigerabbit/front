@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 
-const ProductInquiryForm = ({ productId, setIsWriting, setInquiries }) => {
+const ProductInquiryForm = ({
+  productId,
+  setIsWriting,
+  setInquiries,
+  setMyInquiries,
+}) => {
   const [inquiryTitle, setInquiryTitle] = useState("");
   const [inquiryText, setInquiryText] = useState("");
   const [inquiryImg, setInquiryImg] = useState({});
@@ -30,13 +35,16 @@ const ProductInquiryForm = ({ productId, setIsWriting, setInquiries }) => {
             `posts/${newInquiry.postId}/img`,
             formData
           );
-          newInquiry = resImg.data.payload;
+
+          setInquiries((cur) => [resImg.data.payload.post, ...cur]);
+          setMyInquiries((cur) => [resImg.data.payload.post, ...cur]);
         } catch (e) {
           console.log("이미지 업로드 실패");
         }
+      } else {
+        setInquiries((cur) => [newInquiry, ...cur]);
+        setMyInquiries((cur) => [newInquiry, ...cur]);
       }
-
-      setInquiries((cur) => [newInquiry, ...cur]);
 
       setIsWriting((cur) => !cur);
     } catch (e) {

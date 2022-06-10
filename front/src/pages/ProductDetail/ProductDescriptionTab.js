@@ -41,7 +41,7 @@ const ProductDescriptionTab = ({ product, seller }) => {
 
   const putWish = async () => {
     try {
-      const res = await Api.put(`toggle/product/${product.id}`);
+      const res = await Api.put(`toggle/product/${product._id}`);
       setWish((cur) => !cur);
     } catch (e) {
       console.log("wish put 실패");
@@ -51,7 +51,8 @@ const ProductDescriptionTab = ({ product, seller }) => {
   const getWish = async () => {
     try {
       const res = await Api.get("toggle/products");
-      if (res.data.indexOf(product.id) !== -1) setWish(true);
+      if (res.data.filter((v) => v._id === product._id).length > 0)
+        setWish(true);
       else setWish(false);
     } catch (e) {
       console.log("wish get 실패");
@@ -123,6 +124,8 @@ const Container = styled.div`
   min-width: 360px;
   max-width: 770px;
   background-color: #ffffff;
+
+  padding: 7px 0;
 `;
 
 const ImgContainer = styled.div`
@@ -204,9 +207,8 @@ const Price = styled.div`
 
 const DescriptionContainer = styled.div`
   position: relative;
-  margin: 15px auto;
+  margin: 15px 20px;
   padding-top: 15px;
-  width: 95%;
   display: flex;
   flex-direction: column;
   align-items: start;

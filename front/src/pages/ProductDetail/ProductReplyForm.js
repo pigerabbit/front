@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 
-const ProductReplyForm = ({ postId, setShowReply }) => {
+const ProductReplyForm = ({
+  postId,
+  setShowReply,
+  setComment,
+  setIsReplied,
+}) => {
   const [commentText, setCommentText] = useState("");
 
   const handleSubmit = async (e) => {
@@ -14,10 +19,11 @@ const ProductReplyForm = ({ postId, setShowReply }) => {
         receiver: postId,
         content: commentText,
       });
-      console.log(res);
+      setComment(res.data.payload);
+      setIsReplied(true);
       setShowReply(false);
     } catch (e) {
-      console.log("review post 실패");
+      console.log("comment post 실패");
     }
   };
 

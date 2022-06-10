@@ -1,20 +1,31 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "api";
+import axios from "axios";
+
+import ProductReplyForm from "./ProductReplyForm";
+import ProductCommentCard from "./ProductCommentCard";
 
 const ProductReviewCard = ({
+  postId,
   writerId,
   title,
   content,
   image,
   createdAt,
-  key,
+  commentCount,
+  isSeller,
 }) => {
-  const [open, setOpen] = useState(false);
   const [writer, setWriter] = useState({});
+  const [comment, setComment] = useState({});
+
+  const [open, setOpen] = useState(false);
+  const [showReply, setShowReply] = useState(false);
+  const [isReplied, setIsReplied] = useState(commentCount > 0 ? true : false);
   const date = createdAt.split("T")[0];
 
   const showDetail = (e) => {
+    if (e.target.id.includes("reply")) return;
     setOpen((cur) => !cur);
   };
 
@@ -27,13 +38,31 @@ const ProductReviewCard = ({
     }
   };
 
+  const getComments = async () => {
+    try {
+      const res = await axios.get(
+        Api.serverUrl + `posts?receiver=${postId}&type=comment`
+      );
+      setComment(res.data.payload[0]);
+    } catch (e) {
+      console.log("댓글 못 불러옴");
+    }
+  };
+
   useEffect(() => {
     getWriter();
+    if (commentCount > 0) getComments();
   }, []);
 
   return (
-    <Container onClick={showDetail} open={open} image={image}>
-      <Header>
+    <Container
+      onClick={showDetail}
+      open={open}
+      image={image}
+      isReplied={isReplied}
+      isSeller={isSeller}
+    >
+      <Header mobile={isSeller && open && !showReply && !isReplied}>
         {/* <WriterImg src={writer.imageLink} alt="상세정보 사진"></WriterImg> */}
         <WriterImg>
           <img src={writer.imageLink} alt="사용자 사진" />
@@ -47,10 +76,49 @@ const ProductReviewCard = ({
           </WriterInfo>
         </div>
       </Header>
+      {isSeller && open && !showReply && !isReplied && (
+        <button
+          id="replyButton"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowReply(true);
+          }}
+        >
+          답변하기
+        </button>
+      )}
       <Content open={open} image={image}>
         {content}
       </Content>
       {image && <ReviewImg src={image} alt="리뷰 사진" open={open}></ReviewImg>}
+
+      {isReplied && !open && <CommentArrow />}
+      {open && (
+        <div>
+          {showReply && !isReplied && (
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <ProductReplyForm
+                id="replyForm"
+                postId={postId}
+                setShowReply={setShowReply}
+                setComment={setComment}
+                setIsReplied={setIsReplied}
+              />
+            </div>
+          )}
+          {isReplied && (
+            <ProductCommentCard
+              createdAt={comment.createdAt}
+              content={comment.content}
+              reverse={!isSeller}
+            />
+          )}
+        </div>
+      )}
     </Container>
   );
 };
@@ -64,13 +132,30 @@ const Container = styled.div`
   min-height: 130px;
   vertical-align: middle;
   border-bottom: 1px solid #d0d0d0;
-  background-color: ${({ open, image }) =>
-    open && image ? "#f8f8fB" : "#ffffff"};
-  cursor: ${({ image }) => (image ? "pointer" : "default")};
+  background-color: ${({ open, image, isReplied, isSeller }) =>
+    open && (image || isReplied || isSeller) ? "#f8f8fB" : "#ffffff"};
+  cursor: ${({ image, isReplied, isSeller }) =>
+    image || isReplied || isSeller ? "pointer" : "default"};
+  padding-bottom: ${({ open, isReplied }) =>
+    open && isReplied ? "30px" : "0px"};
 
   @media (max-width: 500px) {
     cursor: default;
-    background-color: #ffffff;
+    background-color: ${({ open, isSeller }) =>
+      open && isSeller ? "#f8f8fB" : "#ffffff"};
+  }
+
+  #replyButton {
+    position: absolute;
+    right: 20px;
+    width: 70px;
+    height: 30px;
+    color: #ffffff;
+    border: none;
+    background-color: #ababab;
+    @media (max-width: 500px) {
+      top: 20px;
+    }
   }
 `;
 
@@ -82,6 +167,10 @@ const Header = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+
+  @media (max-width: 500px) {
+    margin-right: ${({ mobile }) => (mobile ? "80px" : "0px")};
+  }
 `;
 
 const WriterImg = styled.div`
@@ -139,7 +228,7 @@ const ReviewImg = styled.img`
   margin-bottom: ${({ open }) => (!open ? "0px" : "20px")};
   position: ${({ open }) => (!open ? "absolute" : "relative")};
   top: ${({ open }) => (!open ? "20px" : "0px")};
-  right: 10px;
+  right: 30px;
   margin-left: ${({ open }) => (!open ? "auto" : "80px")};
   align-items: center;
 
@@ -150,4 +239,17 @@ const ReviewImg = styled.img`
     top: 0px;
     margin: 0 0 20px 80px;
   }
+`;
+
+const CommentArrow = styled.i`
+  border: solid black;
+  border-width: 0 1px 1px 0;
+  display: inline-block;
+  padding: 5px;
+  margin-left: 5px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  position: absolute;
+  right: 10px;
+  bottom: 20px;
 `;

@@ -3,7 +3,13 @@ import styled from "styled-components";
 import * as Api from "api";
 import axios from "axios";
 
-const ProductReviewForm = ({ productId, setIsWriting, setReviews }) => {
+const ProductReviewForm = ({
+  productId,
+  setIsWriting,
+  setWritable,
+  setReviews,
+  setMyReviews,
+}) => {
   const [reviewTitle, setReviewTitle] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [reviewImg, setReviewImg] = useState({});
@@ -31,14 +37,16 @@ const ProductReviewForm = ({ productId, setIsWriting, setReviews }) => {
             `posts/${newReview.postId}/img`,
             formData
           );
-          newReview = resImg.data.payload;
+          setReviews((cur) => [resImg.data.payload.post, ...cur]);
+          setMyReviews((cur) => [resImg.data.payload.post, ...cur]);
         } catch (e) {
           console.log("이미지 업로드 실패");
         }
+      } else {
+        setReviews((cur) => [newReview, ...cur]);
+        setMyReviews((cur) => [newReview, ...cur]);
       }
-
-      setReviews((cur) => [newReview, ...cur]);
-
+      setWritable((cur) => !cur);
       setIsWriting((cur) => !cur);
     } catch (e) {
       console.log("review post 실패");

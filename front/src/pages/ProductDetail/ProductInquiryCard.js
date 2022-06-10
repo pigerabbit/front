@@ -14,6 +14,7 @@ const ProductInquiryCard = ({
   createdAt,
   commentCount,
   postId,
+  isSeller,
 }) => {
   const [writer, setWriter] = useState({});
   const [comment, setComment] = useState({});
@@ -72,7 +73,7 @@ const ProductInquiryCard = ({
 
         {open && (
           <div>
-            {!showReply && !isReplied && (
+            {isSeller && !showReply && !isReplied && (
               <button
                 id="replyButton"
                 onClick={(e) => {
@@ -103,6 +104,8 @@ const ProductInquiryCard = ({
                   id="replyForm"
                   postId={postId}
                   setShowReply={setShowReply}
+                  setComment={setComment}
+                  setIsReplied={setIsReplied}
                 />
               </div>
             )}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useSelector } from "react-redux";
 import * as Api from "api";
 import axios from "axios";
 
@@ -8,15 +8,14 @@ import ProductInquiryCard from "./ProductInquiryCard";
 import ProductInquiryForm from "./ProductInquiryForm";
 
 const ProductInquiryTab = ({ product }) => {
-  const { user } = useSelector((state) => state.user, shallowEqual);
-  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
   const [inquiries, setInquiries] = useState([]);
   const [myInquiries, setMyInquiries] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
   const [showMyInquiries, setShowMyInquiries] = useState(false);
 
-  const n = inquiries.length;
+  const isSeller = product.userId === user.id;
 
   const getInquiries = async () => {
     try {
@@ -24,7 +23,9 @@ const ProductInquiryTab = ({ product }) => {
         Api.serverUrl + `posts?receiver=${product.id}&type=cs`
       );
       setInquiries(res.data.payload.filter((v) => v.type === "cs"));
-      setMyInquiries(myInquiries.slice(0, 3));
+      setMyInquiries(
+        res.data.payload.filter((v) => v.type === "cs" && v.writer === user.id)
+      );
     } catch (e) {
       console.log(e);
     }
@@ -36,30 +37,34 @@ const ProductInquiryTab = ({ product }) => {
 
   return (
     <Container>
-      {!isWriting ? (
-        <WriteButton
-          onClick={() => {
-            setIsWriting((cur) => !cur);
-          }}
-        >
-          문의 작성하기
-        </WriteButton>
-      ) : (
-        <ProductInquiryForm
-          productId={product.id}
-          setIsWriting={setIsWriting}
-          setInquiries={setInquiries}
-        />
-      )}
+      {!isSeller &&
+        (!isWriting ? (
+          <WriteButton
+            onClick={() => {
+              setIsWriting((cur) => !cur);
+            }}
+          >
+            문의 작성하기
+          </WriteButton>
+        ) : (
+          <ProductInquiryForm
+            productId={product.id}
+            setIsWriting={setIsWriting}
+            setInquiries={setInquiries}
+            setMyInquiries={setMyInquiries}
+          />
+        ))}
       <Inquiry>
         <InquiryTop>
-          <div id="inquiryCount">문의 {n}건</div>
+          <div id="inquiryCount">
+            문의 {showMyInquiries ? myInquiries.length : inquiries.length}건
+          </div>
           {myInquiries.length > 0 && (
             <MyInquiryButton
               onClick={() => {
                 setShowMyInquiries((cur) => !cur);
               }}
-              showMyInquirys={setShowMyInquiries}
+              showMyInquiries={showMyInquiries}
             >
               내 문의
             </MyInquiryButton>
@@ -68,6 +73,7 @@ const ProductInquiryTab = ({ product }) => {
         {!showMyInquiries
           ? inquiries.map((v) => (
               <ProductInquiryCard
+                key={v.postId}
                 writerId={v.writer}
                 title={v.title}
                 content={v.content}
@@ -75,19 +81,19 @@ const ProductInquiryTab = ({ product }) => {
                 createdAt={v.createdAt}
                 commentCount={v.commentCount}
                 postId={v.postId}
-                key={v.postId}
+                isSeller={isSeller}
               />
             ))
           : myInquiries.map((v) => (
               <ProductInquiryCard
+                key={v.postId}
                 writerId={v.writer}
                 title={v.title}
                 content={v.content}
-                image={v.image}
+                image={v.postImg}
                 createdAt={v.createdAt}
                 commentCount={v.commentCount}
                 postId={v.postId}
-                key={v.postId}
               />
             ))}
       </Inquiry>
@@ -102,7 +108,7 @@ const Container = styled.div`
   min-width: 360px;
   max-width: 770px;
   background-color: #ffffff;
-  margin-top: 7px;
+  padding: 7px 0;
 `;
 
 const WriteButton = styled.div`
