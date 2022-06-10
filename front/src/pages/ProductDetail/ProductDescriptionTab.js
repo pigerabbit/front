@@ -207,9 +207,8 @@ const Price = styled.div`
 
 const DescriptionContainer = styled.div`
   position: relative;
-  margin: 15px auto;
+  margin: 15px 20px;
   padding-top: 15px;
-  width: 95%;
   display: flex;
   flex-direction: column;
   align-items: start;
