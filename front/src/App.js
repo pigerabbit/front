@@ -17,6 +17,7 @@ import SelectGroupPage from "./pages/Group/selectGroup/SelectGroupPage";
 import OpenGroupPage from "./pages/Group/openGroup/OpenGroupPage";
 import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
 import ProductRegisterPage from "pages/My/Market/ProductRegisterPage";
+import GroupDetailPage from "pages/Group/joinGroup/GroupDetailPage";
 
 import ScrollToTop from "ScrollToTop";
 import FetchCurrentUser from "FetchCurrentUser";
@@ -41,8 +42,9 @@ function App() {
   const searchPage = wrapFetchUser(<SearchPage />);
   const selectgrouPage = wrapFetchUser(<SelectGroupPage />);
   const opengroupPage = wrapFetchUser(<OpenGroupPage />);
-  const productdetailPage = wrapFetchUser(<ProductDetailPage />);
+  const productDetailPage = wrapFetchUser(<ProductDetailPage />);
   const productRegisterPage = wrapFetchUser(<ProductRegisterPage />);
+  const groupDetailPage = wrapFetchUser(<GroupDetailPage />);
 
   return (
     <Router>
@@ -65,7 +67,8 @@ function App() {
           <Route path="/search" element={searchPage} />
           <Route path="/group/select" element={selectgrouPage} />
           <Route path="/group/open" element={opengroupPage} />
-          <Route path="/products/:id" element={productdetailPage} />
+          <Route path="/products/:id" element={productDetailPage} />
+          <Route path="/groups/:id" element={groupDetailPage} />
         </Routes>
       </Container>
     </Router>

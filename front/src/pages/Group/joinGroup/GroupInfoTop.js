@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import * as Api from "api";
 
-import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-const ProductDescriptionTab = ({ product, seller }) => {
+const ProductDetailTop = ({ group, product, seller }) => {
   const navigate = useNavigate();
 
-  const [wish, setWish] = useState(false);
+  const [searchParams] = useSearchParams();
+  const imminent = searchParams.get("imminent");
 
   const {
     name,
@@ -39,48 +36,29 @@ const ProductDescriptionTab = ({ product, seller }) => {
     shippingConStr = ` (${shippingFeeConStr}원 이상 무료 배송)`;
   }
 
-  const putWish = async () => {
-    try {
-      const res = await Api.put(`toggle/product/${product._id}`);
-      setWish((cur) => !cur);
-    } catch (e) {
-      console.log("wish put 실패");
-    }
-  };
-
-  const getWish = async () => {
-    try {
-      const res = await Api.get("toggle/products");
-      if (res.data.filter((v) => v._id === product._id).length > 0)
-        setWish(true);
-      else setWish(false);
-    } catch (e) {
-      console.log("wish get 실패");
-    }
-  };
-
-  useEffect(() => {
-    getWish();
-  }, []);
-
   return (
     <Container>
       <ImgContainer>
-        <img id="productImg" src={images} alt={product.name + " 사진"} />
+        <img id="productImg" src={images} alt={name + " 사진"} />
       </ImgContainer>
-      <Seller
-        onClick={() => {
-          navigate("/store");
-        }}
-      >
+      <Seller>
         {seller.business[0].businessName}
-        <GoSeller />
+        <GoToProduct
+          onClick={() => {
+            navigate(`/products/${product.id}`);
+          }}
+        >
+          판매 페이지로 이동
+        </GoToProduct>
       </Seller>
       <InfoContainer>
-        {name}
-        <span onClick={putWish}>
-          {wish && <FontAwesomeIcon icon={fullHeart} size="1x" />}
-          {!wish && <FontAwesomeIcon icon={Heart} size="1x" />}
+        {group.groupName}
+        <span>
+          <p>~ {group.deadline}</p>
+          <Deadline>
+            {imminent === "true" && <p id="imminent">"마감 임박"</p>}
+            <p id="remain">{group.remainedPersonnel}개</p> 남음
+          </Deadline>
         </span>
         <PriceInfo>
           <DiscountRate>{discountRateStr}%</DiscountRate>
@@ -94,28 +72,25 @@ const ProductDescriptionTab = ({ product, seller }) => {
         </p>
       </InfoContainer>
       <DescriptionContainer>
-        {description && <div>{description}</div>}
-        {descriptionImg && (
-          <img
-            id="descriptionImg"
-            src={descriptionImg}
-            alt={name + " 설명 사진"}
-          />
+        {group.location && (
+          <Location>
+            <h3>픽업 주소</h3>
+            <p>{group.location}</p>
+          </Location>
         )}
       </DescriptionContainer>
     </Container>
   );
 };
 
-export default ProductDescriptionTab;
+export default ProductDetailTop;
 
 const Container = styled.div`
   width: 100%;
   min-width: 360px;
   max-width: 770px;
   background-color: #ffffff;
-
-  padding: 7px 0;
+  padding-top: 50px;
 `;
 
 const ImgContainer = styled.div`
@@ -135,20 +110,26 @@ const ImgContainer = styled.div`
 `;
 
 const Seller = styled.div`
-  margin: 20px 0 15px 20px;
+  margin: 20px 0 13px 20px;
   font-size: 15px;
   font-weight: bold;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
-const GoSeller = styled.i`
-  border: solid black;
-  border-width: 0 1px 1px 0;
-  display: inline-block;
-  padding: 5px;
-  margin-left: 5px;
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
+const GoToProduct = styled.div`
+  width: 120px;
+  height: 30px;
+  color: #ffffff;
+  background-color: #ffb564;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-left: 10px;
+
+  cursor: pointer;
 `;
 
 const InfoContainer = styled.div`
@@ -159,10 +140,46 @@ const InfoContainer = styled.div`
     font-size: 13px;
   }
 
-  span {
+  > span {
     position: absolute;
     right: 30px;
     color: #ff0000;
+  }
+
+  > span > p {
+    color: #f79831;
+    font-weight: bold;
+  }
+`;
+
+const Deadline = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-end;
+  margin-top: 10px;
+  color: #000000;
+
+  font-size: 23px;
+
+  #imminent {
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 13px;
+    margin-right: 5px;
+
+    @media (max-width: 500px) {
+      font-size: 11px;
+    }
+  }
+
+  #remain {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 18px;
   }
 `;
 
@@ -208,5 +225,12 @@ const DescriptionContainer = styled.div`
   img {
     width: 100%;
     height: auto;
+  }
+`;
+
+const Location = styled.div`
+  font-size: 15px;
+  > h3 {
+    margin-bottom: 10px;
   }
 `;

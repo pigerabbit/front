@@ -4,52 +4,50 @@ import { useParams, useNavigate } from "react-router-dom";
 import * as Api from "api";
 import axios from "axios";
 
-import { faUser, faHome } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faHome,
+  faHeart as fullHeart,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import ProductTabs from "./ProductTabs";
-import ProductDescriptionTab from "./ProductDescriptionTab";
-import ProductInformationTab from "./ProductInformationTab";
-import ProductReviewTab from "./ProductReviewTab";
-import ProductInquiryTab from "./ProductInquiryTab";
-import JoinGroupWindow from "pages/Group/joinGroup/JoinGroupWindow";
+import ProductDetailTop from "./GroupInfoTop";
+import CommentsArea from "./CommentsArea";
 
-const ProductDetailPage = () => {
+const GroupDetailPage = () => {
+  const [group, setGroup] = useState({});
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
-
-  const [showJoinGroup, setShowJoinGroup] = useState(false);
-  const [currentTab, setCurrentTab] = useState({
-    index: -1,
-    name: "fetch전",
-  });
+  const [isFetched, setIsFetched] = useState(false);
 
   const navigate = useNavigate();
 
-  const productId = useParams().id;
+  const groupId = useParams().id;
 
-  const getProductDetail = async () => {
+  const getGroupDetail = async () => {
     try {
-      const res = await Api.get(`products/${productId}`);
-      const resUser = await Api.get(`users/${res.data.payload.userId}`);
-      setProduct(res.data.payload);
+      const res = await Api.get(`groups/groupId/${groupId}`);
+      setGroup(res.data.payload[0]);
+      console.log(res.data.payload[0]);
+      setProduct(res.data.payload[0].productInfo);
+      const resUser = await Api.get(
+        `users/${res.data.payload[0].productInfo.userId}`
+      );
       setSeller(resUser.data.payload);
-      setCurrentTab({
-        index: 0,
-        name: "상품설명",
-      });
+      setIsFetched(true);
     } catch (e) {
-      console.log("product 못 가져옴");
+      console.log("group 못 가져옴");
     }
   };
 
   useEffect(() => {
     try {
-      getProductDetail();
+      getGroupDetail();
     } catch (e) {
       console.log();
     }
   }, []);
+
   return (
     <Container>
       <Header>
@@ -81,51 +79,29 @@ const ProductDetailPage = () => {
             </div>
           </ButtonTopContainer>
         </Top>
-        <ProductTabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
       </Header>
-      <Body>
-        {currentTab.index === 0 && (
-          <ProductDescriptionTab product={product} seller={seller} />
-        )}
-        {currentTab.index === 1 && (
-          <ProductInformationTab product={product} seller={seller} />
-        )}
-        {currentTab.index === 2 && (
-          <ProductReviewTab product={product} seller={seller} />
-        )}
-        {currentTab.index === 3 && (
-          <ProductInquiryTab product={product} seller={seller} />
-        )}
-        {showJoinGroup && (
-          <JoinGroupWindow
-            productId={product.id}
-            minPurchaseQty={product.minPurchaseQty}
-            setShowJoinGroup={setShowJoinGroup}
-          />
-        )}
-      </Body>
+      {isFetched && (
+        <Body>
+          <ProductDetailTop group={group} product={product} seller={seller} />
+          <CommentsArea group={group} product={product} seller={seller} />
+        </Body>
+      )}
       <ButtonsContainer>
-        <LeftButton
-          position="left"
-          onClick={() => {
-            navigate(`/group/select`, { state: product });
-          }}
-        >
-          공구 열기
+        <LeftButton position="left">
+          <p>
+            <FontAwesomeIcon icon={fullHeart} size="1x" />
+          </p>
+          찜 하기
         </LeftButton>
-        <RightButton
-          isFilled="true"
-          position="right"
-          onClick={() => setShowJoinGroup((cur) => !cur)}
-        >
-          공구 참여하기
+        <RightButton isFilled="true" position="right">
+          구매하기
         </RightButton>
       </ButtonsContainer>
     </Container>
   );
 };
 
-export default ProductDetailPage;
+export default GroupDetailPage;
 
 const Container = styled.div`
   position: relative;
@@ -147,7 +123,7 @@ const Header = styled.header`
 `;
 
 const Body = styled.div`
-  padding: 100px 0 75px 0;
+  padding-bottom: 80px;
 `;
 
 const Top = styled.div`
@@ -230,6 +206,10 @@ const LeftButton = styled.div`
   background-color: #ffffff;
   color: #f79831;
   border: 2px solid #f79831;
+
+  > p {
+    margin-right: 5px;
+  }
 
   &:hover {
     color: #636363;
