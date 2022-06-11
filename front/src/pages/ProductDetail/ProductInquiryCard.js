@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "api";
-import axios from "axios";
 
 import ProductReplyForm from "./ProductReplyForm";
 import ProductCommentCard from "./ProductCommentCard";
@@ -40,9 +39,7 @@ const ProductInquiryCard = ({
 
   const getComments = async () => {
     try {
-      const res = await axios.get(
-        Api.serverUrl + `posts?receiver=${postId}&type=comment`
-      );
+      const res = await Api.get("posts", { receiver: postId, type: "comment" });
       setComment(res.data.payload[0]);
     } catch (e) {
       console.log("댓글 못 불러옴");

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import * as Api from "api";
-import axios from "axios";
 
 import ProductReviewCard from "./ProductReviewCard";
 import ProductReviewForm from "./ProductReviewForm";
@@ -37,9 +36,10 @@ const ProductReviewTab = ({ product }) => {
 
   const getReviews = async () => {
     try {
-      const res = await axios.get(
-        Api.serverUrl + `posts?receiver=${product.id}&type=review`
-      );
+      const res = await Api.get(`posts`, {
+        receiver: product.id,
+        type: "review",
+      });
       setReviews(res.data.payload.filter((v) => v.type === "review"));
       setMyReviews(
         res.data.payload.filter(
