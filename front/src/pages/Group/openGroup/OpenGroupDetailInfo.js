@@ -24,6 +24,9 @@ const OpenGroupDetailInfo = ({ product, type }) => {
   const postOpenGroup = async () => {
     try {
       const deadline = formatDate(hour);
+      if (type === "coupon") {
+        setLocation(product.userInfo.buisness?.buisnessLocation);
+      }
       const res = await Api.post(`groups`, {
         groupType: type,
         location,
