@@ -36,7 +36,7 @@ const ProductReviewTab = ({ product }) => {
 
   const getReviews = async () => {
     try {
-      const res = await Api.get(`posts`, {
+      const res = await Api.get(`posts`, "", {
         receiver: product.id,
         type: "review",
       });

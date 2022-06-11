@@ -39,7 +39,10 @@ const ProductInquiryCard = ({
 
   const getComments = async () => {
     try {
-      const res = await Api.get("posts", { receiver: postId, type: "comment" });
+      const res = await Api.get("posts", "", {
+        receiver: postId,
+        type: "comment",
+      });
       setComment(res.data.payload[0]);
     } catch (e) {
       console.log("댓글 못 불러옴");

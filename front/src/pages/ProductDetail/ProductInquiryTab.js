@@ -18,7 +18,10 @@ const ProductInquiryTab = ({ product }) => {
 
   const getInquiries = async () => {
     try {
-      const res = await Api.get(`posts`, { receiver: product.id, type: "cs" });
+      const res = await Api.get(`posts`, "", {
+        receiver: product.id,
+        type: "cs",
+      });
       setInquiries(res.data.payload.filter((v) => v.type === "cs"));
       setMyInquiries(
         res.data.payload.filter((v) => v.type === "cs" && v.writer === user.id)

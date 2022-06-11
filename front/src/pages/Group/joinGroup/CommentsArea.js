@@ -9,7 +9,7 @@ const CommentsArea = ({ group, product, seller }) => {
 
   const getComments = async () => {
     try {
-      const res = await Api.get(`posts`, {
+      const res = await Api.get(`posts`, "", {
         receiver: group.groupId,
         type: "groupChat",
       });
