@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "api";
-import axios from "axios";
 
 import CommentForm from "./CommentForm";
 
@@ -10,9 +9,10 @@ const CommentsArea = ({ group, product, seller }) => {
 
   const getComments = async () => {
     try {
-      const res = axios.get(
-        Api.serverUrl + `posts?receiver=${group.groupId}&type=groupChat`
-      );
+      const res = await Api.get(`posts`, "", {
+        receiver: group.groupId,
+        type: "groupChat",
+      });
       if (res.data) {
         setComments(res.data.payload);
       }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "api";
-import axios from "axios";
 
 const ProductReviewForm = ({
   productId,
