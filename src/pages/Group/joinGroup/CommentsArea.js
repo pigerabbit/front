@@ -78,12 +78,11 @@ const Blur = styled.div`
   width: 100%;
   height: 100%;
   min-height: 70px;
-  z-index: 10;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px 0;
 
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);

@@ -11,7 +11,7 @@ import {
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import ProductDetailTop from "./GroupInfoTop";
+import GroupInfoTop from "./GroupInfoTop";
 import CommentsArea from "./CommentsArea";
 import BuyingProductWindow from "./BuyingProductWindow";
 
@@ -104,7 +104,7 @@ const GroupDetailPage = () => {
       {isFetched && (
         <>
           <Body>
-            <ProductDetailTop group={group} product={product} seller={seller} />
+            <GroupInfoTop group={group} product={product} seller={seller} />
             <CommentsArea group={group} product={product} seller={seller} />
           </Body>
 
@@ -226,7 +226,7 @@ const ButtonsContainer = styled.div`
   margin: 0 auto;
   padding: 10px 0 10px 0;
   background-color: #ffffff;
-  z-index: 5;
+  z-index: 10;
 `;
 
 const LeftButton = styled.div`

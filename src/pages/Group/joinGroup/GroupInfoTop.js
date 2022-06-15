@@ -230,16 +230,11 @@ const DescriptionContainer = styled.div`
   align-items: start;
   justify-content: center;
   border-top: 1px solid #d0d0d0;
-
-  img {
-    width: 100%;
-    height: auto;
-  }
 `;
 
 const Location = styled.div`
   font-size: 15px;
-  > h3 {
-    margin-bottom: 10px;
+  > p {
+    margin-top: 10px;
   }
 `;

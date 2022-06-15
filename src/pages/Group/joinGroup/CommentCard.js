@@ -111,7 +111,6 @@ const Top = styled.div`
 const ButtonContainer = styled.div`
   position: absolute;
   right: 20px;
-  margin-top: 5px;
 `;
 
 const Button = styled.button`
