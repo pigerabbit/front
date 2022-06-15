@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import * as Api from "api";
 
 const ProductDetailTop = ({ group, product, seller }) => {
   const navigate = useNavigate();
@@ -17,8 +16,6 @@ const ProductDetailTop = ({ group, product, seller }) => {
     shippingFee,
     shippingFeeCon,
     images,
-    description,
-    descriptionImg,
   } = product;
 
   const [
