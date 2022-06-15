@@ -8,6 +8,7 @@ import {
   faHome,
   faHeart as fullHeart,
 } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ProductDetailTop from "./GroupInfoTop";
@@ -107,7 +108,11 @@ const GroupDetailPage = () => {
           <ButtonsContainer>
             <LeftButton wish={wish} onClick={handleToggle}>
               <p>
-                <FontAwesomeIcon icon={fullHeart} size="1x" />
+                {wish ? (
+                  <FontAwesomeIcon icon={fullHeart} size="1x" />
+                ) : (
+                  <FontAwesomeIcon icon={Heart} size="1x" />
+                )}
               </p>
               {!wish ? "찜 하기" : "찜 취소하기"}
             </LeftButton>
@@ -227,12 +232,6 @@ const LeftButton = styled.div`
 
   > p {
     margin-right: 5px;
-    color: ${({ wish }) => (wish ? "#ff0000" : "#f79831")};
-
-    &:hover {
-      color: #636363;
-      border-color: #636363;
-    }
   }
 
   &:hover {
