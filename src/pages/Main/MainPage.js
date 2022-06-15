@@ -16,13 +16,7 @@ const MainPage = () => {
   const [tab, setTab] = useState("home");
   const [sideBarTitle, setSideBarTitle] = useState("카테고리");
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
-  const [confirmationIcon, setConfirmationIcon] = useState({
-    show: false,
-    backgroundColor: "#70BD86;",
-    color: "",
-    icon: "",
-    text: "",
-  });
+  const [confirmationIcon, setConfirmationIcon] = useState({ show: false });
 
   return (
     <Container>

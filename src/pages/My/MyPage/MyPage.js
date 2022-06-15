@@ -16,13 +16,7 @@ const MyPage = () => {
   const [password, setPassword] = useState("");
   const [placeholder, setPlaceholder] = useState("비밀번호를 입력해주세요.");
   const [InputBorderColor, setInputBorderColor] = useState("#e6e6e6");
-  const [confirmationIcon, setConfirmationIcon] = useState({
-    show: false,
-    backgroundColor: "#70BD86;",
-    color: "",
-    icon: "",
-    text: "",
-  });
+  const [confirmationIcon, setConfirmationIcon] = useState({ show: false });
   const { user } = useSelector((state) => state.user);
 
   const navigate = useNavigate();

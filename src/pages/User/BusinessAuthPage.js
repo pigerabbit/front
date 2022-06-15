@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import * as Api from "api";
 
 import UserTopBar from "./UserTopBar";
 import UserInput from "./UserInput";
 import UserButton from "./UserButton";
-import { useSelector } from "react-redux";
+import DaumPost from "components/DaumPostCode";
+import ConfirmationIcon from "components/ConfirmationIcon";
 
 const BusinessAuthPage = () => {
   const { user } = useSelector((state) => state.user);
+  const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
   const [businessNumber, setBusinessNumber] = useState("");
   const [representative, setRepresentative] = useState(
     (user?.business && user?.business[0].ownerName) || ""
@@ -21,8 +26,9 @@ const BusinessAuthPage = () => {
   const [businessName, setBusinessName] = useState(
     (user?.business && user?.business[0].businessName) || ""
   );
+  const [confirmationIcon, setConfirmationIcon] = useState({ show: false });
 
-  const businessNumberValid = businessNumber.length > 0;
+  const businessNumberValid = businessNumber.length === 10;
   const representativeValid = representative.length > 0;
   const openingDateValid = openingDate.length > 0;
   const businessAddressValid = businessAddress.length > 0;
@@ -34,7 +40,43 @@ const BusinessAuthPage = () => {
     businessAddressValid &&
     businessNameValid;
 
-  const handleAuthClick = () => {};
+  const unShowIcon = () => {
+    setTimeout(() => {
+      setConfirmationIcon((cur) => {
+        return { ...cur, show: false };
+      });
+    }, 1600);
+  };
+
+  const failureIconShow = (text) => {
+    setConfirmationIcon({
+      show: true,
+      backgroundColor: "#FF6A6A;",
+      color: "white",
+      icon: faXmark,
+      text,
+    });
+
+    unShowIcon();
+  };
+
+  const handleAuthClick = async () => {
+    const bodyData = {
+      businessName,
+      businessLocation: businessAddress,
+      b_no: businessNumber,
+      start_dt: openingDate.replaceAll("-", ""),
+      p_nm: representative,
+    };
+    console.log(bodyData);
+
+    try {
+      await Api.post(`users/${user.id}/seller`, bodyData);
+    } catch (e) {
+      e.response.data.error === "사업자 인증에 실패했습니다." &&
+        failureIconShow("인증 실패");
+    }
+  };
 
   return (
     <Container>
@@ -43,7 +85,8 @@ const BusinessAuthPage = () => {
       <InputListContainter>
         <UserInput
           title="사업자 등록 번호"
-          type="text"
+          placeholder="사업자 등록 번호 10자리를 입력해주세요."
+          type="number"
           value={businessNumber}
           setValue={setBusinessNumber}
           isValueValid={businessNumberValid}
@@ -71,6 +114,9 @@ const BusinessAuthPage = () => {
           value={businessAddress}
           setValue={setBusinessAddress}
           isValueValid={businessAddressValid}
+          handleClick={() => {
+            setIsDaumPostOpen(true);
+          }}
         />
 
         <UserInput
@@ -83,6 +129,13 @@ const BusinessAuthPage = () => {
         />
       </InputListContainter>
 
+      {isDaumPostOpen && (
+        <DaumPost
+          setAddress={setBusinessAddress}
+          setIsDaumPostOpen={setIsDaumPostOpen}
+        />
+      )}
+
       <UserButton
         handleClick={handleAuthClick}
         valid={isFormValid}
@@ -90,6 +143,8 @@ const BusinessAuthPage = () => {
       >
         {user?.business ? "판매처 수정하기" : "사업자 인증하기"}
       </UserButton>
+
+      {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
     </Container>
   );
 };
