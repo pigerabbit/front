@@ -13,13 +13,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import ProductDetailTop from "./GroupInfoTop";
 import CommentsArea from "./CommentsArea";
+import BuyingProductWindow from "./BuyingProductWindow";
 
 const GroupDetailPage = () => {
   const [group, setGroup] = useState({});
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
-  const [isFetched, setIsFetched] = useState(false);
   const [wish, setWish] = useState(false);
+  const [isFetched, setIsFetched] = useState(false);
+
+  const [showBuyingProduct, setShowBuyingProduct] = useState(false);
 
   const navigate = useNavigate();
 
@@ -105,6 +108,15 @@ const GroupDetailPage = () => {
             <CommentsArea group={group} product={product} seller={seller} />
           </Body>
 
+          {showBuyingProduct && (
+            <BuyingProductWindow
+              groupId={groupId}
+              salePrice={product.salePrice}
+              remainedPersonnel={group.remainedPersonnel}
+              setShowBuyingProduct={setShowBuyingProduct}
+            />
+          )}
+
           <ButtonsContainer>
             <LeftButton wish={wish} onClick={handleToggle}>
               <p>
@@ -116,7 +128,9 @@ const GroupDetailPage = () => {
               </p>
               {!wish ? "찜 하기" : "찜 취소하기"}
             </LeftButton>
-            <RightButton>구매하기</RightButton>
+            <RightButton onClick={() => setShowBuyingProduct(true)}>
+              구매하기
+            </RightButton>
           </ButtonsContainer>
         </>
       )}
