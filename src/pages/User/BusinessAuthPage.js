@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { update } from "redux/userSlice";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import * as Api from "api";
 
@@ -32,13 +32,18 @@ const BusinessAuthPage = () => {
   const representativeValid = representative.length > 0;
   const openingDateValid = openingDate.length > 0;
   const businessAddressValid = businessAddress.length > 0;
-  const businessNameValid = businessName.length > 0;
+  const [businessNameValid, setBusinessNameValid] = useState(
+    businessName.length > 0
+  );
   const isFormValid =
     businessNumberValid &&
     representativeValid &&
     openingDateValid &&
     businessAddressValid &&
     businessNameValid;
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const unShowIcon = () => {
     setTimeout(() => {
@@ -68,15 +73,28 @@ const BusinessAuthPage = () => {
       start_dt: openingDate.replaceAll("-", ""),
       p_nm: representative,
     };
-    console.log(bodyData);
 
     try {
-      await Api.post(`users/${user.id}/seller`, bodyData);
+      const res = await Api.post(`users/${user.id}/seller`, bodyData);
+      const updatedUser = res.data.payload;
+      dispatch(update(updatedUser));
+      navigate("/mypage");
     } catch (e) {
-      e.response.data.error === "사업자 인증에 실패했습니다." &&
+      if (e.response.data.error === "사업자 인증에 실패했습니다.") {
         failureIconShow("인증 실패");
+      } else if (
+        e.response.data.errorMessage ===
+        "이미 존재하는 상호명입니다. 다른 상호명을 입력해주십시오."
+      ) {
+        failureIconShow("판매처 중복");
+        setBusinessNameValid("again");
+      }
     }
   };
+
+  useEffect(() => {
+    setBusinessNameValid(businessName.length > 0);
+  }, [businessName]);
 
   return (
     <Container>
