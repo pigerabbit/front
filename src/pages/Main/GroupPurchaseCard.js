@@ -72,8 +72,8 @@ const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
         </CardTitle>
         <Price>
           <span>{purchase?.productInfo[0]?.discountRate}%</span>
-          <span>{purchase?.productInfo[0]?.salePrice}원</span>
-          <span>{purchase?.productInfo[0]?.price}원</span>
+          <span>{purchase?.productInfo[0]?.salePrice.toLocaleString()}원</span>
+          <span>{purchase?.productInfo[0]?.price.toLocaleString()}원</span>
         </Price>
         <Deadline>
           <div>
