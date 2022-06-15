@@ -93,6 +93,9 @@ const Information = styled.div`
     padding: 12px 0;
   }
   margin-left: 2vw;
+  @media (min-width: 770px) {
+    margin-left: 15px;
+  }
   flex-grow: 1;
   display: flex;
   flex-direction: column;

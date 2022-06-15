@@ -8,8 +8,6 @@ import * as Api from "api";
 const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
   const [wish, setWish] = useState(purchase?.toggle === 0 ? false : true);
 
-  console.log(purchase);
-
   const getDeadline = (date) => {
     if (!date) return;
 

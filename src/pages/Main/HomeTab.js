@@ -149,6 +149,9 @@ const CardList = styled.div`
 const Pagination = styled.div`
   width: 100%;
   margin-top: 4.5vw;
+  @media (min-width: 770px) {
+    margin-top: 32px;
+  }
   display: flex;
   justify-content: center;
   color: #a4a4a4;
@@ -170,7 +173,10 @@ const Pagination = styled.div`
 
     > span {
       color: black;
-      margin-right: 0.8vw;
+      margin-right: 3px;
+      @media (min-width: 500px) {
+        margin-right: 5px;
+      }
     }
   }
 
