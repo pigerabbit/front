@@ -1,25 +1,41 @@
 import styled from "styled-components";
 
-const AddressInfo = ({ name, contact, address }) => {
+const AddressInfo = ({
+  name,
+  contact,
+  address,
+  setName,
+  setContact,
+  setAddress,
+}) => {
   return (
     <Container>
       <h3>배송지 정보</h3>
       <Content>
         <Info>
           <h3>받는 사람</h3>
-          <input type="text" value={name} />
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </Info>
         <Info>
           <h3>연락처</h3>
-          <input type="text" value={contact} />
+          <input
+            type="text"
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
+          />
         </Info>
         <Info>
           <h3>공구주소</h3>
           <input
             type="text"
             value={address}
-            disabled
             style={{ color: "#939393" }}
+            onChange={(e) => setAddress(e.target.value)}
+            disabled
           />
         </Info>
       </Content>
