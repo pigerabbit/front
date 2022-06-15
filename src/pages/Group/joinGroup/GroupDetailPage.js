@@ -18,21 +18,43 @@ const GroupDetailPage = () => {
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
   const [isFetched, setIsFetched] = useState(false);
+  const [wish, setWish] = useState(false);
 
   const navigate = useNavigate();
 
   const groupId = useParams().id;
 
+  const handleToggle = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await Api.put(`toggle/group/${group._id}`);
+      console.log(res.data);
+      setWish((cur) => !cur);
+    } catch (e) {
+      console.log("공구 찜하기 실패");
+    }
+  };
+
   const getGroupDetail = async () => {
     try {
       const res = await Api.get(`groups/groupId/${groupId}`);
       setGroup(res.data.payload[0]);
-      console.log(res.data.payload[0]);
       setProduct(res.data.payload[0].productInfo);
+
+      const resWish = await Api.get("toggle/groups");
+      if (
+        resWish.data.filter((v) => v._id === res.data.payload[0]._id).length > 0
+      ) {
+        console.log(resWish);
+        setWish(true);
+      } else setWish(false);
+
       const resUser = await Api.get(
         `users/${res.data.payload[0].productInfo.userId}`
       );
       setSeller(resUser.data.payload);
+
       setIsFetched(true);
     } catch (e) {
       console.log("group 못 가져옴");
@@ -40,11 +62,7 @@ const GroupDetailPage = () => {
   };
 
   useEffect(() => {
-    try {
-      getGroupDetail();
-    } catch (e) {
-      console.log();
-    }
+    getGroupDetail();
   }, []);
 
   return (
@@ -80,22 +98,23 @@ const GroupDetailPage = () => {
         </Top>
       </Header>
       {isFetched && (
-        <Body>
-          <ProductDetailTop group={group} product={product} seller={seller} />
-          <CommentsArea group={group} product={product} seller={seller} />
-        </Body>
+        <>
+          <Body>
+            <ProductDetailTop group={group} product={product} seller={seller} />
+            <CommentsArea group={group} product={product} seller={seller} />
+          </Body>
+
+          <ButtonsContainer>
+            <LeftButton wish={wish} onClick={handleToggle}>
+              <p>
+                <FontAwesomeIcon icon={fullHeart} size="1x" />
+              </p>
+              {!wish ? "찜 하기" : "찜 취소하기"}
+            </LeftButton>
+            <RightButton>구매하기</RightButton>
+          </ButtonsContainer>
+        </>
       )}
-      <ButtonsContainer>
-        <LeftButton position="left">
-          <p>
-            <FontAwesomeIcon icon={fullHeart} size="1x" />
-          </p>
-          찜 하기
-        </LeftButton>
-        <RightButton isFilled="true" position="right">
-          구매하기
-        </RightButton>
-      </ButtonsContainer>
     </Container>
   );
 };
@@ -208,6 +227,12 @@ const LeftButton = styled.div`
 
   > p {
     margin-right: 5px;
+    color: ${({ wish }) => (wish ? "#ff0000" : "#f79831")};
+
+    &:hover {
+      color: #636363;
+      border-color: #636363;
+    }
   }
 
   &:hover {
