@@ -17,6 +17,7 @@ const CommentForm = ({ setComments }) => {
         content: comment,
       });
       setComments((cur) => [...cur, res.data.payload]);
+      setComment("");
     } catch (e) {
       console.log("공구 댓글 post 실패");
     }
