@@ -7,7 +7,7 @@ const PriceInfo = ({ price, totalPrice, shippingPrice }) => {
       <Content>
         <Info>
           <p>개당 상품 금액</p>
-          <p>{price}원</p>
+          <p>{price.toLocaleString()}원</p>
         </Info>
         <Info>
           <p>총 상품 금액</p>
@@ -15,11 +15,11 @@ const PriceInfo = ({ price, totalPrice, shippingPrice }) => {
         </Info>
         <Info>
           <p>배송비</p>
-          <p>{shippingPrice}원</p>
+          <p>{shippingPrice.toLocaleString()}원</p>
         </Info>
         <Info>
           <h3>최종 결제금액</h3>
-          <h3>{totalPrice + shippingPrice}원</h3>
+          <h3>{(totalPrice + shippingPrice).toLocaleString()}원</h3>
         </Info>
       </Content>
     </Container>

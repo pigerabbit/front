@@ -8,7 +8,7 @@ const ProductInfo = ({ image, title, price, count }) => {
         <Image />
         <Info>
           <h3>{title}</h3>
-          <p>{price}원</p>
+          <p>{price.toLocaleString()}원</p>
           <p>
             구매수량 <span>{count}개</span>
           </p>
