@@ -49,7 +49,7 @@ const ProductDetailTop = ({ group, product, seller }) => {
         </GoToProduct>
       </Seller>
       <InfoContainer>
-        {group.groupName}
+        <p id="groupName">{group.groupName}</p>
         <span>
           <p>~ {group.deadline}</p>
           <Deadline>
@@ -132,6 +132,14 @@ const GoToProduct = styled.div`
 const InfoContainer = styled.div`
   margin-left: 20px;
 
+  #groupName {
+    display: inline-block;
+    width: 60%;
+    @media (max-width: 360px) {
+      width: 57%;
+    }
+  }
+
   #shippingFee {
     margin-top: 10px;
     font-size: 13px;
@@ -146,6 +154,10 @@ const InfoContainer = styled.div`
   > span > p {
     color: #f79831;
     font-weight: bold;
+
+    @media (max-width: 500px) {
+      font-size: 12px;
+    }
   }
 `;
 
