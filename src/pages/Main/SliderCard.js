@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
-import axios from "axios";
 
 const url =
   "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500";
@@ -19,13 +18,7 @@ const SliderCard = ({ purchase }) => {
     2
   )}일까지`;
 
-  const getProductData = async () => {
-    const data = await axios("/data/productsList.json", { method: "GET" });
-    const index = data.data.productList.findIndex(
-      (product) => product.id === purchase.productId
-    );
-    setProduct(data.data.productList[index]);
-  };
+  const getProductData = async () => {};
 
   useEffect(() => {
     getProductData();

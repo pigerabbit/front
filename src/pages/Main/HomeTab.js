@@ -5,6 +5,7 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import * as Api from "api";
 import axios from "axios";
 
 import SliderCard from "./SliderCard";
@@ -12,6 +13,7 @@ import CardsContainer from "./CardsContainer";
 
 const HomeTab = ({ setConfirmationIcon }) => {
   const [groupPurchaseList, setGroupPurchaseList] = useState([]);
+  const [nearbyGroups, setNearbyGroups] = useState([]);
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
   const [transition, setTransition] = useState("transition: left 0.4s;");
@@ -51,7 +53,13 @@ const HomeTab = ({ setConfirmationIcon }) => {
     setGroupPurchaseList(data.data.groupList);
   };
 
+  const getNearbyGroupsData = async () => {
+    const res = await Api.get("groups/sort/locations");
+    setNearbyGroups(res.data.payload[0].data);
+  };
+
   useEffect(() => {
+    getNearbyGroupsData();
     getGroupPurchaseData();
   }, []);
 
@@ -92,7 +100,7 @@ const HomeTab = ({ setConfirmationIcon }) => {
 
       <CardsContainer
         title={nearbyTitle}
-        groupPurchaseList={groupPurchaseList}
+        groupPurchaseList={nearbyGroups}
         setConfirmationIcon={setConfirmationIcon}
       />
     </Container>
