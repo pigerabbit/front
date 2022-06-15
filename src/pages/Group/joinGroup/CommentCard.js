@@ -41,27 +41,31 @@ const CommentCard = ({ postId, content, writerId, createdAt, setComments }) => {
   return (
     <Container>
       <CommentContainer>
-        <Top>
-          <p id="writer">{writer.name}</p>
-          <p id="date">{date}</p>
-        </Top>
-
         {!isEditing ? (
-          <p id="content">{content}</p>
+          <>
+            <Top>
+              <p id="writer">{writer.name}</p>
+              <p id="date">{date}</p>
+            </Top>
+
+            <p id="content">{content}</p>
+
+            {isEditable && (
+              <ButtonContainer>
+                <Button onClick={() => setIsEditing(true)}>편집</Button>
+                <Button func="delete" onClick={handleClick}>
+                  삭제
+                </Button>
+              </ButtonContainer>
+            )}
+          </>
         ) : (
           <CommentEditForm
             postId={postId}
             content={content}
+            setComments={setComments}
             setIsEditing={setIsEditing}
           />
-        )}
-        {isEditable && (
-          <ButtonContainer>
-            <Button>편집</Button>
-            <Button func="delete" onClick={handleClick}>
-              삭제
-            </Button>
-          </ButtonContainer>
         )}
       </CommentContainer>
     </Container>
