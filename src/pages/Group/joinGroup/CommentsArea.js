@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 import * as Api from "api";
 
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
 
-const CommentsArea = ({ group, product, seller }) => {
+const CommentsArea = ({ group }) => {
+  const { user } = useSelector((state) => state.user);
+
   const [comments, setComments] = useState([]);
+  const isAvailable = group.participants.indexOf(user.id) !== -1;
 
   const getComments = async () => {
     try {
@@ -24,24 +28,28 @@ const CommentsArea = ({ group, product, seller }) => {
 
   useEffect(() => {
     getComments();
+    console.log(isAvailable);
   }, []);
 
   return (
     <Container>
+      {!isAvailable && <Blur>댓글 읽기/작성은 공동구매 참여 후 가능</Blur>}
       <CommentsContainer>
         <h4>댓글 ({comments.length})</h4>
-        <CommentForm setComments={setComments} />
-        {comments.length > 0 &&
-          comments.map((v) => (
-            <CommentCard
-              key={v.postId}
-              postId={v.postId}
-              content={v.content}
-              writerId={v.writer}
-              createdAt={v.createdAt}
-              setComments={setComments}
-            />
-          ))}
+        <CommentForm setComments={setComments} isAvailable={isAvailable} />
+        <div id="comments">
+          {comments.length > 0 &&
+            comments.map((v) => (
+              <CommentCard
+                key={v.postId}
+                postId={v.postId}
+                content={v.content}
+                writerId={v.writer}
+                createdAt={v.createdAt}
+                setComments={setComments}
+              />
+            ))}
+        </div>
       </CommentsContainer>
     </Container>
   );
@@ -54,9 +62,32 @@ const Container = styled.div`
   min-width: 360px;
   max-width: 770px;
   background-color: #ffffff;
+  position: relative;
 `;
 
 const CommentsContainer = styled.div`
-  padding: 10px 0 10px 0;
+  padding: 10px 0;
   margin: 20px 20px 0px 20px;
+  > h4 {
+    margin-top: 3px;
+  }
+`;
+
+const Blur = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  min-height: 70px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+
+  font-weight: bold;
+  font-size: 17px;
 `;

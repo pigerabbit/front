@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import * as Api from "api";
 
-const CommentForm = ({ setComments }) => {
+const CommentForm = ({ setComments, isAvailable }) => {
   const [comment, setComment] = useState("");
   const groupId = useParams().id;
 
@@ -36,7 +36,9 @@ const CommentForm = ({ setComments }) => {
             onChange={(e) => setComment(e.target.value)}
             required
           />
-          <button id="submit">등록</button>
+          <button id="submit" disabled={!isAvailable}>
+            등록
+          </button>
         </CommentContainer>
       </form>
     </Container>
