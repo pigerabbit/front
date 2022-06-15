@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import GroupHeader from "../GroupHeader";
 import AddressInfo from "./AddressInfo";
 import ProductInfo from "./ProductInfo";
+import PriceInfo from "./PriceInfo";
 
 // const postOpenGroup = async () => {
 //   try {
@@ -41,7 +42,8 @@ const PaymentPage = () => {
         contact="01012345678"
         address="광진구 구의동"
       />
-      <ProductInfo title="덴탈 마스크 함께 구매해요!" price="10000" count="3" />
+      <ProductInfo title="덴탈 마스크 함께 구매해요!" price={10000} count={3} />
+      <PriceInfo price={10000} totalPrice={30000} shippingPrice={250} />
     </Container>
   );
 };
