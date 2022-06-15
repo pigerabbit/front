@@ -159,7 +159,7 @@ const ProductRegisterPage = () => {
 
         await Promise.all([imagesReq, descriptionImgReq, detailImgReq]);
 
-        navigate(`/markets/${user.id}`);
+        navigate(`/markets/${user.id}`, { replace: true });
       } catch (e) {}
     } catch (error) {}
   };
