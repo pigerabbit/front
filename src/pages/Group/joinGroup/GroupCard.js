@@ -42,7 +42,7 @@ const GroupCard = ({ group, minPurchaseQty }) => {
   const currentPeople = minPurchaseQty - group.remainedPersonnel;
 
   const aboutToClose =
-    hours < 12 || group.remainedPersonnel / minPurchaseQty < 0.1;
+    hours + date * 24 < 12 || group.remainedPersonnel / minPurchaseQty < 0.1;
 
   return (
     <Container>
