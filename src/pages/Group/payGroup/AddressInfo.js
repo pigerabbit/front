@@ -33,17 +33,23 @@ const Container = styled.div`
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  height: 29%;
+  height: 25%;
   background: #fff;
   margin-top: 70px;
   padding: 3%;
+  @media (max-width: 500px) {
+    > h3 {
+      font-size: 15px;
+      margin-bottom: 2%;
+    }
+  }
 `;
 
 const Content = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 2%;
+  padding: 2% 2% 0% 2%;
 `;
 
 const Info = styled.div`
@@ -59,4 +65,10 @@ const Info = styled.div`
     padding: 5px;
   }
   margin-bottom: 3%;
+  @media (max-width: 500px) {
+    > h3,
+    > input[type="text"] {
+      font-size: 13px;
+    }
+  }
 `;
