@@ -1,11 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 import * as Api from "api";
 
-const CommentForm = () => {
+const CommentForm = ({ setComments }) => {
   const [comment, setComment] = useState("");
+  const groupId = useParams().id;
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await Api.post(`posts`, {
+        type: "groupChat",
+        receiver: groupId,
+        content: comment,
+      });
+      setComments((cur) => [...cur, res.data.payload]);
+    } catch (e) {
+      console.log("공구 댓글 post 실패");
+    }
+  };
 
   return (
     <Container>

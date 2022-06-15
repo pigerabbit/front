@@ -3,6 +3,7 @@ import styled from "styled-components";
 import * as Api from "api";
 
 import CommentForm from "./CommentForm";
+import CommentCard from "./CommentCard";
 
 const CommentsArea = ({ group, product, seller }) => {
   const [comments, setComments] = useState([]);
@@ -29,7 +30,18 @@ const CommentsArea = ({ group, product, seller }) => {
     <Container>
       <CommentsContainer>
         <h4>댓글 ({comments.length})</h4>
-        <CommentForm />
+        <CommentForm setComments={setComments} />
+        {comments.length > 0 &&
+          comments.map((v) => (
+            <CommentCard
+              key={v.postId}
+              postId={v.postId}
+              content={v.content}
+              writerId={v.writer}
+              createdAt={v.createdAt}
+              setComments={setComments}
+            />
+          ))}
       </CommentsContainer>
     </Container>
   );
