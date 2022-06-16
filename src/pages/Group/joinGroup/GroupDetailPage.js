@@ -20,6 +20,7 @@ const GroupDetailPage = () => {
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
   const [wish, setWish] = useState(false);
+  const [joinedGroup, setJoinedGroup] = useState(false);
   const [isFetched, setIsFetched] = useState(false);
 
   const [showBuyingProduct, setShowBuyingProduct] = useState(false);
@@ -47,12 +48,11 @@ const GroupDetailPage = () => {
       setProduct(res.data.payload[0].productInfo);
 
       const resWish = await Api.get("toggle/groups");
-      if (
+      setWish(
         resWish.data.filter((v) => v._id === res.data.payload[0]._id).length > 0
-      ) {
-        console.log(resWish);
-        setWish(true);
-      } else setWish(false);
+          ? true
+          : false
+      );
 
       const resUser = await Api.get(
         `users/${res.data.payload[0].productInfo.userId}`
@@ -105,7 +105,11 @@ const GroupDetailPage = () => {
         <>
           <Body>
             <GroupInfoTop group={group} product={product} seller={seller} />
-            <CommentsArea group={group} product={product} seller={seller} />
+            <CommentsArea
+              group={group}
+              setJoinedGroup={setJoinedGroup}
+              joinedGroup={joinedGroup}
+            />
           </Body>
 
           {showBuyingProduct && (
@@ -130,9 +134,13 @@ const GroupDetailPage = () => {
               </p>
               {!wish ? "찜 하기" : "찜 취소하기"}
             </LeftButton>
-            <RightButton onClick={() => setShowBuyingProduct(true)}>
-              구매하기
-            </RightButton>
+            {joinedGroup ? (
+              <RightButton joinedGroup={joinedGroup}>주문완료</RightButton>
+            ) : (
+              <RightButton onClick={() => setShowBuyingProduct(true)}>
+                구매하기
+              </RightButton>
+            )}
           </ButtonsContainer>
         </>
       )}
@@ -269,10 +277,11 @@ const RightButton = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  cursor: pointer;
+  cursor: ${({ joinedGroup }) => (joinedGroup ? "normal" : "pointer")};
   font-weight: bold;
   margin: 0px 20px 0 10px;
-  background-color: #f79831;
+  background-color: ${({ joinedGroup }) =>
+    joinedGroup ? "#636363" : "#f79831"};
   color: #ffffff;
 
   &:hover {

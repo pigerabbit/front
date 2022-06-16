@@ -6,12 +6,10 @@ import * as Api from "api";
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
 
-const CommentsArea = ({ group }) => {
+const CommentsArea = ({ group, setJoinedGroup, joinedGroup }) => {
   const { user } = useSelector((state) => state.user);
 
   const [comments, setComments] = useState([]);
-  const joinedGroup =
-    group.participants.filter((v) => v.userId === user.id).length > 0;
 
   const getComments = async () => {
     try {
@@ -29,9 +27,14 @@ const CommentsArea = ({ group }) => {
 
   useEffect(() => {
     getComments();
-    console.log(group.participants);
-    console.log(joinedGroup);
   }, []);
+
+  useEffect(() => {
+    if (user && Object.keys(group).length > 0)
+      setJoinedGroup(
+        group.participants.filter((v) => v.userId === user.id).length > 0
+      );
+  }, [user]);
 
   return (
     <Container>
