@@ -36,3 +36,29 @@ export const productTypes = {
   post: ["지역 공구", "택배 공구"],
   coupon: ["이용권 공구"],
 };
+
+export const CalShippingFee = (
+  type,
+  shippingFee,
+  shippingFeeCon,
+  price,
+  totalPrice,
+  minQty
+) => {
+  //지역 공구일 때
+  if (type === "local") {
+    if (price * minQty >= shippingFeeCon) {
+      return 0;
+    } else {
+      return Math.floor(shippingFee / minQty);
+    }
+  } else if (type === "normal") {
+    if (totalPrice >= shippingFeeCon) {
+      return 0;
+    } else {
+      return shippingFee;
+    }
+  } else {
+    return 0;
+  }
+};
