@@ -6,9 +6,15 @@ import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 import { useNavigate } from "react-router-dom";
 
+const numTitleInit =
+  (window.innerWidth >= 700 && 15) ||
+  (window.innerWidth >= 550 && 32) ||
+  (window.innerWidth >= 450 && 25) ||
+  16;
+
 const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
   const [wish, setWish] = useState(purchase?.toggle === 0 ? false : true);
-  const [numTitle, setNumTitle] = useState(0);
+  const [numTitle, setNumTitle] = useState(numTitleInit);
 
   const navigate = useNavigate();
 

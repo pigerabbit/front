@@ -6,10 +6,18 @@ import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
+const numTitleInit =
+  (window.innerWidth >= 700 && 35) ||
+  (window.innerWidth >= 600 && 30) ||
+  (window.innerWidth >= 550 && 25) ||
+  (window.innerWidth >= 500 && 20) ||
+  (window.innerWidth >= 450 && 15) ||
+  14;
+
 const BestProductCard = ({ product, index, setConfirmationIcon }) => {
   const navigate = useNavigate();
   const [wish, setWish] = useState(product.toggle ? true : false);
-  const [numTitle, setNumTitle] = useState(0);
+  const [numTitle, setNumTitle] = useState(numTitleInit);
 
   const unShowIcon = () => {
     setTimeout(() => {
