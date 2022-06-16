@@ -8,8 +8,12 @@ const BestTab = ({ setConfirmationIcon }) => {
   const [products, setProducts] = useState([]);
 
   const getProductData = async () => {
-    const res = await Api.get("products/main/top");
-    setProducts(res.data.payload);
+    try {
+      const res = await Api.get("products/main/top");
+      setProducts(res.data.payload);
+    } catch (e) {
+      // 에러처리
+    }
   };
 
   useEffect(() => {
