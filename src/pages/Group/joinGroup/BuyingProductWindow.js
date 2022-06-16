@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
-import * as Api from "api";
+import { useNavigate } from "react-router-dom";
 
 const BuyingProductWindow = ({
-  groupId,
+  group,
   salePrice,
   remainedPersonnel,
   setShowBuyingProduct,
 }) => {
+  const navigate = useNavigate();
+
   const [quantity, setQuantity] = useState(1);
 
   const onChange = (e) => {
@@ -66,7 +68,17 @@ const BuyingProductWindow = ({
           </ShowQuantity>
           <Total>합계 {(quantity * salePrice).toLocaleString()}원</Total>
         </div>
-        <Button>구매하기</Button>
+        <Button
+          onClick={() => {
+            navigate("/group/join/pay", {
+              state: {
+                data: { group, count: quantity },
+              },
+            });
+          }}
+        >
+          구매하기
+        </Button>
       </CardContainer>
     </Container>
   );
