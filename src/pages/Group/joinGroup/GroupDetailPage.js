@@ -115,7 +115,7 @@ const GroupDetailPage = () => {
           {showBuyingProduct && (
             <div id="buyingProductWindow">
               <BuyingProductWindow
-                groupId={groupId}
+                group={group}
                 salePrice={product.salePrice}
                 remainedPersonnel={group.remainedPersonnel}
                 setShowBuyingProduct={setShowBuyingProduct}
