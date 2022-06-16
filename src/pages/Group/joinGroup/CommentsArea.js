@@ -10,7 +10,7 @@ const CommentsArea = ({ group }) => {
   const { user } = useSelector((state) => state.user);
 
   const [comments, setComments] = useState([]);
-  const isAvailable = group.participants.indexOf(user.id) !== -1;
+  const joinedGroup = group.participants.indexOf(user.id) !== -1;
 
   const getComments = async () => {
     try {
@@ -28,15 +28,15 @@ const CommentsArea = ({ group }) => {
 
   useEffect(() => {
     getComments();
-    console.log(isAvailable);
+    console.log(joinedGroup);
   }, []);
 
   return (
     <Container>
-      {!isAvailable && <Blur>댓글 읽기/작성은 공동구매 참여 후 가능</Blur>}
+      {!joinedGroup && <Blur>댓글 읽기/작성은 공동구매 참여 후 가능</Blur>}
       <CommentsContainer>
         <h4>댓글 ({comments.length})</h4>
-        <CommentForm setComments={setComments} isAvailable={isAvailable} />
+        <CommentForm setComments={setComments} joinedGroup={joinedGroup} />
         <div id="comments">
           {comments.length > 0 &&
             comments.map((v) => (
