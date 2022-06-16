@@ -10,7 +10,8 @@ const CommentsArea = ({ group }) => {
   const { user } = useSelector((state) => state.user);
 
   const [comments, setComments] = useState([]);
-  const joinedGroup = group.participants.indexOf(user.id) !== -1;
+  const joinedGroup =
+    group.participants.filter((v) => v.userId === user.id).length > 0;
 
   const getComments = async () => {
     try {
@@ -28,6 +29,7 @@ const CommentsArea = ({ group }) => {
 
   useEffect(() => {
     getComments();
+    console.log(group.participants);
     console.log(joinedGroup);
   }, []);
 
