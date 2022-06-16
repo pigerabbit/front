@@ -6,7 +6,6 @@ import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
 const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
-  console.log(purchase);
   const [wish, setWish] = useState(purchase?.toggle === 0 ? false : true);
 
   const getDeadline = (date) => {

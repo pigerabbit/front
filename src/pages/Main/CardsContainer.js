@@ -9,7 +9,7 @@ const CardsContainer = ({ title, groupPurchaseList, setConfirmationIcon }) => {
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(4);
   const [page, setPage] = useState(1);
-  const last = groupPurchaseList.length;
+  const last = groupPurchaseList?.length;
   const totalPage = last / 4;
 
   const handleButtonClick = () => {
@@ -29,7 +29,7 @@ const CardsContainer = ({ title, groupPurchaseList, setConfirmationIcon }) => {
       <Title>{title}</Title>
 
       <CardList>
-        {groupPurchaseList.slice(from, to).map((purchase, idx) => (
+        {groupPurchaseList?.slice(from, to).map((purchase, idx) => (
           <CardContainer key={purchase.groupId}>
             <GroupPurchaseCard
               purchase={purchase}
