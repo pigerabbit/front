@@ -7,7 +7,7 @@ const GroupHeader = ({ headerTitle }) => {
   const navigate = useNavigate();
   return (
     <Header>
-      <GoBack onClick={() => navigate("/")} />
+      <GoBack onClick={() => navigate("-1")} />
       <Title>{headerTitle}</Title>
       <ButtonTopContainer>
         <div
