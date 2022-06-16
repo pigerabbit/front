@@ -1,40 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import { formatDate, headerTitle, CalShippingFee } from "../GroupModule";
 import * as Api from "api";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import GroupHeader from "../GroupHeader";
 import AddressInfo from "./AddressInfo";
 import ProductInfo from "./ProductInfo";
 import PriceInfo from "./PriceInfo";
 import PaymentInfo from "./PaymentInfo";
 
-// const postOpenGroup = async () => {
-//   try {
-//     const deadline = formatDate(hour);
-//     if (type === "coupon") {
-//       setLocation(product.userInfo.buisness?.buisnessLocation);
-//     }
-//     const res = await Api.post(`groups`, {
-//       groupType: type,
-//       location,
-//       productId: product.id,
-//       state: 0,
-//       groupName,
-//       deadline,
-//       quantity: count,
-//     });
-//     if (res.data.success) {
-//       navigate("/purchaselist", { state: "success" });
-//     }
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
 const OpenGroupPaymentPage = () => {
+  const navigate = useNavigate();
   const loc = useLocation();
   const { product, type, groupName, location, count, hour } = loc.state.data;
 
@@ -46,6 +24,26 @@ const OpenGroupPaymentPage = () => {
   const [address, setAddress] = useState(
     type !== "normal" ? location : user?.address
   );
+
+  const postOpenGroup = async () => {
+    try {
+      const deadline = formatDate(hour);
+      const res = await Api.post(`groups`, {
+        groupType: type,
+        location: address,
+        productId: product.id,
+        state: 0,
+        groupName,
+        deadline,
+        quantity: count,
+      });
+      if (res.data.success) {
+        navigate(`/group/payment/${res.data.payload.groupId}`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const nameValid = name?.length > 0;
   const contactValid = contact.length > 0;
@@ -86,7 +84,11 @@ const OpenGroupPaymentPage = () => {
         type={type}
       />
       <PaymentInfo setPayment={setPayment} payment={payment} />
-      <OrderButton disabled={!isValid} valid={isValid}>
+      <OrderButton
+        disabled={!isValid}
+        valid={isValid}
+        onClick={() => postOpenGroup()}
+      >
         {30250}원 주문하기
       </OrderButton>
     </Container>

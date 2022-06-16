@@ -11,7 +11,9 @@ const OpenGroupDetailInfo = ({ product, type }) => {
 
   const [count, setCount] = useState(0);
   const [groupName, setGroupName] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(
+    type === "coupon" ? product.userInfo.buisness?.buisnessLocation : ""
+  );
   const [hour, setHour] = useState(12);
   const [isOpen, setIsOpen] = useState(false);
 
