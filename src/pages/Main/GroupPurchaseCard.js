@@ -4,9 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
+import { useNavigate } from "react-router-dom";
 
 const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
   const [wish, setWish] = useState(purchase?.toggle === 0 ? false : true);
+
+  const navigate = useNavigate();
 
   const getDeadline = (date) => {
     if (!date) return;
@@ -62,8 +65,11 @@ const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
 
   return (
     <Container wish={wish}>
-      <Image url={purchase?.productInfo?.images} />
-      <Information>
+      <Image
+        url={purchase?.productInfo?.images}
+        onClick={() => navigate(`/groups/${purchase.groupId}`)}
+      />
+      <Information onClick={() => navigate(`/groups/${purchase.groupId}`)}>
         <CardTitle>
           <span>
             {purchase.groupType === "local" ? purchase.location : "택배공구"}
