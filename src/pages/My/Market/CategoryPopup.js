@@ -65,6 +65,7 @@ const Container = styled.div`
 const CategoryContainer = styled.div`
   background-color: white;
   width: 40%;
+  min-width: 260px;
   height: 60%;
 
   display: flex;
