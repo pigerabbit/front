@@ -109,12 +109,14 @@ const GroupDetailPage = () => {
           </Body>
 
           {showBuyingProduct && (
-            <BuyingProductWindow
-              groupId={groupId}
-              salePrice={product.salePrice}
-              remainedPersonnel={group.remainedPersonnel}
-              setShowBuyingProduct={setShowBuyingProduct}
-            />
+            <div id="buyingProductWindow">
+              <BuyingProductWindow
+                groupId={groupId}
+                salePrice={product.salePrice}
+                remainedPersonnel={group.remainedPersonnel}
+                setShowBuyingProduct={setShowBuyingProduct}
+              />
+            </div>
           )}
 
           <ButtonsContainer>
@@ -147,6 +149,11 @@ const Container = styled.div`
   min-height: 100vh;
   height: 100vh;
   background-color: #ffffff;
+
+  #buyingProductWindow {
+    position: relative;
+    z-index: 15;
+  }
 `;
 
 const Header = styled.header`
