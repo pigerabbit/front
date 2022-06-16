@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,9 +6,18 @@ import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
+const numTitleInit =
+  (window.innerWidth >= 700 && 35) ||
+  (window.innerWidth >= 600 && 30) ||
+  (window.innerWidth >= 550 && 25) ||
+  (window.innerWidth >= 500 && 20) ||
+  (window.innerWidth >= 450 && 15) ||
+  14;
+
 const BestProductCard = ({ product, index, setConfirmationIcon }) => {
   const navigate = useNavigate();
   const [wish, setWish] = useState(product.toggle ? true : false);
+  const [numTitle, setNumTitle] = useState(numTitleInit);
 
   const unShowIcon = () => {
     setTimeout(() => {
@@ -53,6 +62,22 @@ const BestProductCard = ({ product, index, setConfirmationIcon }) => {
     setWish((cur) => !cur);
   };
 
+  const handleResize = () => {
+    if (window.innerWidth >= 700) setNumTitle(35);
+    else if (window.innerWidth >= 600) setNumTitle(30);
+    else if (window.innerWidth >= 550) setNumTitle(25);
+    else if (window.innerWidth >= 500) setNumTitle(20);
+    else if (window.innerWidth >= 450) setNumTitle(15);
+    else setNumTitle(14);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <Container wish={wish}>
       <span>{index + 1}</span>
@@ -70,8 +95,8 @@ const BestProductCard = ({ product, index, setConfirmationIcon }) => {
         <Title>
           <span>[{product.userInfo.business[0].businessName}]</span>
           <span>
-            {product.name.slice(0, 25)}
-            {product.name.length > 25 && ".."}
+            {product.name.slice(0, numTitle)}
+            {product.name.length > numTitle && ".."}
           </span>
         </Title>
         <Price>

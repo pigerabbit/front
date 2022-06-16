@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
@@ -6,8 +6,15 @@ import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 import { useNavigate } from "react-router-dom";
 
+const numTitleInit =
+  (window.innerWidth >= 700 && 15) ||
+  (window.innerWidth >= 550 && 32) ||
+  (window.innerWidth >= 450 && 25) ||
+  16;
+
 const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
   const [wish, setWish] = useState(purchase?.toggle === 0 ? false : true);
+  const [numTitle, setNumTitle] = useState(numTitleInit);
 
   const navigate = useNavigate();
 
@@ -63,6 +70,20 @@ const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
     setWish((cur) => !cur);
   };
 
+  const handleResize = () => {
+    if (window.innerWidth >= 700) setNumTitle(15);
+    else if (window.innerWidth >= 550) setNumTitle(32);
+    else if (window.innerWidth >= 450) setNumTitle(25);
+    else setNumTitle(16);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <Container wish={wish}>
       <Image
@@ -75,8 +96,8 @@ const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
             {purchase.groupType === "local" ? purchase.location : "택배공구"}
           </span>
           <span>
-            {purchase.groupName.slice(0, 17)}
-            {purchase.groupName.length > 17 && ".."}
+            {purchase.groupName.slice(0, numTitle)}
+            {purchase.groupName.length > numTitle && ".."}
           </span>
         </CardTitle>
         <Price>
@@ -120,10 +141,11 @@ const Container = styled.div`
 
 const Image = styled.div`
   width: 85px;
+  min-width: 85px;
   height: 85px;
   border-radius: 5px;
   background-image: url(${({ url }) => url});
-  background-size: 100%;
+  background-size: cover;
   background-position: center;
 `;
 
