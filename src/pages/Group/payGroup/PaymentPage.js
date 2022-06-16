@@ -33,10 +33,10 @@ import PaymentInfo from "./PaymentInfo";
 // };
 
 const PaymentPage = () => {
-  const loc = useLocation();
-  const { from } = loc.state;
+  // const loc = useLocation();
+  // const { from } = loc.state;
 
-  const [payment, setPayment] = useState("");
+  const [payment, setPayment] = useState("결제 수단 선택되지 않음");
   const [name, setName] = useState("김제로");
   const [contact, setContact] = useState("01012345678");
   const [address, setAddress] = useState("광진구 구의동 oo카페");
@@ -54,7 +54,7 @@ const PaymentPage = () => {
       />
       <ProductInfo title="덴탈 마스크 함께 구매해요!" price={10000} count={3} />
       <PriceInfo price={10000} totalPrice={30000} shippingPrice={250} />
-      <PaymentInfo setPayment={setPayment} />
+      <PaymentInfo setPayment={setPayment} payment={payment} />
       <ButtonContainer>
         <OrderButton>{30250}원 주문하기</OrderButton>
       </ButtonContainer>
