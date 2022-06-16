@@ -21,8 +21,12 @@ const ReviewsPage = () => {
 
   const getReviews = async () => {
     if (user) {
-      const res = await Api.get("posts", `${user.id}/review`);
-      setReviews(res.data.payload);
+      try {
+        const res = await Api.get("posts", `${user.id}/review`);
+        setReviews(res.data.payload);
+      } catch (e) {
+        // 에러처리
+      }
     }
   };
 

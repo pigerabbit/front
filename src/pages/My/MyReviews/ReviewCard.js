@@ -15,8 +15,12 @@ const ReviewCard = ({ review, deleteReview }) => {
   };
 
   const handleDelete = async () => {
-    deleteReview(review.postId);
-    await Api.delete("posts", review.postId);
+    try {
+      deleteReview(review.postId);
+      await Api.delete("posts", review.postId);
+    } catch (e) {
+      // 에러처리
+    }
   };
 
   return (

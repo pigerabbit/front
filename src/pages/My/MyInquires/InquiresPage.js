@@ -20,8 +20,12 @@ const InquiresPage = () => {
   const getInquires = async () => {
     const params = option === "all" ? {} : { reply: option };
 
-    const res = await Api.get(`posts/${user?.id}/cs`, "", params);
-    setInquires(res.data.payload.postList);
+    try {
+      const res = await Api.get(`posts/${user?.id}/cs`, "", params);
+      setInquires(res.data.payload.postList);
+    } catch (e) {
+      // 에러처리
+    }
   };
 
   const deleteAnInquire = (id) => {

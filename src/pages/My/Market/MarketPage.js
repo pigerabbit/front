@@ -25,16 +25,20 @@ const MarketPage = () => {
   };
 
   const handleDeleteProduct = () => {
-    setProducts((currentList) => {
-      const index = currentList.findIndex((cur) => cur.id === currentProduct);
-      const copy = [...currentList];
-      copy.splice(index, 1);
-      return copy;
-    });
+    try {
+      Api.delete(`products/${currentProduct}`);
 
-    setIsOpenPopup(false);
+      setProducts((currentList) => {
+        const index = currentList.findIndex((cur) => cur.id === currentProduct);
+        const copy = [...currentList];
+        copy.splice(index, 1);
+        return copy;
+      });
 
-    Api.delete(`products/${currentProduct}`);
+      setIsOpenPopup(false);
+    } catch (e) {
+      // 에러처리
+    }
   };
 
   useEffect(() => {

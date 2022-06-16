@@ -16,8 +16,12 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
   };
 
   const handleDelete = async () => {
-    deleteAnInquire(inquire.post.postId);
-    await Api.delete("posts", inquire.post.postId);
+    try {
+      await Api.delete("posts", inquire.post.postId);
+      deleteAnInquire(inquire.post.postId);
+    } catch (e) {
+      // 에러처리
+    }
   };
 
   return (
