@@ -69,7 +69,10 @@ const BestProductCard = ({ product, index, setConfirmationIcon }) => {
       >
         <Title>
           <span>[{product.userInfo.business[0].businessName}]</span>
-          <span>{product.name}</span>
+          <span>
+            {product.name.slice(0, 25)}
+            {product.name.length > 25 && ".."}
+          </span>
         </Title>
         <Price>
           <span>{product.price}원</span>
@@ -119,10 +122,11 @@ const Container = styled.div`
 const Image = styled.div`
   cursor: pointer;
   width: 85px;
+  min-width: 85px;
   height: 85px;
   border-radius: 10px;
   background-image: url(${({ url }) => url});
-  background-size: 100%;
+  background-size: cover;
   background-position: center;
 `;
 
@@ -133,8 +137,9 @@ const Information = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  height: 100%;
   flex-grow: 1;
+  min-width: 173px;
+  height: 100%;
   padding: 18px 0 18px 14px;
 `;
 
@@ -144,6 +149,10 @@ const Title = styled.div`
   font-size: 15px;
   > span {
     margin-bottom: 3px;
+
+    &:first-child {
+      font-size: 13px;
+    }
   }
 `;
 

@@ -55,7 +55,7 @@ const HomeTab = ({ setConfirmationIcon }) => {
 
   const getNearbyGroupsData = async () => {
     const res = await Api.get("groups/sort/locations");
-    setNearbyGroups(res.data.payload[0].data);
+    setNearbyGroups(res.data.payload);
   };
 
   useEffect(() => {
