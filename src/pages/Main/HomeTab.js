@@ -5,6 +5,7 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import * as Api from "api";
 import axios from "axios";
 
 import SliderCard from "./SliderCard";
@@ -12,6 +13,7 @@ import CardsContainer from "./CardsContainer";
 
 const HomeTab = ({ setConfirmationIcon }) => {
   const [groupPurchaseList, setGroupPurchaseList] = useState([]);
+  const [nearbyGroups, setNearbyGroups] = useState([]);
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
   const [transition, setTransition] = useState("transition: left 0.4s;");
@@ -51,7 +53,13 @@ const HomeTab = ({ setConfirmationIcon }) => {
     setGroupPurchaseList(data.data.groupList);
   };
 
+  const getNearbyGroupsData = async () => {
+    const res = await Api.get("groups/sort/locations");
+    setNearbyGroups(res.data.payload[0].data);
+  };
+
   useEffect(() => {
+    getNearbyGroupsData();
     getGroupPurchaseData();
   }, []);
 
@@ -92,7 +100,7 @@ const HomeTab = ({ setConfirmationIcon }) => {
 
       <CardsContainer
         title={nearbyTitle}
-        groupPurchaseList={groupPurchaseList}
+        groupPurchaseList={nearbyGroups}
         setConfirmationIcon={setConfirmationIcon}
       />
     </Container>
@@ -149,6 +157,9 @@ const CardList = styled.div`
 const Pagination = styled.div`
   width: 100%;
   margin-top: 4.5vw;
+  @media (min-width: 770px) {
+    margin-top: 32px;
+  }
   display: flex;
   justify-content: center;
   color: #a4a4a4;
@@ -170,7 +181,10 @@ const Pagination = styled.div`
 
     > span {
       color: black;
-      margin-right: 0.8vw;
+      margin-right: 3px;
+      @media (min-width: 500px) {
+        margin-right: 5px;
+      }
     }
   }
 

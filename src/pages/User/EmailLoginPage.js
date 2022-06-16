@@ -31,7 +31,7 @@ const EmailLoginPage = () => {
     event.preventDefault();
 
     try {
-      const res = await Api.post("user/login", {
+      const res = await Api.post("users/login", {
         email,
         password,
       });

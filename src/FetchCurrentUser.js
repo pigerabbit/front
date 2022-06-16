@@ -12,7 +12,7 @@ const FetchCurrentUser = ({ children }) => {
   const fetchUser = async () => {
     try {
       if (!user) {
-        const res = await Api.get("user/current");
+        const res = await Api.get("users/current");
         const currentUser = res.data.payload;
 
         dispatch(login(currentUser));

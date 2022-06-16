@@ -73,12 +73,10 @@ const ProductCard = ({ product, setConfirmationIcon }) => {
         </div>
 
         <div className="price">
-          <span>{product.price}원</span>
+          <span>{product.price.toLocaleString()}원</span>
           <div className="salePrice">
-            <span>
-              {Math.floor((product.price - product.salePrice) / 100)}%
-            </span>
-            <span>{product.salePrice}원</span>
+            <span>{product?.discountRate}%</span>
+            <span>{product.salePrice.toLocaleString()}원</span>
           </div>
         </div>
       </Information>

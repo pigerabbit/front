@@ -124,6 +124,12 @@ const Input = styled.input`
   &:focus {
     outline: none;
   }
+
+  &::-webkit-inner-spin-button {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+  }
 `;
 
 const CheckIcon = styled.div`
