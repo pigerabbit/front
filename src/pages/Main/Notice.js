@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import * as Api from "api";
+import { useSelector } from "react-redux";
 
 const NoticeList = [
   {
@@ -33,6 +35,16 @@ const NoticeList = [
 ];
 
 const Notice = () => {
+  const { user } = useSelector((state) => state.user);
+
+  const getAlert = async () => {
+    const res = await Api.get("users", `${user.id}/alert`);
+    console.log(res);
+  };
+
+  useEffect(() => {
+    getAlert();
+  }, []);
   return (
     <Container>
       {NoticeList.map(({ groupType, title, content, image }, idx) => (
