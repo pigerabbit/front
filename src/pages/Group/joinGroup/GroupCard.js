@@ -50,7 +50,7 @@ const GroupCard = ({ group, minPurchaseQty }) => {
         {groupTypes[group.groupType]}
       </GroupType>
       <GroupInfo>
-        <h3>{group.groupName ? group.groupName : "임시 이름입니다"}</h3>
+        <h3>{group.groupName}</h3>
         {group.location && <p>({group.location})</p>}
       </GroupInfo>
       <JoinButton
@@ -99,7 +99,6 @@ const GroupType = styled.div`
     }
   }};
   font-weight: bold;
-  margin-right: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,11 +109,11 @@ const GroupType = styled.div`
     width: 22px;
     height: 22px;
     font-size: 10px;
-    margin-right: 7px;
   }
 `;
 
 const GroupInfo = styled.div`
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -137,8 +136,11 @@ const GroupInfo = styled.div`
     }
   }
 
+  padding-right: 212px;
+  padding-left: 65px;
   @media (max-width: 500px) {
-    width: 163px;
+    padding-right: 170px;
+    padding-left: 33px;
   }
 `;
 
@@ -154,8 +156,8 @@ const Current = styled.div`
   align-items: center;
 
   @media (max-width: 500px) {
-    font-size: 18px;
-    right: 100px;
+    font-size: 20px;
+    right: 105px;
   }
 `;
 
