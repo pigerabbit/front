@@ -8,8 +8,6 @@ import * as Api from "api";
 const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
   const [wish, setWish] = useState(purchase?.toggle === 0 ? false : true);
 
-  console.log(purchase);
-
   const getDeadline = (date) => {
     if (!date) return;
 
@@ -64,7 +62,7 @@ const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
 
   return (
     <Container wish={wish}>
-      <Image url={purchase?.productInfo?.images} />
+      <Image url={purchase?.productInfo[0]?.images} />
       <Information>
         <CardTitle>
           <span>
@@ -73,9 +71,9 @@ const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
           <span>{purchase.groupName}</span>
         </CardTitle>
         <Price>
-          <span>{purchase?.productInfo?.discountRate}%</span>
-          <span>{purchase?.productInfo?.salePrice}원</span>
-          <span>{purchase?.productInfo?.price}원</span>
+          <span>{purchase?.productInfo[0]?.discountRate}%</span>
+          <span>{purchase?.productInfo[0]?.salePrice.toLocaleString()}원</span>
+          <span>{purchase?.productInfo[0]?.price.toLocaleString()}원</span>
         </Price>
         <Deadline>
           <div>

@@ -17,6 +17,17 @@ const categoryList = {
   living: "생활용품·리빙",
   kitchen: "주방용품",
   other: "기타",
+  food: "음식",
+  cafe: "카페·디저트",
+  health: "운동·헬스",
+  beauty: "미용·뷰티·네일",
+  stay: "숙박·펜션·모텔",
+  pet: "애견·반려동물",
+  study: "스터디·학원·교육",
+  class: "공방·클래스",
+  game: "오락·여가·레저",
+  culture: "문화·예술",
+  else: "기타",
 };
 
 const ProductsTopBar = ({ search, category, setIsOpenSideBar }) => {
