@@ -159,7 +159,7 @@ const ProductRegisterPage = () => {
 
         await Promise.all([imagesReq, descriptionImgReq, detailImgReq]);
 
-        navigate(`/markets/${user.id}`);
+        navigate(`/markets/${user.id}`, { replace: true });
       } catch (e) {}
     } catch (error) {}
   };
@@ -308,6 +308,16 @@ const ProductRegisterPage = () => {
             check={true}
             unit="개"
           />
+
+          <StockMessage show={minPurchaseQtyValid && maxPurchaseQtyValid}>
+            최대{" "}
+            <span>
+              {Math.floor(maxPurchaseQty / minPurchaseQty)}개의 공동구매
+            </span>
+            가 열릴 수 있으며,{" "}
+            <span>{maxPurchaseQty % minPurchaseQty}개의 재고</span>가
+            발생합니다.
+          </StockMessage>
 
           {productType === "parcel" && (
             <>
@@ -459,6 +469,21 @@ const PreviewImage = styled.img`
   margin-left: 28%;
   margin-bottom: 10px;
   width: 70%;
+`;
+
+const StockMessage = styled.div`
+  width: 70%;
+  margin-left: 29%;
+  margin-bottom: 10px;
+  font-size: 3vw;
+  @media (min-width: 500px) {
+    font-size: 15px;
+  }
+  color: ${({ show }) => (show ? "black;" : "white;")};
+
+  > span {
+    color: ${({ show }) => (show ? "#ff9b2f;" : "white;")};
+  }
 `;
 
 const SubmitButtom = styled.button`
