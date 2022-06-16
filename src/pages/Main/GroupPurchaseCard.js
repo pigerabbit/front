@@ -68,7 +68,10 @@ const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
           <span>
             {purchase.groupType === "local" ? purchase.location : "택배공구"}
           </span>
-          <span>{purchase.groupName}</span>
+          <span>
+            {purchase.groupName.slice(0, 17)}
+            {purchase.groupName.length > 17 && ".."}
+          </span>
         </CardTitle>
         <Price>
           <span>{purchase?.productInfo?.discountRate}%</span>

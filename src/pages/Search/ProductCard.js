@@ -55,9 +55,10 @@ const ProductCard = ({ product, setConfirmationIcon }) => {
   };
 
   return (
-    <Container url={product.images} wish={wish}>
-      <div
+    <Container wish={wish}>
+      <Image
         className="image"
+        url={product.images}
         onClick={() => {
           navigate(`/products/${product.id}`);
         }}
@@ -68,17 +69,22 @@ const ProductCard = ({ product, setConfirmationIcon }) => {
           navigate(`/products/${product.id}`);
         }}
       >
-        <div className="title">
-          [{product?.userInfo?.business[0].businessName}] {product.name}
-        </div>
+        <Title>
+          <span>[{product?.userInfo?.business[0].businessName}]</span>
+          {/* <span>덴탈마스크 100매 덴탈마스크</span> */}
+          <span>
+            {product.name.slice(0, 28)}
+            {product.name.length > 28 && ".."}
+          </span>
+        </Title>
 
-        <div className="price">
+        <Price>
           <span>{product.price.toLocaleString()}원</span>
           <div className="salePrice">
             <span>{product?.discountRate}%</span>
             <span>{product.salePrice.toLocaleString()}원</span>
           </div>
-        </div>
+        </Price>
       </Information>
 
       {wish && <FontAwesomeIcon icon={fullHeart} onClick={handleToggle} />}
@@ -94,22 +100,6 @@ const Container = styled.div`
   cursor: pointer;
   position: relative;
   border-radius: 5px;
-
-  .image {
-    width: 100%;
-    height: 42vw;
-    @media (min-width: 600px) {
-      height: 28vw;
-    }
-    @media (min-width: 770px) {
-      height: 215px;
-    }
-    border-radius: 5px;
-    background-image: url(${({ url }) => url});
-    background-size: 100%;
-    background-position: center;
-    transition: all 0.4s;
-  }
 
   &:hover .image {
     box-shadow: 0 0 8px #b7b7b7;
@@ -127,57 +117,77 @@ const Container = styled.div`
   }
 `;
 
+const Image = styled.div`
+  width: 100%;
+  height: 42vw;
+  @media (min-width: 600px) {
+    height: 28vw;
+  }
+  @media (min-width: 770px) {
+    height: 215px;
+  }
+  border-radius: 5px;
+  background-image: url(${({ url }) => url});
+  background-size: 100%;
+  background-position: center;
+  transition: all 0.4s;
+`;
+
 const Information = styled.div`
   margin-top: 10px;
+`;
 
-  .title {
-    margin-bottom: 10px;
-    line-height: 3.5vw;
-    font-size: 3vw;
+const Title = styled.div`
+  margin-bottom: 10px;
+  line-height: 3.5vw;
+  font-size: 3vw;
+
+  display: flex;
+  flex-direction: column;
+  > span {
+    margin-bottom: 3px;
   }
 
-  .price {
-    font-size: 2.8vw;
+  @media (min-width: 600px) {
+    line-height: 2.5vw;
+    font-size: 2vw;
+  }
 
-    > span {
-      color: #9b9b9b;
-      text-decoration-line: line-through;
-    }
+  @media (min-width: 770px) {
+    line-height: 20px;
+    font-size: 16px;
+  }
+`;
 
-    .salePrice {
-      margin-top: 5px;
-      font-weight: 600;
-      font-size: 3vw;
-      > span:first-child {
-        color: #ff9b2f;
-        margin-right: 5px;
-      }
+const Price = styled.div`
+  font-size: 2.8vw;
+
+  > span {
+    color: #9b9b9b;
+    text-decoration-line: line-through;
+  }
+
+  .salePrice {
+    margin-top: 5px;
+    font-weight: 600;
+    font-size: 3vw;
+    > span:first-child {
+      color: #ff9b2f;
+      margin-right: 5px;
     }
   }
 
   @media (min-width: 600px) {
-    .title {
-      line-height: 2.5vw;
+    font-size: 1.8vw;
+    .salePrice {
       font-size: 2vw;
-    }
-    .price {
-      font-size: 1.8vw;
-      .salePrice {
-        font-size: 2vw;
-      }
     }
   }
 
   @media (min-width: 770px) {
-    .title {
-      line-height: 20px;
+    font-size: 14px;
+    .salePrice {
       font-size: 16px;
-    }
-    .price {
-      font-size: 14px;
-      .salePrice {
-        font-size: 16px;
-      }
     }
   }
 `;
