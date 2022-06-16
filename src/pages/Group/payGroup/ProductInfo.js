@@ -5,7 +5,7 @@ const ProductInfo = ({ image, title, price, count }) => {
     <Container>
       <h3>주문 상품</h3>
       <Content>
-        <Image />
+        <Image image={image} />
         <Info>
           <h3>{title}</h3>
           <p>{price.toLocaleString()}원</p>
@@ -46,6 +46,8 @@ const Image = styled.div`
   width: 150px;
   height: 150px;
   background: #c4c4c4;
+  background-image: url(${(props) => props.image});
+  background-size: cover;
   border-radius: 10px;
   @media (max-width: 500px) {
     width: 100px;

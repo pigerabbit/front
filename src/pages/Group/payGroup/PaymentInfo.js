@@ -49,6 +49,7 @@ const Container = styled.div`
   height: 25%;
   background: #fff;
   margin-top: 10px;
+  margin-bottom: 50px;
   padding: 3%;
   @media (max-width: 500px) {
     > h3 {

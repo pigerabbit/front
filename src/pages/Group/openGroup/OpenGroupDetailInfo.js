@@ -83,9 +83,8 @@ const OpenGroupDetailInfo = ({ product, type }) => {
           disabled={!isValid}
           valid={isValid}
           onClick={() =>
-            navigate("/group/pay", {
+            navigate("/group/open/pay", {
               state: {
-                from: "openGroup",
                 data: { product, type, groupName, location, count, hour },
               },
             })

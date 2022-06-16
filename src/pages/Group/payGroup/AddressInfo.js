@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const AddressInfo = ({
   name,
@@ -7,14 +7,15 @@ const AddressInfo = ({
   setName,
   setContact,
   setAddress,
+  type,
 }) => {
   return (
     <Container>
-      <h3>배송지 정보</h3>
+      <h3>{type === "coupon" ? "이용권 정보" : "배송지 정보"}</h3>
       <Content>
         <Info>
           <h3>받는 사람</h3>
-          <input
+          <InfoInput
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -22,20 +23,20 @@ const AddressInfo = ({
         </Info>
         <Info>
           <h3>연락처</h3>
-          <input
+          <InfoInput
             type="text"
             value={contact}
             onChange={(e) => setContact(e.target.value)}
           />
         </Info>
         <Info>
-          <h3>공구주소</h3>
-          <input
+          <h3>{type === "coupon" ? "이용권 사용지 주소" : "공구 주소"}</h3>
+          <InfoInput
             type="text"
             value={address}
-            style={{ color: "#939393" }}
+            isLocal={type === "local"}
             onChange={(e) => setAddress(e.target.value)}
-            disabled
+            disabled={type === "local"}
           />
         </Info>
       </Content>
@@ -70,18 +71,26 @@ const Info = styled.div`
     font-size: 15px;
     margin-bottom: 1%;
   }
-  > input[type="text"] {
-    width: 100%;
-    font-size: 15px;
-    border: 1px solid #e6e6e6;
-    background: #fbfbfb;
-    padding: 5px;
-  }
   margin-bottom: 3%;
   @media (max-width: 500px) {
-    > h3,
-    > input[type="text"] {
+    > h3 {
       font-size: 13px;
     }
+  }
+`;
+
+const InfoInput = styled.input`
+  width: 100%;
+  font-size: 15px;
+  border: 1px solid #e6e6e6;
+  background: #fbfbfb;
+  padding: 5px;
+  ${(props) =>
+    props.isLocal &&
+    css`
+      color: "#939393";
+    `}
+  @media (max-width: 500px) {
+    font-size: 13px;
   }
 `;

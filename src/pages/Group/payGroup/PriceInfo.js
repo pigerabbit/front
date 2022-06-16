@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const PriceInfo = ({ price, totalPrice, shippingPrice }) => {
+const PriceInfo = ({ price, totalPrice, shippingPrice, type }) => {
   return (
     <Container>
       <h3>최종 결제금액</h3>
@@ -13,13 +13,20 @@ const PriceInfo = ({ price, totalPrice, shippingPrice }) => {
           <p>총 상품 금액</p>
           <p>{totalPrice.toLocaleString()}원</p>
         </Info>
-        <Info>
-          <p>배송비</p>
-          <p>{shippingPrice.toLocaleString()}원</p>
-        </Info>
+        {type !== "coupon" && (
+          <Info>
+            <p>배송비</p>
+            <p>{shippingPrice.toLocaleString()}원</p>
+          </Info>
+        )}
         <Info>
           <h3>최종 결제금액</h3>
-          <h3>{(totalPrice + shippingPrice).toLocaleString()}원</h3>
+          <h3>
+            {type !== "coupon"
+              ? (totalPrice + shippingPrice).toLocaleString()
+              : totalPrice.toLocaleString()}
+            원
+          </h3>
         </Info>
       </Content>
     </Container>
