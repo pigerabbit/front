@@ -62,3 +62,22 @@ export const CalShippingFee = (
     return 0;
   }
 };
+
+export const states = {
+  "-7": ["공구취소", "#FF4E4E", "#fff"],
+  "-6": ["공구취소", "#FF4E4E", "#fff"],
+  "-5": ["결제완료", "#FFB564", "#fff"],
+  "-4": ["결제완료", "#FFB564", "#fff"],
+  "-3": ["진행중", "#00C75A", "#fff"],
+  "-1": ["기간마감", "#E8E8E8", "#505050"],
+  0: ["진행중", "#00C75A", "#fff"],
+  1: ["진행중", "#00C75A", "#fff"],
+  2: ["진행중", "#00C75A", "#fff"],
+  3: ["결제완료", "#FFB564", "#fff"],
+  4: ["결제완료", "#FFB564", "#fff"],
+  5: ["결제완료", "#FFB564", "#fff"],
+};
+
+export const subDate = (date) => {
+  return date.substring(0, 10).split("-").join(".");
+};
