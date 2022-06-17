@@ -44,25 +44,28 @@ const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
         </Information>
       </Content>
 
-      {user.id === id && (
-        <FontAwesomeIcon
-          icon={faEllipsisVertical}
-          onClick={() => {
-            SetCurrentProduct(product.id);
-            setIsControllerOpen(true);
-          }}
-        />
-      )}
-
-      {user.id === id && (
-        <GroupsButton
-          onClick={() => {
-            navigate(`/markets/groups/${product.id}`);
-          }}
-        >
-          공구 목록
-        </GroupsButton>
-      )}
+      <ButtonsContainer>
+        {user.id === id && (
+          <>
+            <FontAwesomeIcon
+              icon={faEllipsisVertical}
+              onClick={() => {
+                SetCurrentProduct(product.id);
+                setIsControllerOpen(true);
+              }}
+            />
+            <GroupsButton
+              onClick={() => {
+                navigate(`/markets/groups/${product.id}`, {
+                  state: { productName: product.name },
+                });
+              }}
+            >
+              공구 목록
+            </GroupsButton>
+          </>
+        )}
+      </ButtonsContainer>
 
       {user.id === id && (
         <UpdateController isControllerOpen={isControllerOpen}>
@@ -102,22 +105,6 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-
-  > svg {
-    z-index: 3;
-    cursor: pointer;
-    width: 5%;
-    color: #aaaaaa;
-    position: absolute;
-    right: 10%;
-    top: 15%;
-    font-size: 3vw;
-    transition: color 0.4s;
-
-    &:hover {
-      color: #ffb564;
-    }
-  }
 `;
 
 const Content = styled.div`
@@ -128,8 +115,8 @@ const Content = styled.div`
   width: 90%;
   max-width: 550px;
   margin: 3vw 0;
-  @media (min-width: 770px) {
-    margin: 22px 0;
+  @media (min-width: 620px) {
+    margin: 18px 0;
   }
   display: flex;
 `;
@@ -199,6 +186,57 @@ const Price = styled.div`
   }
 `;
 
+const ButtonsContainer = styled.div`
+  position: absolute;
+  width: 90%;
+  max-width: 550px;
+  top: 3vw;
+  bottom: 3vw;
+  @media (min-width: 620px) {
+    top: 18px;
+    bottom: 18px;
+  }
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  > svg {
+    z-index: 3;
+    cursor: pointer;
+    width: 5%;
+    margin-right: -2.5%;
+    margin-top: 0.5%;
+    color: #aaaaaa;
+    font-size: 3vw;
+    @media (min-width: 620px) {
+      font-size: 20px;
+    }
+    transition: color 0.4s;
+
+    &:hover {
+      color: #ffb564;
+    }
+  }
+`;
+
+const GroupsButton = styled.button`
+  cursor: pointer;
+  z-index: 3;
+  width: 13%;
+  max-width: 80px;
+  margin-bottom: 0.5%;
+  border: none;
+  color: white;
+  padding: 1.2%;
+  background: #ffb564;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
+  font-size: 2vw;
+  @media (min-width: 620px) {
+    font-size: 13px;
+  }
+`;
+
 const UpdateController = styled.div`
   z-index: 1;
   opacity: 0;
@@ -245,24 +283,5 @@ const ControllerButton = styled.div`
 
   & + div {
     margin-left: 3%;
-  }
-`;
-
-const GroupsButton = styled.button`
-  width: 13%;
-  max-width: 80px;
-  z-index: 3;
-  cursor: pointer;
-  position: absolute;
-  right: 12%;
-  bottom: 15%;
-  border: none;
-  color: white;
-  padding: 1.2%;
-  background: #ffb564;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
-  font-size: 2vw;
-  @media (min-width: 620px) {
-    font-size: 13px;
   }
 `;
