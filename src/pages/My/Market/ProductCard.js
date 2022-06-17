@@ -22,14 +22,14 @@ const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
 
   return (
     <Container>
-      <Content>
+      <Content
+        onClick={() => {
+          navigate(`/products/${product.id}`);
+        }}
+      >
         <Image url={product.images} />
 
-        <Information
-          onClick={() => {
-            navigate(`/products/${product.id}`);
-          }}
-        >
+        <Information>
           <Title>
             <span>[{categoryKor}]</span>
             <span>{product.name}</span>
@@ -42,17 +42,17 @@ const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
             </div>
           </Price>
         </Information>
-
-        {user.id === id && (
-          <FontAwesomeIcon
-            icon={faEllipsisVertical}
-            onClick={() => {
-              SetCurrentProduct(product.id);
-              setIsControllerOpen(true);
-            }}
-          />
-        )}
       </Content>
+
+      {user.id === id && (
+        <FontAwesomeIcon
+          icon={faEllipsisVertical}
+          onClick={() => {
+            SetCurrentProduct(product.id);
+            setIsControllerOpen(true);
+          }}
+        />
+      )}
 
       {user.id === id && (
         <UpdateController isControllerOpen={isControllerOpen}>
@@ -92,6 +92,22 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+
+  > svg {
+    z-index: 3;
+    cursor: pointer;
+    width: 5%;
+    color: #aaaaaa;
+    position: absolute;
+    right: 10%;
+    top: 15%;
+    font-size: 3vw;
+    transition: color 0.4s;
+
+    &:hover {
+      color: #ffb564;
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -106,20 +122,6 @@ const Content = styled.div`
     margin: 22px 0;
   }
   display: flex;
-
-  > svg {
-    width: 5%;
-    color: #aaaaaa;
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    font-size: 3vw;
-    transition: color 0.4s;
-
-    &:hover {
-      color: #ffb564;
-    }
-  }
 `;
 
 const Image = styled.div`
