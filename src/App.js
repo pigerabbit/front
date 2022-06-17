@@ -19,6 +19,7 @@ import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
 import ProductRegisterPage from "pages/My/Market/ProductRegisterPage";
 import GroupDetailPage from "pages/Group/joinGroup/GroupDetailPage";
 import OpenGroupPaymentPage from "pages/Group/payGroup/OpenGroupPaymentPage";
+import JoinGroupPaymentPage from "pages/Group/payGroup/JoinGroupPaymentPage";
 import PaymentDetailPage from "pages/Group/payGroup/PaymentDetailPage";
 
 import ScrollToTop from "ScrollToTop";
@@ -48,6 +49,7 @@ function App() {
   const productRegisterPage = wrapFetchUser(<ProductRegisterPage />);
   const groupDetailPage = wrapFetchUser(<GroupDetailPage />);
   const openpaymentPage = wrapFetchUser(<OpenGroupPaymentPage />);
+  const joinpaymentPage = wrapFetchUser(<JoinGroupPaymentPage />);
   const paymentDetailPage = wrapFetchUser(<PaymentDetailPage />);
 
   return (
@@ -74,6 +76,7 @@ function App() {
           <Route path="/products/:id" element={productDetailPage} />
           <Route path="/groups/:id" element={groupDetailPage} />
           <Route path="/group/open/pay" element={openpaymentPage} />
+          <Route path="/group/join/pay" element={joinpaymentPage} />
           <Route path="/group/payment/:groupId" element={paymentDetailPage} />
         </Routes>
       </Container>
