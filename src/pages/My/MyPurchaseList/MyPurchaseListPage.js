@@ -11,8 +11,8 @@ const MyPurchaseListPage = () => {
   const { user } = useSelector((state) => state.user);
 
   const [tab, setTab] = useState("tab1");
-  const [participatedData, setParticipatedData] = useState([]);
-  const [openedData, setOpenedData] = useState([]);
+  const [participatedData, setParticipatedData] = useState(null);
+  const [openedData, setOpenedData] = useState(null);
 
   const getOpenedGroupData = async () => {
     try {
@@ -38,6 +38,10 @@ const MyPurchaseListPage = () => {
     getParticipatedGroupData();
     getOpenedGroupData();
   }, []);
+
+  if (participatedData === null || openedData === null) {
+    return "loading...";
+  }
 
   return (
     <Container>
