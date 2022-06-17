@@ -60,9 +60,9 @@ const MyPurchaseListCard = ({
           {isOpenTab ? (
             <Message>{formatDate(deadline)}</Message>
           ) : (
-            <Message>{`${myInfo[0].quantity}개 ${
+            <Message>{`${myInfo[0].quantity}개 ${(
               myInfo[0].quantity * price
-            }원`}</Message>
+            ).toLocaleString()}원`}</Message>
           )}
         </CardContent>
       </CardWrapper>

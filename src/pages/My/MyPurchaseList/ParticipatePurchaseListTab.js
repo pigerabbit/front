@@ -101,7 +101,7 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
               images={group.productInfo.images}
               state={group.state}
               title={group.groupName}
-              pirce={group.productInfo.salePrice}
+              price={group.productInfo.salePrice}
               remained={group.remainedPersonnel}
               participants={group.participants}
               deadline={group.deadline}
