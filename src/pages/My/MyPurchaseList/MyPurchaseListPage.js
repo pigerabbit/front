@@ -6,6 +6,7 @@ import MyWishListTabs from "../MyWishListTabs";
 import ParticipatePurchaseListTab from "./ParticipatePurchaseListTab";
 import OpenPurchaseListTab from "./OpenPurchaseListTab";
 import * as Api from "api";
+import MyPageLayout from "../MyPageLayout";
 
 const MyPurchaseListPage = () => {
   const { user } = useSelector((state) => state.user);
@@ -44,26 +45,25 @@ const MyPurchaseListPage = () => {
   }
 
   return (
-    <Container>
-      <WishListTitle>
-        <h2>공구내역</h2>
-      </WishListTitle>
-      <MyWishListTabs
-        tab={tab}
-        setTab={setTab}
-        tabNames={["내가 참여한 공구", "내가 연 공구"]}
-      />
-      {tab === "tab1" && (
-        <ParticipatePurchaseListTab
-          participatedData={participatedData}
-          userId={user?.id}
+    <MyPageLayout pageName="공구 내역" previousPage="/mypage">
+      <Container>
+        <MyWishListTabs
+          tab={tab}
+          setTab={setTab}
+          tabNames={["내가 참여한 공구", "내가 연 공구"]}
         />
-      )}
-      {tab === "tab2" && (
-        <OpenPurchaseListTab openedData={openedData} userId={user?.id} />
-      )}
-      <TabBar />
-    </Container>
+        {tab === "tab1" && (
+          <ParticipatePurchaseListTab
+            participatedData={participatedData}
+            userId={user?.id}
+          />
+        )}
+        {tab === "tab2" && (
+          <OpenPurchaseListTab openedData={openedData} userId={user?.id} />
+        )}
+        <TabBar />
+      </Container>
+    </MyPageLayout>
   );
 };
 
@@ -77,6 +77,7 @@ const Container = styled.div`
   background-color: #f6f6f6;
   padding-bottom: 220px;
 `;
+
 const WishListTitle = styled.div`
   width: 100%;
   height: 75px;
