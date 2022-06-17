@@ -27,6 +27,7 @@ import FetchCurrentUser from "FetchCurrentUser";
 import MyWishListPage from "pages/My/MyWishList/MyWishListPage";
 import MyPurchaseListPage from "pages/My/MyPurchaseList/MyPurchaseListPage";
 import SearchPage from "./pages/Search/SearchPage";
+import QRcode from "./components/QRcode";
 
 function App() {
   const wrapFetchUser = (child) => {
@@ -78,6 +79,7 @@ function App() {
           <Route path="/group/open/pay" element={openpaymentPage} />
           <Route path="/group/join/pay" element={joinpaymentPage} />
           <Route path="/group/payment/:groupId" element={paymentDetailPage} />
+          <Route path="/qrcode" element={<QRcode />} />
         </Routes>
       </Container>
     </Router>
