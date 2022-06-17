@@ -1,8 +1,7 @@
 export const groupType = {
   normal: "택배공구",
   local: "지역공구",
-  pickup: "픽업공구",
-  ticket: "이용권공구",
+  coupon: "이용권공구",
 };
 
 export const groupState = {
