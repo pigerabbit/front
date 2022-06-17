@@ -8,6 +8,7 @@ const from = {
   cs: "상품 문의",
   review: "상품 후기",
   group: "공구 알림",
+  groupChat: "댓글 알림",
   comment: "댓글 알림",
 };
 
