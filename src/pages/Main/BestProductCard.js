@@ -100,10 +100,10 @@ const BestProductCard = ({ product, index, setConfirmationIcon }) => {
           </span>
         </Title>
         <Price>
-          <span>{product.price}원</span>
+          <span>{product.price.toLocaleString()}원</span>
           <div className="sale-price">
             <span>{product.discountRate}%</span>
-            <span>{product.salePrice}원</span>
+            <span>{product.salePrice.toLocaleString()}원</span>
           </div>
         </Price>
       </Information>
