@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+
 import GroupHeader from "../GroupHeader";
 import { states, subDate, CalShippingFee } from "../GroupModule";
 import AddressInfo from "./AddressInfo";
@@ -12,11 +14,12 @@ const PaymentDetailPage = () => {
   const params = useParams();
   const id = params.groupId;
 
+  const { user } = useSelector((state) => state.user);
+
   const [group, setGroup] = useState(null);
 
   const fetchGroup = async () => {
     const res = await Api.get(`groups/groupId/${id}`);
-    console.log(res.data.payload[0]);
     setGroup(res.data.payload[0]);
   };
 
@@ -41,10 +44,10 @@ const PaymentDetailPage = () => {
         </State>
       </Info>
       <AddressInfo
-        name="김제로"
+        name={user?.name}
         contact="01012345678"
-        address="광진구 구의동"
-        type="local"
+        address={group.groupType !== "normal" ? group.location : user?.address}
+        type={group.groupType}
         isComplete="true"
       />
       <ProductInfo
