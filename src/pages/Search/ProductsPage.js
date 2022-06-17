@@ -26,7 +26,7 @@ const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [totalProductsNum, setTotalProductsNum] = useState(1);
   const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(100);
+  const [totalPage, setTotalPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [confirmationIcon, setConfirmationIcon] = useState({
     show: false,
@@ -81,7 +81,7 @@ const ProductsPage = () => {
 
   useDidMountEffect(() => {
     setProducts([]);
-    setTotalPage(100);
+    setTotalPage(1);
     setPage(0);
   }, [category, search]);
 
@@ -138,9 +138,7 @@ const ProductsPage = () => {
         </Loading>
       )}
 
-      {totalProductsNum !== 0 && !loading && (
-        <InfiniteScroll setPage={setPage} />
-      )}
+      {page !== totalPage && !loading && <InfiniteScroll setPage={setPage} />}
 
       {totalProductsNum === 0 && !loading && (
         <NoProductContainer>
