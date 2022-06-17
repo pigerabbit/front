@@ -21,6 +21,15 @@ const GroupWishListTab = ({ groups }) => {
             contentPercent={["55%", "55%"]}
           />
         ))}
+        {groups.length === 0 && (
+          <NoWishListContainer>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/noWishList.svg`}
+              alt="no wishlist"
+            />
+            찜 내역이 없습니다.
+          </NoWishListContainer>
+        )}
       </GroupWishListWrapper>
     </Container>
   );
@@ -47,4 +56,19 @@ const Count = styled.p`
 
 const GroupWishListWrapper = styled.div`
   width: 100%;
+`;
+
+const NoWishListContainer = styled.div`
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 25px;
+  > img {
+    width: 50%;
+    margin-bottom: 5%;
+  }
+  @media only screen and (max-width: 500px) {
+    margin-top: 30%;
+  }
 `;

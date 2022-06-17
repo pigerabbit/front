@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import TabBar from "components/TabBar";
+
 import MyWishListTabs from "../MyWishListTabs";
 import ParticipatePurchaseListTab from "./ParticipatePurchaseListTab";
 import OpenPurchaseListTab from "./OpenPurchaseListTab";
@@ -61,7 +61,6 @@ const MyPurchaseListPage = () => {
         {tab === "tab2" && (
           <OpenPurchaseListTab openedData={openedData} userId={user?.id} />
         )}
-        <TabBar />
       </Container>
     </MyPageLayout>
   );
