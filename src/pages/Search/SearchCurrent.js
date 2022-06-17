@@ -9,7 +9,7 @@ const SearchCurrent = () => {
   const fetchSearchWords = async () => {
     try {
       const res = await Api.get("toggle/searchWords");
-      setCurrentKeyword(res.data);
+      setCurrentKeyword(res.data.reverse());
     } catch (err) {
       console.log(err);
     }
