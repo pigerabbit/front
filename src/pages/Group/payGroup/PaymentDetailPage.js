@@ -33,7 +33,7 @@ const PaymentDetailPage = () => {
       <GroupHeader headerTitle={`주문/결제`} />
       <Info>
         <Message>
-          <span>{subDate(group.createdAt)}</span>
+          <span>{subDate(group.updatedAt)}</span>
           <h3>주문이 완료되었습니다!</h3>
         </Message>
         <State color={states[group.state][2]} bgColor={states[group.state][1]}>
