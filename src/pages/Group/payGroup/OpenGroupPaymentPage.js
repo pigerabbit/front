@@ -1,10 +1,10 @@
-import { useState } from "react";
-import styled from "styled-components";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 import { formatDate, headerTitle, CalShippingFee } from "../GroupModule";
 import * as Api from "api";
-import { useLocation, useNavigate } from "react-router-dom";
 import GroupHeader from "../GroupHeader";
 import AddressInfo from "./AddressInfo";
 import ProductInfo from "./ProductInfo";
@@ -19,11 +19,20 @@ const OpenGroupPaymentPage = () => {
   const { user } = useSelector((state) => state.user);
 
   const [payment, setPayment] = useState("결제 수단 선택되지 않음");
-  const [name, setName] = useState(user?.name);
+  const [name, setName] = useState(user?.name || "");
   const [contact, setContact] = useState("");
   const [address, setAddress] = useState(
-    type !== "normal" ? location : user?.address
+    type !== "normal" ? location : user?.address || ""
   );
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      if (type === "normal") {
+        setAddress(user.address);
+      }
+    }
+  }, [user]);
 
   const postOpenGroup = async () => {
     try {
@@ -49,8 +58,16 @@ const OpenGroupPaymentPage = () => {
   const contactValid = contact.length > 0;
   const addressValid = address.length > 0;
   const paymentValid = payment !== "결제 수단 선택되지 않음";
-
   const isValid = nameValid && contactValid && addressValid && paymentValid;
+
+  const shippingPrice = CalShippingFee(
+    type,
+    product.shippingFee,
+    product.shippingFeeCon,
+    product.salePrice,
+    product.salePrice * count,
+    product.minPurchaseQty
+  );
 
   return (
     <Container>
@@ -73,14 +90,7 @@ const OpenGroupPaymentPage = () => {
       <PriceInfo
         price={product.salePrice}
         totalPrice={product.salePrice * count}
-        shippingPrice={CalShippingFee(
-          type,
-          product.shippingFee,
-          product.shippingFeeCon,
-          product.salePrice,
-          product.salePrice * count,
-          product.minPurchaseQty
-        )}
+        shippingPrice={shippingPrice}
         type={type}
       />
       <PaymentInfo setPayment={setPayment} payment={payment} />
@@ -89,7 +99,7 @@ const OpenGroupPaymentPage = () => {
         valid={isValid}
         onClick={() => postOpenGroup()}
       >
-        {30250}원 주문하기
+        {product.salePrice * count + shippingPrice}원 주문하기
       </OrderButton>
     </Container>
   );
