@@ -4,6 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const SideBar = ({ children, title, isOpenSideBar, setIsOpenSideBar }) => {
+  const handleCancelClick = () => {
+    setIsOpenSideBar(false);
+  };
+
   useEffect(() => {
     if (isOpenSideBar) {
       document.body.style.cssText = `
@@ -23,11 +27,7 @@ const SideBar = ({ children, title, isOpenSideBar, setIsOpenSideBar }) => {
       <TitleBar>
         <div></div>
         <span>{title}</span>
-        <div
-          onClick={() => {
-            setIsOpenSideBar(false);
-          }}
-        >
+        <div onClick={handleCancelClick}>
           <FontAwesomeIcon icon={faXmark} size="1x" />
         </div>
       </TitleBar>

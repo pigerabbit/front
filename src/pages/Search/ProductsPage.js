@@ -22,7 +22,7 @@ const options = [
 
 const ProductsPage = () => {
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
-  const [option, setOption] = useState("groups");
+  const [option, setOption] = useState(options[0]);
   const [products, setProducts] = useState([]);
   const [totalProductsNum, setTotalProductsNum] = useState(1);
   const [page, setPage] = useState(1);
@@ -100,17 +100,17 @@ const ProductsPage = () => {
       <ProductsInfo>
         <span>총 {totalProductsNum}건</span>
         <SelectBox>
-          {options.map(({ eng, kor }) => (
+          {options.map((option) => (
             <Option
-              key={eng}
-              selected={option === eng}
+              key={option.eng}
+              selected={option === option.eng}
               onClick={() => {
-                setOption(eng);
+                setOption(option);
                 setPage(0);
                 setProducts([]);
               }}
             >
-              {kor}
+              {option.kor}
             </Option>
           ))}
         </SelectBox>
