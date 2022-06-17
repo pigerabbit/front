@@ -39,10 +39,6 @@ const MyPurchaseListPage = () => {
     getOpenedGroupData();
   }, []);
 
-  // if (participatedData.length == 0) {
-  //   return "loading...";
-  // }
-
   return (
     <Container>
       <WishListTitle>
