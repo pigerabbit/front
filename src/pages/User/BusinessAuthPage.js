@@ -29,11 +29,11 @@ const BusinessAuthPage = () => {
   const [confirmationIcon, setConfirmationIcon] = useState({ show: false });
 
   const businessNumberValid = businessNumber.length === 10;
-  const representativeValid = representative.length > 0;
+  const representativeValid = representative?.length > 0;
   const openingDateValid = openingDate.length > 0;
-  const businessAddressValid = businessAddress.length > 0;
+  const businessAddressValid = businessAddress?.length > 0;
   const [businessNameValid, setBusinessNameValid] = useState(
-    businessName.length > 0
+    businessName?.length > 0
   );
   const isFormValid =
     businessNumberValid &&
@@ -95,6 +95,14 @@ const BusinessAuthPage = () => {
   useEffect(() => {
     setBusinessNameValid(businessName.length > 0);
   }, [businessName]);
+
+  useEffect(() => {
+    if (user?.business) {
+      setRepresentative(user.business[0].ownerName);
+      setBusinessAddress(user.business[0].businessLocation);
+      setBusinessName(user.business[0].businessName);
+    }
+  }, [user]);
 
   return (
     <Container>

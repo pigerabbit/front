@@ -39,7 +39,7 @@ const InquiresPage = () => {
 
   useEffect(() => {
     getInquires();
-  }, [option]);
+  }, [option, user]);
 
   return (
     <MyPageLayout pageName={"나의 문의"} previousPage="/mypage">

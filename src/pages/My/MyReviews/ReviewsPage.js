@@ -32,7 +32,7 @@ const ReviewsPage = () => {
 
   useEffect(() => {
     getReviews();
-  }, []);
+  }, [user]);
 
   return (
     <MyPageLayout pageName={"나의 후기"} previousPage="/mypage">
