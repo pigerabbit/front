@@ -55,6 +55,16 @@ const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
       )}
 
       {user.id === id && (
+        <GroupsButton
+          onClick={() => {
+            navigate(`/markets/groups/${product.id}`);
+          }}
+        >
+          공구 목록
+        </GroupsButton>
+      )}
+
+      {user.id === id && (
         <UpdateController isControllerOpen={isControllerOpen}>
           <ControllerButton
             onClick={() => {
@@ -235,5 +245,24 @@ const ControllerButton = styled.div`
 
   & + div {
     margin-left: 3%;
+  }
+`;
+
+const GroupsButton = styled.button`
+  width: 13%;
+  max-width: 80px;
+  z-index: 3;
+  cursor: pointer;
+  position: absolute;
+  right: 12%;
+  bottom: 15%;
+  border: none;
+  color: white;
+  padding: 1.2%;
+  background: #ffb564;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
+  font-size: 2vw;
+  @media (min-width: 620px) {
+    font-size: 13px;
   }
 `;
