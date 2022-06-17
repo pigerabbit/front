@@ -160,8 +160,12 @@ const ProductRegisterPage = () => {
         await Promise.all([imagesReq, descriptionImgReq, detailImgReq]);
 
         navigate(`/markets/${user.id}`, { replace: true });
-      } catch (e) {}
-    } catch (error) {}
+      } catch (e) {
+        // 에러처리
+      }
+    } catch (error) {
+      // 에러처리
+    }
   };
 
   return (
