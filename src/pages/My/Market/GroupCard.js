@@ -41,6 +41,13 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
 
+  &:active {
+    background-color: #fafafa;
+    > div:first-child {
+      background-color: #fafafa;
+    }
+  }
+
   > svg {
     z-index: 3;
     cursor: pointer;
