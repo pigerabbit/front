@@ -24,7 +24,7 @@ const MarketPage = () => {
     const res = await Api.get("markets", id);
     setProducts(res.data.payload.resultList);
     setMarketName(
-      res.data.payload.resultList[0].userInfo.business[0]?.businessName || ""
+      res.data.payload.resultList[0]?.userInfo.business[0]?.businessName || ""
     );
   };
 
