@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import * as Api from "api";
 
 import ProductsTopBar from "./ProductsTopBar";
@@ -10,7 +10,7 @@ import Category from "components/Category";
 import TabBar from "components/TabBar";
 import ConfirmationIcon from "components/ConfirmationIcon";
 import InfiniteScroll from "./InfiniteScroll";
-
+import LoadingSpinner from "components/LoadingSpinner";
 import useDidMountEffect from "hooks/useDidMountEffect";
 
 const options = [
@@ -130,13 +130,7 @@ const ProductsPage = () => {
         </>
       </ProductsCardContainer>
 
-      {loading && (
-        <Loading>
-          <div></div>
-          <div></div>
-          <div></div>
-        </Loading>
-      )}
+      {loading && <LoadingSpinner />}
 
       {page !== totalPage && !loading && <InfiniteScroll setPage={setPage} />}
 
@@ -228,42 +222,6 @@ const ProductsCardContainer = styled.div`
   grid-gap: 15px;
   @media (min-width: 600px) {
     grid-template-columns: repeat(3, 1fr);
-  }
-`;
-
-const rotate = keyframes`
-  0% {
-    transform: rotate(0);
-  }
-  25% {
-    transform: rotate(180deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  75% {
-    transform: rotate(360deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-const Loading = styled.div`
-  margin-top: 40px;
-  margin-bottom: 20px;
-  width: 100px;
-  height: 100px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  animation: ${rotate} 2s linear infinite;
-
-  > div {
-    background-color: #f79831;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
   }
 `;
 
