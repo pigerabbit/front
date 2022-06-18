@@ -19,32 +19,21 @@ const HomeTab = ({ setConfirmationIcon }) => {
   const lastPage = recommendationGroups.length;
   const nearbyTitle = "근처에 있는 공동구매에요!";
 
-  const handleLeftClick = () => {
-    setTransition(true);
-    setCardPosition((cur) => cur - 1);
-    if (page === 1) {
-      setPage(lastPage);
-      setTimeout(() => {
-        setTransition(false);
-        setCardPosition(lastPage);
-      }, [400]);
-    } else {
-      setPage((cur) => cur - 1);
-    }
-  };
+  const handleChevronClick = (leftClick) => {
+    return () => {
+      setTransition(true);
+      setCardPosition((cur) => (leftClick ? cur - 1 : cur + 1));
 
-  const handleRightClick = () => {
-    setTransition(true);
-    setCardPosition((cur) => cur + 1);
-    if (page === lastPage) {
-      setPage(1);
-      setTimeout(() => {
-        setTransition(false);
-        setCardPosition(1);
-      }, [400]);
-    } else {
-      setPage((cur) => cur + 1);
-    }
+      if (page === (leftClick ? 1 : lastPage)) {
+        setPage(leftClick ? lastPage : 1);
+        setTimeout(() => {
+          setTransition(false);
+          setCardPosition(leftClick ? lastPage : 1);
+        }, [400]);
+      } else {
+        setPage((cur) => (leftClick ? cur - 1 : cur + 1));
+      }
+    };
   };
 
   const getGroupsData = async () => {
@@ -99,11 +88,17 @@ const HomeTab = ({ setConfirmationIcon }) => {
         </SliderContainer>
 
         <Pagination>
-          <FontAwesomeIcon icon={faChevronLeft} onClick={handleLeftClick} />
+          <FontAwesomeIcon
+            icon={faChevronLeft}
+            onClick={handleChevronClick(true)}
+          />
           <div>
             <span>{page}</span> / {lastPage}
           </div>
-          <FontAwesomeIcon icon={faChevronRight} onClick={handleRightClick} />
+          <FontAwesomeIcon
+            icon={faChevronRight}
+            onClick={handleChevronClick(false)}
+          />
         </Pagination>
       </Interest>
 
