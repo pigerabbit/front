@@ -74,7 +74,13 @@ const MyPurchaseListCard = ({
       {state === 1 && type === "coupon" && (
         <CardButton
           bgColor="#ff9b2f"
-          onClick={() => navigate(`/qrcode/`, { state: groupId })}
+          onClick={() =>
+            navigate(`/qrcode/`, {
+              state: {
+                data: { groupId },
+              },
+            })
+          }
         >
           QR 코드
         </CardButton>
