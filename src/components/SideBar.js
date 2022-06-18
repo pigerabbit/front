@@ -3,24 +3,14 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
+import usePreventScroll from "hooks/usePreventScroll";
+
 const SideBar = ({ children, title, isOpenSideBar, setIsOpenSideBar }) => {
   const handleCancelClick = () => {
     setIsOpenSideBar(false);
   };
 
-  useEffect(() => {
-    if (isOpenSideBar) {
-      document.body.style.cssText = `
-      position: fixed; 
-      top: -${window.scrollY}px;
-      overflow-y: scroll;
-      width: 100%;`;
-    } else {
-      const scrollY = document.body.style.top;
-      document.body.style.cssText = "";
-      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
-    }
-  }, [isOpenSideBar]);
+  usePreventScroll();
 
   return (
     <Container isOpenSideBar={isOpenSideBar}>

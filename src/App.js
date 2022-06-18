@@ -26,8 +26,8 @@ import MyWishListPage from "pages/My/MyWishList/MyWishListPage";
 import MyPurchaseListPage from "pages/My/MyPurchaseList/MyPurchaseListPage";
 import SearchPage from "./pages/Search/SearchPage";
 
-import ScrollToTop from "ScrollToTop";
-import FetchCurrentUser from "FetchCurrentUser";
+import ScrollToTop from "components/ScrollToTop";
+import FetchCurrentUser from "components/FetchCurrentUser";
 
 function App() {
   const wrapFetchUser = (child) => {
