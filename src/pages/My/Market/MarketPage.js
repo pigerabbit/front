@@ -15,6 +15,7 @@ const MarketPage = () => {
   const { id } = useParams();
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [products, setProducts] = useState([]);
+  const [marketName, setMarketName] = useState("");
   const [currentProduct, SetCurrentProduct] = useState("");
 
   const navigate = useNavigate();
@@ -22,6 +23,9 @@ const MarketPage = () => {
   const getProductData = async () => {
     const res = await Api.get("markets", id);
     setProducts(res.data.payload.resultList);
+    setMarketName(
+      res.data.payload.resultList[0].userInfo.business[0]?.businessName || ""
+    );
   };
 
   const handleDeleteProduct = () => {
@@ -47,7 +51,7 @@ const MarketPage = () => {
 
   return (
     <MyPageLayout
-      pageName={user?.business[0].businessName}
+      pageName={marketName || user?.business[0]?.businessName}
       previousPage="/mypage"
     >
       <Container>
@@ -77,13 +81,13 @@ const MarketPage = () => {
       </Container>
 
       {products.length === 0 && (
-        <NoReviewContainer>
+        <NoContentContainer>
           <img
             src={`${process.env.PUBLIC_URL}/images/noSale.svg`}
             alt="no nearby"
           />
           등록된 판매가 없습니다.
-        </NoReviewContainer>
+        </NoContentContainer>
       )}
 
       <ConfirmationPopup
@@ -170,7 +174,7 @@ const ConfirmationContent = styled.div`
   }
 `;
 
-const NoReviewContainer = styled.div`
+const NoContentContainer = styled.div`
   margin-top: 0;
   display: flex;
   flex-direction: column;

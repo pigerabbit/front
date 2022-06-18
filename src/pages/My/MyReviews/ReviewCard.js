@@ -66,6 +66,13 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+
+  &:active {
+    background-color: #fafafa;
+    > div:first-child {
+      background-color: #fafafa;
+    }
+  }
 `;
 
 const Content = styled.div`
