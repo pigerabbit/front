@@ -92,7 +92,7 @@ const GroupType = styled.div`
         return "#D3613B";
       case "local":
         return "#F5CB47";
-      case "ticket":
+      case "coupon":
         return "#82AF50";
       default:
         return "#d0d0d0";
