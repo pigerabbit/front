@@ -54,7 +54,6 @@ const Container = styled.div`
   margin-bottom: 50px;
   position: relative;
   width: 80%;
-  left: 10%;
   display: flex;
   flex-direction: column;
 `;

@@ -32,8 +32,6 @@ const rotate = keyframes`
 `;
 
 const Loading = styled.div`
-  margin-top: 40px;
-  margin-bottom: 20px;
   width: 100px;
   height: 100px;
   display: flex;

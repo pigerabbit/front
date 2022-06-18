@@ -111,6 +111,8 @@ const ProductsPage = () => {
         </SelectBox>
       </ProductsInfo>
 
+      {loading && <LoadingSpinner />}
+
       <ProductsCardContainer>
         <>
           {products.map((product) => (
@@ -118,8 +120,6 @@ const ProductsPage = () => {
           ))}
         </>
       </ProductsCardContainer>
-
-      {loading && <LoadingSpinner />}
 
       {page !== totalPage && !loading && <InfiniteScroll setPage={setPage} />}
 
@@ -153,6 +153,7 @@ const ProductsPage = () => {
 export default ProductsPage;
 
 const Container = styled.div`
+border:2px solid blue;
   padding-bottom: ${({ noProduct }) => (noProduct ? "0;" : "110px;")}
   position: relative;
   width: 100%;

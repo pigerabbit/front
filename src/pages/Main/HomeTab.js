@@ -9,6 +9,7 @@ import * as Api from "api";
 
 import SliderCard from "./SliderCard";
 import CardsContainer from "./CardsContainer";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const HomeTab = () => {
   const [recommendationGroups, setRecommendationGroups] = useState([]);
@@ -16,6 +17,7 @@ const HomeTab = () => {
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
   const [transition, setTransition] = useState(true);
+  const [loading, setLoading] = useState(false);
   const lastPage = recommendationGroups.length;
   const nearbyTitle = "근처에 있는 공동구매에요!";
 
@@ -41,6 +43,8 @@ const HomeTab = () => {
     const getNearbyGroups = Api.get("groups/sort/locations");
 
     try {
+      setLoading(true);
+
       const [recommendationGroups, nearbyGroups] = await Promise.all([
         getRecommendationGroups,
         getNearbyGroups,
@@ -48,6 +52,8 @@ const HomeTab = () => {
 
       setRecommendationGroups(recommendationGroups.data.payload);
       setNearbyGroups(nearbyGroups.data.payload);
+
+      setLoading(false);
     } catch (e) {
       // 에러처리
     }
@@ -59,46 +65,55 @@ const HomeTab = () => {
 
   return (
     <Container>
-      <Interest>
-        <Title>
-          <span>관심 있으실만한</span>
-          <span>공동구매 추천해드려요</span>
-        </Title>
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <InterestGroups>
+            <Title>
+              <span>관심 있으실만한</span>
+              <span>공동구매 추천해드려요</span>
+            </Title>
 
-        <SliderContainer>
-          <CardList
-            length={recommendationGroups.length + 2}
-            left={cardPosition}
-            transition={transition}
-          >
-            {recommendationGroups.length > 0 && (
-              <SliderCard purchase={recommendationGroups[lastPage - 1]} />
-            )}
-            {recommendationGroups.map((purchase) => (
-              <SliderCard purchase={purchase} key={purchase.groupId} />
-            ))}
-            {recommendationGroups.length > 0 && (
-              <SliderCard purchase={recommendationGroups[0]} />
-            )}
-          </CardList>
-        </SliderContainer>
+            <SliderContainer>
+              <CardList
+                length={recommendationGroups.length + 2}
+                left={cardPosition}
+                transition={transition}
+              >
+                {recommendationGroups.length > 0 && (
+                  <SliderCard purchase={recommendationGroups[lastPage - 1]} />
+                )}
+                {recommendationGroups.map((purchase) => (
+                  <SliderCard purchase={purchase} key={purchase.groupId} />
+                ))}
+                {recommendationGroups.length > 0 && (
+                  <SliderCard purchase={recommendationGroups[0]} />
+                )}
+              </CardList>
+            </SliderContainer>
 
-        <Pagination>
-          <FontAwesomeIcon
-            icon={faChevronLeft}
-            onClick={handleChevronClick(true)}
+            <Pagination>
+              <FontAwesomeIcon
+                icon={faChevronLeft}
+                onClick={handleChevronClick(true)}
+              />
+              <div>
+                <span>{page}</span> / {lastPage}
+              </div>
+              <FontAwesomeIcon
+                icon={faChevronRight}
+                onClick={handleChevronClick(false)}
+              />
+            </Pagination>
+          </InterestGroups>
+
+          <CardsContainer
+            title={nearbyTitle}
+            groupPurchaseList={nearbyGroups}
           />
-          <div>
-            <span>{page}</span> / {lastPage}
-          </div>
-          <FontAwesomeIcon
-            icon={faChevronRight}
-            onClick={handleChevronClick(false)}
-          />
-        </Pagination>
-      </Interest>
-
-      <CardsContainer title={nearbyTitle} groupPurchaseList={nearbyGroups} />
+        </>
+      )}
     </Container>
   );
 };
@@ -106,14 +121,19 @@ const HomeTab = () => {
 export default HomeTab;
 
 const Container = styled.div`
+  min-height: 70%;
   margin-bottom: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
-const Interest = styled.div`
+const InterestGroups = styled.div`
   display: flex;
   flex-direction: column;
   width: 80%;
-  margin: 6vw 10% 10vw 10%;
+  margin: 6vw 0 10vw 0;
   @media (min-width: 770px) {
     margin: 45px 10% 75px 10%;
   }

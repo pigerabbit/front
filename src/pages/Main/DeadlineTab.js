@@ -50,4 +50,7 @@ export default DeadlineTab;
 
 const Container = styled.div`
   padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
