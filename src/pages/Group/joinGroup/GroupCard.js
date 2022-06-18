@@ -13,7 +13,7 @@ const useResultOfIntervalCalculator = (calculator, delay) => {
   return result;
 };
 
-const groupTypes = { normal: "택배", local: "지역", ticket: "이용권" };
+const groupTypes = { normal: "택배", local: "지역", coupon: "이용권" };
 
 const GroupCard = ({ group, minPurchaseQty }) => {
   const navigate = useNavigate();
