@@ -48,25 +48,36 @@ const OpenGroupPaymentPage = () => {
       });
       if (res.data.success) {
         const groupId = res.data.payload.groupId;
-        postPayment(groupId);
+        postPaymentType(groupId);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const postPayment = async (groupId) => {
+  const postPaymentType = async (groupId) => {
     try {
       const res = await Api.put(`groups/${groupId}/payment`, {
         payment: payment,
       });
       if (res.data.success) {
+        // if(res.data.payload.groupType==='coupon'){
+        //   postCouponPayment(groupId)
+        // }
         navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {
       console.log(err);
     }
   };
+
+  // const postCouponPayment=async()=>{
+  //   try{
+  //     const res=await Api.post('payments',{})
+  //   }catch(err){
+  //     console.log(err)
+  //   }
+  // }
 
   const nameValid = name?.length > 0;
   const contactValid = contact.length > 0;

@@ -40,7 +40,21 @@ const JoinGroupPaymentPage = () => {
         quantity: count,
       });
       if (res.data.success) {
-        navigate(`/group/payment/${res.data.payload.groupId}`);
+        const groupId = res.data.payload.groupId;
+        postPaymentType(groupId);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const postPaymentType = async (groupId) => {
+    try {
+      const res = await Api.put(`groups/${groupId}/payment`, {
+        payment: payment,
+      });
+      if (res.data.success) {
+        navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {
       console.log(err);
