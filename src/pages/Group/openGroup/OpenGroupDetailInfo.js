@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -11,9 +11,7 @@ const OpenGroupDetailInfo = ({ product, type }) => {
 
   const [count, setCount] = useState(0);
   const [groupName, setGroupName] = useState("");
-  const [location, setLocation] = useState(
-    type === "coupon" ? product.userInfo.buisness?.buisnessLocation : ""
-  );
+  const [location, setLocation] = useState("");
   const [hour, setHour] = useState(12);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -22,6 +20,11 @@ const OpenGroupDetailInfo = ({ product, type }) => {
   const isValid =
     type === "coupon" ? groupNameValid : groupNameValid && locationValid;
 
+  useEffect(() => {
+    if (product && type === "coupon") {
+      setLocation(product.userInfo.business[0].businessLocation);
+    }
+  }, [product]);
   return (
     <>
       <DetailInfoContainer>

@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import * as Api from "api";
 
 const SearchTrending = () => {
   const navigate = useNavigate();
-  const [trendingKeyword, setTrendingKeyword] = useState([
-    "피클",
-    "라이스 페이퍼",
-    "사과",
-    "나쵸",
-    "배",
-    "원두",
-    "감자",
-    "바나나",
-    "딸기",
-    "샐러드",
-  ]);
+
+  const [trendingKeyword, setTrendingKeyword] = useState([]);
+
+  const fetchKeywords = async () => {
+    const res = await Api.get("topics");
+    setTrendingKeyword(res.data.payload);
+  };
+
+  useEffect(() => {
+    fetchKeywords();
+  }, []);
+
   return (
     <Container>
       <h4>인기검색어</h4>

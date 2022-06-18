@@ -111,9 +111,13 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
             />
           ))}
         {filteredData.length === 0 && (
-          <PurchaseMessage>
-            <p>공구내역이 없습니다</p>
-          </PurchaseMessage>
+          <NoPurchaseListContainer>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/noProduct.svg`}
+              alt="no openedPurchaseList"
+            />
+            공구 내역이 없습니다.
+          </NoPurchaseListContainer>
         )}
       </PurchaseListWrapper>
       {isOpenPopUpCard && (
@@ -250,12 +254,17 @@ const Button = styled.button`
   }
 `;
 
-const PurchaseMessage = styled.div`
-  width: 100%;
-  text-align: center;
-  margin-top: 25%;
-  > p {
-    color: #c4c4c4;
-    font-size: 30px;
+const NoPurchaseListContainer = styled.div`
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 25px;
+  > img {
+    width: 50%;
+    margin-bottom: 5%;
+  }
+  @media only screen and (max-width: 500px) {
+    margin-top: 25%;
   }
 `;
