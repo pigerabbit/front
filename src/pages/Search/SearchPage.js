@@ -14,7 +14,7 @@ import SearchGroupCard from "./SearchGroupCard";
 
 const SearchPage = () => {
   const [IsTrendingPage, setIsTrendingPage] = useState(true);
-  const [deadlineProduct, setDeadlineProduct] = useState({});
+  const [deadlineGroup, setDeadlineGroup] = useState(null);
   const slideRef = useRef(null);
 
   useEffect(() => {
@@ -24,14 +24,14 @@ const SearchPage = () => {
     }00%)`;
   }, [IsTrendingPage]);
 
-  const fetchProducts = async () => {
+  const fetchGroups = async () => {
     const res = await Api.get("groups/sort/remainedTime");
-    const deadlineProducts = res.data.payload;
-    const randomNum = Math.floor(Math.random() * deadlineProducts.length);
-    setDeadlineProduct(deadlineProducts[randomNum]);
+    const deadlineGroups = res.data.payload;
+    const randomNum = Math.floor(Math.random() * deadlineGroups.length);
+    setDeadlineGroup(deadlineGroups[randomNum]);
   };
   useEffect(() => {
-    fetchProducts();
+    fetchGroups();
   }, []);
 
   return (
@@ -59,16 +59,17 @@ const SearchPage = () => {
           />
         </NextBtn>
       )}
-      {deadlineProduct && (
+      {deadlineGroup && (
         <DeadLineContainer>
           <h3>마감 임박</h3>
           <SearchGroupCard
-            name={deadlineProduct.groupName}
-            price="10000"
-            salePrice="9000"
-            discountRate="10"
-            leftParticipants={deadlineProduct.remainedPersonnel}
-            deadline={deadlineProduct.deadline}
+            name={deadlineGroup.groupName}
+            image={deadlineGroup.productInfo.images}
+            price={deadlineGroup.productInfo.price}
+            salePrice={deadlineGroup.productInfo.salePrice}
+            discountRate={deadlineGroup.productInfo.discountRate}
+            leftParticipants={deadlineGroup.remainedPersonnel}
+            deadline={deadlineGroup.deadline}
           />
         </DeadLineContainer>
       )}
