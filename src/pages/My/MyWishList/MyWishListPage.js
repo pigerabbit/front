@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import TabBar from "components/TabBar";
+
+import MyPageLayout from "../MyPageLayout";
 import MyWishListTabs from "../MyWishListTabs";
 import GroupWishListTab from "./GroupWishListTab";
 import ProductWishListTab from "./ProductWishListTab";
@@ -27,19 +28,17 @@ const MyWishListPage = () => {
   }, []);
 
   return (
-    <Container>
-      <WishListTitle>
-        <h2>찜</h2>
-      </WishListTitle>
-      <MyWishListTabs
-        tab={tab}
-        setTab={setTab}
-        tabNames={["공동구매", "판매상품"]}
-      />
-      {tab === "tab1" && <GroupWishListTab groups={groups} />}
-      {tab === "tab2" && <ProductWishListTab products={products} />}
-      <TabBar />
-    </Container>
+    <MyPageLayout pageName="찜" previousPage="/mypage">
+      <Container>
+        <MyWishListTabs
+          tab={tab}
+          setTab={setTab}
+          tabNames={["공동구매", "판매상품"]}
+        />
+        {tab === "tab1" && <GroupWishListTab groups={groups} />}
+        {tab === "tab2" && <ProductWishListTab products={products} />}
+      </Container>
+    </MyPageLayout>
   );
 };
 

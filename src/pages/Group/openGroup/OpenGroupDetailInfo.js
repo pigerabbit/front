@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as Api from "api";
 import SelectBox from "../../../components/SeletBox";
-import { formatDate, options } from "../GroupModule";
+import { options } from "../GroupModule";
 
 const OpenGroupDetailInfo = ({ product, type }) => {
   const navigate = useNavigate();
@@ -21,29 +20,11 @@ const OpenGroupDetailInfo = ({ product, type }) => {
   const isValid =
     type === "coupon" ? groupNameValid : groupNameValid && locationValid;
 
-  const postOpenGroup = async () => {
-    try {
-      const deadline = formatDate(hour);
-      if (type === "coupon") {
-        setLocation(product.userInfo.buisness?.buisnessLocation);
-      }
-      const res = await Api.post(`groups`, {
-        groupType: type,
-        location,
-        productId: product.id,
-        state: 0,
-        groupName,
-        deadline,
-        quantity: count,
-      });
-      if (res.data.success) {
-        navigate("/purchaselist", { state: "success" });
-      }
-    } catch (err) {
-      console.log(err);
+  useEffect(() => {
+    if (product && type === "coupon") {
+      setLocation(product.userInfo.business[0].businessLocation);
     }
-  };
-
+  }, [product]);
   return (
     <>
       <DetailInfoContainer>
@@ -106,9 +87,15 @@ const OpenGroupDetailInfo = ({ product, type }) => {
         <Button
           disabled={!isValid}
           valid={isValid}
-          onClick={() => postOpenGroup()}
+          onClick={() =>
+            navigate("/group/open/pay", {
+              state: {
+                data: { product, type, groupName, location, count, hour },
+              },
+            })
+          }
         >
-          공구 열기
+          확인
         </Button>
       </ButtonWrapper>
     </>

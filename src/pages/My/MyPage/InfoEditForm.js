@@ -15,13 +15,15 @@ import DaumPost from "components/DaumPostCode";
 
 const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
   const { user } = useSelector((state) => state.user);
-  const [name, setName] = useState(user?.name);
+  const [name, setName] = useState(user?.name || "");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [address, setAddress] = useState(user?.address.split(") ")[0] + ")");
+  const [address, setAddress] = useState(
+    user?.address.split(") ")[0] + ")" || ""
+  );
   const [detailAddress, setDetailAddress] = useState(
-    user?.address.split(") ")[1]
+    user?.address.split(") ")[1] || ""
   );
 
   const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
@@ -115,6 +117,14 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
   useEffect(() => {
     setPasswordValid(currentPassword?.length >= 8);
   }, [currentPassword]);
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setAddress(user.address.split(") ")[0] + ")");
+      setDetailAddress(user.address.split(") ")[1]);
+    }
+  }, [user]);
 
   return (
     <Container>

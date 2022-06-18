@@ -21,14 +21,18 @@ const ReviewsPage = () => {
 
   const getReviews = async () => {
     if (user) {
-      const res = await Api.get("posts", `${user.id}/review`);
-      setReviews(res.data.payload);
+      try {
+        const res = await Api.get("posts", `${user.id}/review`);
+        setReviews(res.data.payload);
+      } catch (e) {
+        // 에러처리
+      }
     }
   };
 
   useEffect(() => {
     getReviews();
-  }, []);
+  }, [user]);
 
   return (
     <MyPageLayout pageName={"나의 후기"} previousPage="/mypage">

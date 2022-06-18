@@ -10,6 +10,7 @@ import RegisterPage from "pages/User/RegisterPage";
 import BusinessAuthPage from "pages/User/BusinessAuthPage";
 import MyPage from "pages/My/MyPage/MyPage";
 import MarketPage from "pages/My/Market/MarketPage";
+import GroupListPage from "pages/My/Market/GroupListPage";
 import ReviewsPage from "pages/My/MyReviews/ReviewsPage";
 import InquiresPage from "pages/My/MyInquires/InquiresPage";
 import ProductsPage from "./pages/Search/ProductsPage";
@@ -18,12 +19,15 @@ import OpenGroupPage from "./pages/Group/openGroup/OpenGroupPage";
 import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
 import ProductRegisterPage from "pages/My/Market/ProductRegisterPage";
 import GroupDetailPage from "pages/Group/joinGroup/GroupDetailPage";
-
-import ScrollToTop from "ScrollToTop";
-import FetchCurrentUser from "FetchCurrentUser";
+import OpenGroupPaymentPage from "pages/Group/payGroup/OpenGroupPaymentPage";
+import JoinGroupPaymentPage from "pages/Group/payGroup/JoinGroupPaymentPage";
+import PaymentDetailPage from "pages/Group/payGroup/PaymentDetailPage";
 import MyWishListPage from "pages/My/MyWishList/MyWishListPage";
 import MyPurchaseListPage from "pages/My/MyPurchaseList/MyPurchaseListPage";
 import SearchPage from "./pages/Search/SearchPage";
+
+import ScrollToTop from "ScrollToTop";
+import FetchCurrentUser from "FetchCurrentUser";
 
 function App() {
   const wrapFetchUser = (child) => {
@@ -36,6 +40,7 @@ function App() {
   const reviewsPage = wrapFetchUser(<ReviewsPage />);
   const inquiresPage = wrapFetchUser(<InquiresPage />);
   const marketPage = wrapFetchUser(<MarketPage />);
+  const groupListPage = wrapFetchUser(<GroupListPage />);
   const businessAuthPage = wrapFetchUser(<BusinessAuthPage />);
   const mywishlistPage = wrapFetchUser(<MyWishListPage />);
   const mypurchaselistPage = wrapFetchUser(<MyPurchaseListPage />);
@@ -45,6 +50,9 @@ function App() {
   const productDetailPage = wrapFetchUser(<ProductDetailPage />);
   const productRegisterPage = wrapFetchUser(<ProductRegisterPage />);
   const groupDetailPage = wrapFetchUser(<GroupDetailPage />);
+  const openpaymentPage = wrapFetchUser(<OpenGroupPaymentPage />);
+  const joinpaymentPage = wrapFetchUser(<JoinGroupPaymentPage />);
+  const paymentDetailPage = wrapFetchUser(<PaymentDetailPage />);
 
   return (
     <Router>
@@ -62,6 +70,7 @@ function App() {
           <Route path="/mypage/reviews" element={reviewsPage} />
           <Route path="/mypage/inquires" element={inquiresPage} />
           <Route path="/markets/:id" element={marketPage} />
+          <Route path="/markets/groups/:productId" element={groupListPage} />
           <Route path="/wishlist" element={mywishlistPage} />
           <Route path="/purchaselist" element={mypurchaselistPage} />
           <Route path="/search" element={searchPage} />
@@ -69,6 +78,9 @@ function App() {
           <Route path="/group/open" element={opengroupPage} />
           <Route path="/products/:id" element={productDetailPage} />
           <Route path="/groups/:id" element={groupDetailPage} />
+          <Route path="/group/open/pay" element={openpaymentPage} />
+          <Route path="/group/join/pay" element={joinpaymentPage} />
+          <Route path="/group/payment/:groupId" element={paymentDetailPage} />
         </Routes>
       </Container>
     </Router>

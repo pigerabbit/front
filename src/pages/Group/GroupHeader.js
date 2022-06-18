@@ -3,11 +3,11 @@ import { faUser, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
-const GroupHeader = ({ headerTitle }) => {
+const GroupHeader = ({ headerTitle, goBack }) => {
   const navigate = useNavigate();
   return (
     <Header>
-      <GoBack onClick={() => navigate("/")} />
+      <GoBack onClick={() => navigate(goBack || "/")} />
       <Title>{headerTitle}</Title>
       <ButtonTopContainer>
         <div
@@ -47,7 +47,7 @@ const Header = styled.header`
   top: 0;
   z-index: 5;
   background-color: #ffffff;
-  height: 50px;
+  height: 60px;
 `;
 
 const GoBack = styled.i`

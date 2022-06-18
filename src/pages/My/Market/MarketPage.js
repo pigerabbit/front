@@ -15,6 +15,7 @@ const MarketPage = () => {
   const { id } = useParams();
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [products, setProducts] = useState([]);
+  const [marketName, setMarketName] = useState("");
   const [currentProduct, SetCurrentProduct] = useState("");
 
   const navigate = useNavigate();
@@ -22,19 +23,26 @@ const MarketPage = () => {
   const getProductData = async () => {
     const res = await Api.get("markets", id);
     setProducts(res.data.payload.resultList);
+    setMarketName(
+      res.data.payload.resultList[0].userInfo.business[0]?.businessName || ""
+    );
   };
 
   const handleDeleteProduct = () => {
-    setProducts((currentList) => {
-      const index = currentList.findIndex((cur) => cur.id === currentProduct);
-      const copy = [...currentList];
-      copy.splice(index, 1);
-      return copy;
-    });
+    try {
+      Api.delete(`products/${currentProduct}`);
 
-    setIsOpenPopup(false);
+      setProducts((currentList) => {
+        const index = currentList.findIndex((cur) => cur.id === currentProduct);
+        const copy = [...currentList];
+        copy.splice(index, 1);
+        return copy;
+      });
 
-    Api.delete(`products/${currentProduct}`);
+      setIsOpenPopup(false);
+    } catch (e) {
+      // 에러처리
+    }
   };
 
   useEffect(() => {
@@ -43,7 +51,9 @@ const MarketPage = () => {
 
   return (
     <MyPageLayout
-      pageName={user?.business[0].businessName}
+      pageName={
+        (user?.id === id && user?.business[0]?.businessName) || marketName || ""
+      }
       previousPage="/mypage"
     >
       <Container>
@@ -73,13 +83,13 @@ const MarketPage = () => {
       </Container>
 
       {products.length === 0 && (
-        <NoReviewContainer>
+        <NoContentContainer>
           <img
             src={`${process.env.PUBLIC_URL}/images/noSale.svg`}
             alt="no nearby"
           />
           등록된 판매가 없습니다.
-        </NoReviewContainer>
+        </NoContentContainer>
       )}
 
       <ConfirmationPopup
@@ -166,7 +176,7 @@ const ConfirmationContent = styled.div`
   }
 `;
 
-const NoReviewContainer = styled.div`
+const NoContentContainer = styled.div`
   margin-top: 0;
   display: flex;
   flex-direction: column;
