@@ -47,7 +47,21 @@ const OpenGroupPaymentPage = () => {
         quantity: count,
       });
       if (res.data.success) {
-        navigate(`/group/payment/${res.data.payload.groupId}`);
+        const groupId = res.data.payload.groupId;
+        postPayment(groupId);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const postPayment = async (groupId) => {
+    try {
+      const res = await Api.put(`groups/${groupId}/payment`, {
+        payment: payment,
+      });
+      if (res.data.success) {
+        navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {
       console.log(err);
@@ -94,11 +108,7 @@ const OpenGroupPaymentPage = () => {
         type={type}
       />
       <PaymentInfo setPayment={setPayment} payment={payment} />
-      <OrderButton
-        disabled={!isValid}
-        valid={isValid}
-        onClick={() => postOpenGroup()}
-      >
+      <OrderButton disabled={!isValid} valid={isValid} onClick={postOpenGroup}>
         {product.salePrice * count + shippingPrice}원 주문하기
       </OrderButton>
     </Container>
