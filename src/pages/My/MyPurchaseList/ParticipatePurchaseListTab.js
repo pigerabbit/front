@@ -92,16 +92,8 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
           filteredData.map((group) => (
             <MyPurchaseListCard
               key={group.groupId}
-              groupId={group.groupId}
               userId={userId}
-              type={group.groupType}
-              images={group.productInfo.images}
-              state={group.state}
-              title={group.groupName}
-              price={group.productInfo.salePrice}
-              remained={group.remainedPersonnel}
-              participants={group.participants}
-              deadline={group.deadline}
+              group={group}
               isOpenTab={false}
               setIsOpenPopUpCard={setIsOpenPopUpCard}
               setCancelDataId={setCancelDataId}

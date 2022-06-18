@@ -52,16 +52,31 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
     setIsOpen(false);
   };
 
-  const handleStopGroupClick = async () => {
+  const handleDeleteGroup = async (groupId) => {
     try {
-      await Api.put(`groups/${cancelDataId}/participate/out`);
-      const data = filteredData.filter((data) => data.groupId !== cancelDataId);
+      await Api.delete(`groups/${groupId}`);
+      const data = filteredData.filter((data) => data.groupId === groupId);
       setFilteredData(data);
-      setIsOpenPopUpCard(false);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const handleRemoveGroupFromMyList = async (groupId) => {
+    try {
+      await Api.put(`groups/${groupId}/participate/out`);
+      const data = filteredData.filter((data) => data.groupId !== groupId);
+      setFilteredData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleStopGroupClick = async () => {
+    handleRemoveGroupFromMyList(cancelDataId);
+    setIsOpenPopUpCard(false);
+  };
+
   return (
     <Container>
       <InfoWrapper>
@@ -91,19 +106,13 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
           filteredData.map((group) => (
             <MyPurchaseListCard
               key={group.groupId}
-              groupId={group.groupId}
-              productId={group.productId}
               userId={userId}
-              type={group.groupType}
-              images={group.productInfo?.images}
-              state={group.state}
-              title={group.groupName}
-              remained={group.remainedPersonnel}
-              participants={group.participants}
-              deadline={group.deadline}
+              group={group}
               isOpenTab={true}
               setIsOpenPopUpCard={setIsOpenPopUpCard}
               setCancelDataId={setCancelDataId}
+              handleRemoveGroupFromMyList={handleRemoveGroupFromMyList}
+              handleDeleteGroup={handleDeleteGroup}
             />
           ))}
         {filteredData.length === 0 && (
