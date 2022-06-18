@@ -6,6 +6,8 @@ import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 import { useNavigate } from "react-router-dom";
 
+import getDeadline from "utils/getDeadline";
+
 const numTitleInit =
   (window.innerWidth >= 700 && 15) ||
   (window.innerWidth >= 550 && 32) ||
@@ -17,15 +19,6 @@ const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
   const [numTitle, setNumTitle] = useState(numTitleInit);
 
   const navigate = useNavigate();
-
-  const getDeadline = (date) => {
-    if (!date) return;
-
-    return `${date.substr(0, 4)}년 ${date.substr(5, 2)}월 ${date.substr(
-      8,
-      2
-    )}일 ${date.substr(11, 2)}시까지`;
-  };
 
   const unShowIcon = () => {
     setTimeout(() => {

@@ -12,6 +12,7 @@ import {
 const MyPurchaseListCard = ({
   type,
   images,
+  objId,
   groupId,
   productId,
   userId,
@@ -31,6 +32,14 @@ const MyPurchaseListCard = ({
   const handleClick = () => {
     setIsOpenPopUpCard(true);
     setCancelDataId(groupId);
+  };
+
+  const moveToQRCode = () => {
+    navigate(`/qrcode`, {
+      state: {
+        data: { groupObjId: objId },
+      },
+    });
   };
 
   return (
@@ -56,7 +65,7 @@ const MyPurchaseListCard = ({
           >
             {groupState[state][0]}
           </State>
-          {(state === 0 || state === 2) && <span>{`${remained}개 남음`}</span>}
+          {state === 0 && <span>{`${remained}개 남음`}</span>}
           {isOpenTab ? (
             <Message>{formatDate(deadline)}</Message>
           ) : (
@@ -69,6 +78,11 @@ const MyPurchaseListCard = ({
       {state === 0 && (
         <CardButton bgColor="#A0A0A0" onClick={() => handleClick()}>
           {isOpenTab ? "공구 중지" : "참여 취소"}
+        </CardButton>
+      )}
+      {state === 1 && type === "coupon" && (
+        <CardButton bgColor="#ff9b2f" onClick={moveToQRCode}>
+          QR 코드
         </CardButton>
       )}
       {state === 5 && myInfo[0].review === true && (

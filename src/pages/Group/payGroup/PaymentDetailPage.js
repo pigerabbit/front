@@ -27,6 +27,9 @@ const PaymentDetailPage = () => {
     fetchGroup();
   }, []);
 
+  const count = group.participants.filter((p) => p.userId === user.id)[0]
+    .quantity;
+
   if (group === null) {
     return "loading...";
   }
@@ -54,17 +57,17 @@ const PaymentDetailPage = () => {
         image={group.productInfo.images}
         title={group.groupName}
         price={group.productInfo.salePrice}
-        count="2"
+        count={count}
       />
       <PriceInfo
         price={group.productInfo.salePrice}
-        totalPrice={group.productInfo.salePrice * 2}
+        totalPrice={group.productInfo.salePrice * count}
         shippingPrice={CalShippingFee(
           group.groupType,
           group.productInfo.shippingFee,
           group.productInfo.shippingFeeCon,
           group.productInfo.salePrice,
-          group.productInfo.salePrice * 2,
+          group.productInfo.salePrice * count,
           group.productInfo.minPurchaseQty
         )}
         type={group.groupType}

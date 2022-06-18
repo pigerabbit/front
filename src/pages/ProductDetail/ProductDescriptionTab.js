@@ -70,7 +70,7 @@ const ProductDescriptionTab = ({ product, seller }) => {
       </ImgContainer>
       <Seller
         onClick={() => {
-          navigate("/store");
+          navigate(`/markets/${seller.id}`);
         }}
       >
         {seller.business[0].businessName}
