@@ -28,13 +28,6 @@ const ProductsPage = () => {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [confirmationIcon, setConfirmationIcon] = useState({
-    show: false,
-    backgroundColor: "#70BD86;",
-    color: "",
-    icon: "",
-    text: "",
-  });
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -51,10 +44,10 @@ const ProductsPage = () => {
 
       if (category) {
         const res = await Api.get("products", "", {
-          page: page,
+          page,
           perPage: 6,
-          category: category,
-          option: option,
+          category,
+          option: option.eng,
         });
 
         setProducts((cur) => [...cur, ...res.data.payload.resultList]);
@@ -91,6 +84,8 @@ const ProductsPage = () => {
 
   return (
     <Container noProduct={products?.length === 0}>
+      <ConfirmationIcon />
+
       <ProductsTopBar
         search={search}
         category={category}
@@ -116,16 +111,10 @@ const ProductsPage = () => {
         </SelectBox>
       </ProductsInfo>
 
-      {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
-
       <ProductsCardContainer>
         <>
           {products.map((product) => (
-            <ProductCard
-              product={product}
-              setConfirmationIcon={setConfirmationIcon}
-              key={product.id}
-            />
+            <ProductCard product={product} key={product.id} />
           ))}
         </>
       </ProductsCardContainer>
