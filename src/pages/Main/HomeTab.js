@@ -15,17 +15,17 @@ const HomeTab = ({ setConfirmationIcon }) => {
   const [nearbyGroups, setNearbyGroups] = useState([]);
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
-  const [transition, setTransition] = useState("transition: left 0.4s;");
+  const [transition, setTransition] = useState(true);
   const lastPage = recommendationGroups.length;
   const nearbyTitle = "근처에 있는 공동구매에요!";
 
-  const handleClickLeft = () => {
-    setTransition("transition: left 0.4s;");
+  const handleLeftClick = () => {
+    setTransition(true);
     setCardPosition((cur) => cur - 1);
     if (page === 1) {
       setPage(lastPage);
       setTimeout(() => {
-        setTransition("");
+        setTransition(false);
         setCardPosition(lastPage);
       }, [400]);
     } else {
@@ -33,13 +33,13 @@ const HomeTab = ({ setConfirmationIcon }) => {
     }
   };
 
-  const handleClickRight = () => {
-    setTransition("transition: left 0.4s;");
+  const handleRightClick = () => {
+    setTransition(true);
     setCardPosition((cur) => cur + 1);
     if (page === lastPage) {
       setPage(1);
       setTimeout(() => {
-        setTransition("");
+        setTransition(false);
         setCardPosition(1);
       }, [400]);
     } else {
@@ -86,7 +86,11 @@ const HomeTab = ({ setConfirmationIcon }) => {
               <SliderCard purchase={recommendationGroups[lastPage - 1]} />
             )}
             {recommendationGroups.map((purchase) => (
-              <SliderCard purchase={purchase} key={purchase.groupId} />
+              <SliderCard
+                purchase={purchase}
+                key={purchase.groupId}
+                setConfirmationIcon={setConfirmationIcon}
+              />
             ))}
             {recommendationGroups.length > 0 && (
               <SliderCard purchase={recommendationGroups[0]} />
@@ -95,11 +99,11 @@ const HomeTab = ({ setConfirmationIcon }) => {
         </SliderContainer>
 
         <Pagination>
-          <FontAwesomeIcon icon={faChevronLeft} onClick={handleClickLeft} />
+          <FontAwesomeIcon icon={faChevronLeft} onClick={handleLeftClick} />
           <div>
             <span>{page}</span> / {lastPage}
           </div>
-          <FontAwesomeIcon icon={faChevronRight} onClick={handleClickRight} />
+          <FontAwesomeIcon icon={faChevronRight} onClick={handleRightClick} />
         </Pagination>
       </Interest>
 
@@ -156,7 +160,7 @@ const CardList = styled.div`
   left: ${({ left }) => -left * 100 + "%;"}
   display: flex;
   width: calc(100% * ${({ length }) => length});
-  ${({ transition }) => transition}
+  transition: ${({ transition }) => (transition ? "left 0.4s;" : ";")}
 `;
 
 const Pagination = styled.div`

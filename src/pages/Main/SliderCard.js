@@ -1,32 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
+import * as Api from "api";
 
-const url =
-  "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500";
+import getDeadline from "utils/getDeadline";
 
-const SliderCard = ({ purchase }) => {
-  const [product, setProduct] = useState({});
+const SliderCard = ({ purchase, setConfirmationIcon }) => {
+  const [wish, setWish] = useState(purchase.toggle ? true : false);
 
-  const deadline = `${purchase.deadline.substr(
-    0,
-    4
-  )}년 ${purchase.deadline.substr(5, 2)}월 ${purchase.deadline.substr(
-    8,
-    2
-  )}일까지`;
+  const navigate = useNavigate();
 
-  const getProductData = async () => {};
+  const handleCardClick = () => {
+    navigate(`/groups/${purchase.groupId}`);
+  };
 
-  useEffect(() => {
-    getProductData();
-  }, []);
+  const unShowIcon = () => {
+    setTimeout(() => {
+      setConfirmationIcon((cur) => {
+        return { ...cur, show: false };
+      });
+    }, 1600);
+  };
+
+  const confirmWish = () => {
+    setConfirmationIcon({
+      show: true,
+      backgroundColor: "#FF6A6A;",
+      color: "white",
+      icon: fullHeart,
+      text: "찜!",
+    });
+
+    unShowIcon();
+  };
+
+  const confirmUnwish = () => {
+    setConfirmationIcon({
+      show: true,
+      backgroundColor: "#ABABAB;",
+      color: "white",
+      icon: fullHeart,
+      text: "찜 취소",
+    });
+
+    unShowIcon();
+  };
+
+  const handleToggle = async (event) => {
+    event.stopPropagation();
+    if (!wish) {
+      confirmWish();
+    } else {
+      confirmUnwish();
+    }
+
+    await Api.put(`toggle/group/${purchase._id}`);
+    setWish((cur) => !cur);
+  };
 
   return (
-    <Container>
-      <Image url={url} />
+    <Container wish={wish} onClick={handleCardClick}>
+      <Image url={purchase.productInfo.images} />
       <Information>
         <CardTitle>
           <span>
@@ -35,19 +72,21 @@ const SliderCard = ({ purchase }) => {
           <span>싱싱한 왕딸기 공구해요!</span>
         </CardTitle>
         <Price>
-          <span>{Math.floor((product.price - product.salePrice) / 100)}%</span>
-          <span>{product.salePrice}원</span>
-          <span>{product.price}원</span>
+          <span>{purchase.productInfo.discountRate}%</span>
+          <span>{purchase.productInfo.salePrice}원</span>
+          <span>{purchase.productInfo.price}원</span>
         </Price>
         <Deadline>
           <div>
-            <span>3개</span>
+            <span>{purchase.remainedPersonnel}개</span>
             <span> 남음</span>
           </div>
-          <span>{deadline}</span>
+          <span>{getDeadline(purchase.deadline)}</span>
         </Deadline>
       </Information>
-      <FontAwesomeIcon icon={fullHeart} size="1x" />
+
+      {wish && <FontAwesomeIcon icon={fullHeart} onClick={handleToggle} />}
+      {!wish && <FontAwesomeIcon icon={Heart} onClick={handleToggle} />}
     </Container>
   );
 };
@@ -66,6 +105,10 @@ const Container = styled.div`
     position: absolute;
     right: 10px;
     bottom: 10px;
+    color: ${({ wish }) => {
+      if (wish) return "#FF6A6A;";
+      else return "#9c9c9c;";
+    }};
   }
 `;
 
