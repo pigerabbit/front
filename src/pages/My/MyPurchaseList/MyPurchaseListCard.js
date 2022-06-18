@@ -56,7 +56,7 @@ const MyPurchaseListCard = ({
           >
             {groupState[state][0]}
           </State>
-          {(state === 0 || state === 2) && <span>{`${remained}개 남음`}</span>}
+          {state === 0 && <span>{`${remained}개 남음`}</span>}
           {isOpenTab ? (
             <Message>{formatDate(deadline)}</Message>
           ) : (
