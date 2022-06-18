@@ -47,23 +47,25 @@ const HomeTab = ({ setConfirmationIcon }) => {
     }
   };
 
-  const getGroupPurchaseData = async () => {
-    const res = await Api.get("recommendations/group");
-    setRecommendationGroups(res.data.payload);
-  };
+  const getGroupsData = async () => {
+    const getRecommendationGroups = Api.get("recommendations/group");
+    const getNearbyGroups = Api.get("groups/sort/locations");
 
-  const getNearbyGroupsData = async () => {
     try {
-      const res = await Api.get("groups/sort/locations");
-      setNearbyGroups(res.data.payload);
+      const [recommendationGroups, nearbyGroups] = await Promise.all([
+        getRecommendationGroups,
+        getNearbyGroups,
+      ]);
+
+      setRecommendationGroups(recommendationGroups.data.payload);
+      setNearbyGroups(nearbyGroups.data.payload);
     } catch (e) {
       // 에러처리
     }
   };
 
   useEffect(() => {
-    getNearbyGroupsData();
-    getGroupPurchaseData();
+    getGroupsData();
   }, []);
 
   return (
