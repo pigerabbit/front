@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import QRCode from "qrcode.react";
 
 import GroupHeader from "pages/Group/GroupHeader";
 
-const QRcode = ({ group, user }) => {
-  const checkurl = `http://localhost:3000/checkUser?groupId=${group.id}&userId=${user.userId}`;
+const QRCodePage = ({}) => {
+  const navigate = useNavigate();
+
+  const checkurl = `http://localhost:3000/checkUser`;
+
+  const handleClick = () => {
+    try {
+      navigate("/check");
+    } catch (e) {
+      console.log("이동 실패");
+    }
+  };
   return (
     <Container>
       <GroupHeader />
@@ -18,13 +29,19 @@ const QRcode = ({ group, user }) => {
         </p>
       </QRInfo>
       <QRContainer>
-        <QRCode value={checkurl} level={"H"} id="qr" size={250} />
+        <QRCode
+          value={checkurl}
+          level={"H"}
+          id="qr"
+          size={250}
+          onClick={handleClick}
+        />
       </QRContainer>
     </Container>
   );
 };
 
-export default QRcode;
+export default QRCodePage;
 
 const Container = styled.div`
   position: relative;
