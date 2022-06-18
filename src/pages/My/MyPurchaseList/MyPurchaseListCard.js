@@ -12,6 +12,7 @@ import {
 const MyPurchaseListCard = ({
   type,
   images,
+  objId,
   groupId,
   productId,
   userId,
@@ -31,6 +32,14 @@ const MyPurchaseListCard = ({
   const handleClick = () => {
     setIsOpenPopUpCard(true);
     setCancelDataId(groupId);
+  };
+
+  const moveToQRCode = () => {
+    navigate(`/qrcode`, {
+      state: {
+        data: { groupObjId: objId },
+      },
+    });
   };
 
   return (
@@ -72,16 +81,7 @@ const MyPurchaseListCard = ({
         </CardButton>
       )}
       {state === 1 && type === "coupon" && (
-        <CardButton
-          bgColor="#ff9b2f"
-          onClick={() =>
-            navigate(`/qrcode/`, {
-              state: {
-                data: { groupId },
-              },
-            })
-          }
-        >
+        <CardButton bgColor="#ff9b2f" onClick={moveToQRCode}>
           QR 코드
         </CardButton>
       )}

@@ -92,6 +92,7 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
           filteredData.map((group) => (
             <MyPurchaseListCard
               key={group.groupId}
+              objId={group._id}
               groupId={group.groupId}
               userId={userId}
               type={group.groupType}

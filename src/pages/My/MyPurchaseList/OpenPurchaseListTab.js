@@ -91,6 +91,7 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
           filteredData.map((group) => (
             <MyPurchaseListCard
               key={group.groupId}
+              objId={group._id}
               groupId={group.groupId}
               productId={group.productId}
               userId={userId}
