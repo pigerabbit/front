@@ -51,7 +51,9 @@ const MarketPage = () => {
 
   return (
     <MyPageLayout
-      pageName={marketName || user?.business[0]?.businessName}
+      pageName={
+        (user?.id === id && user?.business[0]?.businessName) || marketName || ""
+      }
       previousPage="/mypage"
     >
       <Container>
