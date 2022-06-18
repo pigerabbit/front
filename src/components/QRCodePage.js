@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import QRCode from "qrcode.react";
 
 import GroupHeader from "pages/Group/GroupHeader";
 
 const QRCodePage = ({}) => {
+  const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { groupObjId } = location.state.data;
 
-  const checkurl = `http://localhost:3000/checkUser`;
+  const checkurl = `http://localhost:3000/check?group=${groupObjId}&user=${user.id}`;
 
   const handleClick = () => {
     try {
-      navigate("/check");
+      navigate(`/check?group=${groupObjId}&user=${user.id}`);
     } catch (e) {
       console.log("이동 실패");
     }

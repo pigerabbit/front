@@ -1,8 +1,26 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import * as Api from "api";
 
 const BridgePage = ({}) => {
-  useEffect(() => {}, []);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const groupObjId = searchParams.get("group");
+  const userId = searchParams.get("user");
+
+  const getPaymentDetail = async () => {
+    try {
+      const res = await Api.get(`payments/${groupObjId}/${userId}`);
+      console.log(res.data);
+    } catch (e) {
+      console.log("payment 정보 get 실패");
+    }
+  };
+
+  useEffect(() => {
+    getPaymentDetail();
+  }, []);
   return (
     <Container>
       <div />
