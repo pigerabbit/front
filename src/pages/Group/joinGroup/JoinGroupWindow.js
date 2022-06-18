@@ -10,7 +10,11 @@ const JoinGroupWindow = ({ productId, setShowJoinGroup, minPurchaseQty }) => {
   const getGroups = async () => {
     try {
       const res = await Api.get("groups/productId", productId, { state: 0 });
-      setGroups(res.data.payload);
+      setGroups(
+        res.data.payload.filter(
+          (group) => new Date(group.deadline) > new Date()
+        )
+      );
     } catch (e) {
       console.log("공동구매 목록 get 실패");
     }
