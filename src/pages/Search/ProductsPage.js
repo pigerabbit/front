@@ -108,8 +108,6 @@ const ProductsPage = () => {
         </SelectBox>
       </ProductsInfo>
 
-      {loading && <LoadingSpinner />}
-
       <ProductsCardContainer>
         <>
           {products.map((product) => (
@@ -117,6 +115,8 @@ const ProductsPage = () => {
           ))}
         </>
       </ProductsCardContainer>
+
+      {loading && <LoadingSpinner />}
 
       {page !== totalPage && !loading && <InfiniteScroll setPage={setPage} />}
 
