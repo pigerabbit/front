@@ -71,6 +71,14 @@ const MyPurchaseListCard = ({
           {isOpenTab ? "공구 중지" : "참여 취소"}
         </CardButton>
       )}
+      {state === 1 && type === "coupon" && (
+        <CardButton
+          bgColor="#ff9b2f"
+          onClick={() => navigate(`/qrcode/`, { state: groupId })}
+        >
+          QR 코드
+        </CardButton>
+      )}
       {state === 5 && myInfo[0].review === true && (
         <CardButton bgColor="#A0A0A0">후기 완료</CardButton>
       )}
