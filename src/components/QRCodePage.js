@@ -6,7 +6,7 @@ import QRCode from "qrcode.react";
 
 import GroupHeader from "pages/Group/GroupHeader";
 
-const QRCodePage = ({}) => {
+const QRCodePage = () => {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const location = useLocation();

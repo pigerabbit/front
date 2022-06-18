@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "api";
 
-const BridgePage = ({}) => {
+const BridgePage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const groupObjId = searchParams.get("group");
@@ -12,7 +13,17 @@ const BridgePage = ({}) => {
   const getPaymentDetail = async () => {
     try {
       const res = await Api.get(`payments/${groupObjId}/${userId}`);
-      console.log(res.data);
+      if (res.data.success) {
+        try {
+          const paymentId = res.data.payload.paymentId;
+          const resUse = await Api.put(`payments/${paymentId}`, { used: true });
+          if (resUse.data.success) {
+            navigate("/check/result", { state: "success" });
+          }
+        } catch (e) {
+          navigate("/check/result", { state: "fail" });
+        }
+      }
     } catch (e) {
       console.log("payment 정보 get 실패");
     }
