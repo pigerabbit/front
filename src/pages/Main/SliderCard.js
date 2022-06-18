@@ -13,18 +13,7 @@ const SliderCard = ({ purchase }) => {
   const [wish, setWish] = useState(purchase.toggle ? true : false);
 
   const navigate = useNavigate();
-  const showConfirmWish = useShowComfirmationIcon({
-    backgroundColor: "#FF6A6A;",
-    color: "white",
-    icon: fullHeart,
-    text: "찜!",
-  });
-  const showConfirmUnwish = useShowComfirmationIcon({
-    backgroundColor: "#ABABAB;",
-    color: "white",
-    icon: fullHeart,
-    text: "찜 취소",
-  });
+  const showConfirmationIcon = useShowComfirmationIcon();
 
   const handleCardClick = () => {
     navigate(`/groups/${purchase.groupId}`);
@@ -33,9 +22,19 @@ const SliderCard = ({ purchase }) => {
   const handleToggle = async (event) => {
     event.stopPropagation();
     if (!wish) {
-      showConfirmWish();
+      showConfirmationIcon({
+        backgroundColor: "#FF6A6A;",
+        color: "white",
+        icon: fullHeart,
+        text: "찜!",
+      });
     } else {
-      showConfirmUnwish();
+      showConfirmationIcon({
+        backgroundColor: "#ABABAB;",
+        color: "white",
+        icon: fullHeart,
+        text: "찜 취소",
+      });
     }
 
     await Api.put(`toggle/group/${purchase._id}`);

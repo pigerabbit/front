@@ -39,18 +39,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const showConfirmComplete = useShowComfirmationIcon({
-    backgroundColor: "#70BD86;",
-    color: "white",
-    icon: faCheck,
-    text: "완료!",
-  });
-  const showComfirmationAgain = useShowComfirmationIcon({
-    backgroundColor: "#FF6A6A;",
-    color: "white",
-    icon: faXmark,
-    text: "다시!",
-  });
+  const showConfirmationIcon = useShowComfirmationIcon();
 
   const handleLogout = () => {
     sessionStorage.removeItem("userToken");
@@ -83,10 +72,20 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
           setConfirmPassword("");
         }
 
-        showConfirmComplete();
+        showConfirmationIcon({
+          backgroundColor: "#70BD86;",
+          color: "white",
+          icon: faCheck,
+          text: "완료!",
+        });
       } catch (error) {
         setValueValid("again");
-        showComfirmationAgain();
+        showConfirmationIcon({
+          backgroundColor: "#FF6A6A;",
+          color: "white",
+          icon: faXmark,
+          text: "다시!",
+        });
       }
     };
   };

@@ -12,24 +12,23 @@ const ProductCard = ({ product }) => {
   const [wish, setWish] = useState(product.toggle ? true : false);
 
   const navigate = useNavigate();
-  const showConfirmWish = useShowComfirmationIcon({
-    backgroundColor: "#FF6A6A;",
-    color: "white",
-    icon: fullHeart,
-    text: "찜!",
-  });
-  const showConfirmUnwish = useShowComfirmationIcon({
-    backgroundColor: "#ABABAB;",
-    color: "white",
-    icon: fullHeart,
-    text: "찜 취소",
-  });
+  const showConfirmationIcon = useShowComfirmationIcon();
 
   const handleToggle = async () => {
     if (!wish) {
-      showConfirmWish();
+      showConfirmationIcon({
+        backgroundColor: "#FF6A6A;",
+        color: "white",
+        icon: fullHeart,
+        text: "찜!",
+      });
     } else {
-      showConfirmUnwish();
+      showConfirmationIcon({
+        backgroundColor: "#ABABAB;",
+        color: "white",
+        icon: fullHeart,
+        text: "찜 취소",
+      });
     }
 
     await Api.put(`toggle/product/${product._id}`);

@@ -2,10 +2,10 @@ import React from "react";
 import { show, unshow } from "redux/confirmationIconSlice";
 import { useDispatch } from "react-redux";
 
-const useShowComfirmationIcon = ({ backgroundColor, color, icon, text }) => {
+const useShowComfirmationIcon = () => {
   const dispatch = useDispatch();
 
-  const showConfirmationIcon = () => {
+  const showConfirmationIcon = ({ backgroundColor, color, icon, text }) => {
     dispatch(
       show({
         backgroundColor,
