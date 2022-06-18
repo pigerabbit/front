@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
@@ -13,16 +13,8 @@ import SearchTrending from "./SearchTrending";
 import SearchGroupCard from "./SearchGroupCard";
 
 const SearchPage = () => {
-  const [IsTrendingPage, setIsTrendingPage] = useState(true);
+  const [isTrendingPage, setIsTrendingPage] = useState(true);
   const [deadlineGroup, setDeadlineGroup] = useState(null);
-  const slideRef = useRef(null);
-
-  useEffect(() => {
-    slideRef.current.style.transition = "all 0.5s ease-in-out";
-    slideRef.current.style.transform = `translateX(-${
-      IsTrendingPage ? 0 : 1
-    }00%)`;
-  }, [IsTrendingPage]);
 
   const fetchGroups = async () => {
     const res = await Api.get("groups/sort/remainedTime");
@@ -38,26 +30,32 @@ const SearchPage = () => {
     <Container>
       <SearchInputForm />
       <SearchContentContainer>
-        <SliderContainer ref={slideRef}>
+        <SliderContainer isTrendingPage={isTrendingPage}>
           <SearchTrending />
           <SearchCurrent />
         </SliderContainer>
       </SearchContentContainer>
-      {!IsTrendingPage && (
-        <PrevBtn onClick={() => setIsTrendingPage(true)}>
+      {!isTrendingPage && (
+        <StyledButton
+          onClick={() => setIsTrendingPage(true)}
+          isTrendingPage={isTrendingPage}
+        >
           <FontAwesomeIcon
             icon={faChevronLeft}
             style={{ background: "transparent" }}
           />
-        </PrevBtn>
+        </StyledButton>
       )}
-      {IsTrendingPage && (
-        <NextBtn onClick={() => setIsTrendingPage(false)}>
+      {isTrendingPage && (
+        <StyledButton
+          onClick={() => setIsTrendingPage(false)}
+          isTrendingPage={isTrendingPage}
+        >
           <FontAwesomeIcon
             icon={faChevronRight}
             style={{ background: "transparent" }}
           />
-        </NextBtn>
+        </StyledButton>
       )}
       {deadlineGroup && (
         <DeadLineContainer>
@@ -111,14 +109,18 @@ const SearchContentContainer = styled.div`
 const SliderContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
+  transition: all 0.5s ease-in-out;
   @media only screen and (max-width: 400px) {
     justify-content: flex-start;
     width: 300px;
     margin: auto;
+    transform: translateX(
+      -${(props) => (props.isTrendingPage ? "0px" : "100%")}
+    );
   }
 `;
 
-const PrevBtn = styled.div`
+const StyledButton = styled.div`
   visibility: hidden;
   pointer-events: none;
   @media only screen and (max-width: 500px) {
@@ -127,19 +129,15 @@ const PrevBtn = styled.div`
     position: absolute;
     font-size: 30px;
     top: 270px;
-    left: 10px;
   }
-`;
-
-const NextBtn = styled.div`
-  visibility: hidden;
-  pointer-events: none;
-  @media only screen and (max-width: 500px) {
-    visibility: visible;
-    pointer-events: auto;
-    position: absolute;
-    font-size: 30px;
-    top: 270px;
-    right: 10px;
-  }
+  ${(props) =>
+    props.isTrendingPage &&
+    css`
+      right: 10px;
+    `}
+  ${(props) =>
+    !props.isTrendingPage &&
+    css`
+      left: 10px;
+    `}
 `;
