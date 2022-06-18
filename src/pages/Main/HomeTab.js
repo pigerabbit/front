@@ -6,18 +6,17 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import * as Api from "api";
-import axios from "axios";
 
 import SliderCard from "./SliderCard";
 import CardsContainer from "./CardsContainer";
 
 const HomeTab = ({ setConfirmationIcon }) => {
-  const [groupPurchaseList, setGroupPurchaseList] = useState([]);
+  const [recommendationGroups, setRecommendationGroups] = useState([]);
   const [nearbyGroups, setNearbyGroups] = useState([]);
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
   const [transition, setTransition] = useState("transition: left 0.4s;");
-  const lastPage = groupPurchaseList.length;
+  const lastPage = recommendationGroups.length;
   const nearbyTitle = "근처에 있는 공동구매에요!";
 
   const handleClickLeft = () => {
@@ -49,8 +48,8 @@ const HomeTab = ({ setConfirmationIcon }) => {
   };
 
   const getGroupPurchaseData = async () => {
-    const data = await axios("/data/groupList.json", { method: "GET" });
-    setGroupPurchaseList(data.data.groupList);
+    const res = await Api.get("recommendations/group");
+    setRecommendationGroups(res.data.payload);
   };
 
   const getNearbyGroupsData = async () => {
@@ -77,18 +76,18 @@ const HomeTab = ({ setConfirmationIcon }) => {
 
         <SliderContainer>
           <CardList
-            length={groupPurchaseList.length + 2}
+            length={recommendationGroups.length + 2}
             left={cardPosition}
             transition={transition}
           >
-            {groupPurchaseList.length > 0 && (
-              <SliderCard purchase={groupPurchaseList[lastPage - 1]} />
+            {recommendationGroups.length > 0 && (
+              <SliderCard purchase={recommendationGroups[lastPage - 1]} />
             )}
-            {groupPurchaseList.map((purchase) => (
+            {recommendationGroups.map((purchase) => (
               <SliderCard purchase={purchase} key={purchase.groupId} />
             ))}
-            {groupPurchaseList.length > 0 && (
-              <SliderCard purchase={groupPurchaseList[0]} />
+            {recommendationGroups.length > 0 && (
+              <SliderCard purchase={recommendationGroups[0]} />
             )}
           </CardList>
         </SliderContainer>
