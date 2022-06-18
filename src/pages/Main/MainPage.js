@@ -16,7 +16,6 @@ const MainPage = () => {
   const [tab, setTab] = useState("home");
   const [sideBarTitle, setSideBarTitle] = useState("카테고리");
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
-  const [confirmationIcon, setConfirmationIcon] = useState({ show: false });
 
   return (
     <Container>
@@ -25,14 +24,12 @@ const MainPage = () => {
         setIsOpenSideBar={setIsOpenSideBar}
       />
 
-      {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
+      <ConfirmationIcon />
 
       <Tabs tab={tab} setTab={setTab} />
-      {tab === "home" && <HomeTab setConfirmationIcon={setConfirmationIcon} />}
-      {tab === "best" && <BestTab setConfirmationIcon={setConfirmationIcon} />}
-      {tab === "deadline" && (
-        <DeadlineTab setConfirmationIcon={setConfirmationIcon} />
-      )}
+      {tab === "home" && <HomeTab />}
+      {tab === "best" && <BestTab />}
+      {tab === "deadline" && <DeadlineTab />}
 
       <SideBar
         title={sideBarTitle}

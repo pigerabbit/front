@@ -12,8 +12,9 @@ import { useNavigate } from "react-router-dom";
 import * as Api from "api";
 
 import DaumPost from "components/DaumPostCode";
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
-const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
+const InfoEditForm = ({ setIsOpenPopup }) => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user?.name || "");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -38,43 +39,23 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const showConfirmComplete = useShowComfirmationIcon({
+    backgroundColor: "#70BD86;",
+    color: "white",
+    icon: faCheck,
+    text: "완료!",
+  });
+  const showComfirmationAgain = useShowComfirmationIcon({
+    backgroundColor: "#FF6A6A;",
+    color: "white",
+    icon: faXmark,
+    text: "다시!",
+  });
 
   const handleLogout = () => {
     sessionStorage.removeItem("userToken");
     dispatch(logout());
     navigate("/login");
-  };
-
-  const unShowIcon = () => {
-    setTimeout(() => {
-      setConfirmationIcon((cur) => {
-        return { ...cur, show: false };
-      });
-    }, 1600);
-  };
-
-  const CompleteIconShow = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#70BD86;",
-      color: "white",
-      icon: faCheck,
-      text: "완료!",
-    });
-
-    unShowIcon();
-  };
-
-  const AgainIconShow = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#FF6A6A;",
-      color: "white",
-      icon: faXmark,
-      text: "다시!",
-    });
-
-    unShowIcon();
   };
 
   const isEmptyValue = (obj) => {
@@ -102,10 +83,10 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
           setConfirmPassword("");
         }
 
-        CompleteIconShow();
+        showConfirmComplete();
       } catch (error) {
         setValueValid("again");
-        AgainIconShow();
+        showComfirmationAgain();
       }
     };
   };

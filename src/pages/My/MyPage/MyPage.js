@@ -16,7 +16,6 @@ const MyPage = () => {
   const [password, setPassword] = useState("");
   const [placeholder, setPlaceholder] = useState("비밀번호를 입력해주세요.");
   const [InputBorderColor, setInputBorderColor] = useState("#e6e6e6");
-  const [confirmationIcon, setConfirmationIcon] = useState({ show: false });
   const { user } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
@@ -43,7 +42,7 @@ const MyPage = () => {
 
   return (
     <MyPageLayout pageName={"my동구"} previousPage="none">
-      {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
+      <ConfirmationIcon />
 
       <Section>
         <Profile>
@@ -61,10 +60,7 @@ const MyPage = () => {
       </Section>
 
       <Section>
-        <InfoEditForm
-          setIsOpenPopup={setIsOpenPopup}
-          setConfirmationIcon={setConfirmationIcon}
-        />
+        <InfoEditForm setIsOpenPopup={setIsOpenPopup} />
       </Section>
 
       <ConfirmationPopup

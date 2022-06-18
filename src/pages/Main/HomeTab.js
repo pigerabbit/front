@@ -10,7 +10,7 @@ import * as Api from "api";
 import SliderCard from "./SliderCard";
 import CardsContainer from "./CardsContainer";
 
-const HomeTab = ({ setConfirmationIcon }) => {
+const HomeTab = () => {
   const [recommendationGroups, setRecommendationGroups] = useState([]);
   const [nearbyGroups, setNearbyGroups] = useState([]);
   const [page, setPage] = useState(1);
@@ -75,11 +75,7 @@ const HomeTab = ({ setConfirmationIcon }) => {
               <SliderCard purchase={recommendationGroups[lastPage - 1]} />
             )}
             {recommendationGroups.map((purchase) => (
-              <SliderCard
-                purchase={purchase}
-                key={purchase.groupId}
-                setConfirmationIcon={setConfirmationIcon}
-              />
+              <SliderCard purchase={purchase} key={purchase.groupId} />
             ))}
             {recommendationGroups.length > 0 && (
               <SliderCard purchase={recommendationGroups[0]} />
@@ -102,11 +98,7 @@ const HomeTab = ({ setConfirmationIcon }) => {
         </Pagination>
       </Interest>
 
-      <CardsContainer
-        title={nearbyTitle}
-        groupPurchaseList={nearbyGroups}
-        setConfirmationIcon={setConfirmationIcon}
-      />
+      <CardsContainer title={nearbyTitle} groupPurchaseList={nearbyGroups} />
     </Container>
   );
 };

@@ -7,6 +7,7 @@ import * as Api from "api";
 import { useNavigate } from "react-router-dom";
 
 import getDeadline from "utils/getDeadline";
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
 const numTitleInit =
   (window.innerWidth >= 700 && 15) ||
@@ -19,44 +20,24 @@ const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
   const [numTitle, setNumTitle] = useState(numTitleInit);
 
   const navigate = useNavigate();
-
-  const unShowIcon = () => {
-    setTimeout(() => {
-      setConfirmationIcon((cur) => {
-        return { ...cur, show: false };
-      });
-    }, 1600);
-  };
-
-  const confirmWish = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#FF6A6A;",
-      color: "white",
-      icon: fullHeart,
-      text: "찜!",
-    });
-
-    unShowIcon();
-  };
-
-  const confirmUnwish = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#ABABAB;",
-      color: "white",
-      icon: fullHeart,
-      text: "찜 취소",
-    });
-
-    unShowIcon();
-  };
+  const showConfirmWish = useShowComfirmationIcon({
+    backgroundColor: "#FF6A6A;",
+    color: "white",
+    icon: fullHeart,
+    text: "찜!",
+  });
+  const showConfirmUnwish = useShowComfirmationIcon({
+    backgroundColor: "#ABABAB;",
+    color: "white",
+    icon: fullHeart,
+    text: "찜 취소",
+  });
 
   const handleToggle = async () => {
     if (!wish) {
-      confirmWish();
+      showConfirmWish();
     } else {
-      confirmUnwish();
+      showConfirmUnwish();
     }
 
     await Api.put(`toggle/group/${purchase._id}`);

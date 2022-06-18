@@ -4,7 +4,7 @@ import * as Api from "api";
 
 import BestProductCard from "./BestProductCard";
 
-const BestTab = ({ setConfirmationIcon }) => {
+const BestTab = ({}) => {
   const [products, setProducts] = useState([]);
 
   const getProductData = async () => {
@@ -27,12 +27,7 @@ const BestTab = ({ setConfirmationIcon }) => {
         <span>BEST 10</span>
       </Title>
       {products.map((product, index) => (
-        <BestProductCard
-          product={product}
-          index={index}
-          setConfirmationIcon={setConfirmationIcon}
-          key={product.id}
-        />
+        <BestProductCard product={product} index={index} key={product.id} />
       ))}
     </Container>
   );

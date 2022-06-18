@@ -7,54 +7,35 @@ import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
 import getDeadline from "utils/getDeadline";
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
-const SliderCard = ({ purchase, setConfirmationIcon }) => {
+const SliderCard = ({ purchase }) => {
   const [wish, setWish] = useState(purchase.toggle ? true : false);
 
   const navigate = useNavigate();
+  const showConfirmWish = useShowComfirmationIcon({
+    backgroundColor: "#FF6A6A;",
+    color: "white",
+    icon: fullHeart,
+    text: "찜!",
+  });
+  const showConfirmUnwish = useShowComfirmationIcon({
+    backgroundColor: "#ABABAB;",
+    color: "white",
+    icon: fullHeart,
+    text: "찜 취소",
+  });
 
   const handleCardClick = () => {
     navigate(`/groups/${purchase.groupId}`);
   };
 
-  const unShowIcon = () => {
-    setTimeout(() => {
-      setConfirmationIcon((cur) => {
-        return { ...cur, show: false };
-      });
-    }, 1600);
-  };
-
-  const confirmWish = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#FF6A6A;",
-      color: "white",
-      icon: fullHeart,
-      text: "찜!",
-    });
-
-    unShowIcon();
-  };
-
-  const confirmUnwish = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#ABABAB;",
-      color: "white",
-      icon: fullHeart,
-      text: "찜 취소",
-    });
-
-    unShowIcon();
-  };
-
   const handleToggle = async (event) => {
     event.stopPropagation();
     if (!wish) {
-      confirmWish();
+      showConfirmWish();
     } else {
-      confirmUnwish();
+      showConfirmUnwish();
     }
 
     await Api.put(`toggle/group/${purchase._id}`);
