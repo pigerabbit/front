@@ -84,8 +84,6 @@ const ProductsPage = () => {
 
   return (
     <Container noProduct={products?.length === 0}>
-      <ConfirmationIcon />
-
       <ProductsTopBar
         search={search}
         category={category}
@@ -153,7 +151,6 @@ const ProductsPage = () => {
 export default ProductsPage;
 
 const Container = styled.div`
-border:2px solid blue;
   padding-bottom: ${({ noProduct }) => (noProduct ? "0;" : "110px;")}
   position: relative;
   width: 100%;

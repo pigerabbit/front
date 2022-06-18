@@ -24,8 +24,6 @@ const MainPage = () => {
         setIsOpenSideBar={setIsOpenSideBar}
       />
 
-      <ConfirmationIcon />
-
       <Tabs tab={tab} setTab={setTab} />
       {tab === "home" && <HomeTab />}
       {tab === "best" && <BestTab />}

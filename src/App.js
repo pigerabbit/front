@@ -25,6 +25,7 @@ import PaymentDetailPage from "pages/Group/payGroup/PaymentDetailPage";
 import MyWishListPage from "pages/My/MyWishList/MyWishListPage";
 import MyPurchaseListPage from "pages/My/MyPurchaseList/MyPurchaseListPage";
 import SearchPage from "./pages/Search/SearchPage";
+import ConfirmationIcon from "components/ConfirmationIcon";
 
 import ScrollToTop from "components/ScrollToTop";
 import FetchCurrentUser from "components/FetchCurrentUser";
@@ -58,6 +59,7 @@ function App() {
     <Router>
       <ScrollToTop />
       <Container>
+        <ConfirmationIcon />
         <Routes>
           <Route path="/" element={mainPage} />
           <Route path="/products" element={productsPage} />

@@ -42,8 +42,6 @@ const MyPage = () => {
 
   return (
     <MyPageLayout pageName={"my동구"} previousPage="none">
-      <ConfirmationIcon />
-
       <Section>
         <Profile>
           <ProfileImg url={user?.imageLink}></ProfileImg>
