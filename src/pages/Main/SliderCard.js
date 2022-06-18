@@ -54,8 +54,8 @@ const SliderCard = ({ purchase }) => {
         </CardTitle>
         <Price>
           <span>{purchase.productInfo.discountRate}%</span>
-          <span>{purchase.productInfo.salePrice}원</span>
-          <span>{purchase.productInfo.price}원</span>
+          <span>{purchase.productInfo.salePrice.toLocaleString()}원</span>
+          <span>{purchase.productInfo.price.toLocaleString()}원</span>
         </Price>
         <Deadline>
           <div>
