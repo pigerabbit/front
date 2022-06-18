@@ -8,7 +8,6 @@ import ProductCard from "./ProductCard";
 import SideBar from "components/SideBar";
 import Category from "components/Category";
 import TabBar from "components/TabBar";
-import ConfirmationIcon from "components/ConfirmationIcon";
 import InfiniteScroll from "./InfiniteScroll";
 import LoadingSpinner from "components/LoadingSpinner";
 import useDidMountEffect from "hooks/useDidMountEffect";

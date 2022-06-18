@@ -9,7 +9,6 @@ import MyPageLayout from "../MyPageLayout";
 import MyButtons from "./MyButtons";
 import InfoEditForm from "./InfoEditForm";
 import ConfirmationPopup from "../ConfirmationPopup";
-import ConfirmationIcon from "components/ConfirmationIcon";
 
 const MyPage = () => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);

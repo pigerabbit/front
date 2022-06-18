@@ -10,7 +10,6 @@ import SideBar from "../../components/SideBar";
 import Category from "../../components/Category";
 import Notice from "./Notice";
 import TabBar from "components/TabBar";
-import ConfirmationIcon from "components/ConfirmationIcon";
 
 const MainPage = () => {
   const [tab, setTab] = useState("home");

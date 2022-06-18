@@ -24,7 +24,7 @@ const DaumPost = ({ setAddress, setIsDaumPostOpen }) => {
     setIsDaumPostOpen(false);
   };
 
-  // usePreventScroll([]);
+  usePreventScroll([]);
 
   return (
     <Container>
