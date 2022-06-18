@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useInterval } from "./hooks";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const useResultOfIntervalCalculator = (calculator, delay) => {
@@ -15,8 +16,24 @@ const useResultOfIntervalCalculator = (calculator, delay) => {
 
 const groupTypes = { normal: "택배", local: "지역", coupon: "이용권" };
 
+const Button = ({ joined = false, onClick }) => {
+  if (joined === true)
+    return (
+      <StyledButton joined={joined} onClick={onClick}>
+        참여완료
+      </StyledButton>
+    );
+  return (
+    <StyledButton joined={joined} onClick={onClick}>
+      참여하기
+    </StyledButton>
+  );
+};
+
 const GroupCard = ({ group, minPurchaseQty }) => {
+  const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
+
   const deadline = group.deadline.replace(" ", "T") + ".000Z";
   const remain = new Date(
     useResultOfIntervalCalculator(() =>
@@ -44,6 +61,10 @@ const GroupCard = ({ group, minPurchaseQty }) => {
   const aboutToClose =
     hours + date * 24 < 12 || group.remainedPersonnel / minPurchaseQty < 0.1;
 
+  const handleClick = () => {
+    navigate(`/groups/${group.groupId}?imminent=${aboutToClose}`);
+  };
+
   return (
     <Container>
       <GroupType type={group.groupType}>
@@ -53,13 +74,12 @@ const GroupCard = ({ group, minPurchaseQty }) => {
         <h3>{group.groupName}</h3>
         {group.location && <p>({group.location})</p>}
       </GroupInfo>
-      <JoinButton
-        onClick={() => {
-          navigate(`/groups/${group.groupId}?imminent=${aboutToClose}`);
-        }}
-      >
-        참여하기
-      </JoinButton>
+      <Button
+        joined={
+          group.participants.filter((v) => v.userId === user.id).length > 0
+        }
+        onClick={handleClick}
+      />
       <Current aboutToClose={aboutToClose}>
         {currentPeople} / {minPurchaseQty}
         {remain.getFullYear() === 1970 && <Remain>{remainText}</Remain>}
@@ -161,19 +181,19 @@ const Current = styled.div`
   }
 `;
 
-const JoinButton = styled.button`
+const StyledButton = styled.button`
   position: absolute;
   right: 15px;
   width: 100px;
   height: 50px;
-  background-color: #f79831;
+  background-color: ${({ joined }) => (joined ? "#d0d0d0" : "#f79831")};
   border-radius: 10px;
   border: none;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   font-weight: bold;
   font-size: 15px;
   color: #ffffff;
-  cursor: pointer;
+  cursor: ${({ joined }) => (joined ? "normal" : "pointer")};
 
   @media (max-width: 500px) {
     width: 78px;
