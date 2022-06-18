@@ -1,19 +1,24 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import usePreventScroll from "hooks/usePreventScroll";
 
-const SideBar = ({ children, title, isOpenSideBar, setIsOpenSideBar }) => {
+const SideBar = ({ children, title, setIsOpenSideBar }) => {
+  const [show, setShow] = useState(true);
+
   const handleCancelClick = () => {
-    setIsOpenSideBar(false);
+    setShow(false);
+    setTimeout(() => {
+      setIsOpenSideBar(false);
+    }, 500);
   };
 
   usePreventScroll();
 
   return (
-    <Container isOpenSideBar={isOpenSideBar}>
+    <Container show={show}>
       <TitleBar>
         <div></div>
         <span>{title}</span>
@@ -28,18 +33,33 @@ const SideBar = ({ children, title, isOpenSideBar, setIsOpenSideBar }) => {
 
 export default SideBar;
 
+const sidebarShow = keyframes`
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 0;
+  }
+`;
+
+const sidebarUnshow = keyframes`
+0% {
+  left: 0;
+}
+100% {
+  left: -100%;
+}
+`;
+
 const Container = styled.div`
-position: absolute;
-top: 0;
-left: ${({ isOpenSideBar }) => {
-  if (isOpenSideBar) return "0;";
-  else return "-100%;";
-}}
-width: 100%;
-height: 100vh;
-background-color: #f6f6f6;
-transition: left 0.5s;
-z-index: 12;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #f6f6f6;
+  z-index: 12;
+  animation: ${sidebarShow} 0.5s;
+  animation: ${({ show }) => (show ? sidebarShow : sidebarUnshow)} 0.5s;
 `;
 
 const TitleBar = styled.div`

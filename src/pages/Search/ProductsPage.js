@@ -131,17 +131,15 @@ const ProductsPage = () => {
         </NoProductContainer>
       )}
 
-      <SideBar
-        title={"카테고리"}
-        isOpenSideBar={isOpenSideBar}
-        setIsOpenSideBar={setIsOpenSideBar}
-      >
-        <Category
-          setIsOpenSideBar={setIsOpenSideBar}
-          setProducts={setProducts}
-          setPage={setPage}
-        />
-      </SideBar>
+      {isOpenSideBar && (
+        <SideBar title={"카테고리"} setIsOpenSideBar={setIsOpenSideBar}>
+          <Category
+            setIsOpenSideBar={setIsOpenSideBar}
+            setProducts={setProducts}
+            setPage={setPage}
+          />
+        </SideBar>
+      )}
 
       <TabBar />
     </Container>

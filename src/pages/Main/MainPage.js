@@ -29,14 +29,12 @@ const MainPage = () => {
       {tab === "best" && <BestTab />}
       {tab === "deadline" && <DeadlineTab />}
 
-      <SideBar
-        title={sideBarTitle}
-        isOpenSideBar={isOpenSideBar}
-        setIsOpenSideBar={setIsOpenSideBar}
-      >
-        {sideBarTitle === "카테고리" && <Category />}
-        {sideBarTitle === "알림" && <Notice />}
-      </SideBar>
+      {isOpenSideBar && (
+        <SideBar title={sideBarTitle} setIsOpenSideBar={setIsOpenSideBar}>
+          {sideBarTitle === "카테고리" && <Category />}
+          {sideBarTitle === "알림" && <Notice />}
+        </SideBar>
+      )}
 
       <TabBar />
     </Container>
