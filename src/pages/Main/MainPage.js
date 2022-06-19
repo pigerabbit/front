@@ -10,11 +10,21 @@ import SideBar from "../../components/SideBar";
 import Category from "../../components/Category";
 import Notice from "./Notice";
 import TabBar from "components/TabBar";
+import { useLocation } from "react-router-dom";
+
+const tabs = {
+  home: <HomeTab />,
+  best: <BestTab />,
+  deadline: <DeadlineTab />,
+};
 
 const MainPage = () => {
-  const [tab, setTab] = useState("home");
   const [sideBarTitle, setSideBarTitle] = useState("카테고리");
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const tab = searchParams.get("tab");
 
   return (
     <Container>
@@ -23,10 +33,8 @@ const MainPage = () => {
         setIsOpenSideBar={setIsOpenSideBar}
       />
 
-      <Tabs tab={tab} setTab={setTab} />
-      {tab === "home" && <HomeTab />}
-      {tab === "best" && <BestTab />}
-      {tab === "deadline" && <DeadlineTab />}
+      <Tabs />
+      {tabs[tab]}
 
       {isOpenSideBar && (
         <SideBar title={sideBarTitle} setIsOpenSideBar={setIsOpenSideBar}>

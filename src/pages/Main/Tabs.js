@@ -1,17 +1,23 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const Tabs = ({ tab, setTab }) => {
+const Tabs = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const tab = searchParams.get("tab");
+
   const handleHomeClick = () => {
-    setTab("home");
+    navigate("?tab=home");
   };
 
   const handleBestClick = () => {
-    setTab("best");
+    navigate("?tab=best");
   };
 
   const handleDeadlineClick = () => {
-    setTab("deadline");
+    navigate("?tab=deadline");
   };
 
   return (
