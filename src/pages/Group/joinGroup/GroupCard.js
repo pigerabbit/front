@@ -7,12 +7,14 @@ const groupTypes = { normal: "택배", local: "지역", ticket: "이용권" };
 
 const GroupCard = ({ group, minPurchaseQty }) => {
   const navigate = useNavigate();
+
   const deadline = group.deadline.replace(" ", "T") + ".000Z";
   const remainingTime = new Date(
     useResultOfIntervalCalculator(() =>
       Math.floor((new Date(deadline) - new Date()) / 1000, 10)
     ) * 1000
   );
+
   let [date, hours, minutes, seconds] = [
     remainingTime.getDate() - 1,
     remainingTime.getHours() - 18,
@@ -23,7 +25,6 @@ const GroupCard = ({ group, minPurchaseQty }) => {
       remainingTime.getSeconds() < 10 ? "0" : ""
     }${remainingTime.getSeconds()}`,
   ];
-
   if (hours < 0 && date > 0) {
     date -= 1;
     hours += 24;
@@ -33,10 +34,16 @@ const GroupCard = ({ group, minPurchaseQty }) => {
     date > 0
       ? `${date}일 ${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`
       : `${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`;
+
   const currentPeople = minPurchaseQty - group.remainedPersonnel;
 
   const isImminent =
     hours + date * 24 < 12 || group.remainedPersonnel / minPurchaseQty < 0.1;
+
+  const handleClick = () =>
+    navigate(`/groups/${group.groupId}`, {
+      state: { isImminent },
+    });
 
   return (
     <Container>
@@ -47,15 +54,7 @@ const GroupCard = ({ group, minPurchaseQty }) => {
         <h3>{group.groupName}</h3>
         {group.location && <p>({group.location})</p>}
       </GroupInfo>
-      <JoinButton
-        onClick={() => {
-          navigate(`/groups/${group.groupId}`, {
-            state: { isImminent },
-          });
-        }}
-      >
-        참여하기
-      </JoinButton>
+      <JoinButton onClick={handleClick}>참여하기</JoinButton>
       <Current isImminent={isImminent}>
         {currentPeople} / {minPurchaseQty}
         {remainingTime.getFullYear() === 1970 && (
