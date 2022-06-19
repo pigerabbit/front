@@ -12,54 +12,59 @@ const BuyingProductWindow = ({
 
   const [quantity, setQuantity] = useState(1);
 
-  const onChange = (e) => {
+  const clickCancel = () => {
+    setShowBuyingProduct(false);
+  };
+
+  const clickDecrease = () => {
+    setQuantity((cur) => (cur === 1 ? cur : cur - 1));
+  };
+
+  const clickIncrease = () => {
+    setQuantity((cur) => (cur === remainedPersonnel ? cur : cur + 1));
+  };
+
+  const clickBuying = () => {
+    navigate("/group/join/pay", {
+      state: {
+        data: { group, count: quantity },
+      },
+    });
+  };
+
+  const handleChange = (e) => {
     if (e.target.value === 0) setQuantity(1);
-    setQuantity(
-      e.target.value > remainedPersonnel ? remainedPersonnel : e.target.value
-    );
+    else
+      setQuantity(
+        e.target.value > remainedPersonnel ? remainedPersonnel : e.target.value
+      );
+  };
+
+  const handleKeyPress = (e) => {
+    if (!/[0-9]/.test(e.key)) {
+      e.preventDefault();
+    } else if (e.key === "0" && quantity === "") {
+      setQuantity(1);
+      e.preventDefault();
+    }
   };
 
   return (
     <Container>
       <CardContainer>
         <div id="cancel">
-          <Cancel
-            onClick={() => {
-              setShowBuyingProduct(false);
-            }}
-          />
+          <Cancel onClick={clickCancel} />
         </div>
         <div id="quantity">
           <Quantity>
-            <button
-              onClick={() => {
-                setQuantity((cur) => (cur === 1 ? cur : cur - 1));
-              }}
-            >
-              -
-            </button>
+            <button onClick={clickDecrease}>-</button>
             <input
               type="number"
               value={quantity}
-              onChange={onChange}
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-                } else if (event.key === "0" && quantity === "") {
-                  setQuantity(1);
-                  event.preventDefault();
-                }
-              }}
+              onChange={handleChange}
+              onKeyPress={handleKeyPress}
             />
-            <button
-              onClick={() => {
-                setQuantity((cur) =>
-                  cur === remainedPersonnel ? cur : cur + 1
-                );
-              }}
-            >
-              +
-            </button>
+            <button onClick={clickIncrease}>+</button>
           </Quantity>
         </div>
         <div id="result">
@@ -68,17 +73,7 @@ const BuyingProductWindow = ({
           </ShowQuantity>
           <Total>합계 {(quantity * salePrice).toLocaleString()}원</Total>
         </div>
-        <Button
-          onClick={() => {
-            navigate("/group/join/pay", {
-              state: {
-                data: { group, count: quantity },
-              },
-            });
-          }}
-        >
-          구매하기
-        </Button>
+        <Button onClick={clickBuying}>구매하기</Button>
       </CardContainer>
     </Container>
   );
