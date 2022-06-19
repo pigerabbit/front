@@ -9,14 +9,14 @@ import * as Api from "api";
 import getDeadline from "utils/getDeadline";
 import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
-const SliderCard = ({ purchase }) => {
-  const [wish, setWish] = useState(purchase.toggle ? true : false);
+const SliderCard = ({ group }) => {
+  const [wish, setWish] = useState(group?.toggle ? true : false);
 
   const navigate = useNavigate();
   const showConfirmationIcon = useShowComfirmationIcon();
 
   const handleCardClick = () => {
-    navigate(`/groups/${purchase.groupId}`);
+    navigate(`/groups/${group.groupId}`);
   };
 
   const handleToggle = async (event) => {
@@ -38,31 +38,31 @@ const SliderCard = ({ purchase }) => {
       });
     }
 
-    await Api.put(`toggle/group/${purchase._id}`);
+    await Api.put(`toggle/group/${group._id}`);
     setWish((cur) => !cur);
   };
 
   return (
     <Container wish={wish} onClick={handleCardClick}>
-      <Image url={purchase.productInfo.images} />
+      <Image url={group?.productInfo.images} />
       <Information>
         <CardTitle>
           <span>
-            {purchase.groupType === "local" ? purchase.location : "택배공구"}
+            {group?.groupType === "local" ? group?.location : "택배공구"}
           </span>
-          <span>{purchase.groupName}</span>
+          <span>{group?.groupName}</span>
         </CardTitle>
         <Price>
-          <span>{purchase.productInfo.discountRate}%</span>
-          <span>{purchase.productInfo.salePrice.toLocaleString()}원</span>
-          <span>{purchase.productInfo.price.toLocaleString()}원</span>
+          <span>{group?.productInfo.discountRate}%</span>
+          <span>{group?.productInfo.salePrice.toLocaleString()}원</span>
+          <span>{group?.productInfo.price.toLocaleString()}원</span>
         </Price>
         <Deadline>
           <div>
-            <span>{purchase.remainedPersonnel}개</span>
+            <span>{group?.remainedPersonnel}개</span>
             <span> 남음</span>
           </div>
-          <span>{getDeadline(purchase.deadline)}</span>
+          <span>{getDeadline(group?.deadline)}</span>
         </Deadline>
       </Information>
 

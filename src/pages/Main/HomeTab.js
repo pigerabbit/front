@@ -84,11 +84,11 @@ const HomeTab = () => {
                 {recommendationGroups.length > 0 && (
                   <SliderCard purchase={recommendationGroups[lastPage - 1]} />
                 )}
-                {recommendationGroups.map((purchase) => (
-                  <SliderCard purchase={purchase} key={purchase.groupId} />
+                {recommendationGroups.map((group) => (
+                  <SliderCard group={group} key={group.groupId} />
                 ))}
                 {recommendationGroups.length > 0 && (
-                  <SliderCard purchase={recommendationGroups[0]} />
+                  <SliderCard group={recommendationGroups[0]} />
                 )}
               </CardList>
             </SliderContainer>
