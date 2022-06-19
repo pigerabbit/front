@@ -1,17 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useInterval } from "hooks/useInterval";
+import { useResultOfIntervalCalculator } from "hooks/useInterval";
 import styled from "styled-components";
-
-const useResultOfIntervalCalculator = (calculator, delay) => {
-  const [result, setResult] = useState(calculator());
-  useInterval(() => {
-    const newResult = calculator();
-    if (newResult !== result) setResult(newResult);
-  }, delay);
-
-  return result;
-};
 
 const groupTypes = { normal: "택배", local: "지역", ticket: "이용권" };
 
