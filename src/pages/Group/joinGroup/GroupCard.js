@@ -8,16 +8,20 @@ const groupTypes = { normal: "택배", local: "지역", ticket: "이용권" };
 const GroupCard = ({ group, minPurchaseQty }) => {
   const navigate = useNavigate();
   const deadline = group.deadline.replace(" ", "T") + ".000Z";
-  const remain = new Date(
+  const remainingTime = new Date(
     useResultOfIntervalCalculator(() =>
       Math.floor((new Date(deadline) - new Date()) / 1000, 10)
     ) * 1000
   );
   let [date, hours, minutes, seconds] = [
-    remain.getDate() - 1,
-    remain.getHours() - 18,
-    `${remain.getMinutes() < 10 ? "0" : ""}${remain.getMinutes()}`,
-    `${remain.getSeconds() < 10 ? "0" : ""}${remain.getSeconds()}`,
+    remainingTime.getDate() - 1,
+    remainingTime.getHours() - 18,
+    `${
+      remainingTime.getMinutes() < 10 ? "0" : ""
+    }${remainingTime.getMinutes()}`,
+    `${
+      remainingTime.getSeconds() < 10 ? "0" : ""
+    }${remainingTime.getSeconds()}`,
   ];
 
   if (hours < 0 && date > 0) {
@@ -25,13 +29,13 @@ const GroupCard = ({ group, minPurchaseQty }) => {
     hours += 24;
   }
 
-  const remainText =
+  const remainingTimeText =
     date > 0
       ? `${date}일 ${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`
       : `${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`;
   const currentPeople = minPurchaseQty - group.remainedPersonnel;
 
-  const aboutToClose =
+  const isImminent =
     hours + date * 24 < 12 || group.remainedPersonnel / minPurchaseQty < 0.1;
 
   return (
@@ -45,14 +49,16 @@ const GroupCard = ({ group, minPurchaseQty }) => {
       </GroupInfo>
       <JoinButton
         onClick={() => {
-          navigate(`/groups/${group.groupId}?imminent=${aboutToClose}`);
+          navigate(`/groups/${group.groupId}?imminent=${isImminent}`);
         }}
       >
         참여하기
       </JoinButton>
-      <Current aboutToClose={aboutToClose}>
+      <Current isImminent={isImminent}>
         {currentPeople} / {minPurchaseQty}
-        {remain.getFullYear() === 1970 && <Remain>{remainText}</Remain>}
+        {remainingTime.getFullYear() === 1970 && (
+          <Remain>{remainingTimeText}</Remain>
+        )}
       </Current>
     </Container>
   );
@@ -139,7 +145,7 @@ const Current = styled.div`
   right: 140px;
   font-size: 25px;
   font-weight: bold;
-  color: ${({ aboutToClose }) => (aboutToClose ? "#ff0000" : "#000000")};
+  color: ${({ isImminent }) => (isImminent ? "#ff0000" : "#000000")};
   margin: 10px 0;
   display: flex;
   flex-direction: column;
