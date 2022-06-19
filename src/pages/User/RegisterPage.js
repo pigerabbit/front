@@ -43,6 +43,10 @@ const RegisterPage = () => {
 
   const navigate = useNavigate();
 
+  const handleAddressInputClick = () => {
+    setIsDaumPostOpen(true);
+  };
+
   const handleRegisterClick = async (event) => {
     event.preventDefault();
 
@@ -114,9 +118,7 @@ const RegisterPage = () => {
           value={address}
           setValue={setAddress}
           isValueValid={isAddressValid}
-          handleClick={() => {
-            setIsDaumPostOpen(true);
-          }}
+          handleClick={handleAddressInputClick}
         />
 
         <UserInput

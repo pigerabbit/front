@@ -24,17 +24,16 @@ const DaumPost = ({ setAddress, setIsDaumPostOpen }) => {
     setIsDaumPostOpen(false);
   };
 
+  const handleCancelClick = () => {
+    setIsDaumPostOpen(false);
+  };
+
   usePreventScroll([]);
 
   return (
     <Container>
       <DaumPostCodeContainer>
-        <FontAwesomeIcon
-          icon={faXmark}
-          onClick={() => {
-            setIsDaumPostOpen(false);
-          }}
-        />
+        <FontAwesomeIcon icon={faXmark} onClick={handleCancelClick} />
         <DaumPostCode
           onComplete={handleComplete}
           className="post-code"

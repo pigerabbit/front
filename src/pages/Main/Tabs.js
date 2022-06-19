@@ -2,27 +2,27 @@ import React from "react";
 import styled from "styled-components";
 
 const Tabs = ({ tab, setTab }) => {
+  const handleHomeClick = () => {
+    setTab("home");
+  };
+
+  const handleBestClick = () => {
+    setTab("best");
+  };
+
+  const handleDeadlineClick = () => {
+    setTab("deadline");
+  };
+
   return (
     <TabsContainer>
-      <Tab
-        onClick={() => {
-          setTab("home");
-        }}
-      >
+      <Tab onClick={handleHomeClick}>
         <span>HOME</span>
       </Tab>
-      <Tab
-        onClick={() => {
-          setTab("best");
-        }}
-      >
+      <Tab onClick={handleBestClick}>
         <span>BEST</span>
       </Tab>
-      <Tab
-        onClick={() => {
-          setTab("deadline");
-        }}
-      >
+      <Tab onClick={handleDeadlineClick}>
         <span>마감임박</span>
       </Tab>
       <TabLine tab={tab} />

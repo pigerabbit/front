@@ -59,6 +59,10 @@ const EmailLoginPage = () => {
     }
   };
 
+  const handleRegisterClick = () => {
+    navigate("/register/user");
+  };
+
   useEffect(() => {
     setIsEmailValid(validateEmail(email));
     setEmailErrMessage("");
@@ -102,13 +106,7 @@ const EmailLoginPage = () => {
       </UserButton>
       <MoveButtonsContainer>
         <span>비밀번호 찾기</span>
-        <span
-          onClick={() => {
-            navigate("/register/user");
-          }}
-        >
-          이메일로 회원가입
-        </span>
+        <span onClick={handleRegisterClick}>이메일로 회원가입</span>
       </MoveButtonsContainer>
     </Container>
   );

@@ -20,6 +20,10 @@ const UserInput = ({
   errMessage,
   setErrMessage,
 }) => {
+  const handleInputChange = (e) => {
+    setValue(e.target.value);
+  };
+
   const handleConfirmButtonClick = async (e) => {
     e.preventDefault();
 
@@ -53,9 +57,7 @@ const UserInput = ({
           placeholder={placeholder}
           value={value}
           autoComplete="off"
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
+          onChange={handleInputChange}
         />
         {confirmButton && (
           <UserButton

@@ -21,6 +21,7 @@ const SliderCard = ({ purchase }) => {
 
   const handleToggle = async (event) => {
     event.stopPropagation();
+
     if (!wish) {
       showConfirmationIcon({
         backgroundColor: "#FF6A6A;",
@@ -49,7 +50,7 @@ const SliderCard = ({ purchase }) => {
           <span>
             {purchase.groupType === "local" ? purchase.location : "택배공구"}
           </span>
-          <span>싱싱한 왕딸기 공구해요!</span>
+          <span>{purchase.groupName}</span>
         </CardTitle>
         <Price>
           <span>{purchase.productInfo.discountRate}%</span>

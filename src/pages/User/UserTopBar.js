@@ -8,17 +8,19 @@ const UserTopBar = ({ pageName }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const handlePreviousBtnClick = () => {
+    location.pathname === "/businessauth"
+      ? navigate("/mypage")
+      : navigate("/login");
+  };
+
   return (
     <TopBar>
       <div>
         {!(location.pathname === "/login") && (
           <FontAwesomeIcon
             icon={faArrowLeft}
-            onClick={() => {
-              location.pathname === "/businessauth"
-                ? navigate("/mypage")
-                : navigate("/login");
-            }}
+            onClick={handlePreviousBtnClick}
           />
         )}
       </div>

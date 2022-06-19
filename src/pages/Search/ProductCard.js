@@ -14,6 +14,10 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const showConfirmationIcon = useShowComfirmationIcon();
 
+  const handleCardClick = () => {
+    navigate(`/products/${product.id}`);
+  };
+
   const handleToggle = async () => {
     if (!wish) {
       showConfirmationIcon({
@@ -37,19 +41,9 @@ const ProductCard = ({ product }) => {
 
   return (
     <Container wish={wish}>
-      <Image
-        className="image"
-        url={product.images}
-        onClick={() => {
-          navigate(`/products/${product.id}`);
-        }}
-      />
+      <Image className="image" url={product.images} onClick={handleCardClick} />
 
-      <Information
-        onClick={() => {
-          navigate(`/products/${product.id}`);
-        }}
-      >
+      <Information onClick={handleCardClick}>
         <Title>
           <span>[{product?.userInfo?.business[0].businessName}]</span>
           <span>

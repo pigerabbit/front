@@ -15,7 +15,7 @@ const numTitleInit =
   (window.innerWidth >= 450 && 25) ||
   16;
 
-const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
+const GroupPurchaseCard = ({ purchase }) => {
   const [wish, setWish] = useState(purchase?.toggle === 0 ? false : true);
   const [numTitle, setNumTitle] = useState(numTitleInit);
 

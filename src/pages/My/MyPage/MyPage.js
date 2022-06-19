@@ -20,6 +20,10 @@ const MyPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
   const handleUnregister = async () => {
     if (!password) return setInputBorderColor("#FFB564");
 
@@ -74,9 +78,7 @@ const MyPage = () => {
               type="password"
               value={password}
               placeholder={placeholder}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
+              onChange={handlePasswordChange}
               autoComplete="off"
             />
           </form>

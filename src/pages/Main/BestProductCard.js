@@ -8,7 +8,7 @@ import * as Api from "api";
 
 import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
-const numTitleInit =
+const titleLengthInit =
   (window.innerWidth >= 700 && 35) ||
   (window.innerWidth >= 600 && 30) ||
   (window.innerWidth >= 550 && 25) ||
@@ -16,10 +16,10 @@ const numTitleInit =
   (window.innerWidth >= 450 && 15) ||
   14;
 
-const BestProductCard = ({ product, index, setConfirmationIcon }) => {
+const BestProductCard = ({ product, index }) => {
   const navigate = useNavigate();
   const [wish, setWish] = useState(product.toggle ? true : false);
-  const [numTitle, setNumTitle] = useState(numTitleInit);
+  const [titleLength, setTitleLength] = useState(titleLengthInit);
 
   const showConfirmationIcon = useShowComfirmationIcon();
 
@@ -45,12 +45,12 @@ const BestProductCard = ({ product, index, setConfirmationIcon }) => {
   };
 
   const handleResize = () => {
-    if (window.innerWidth >= 700) setNumTitle(35);
-    else if (window.innerWidth >= 600) setNumTitle(30);
-    else if (window.innerWidth >= 550) setNumTitle(25);
-    else if (window.innerWidth >= 500) setNumTitle(20);
-    else if (window.innerWidth >= 450) setNumTitle(15);
-    else setNumTitle(14);
+    if (window.innerWidth >= 700) setTitleLength(35);
+    else if (window.innerWidth >= 600) setTitleLength(30);
+    else if (window.innerWidth >= 550) setTitleLength(25);
+    else if (window.innerWidth >= 500) setTitleLength(20);
+    else if (window.innerWidth >= 450) setTitleLength(15);
+    else setTitleLength(14);
   };
 
   useEffect(() => {
@@ -77,8 +77,8 @@ const BestProductCard = ({ product, index, setConfirmationIcon }) => {
         <Title>
           <span>[{product.userInfo.business[0].businessName}]</span>
           <span>
-            {product.name.slice(0, numTitle)}
-            {product.name.length > numTitle && ".."}
+            {product.name.slice(0, titleLength)}
+            {product.name.length > titleLength && ".."}
           </span>
         </Title>
         <Price>

@@ -16,7 +16,7 @@ const MarketPage = () => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [products, setProducts] = useState([]);
   const [marketName, setMarketName] = useState("");
-  const [currentProduct, SetCurrentProduct] = useState("");
+  const [currentProduct, setCurrentProduct] = useState("");
 
   const navigate = useNavigate();
 
@@ -45,6 +45,10 @@ const MarketPage = () => {
     }
   };
 
+  const handleRegisterBtnClick = () => {
+    navigate("/register/product");
+  };
+
   useEffect(() => {
     getProductData();
   }, []);
@@ -58,14 +62,10 @@ const MarketPage = () => {
     >
       <Container>
         {user?.id === id && (
-          <SaleButton
-            onClick={() => {
-              navigate("/register/product");
-            }}
-          >
+          <ProductRegisterButton onClick={handleRegisterBtnClick}>
             <FontAwesomeIcon icon={faCirclePlus} />
             판매 등록하기
-          </SaleButton>
+          </ProductRegisterButton>
         )}
 
         {products.length > 0 && (
@@ -75,7 +75,7 @@ const MarketPage = () => {
         {products.map((product) => (
           <ProductCard
             product={product}
-            SetCurrentProduct={SetCurrentProduct}
+            setCurrentProduct={setCurrentProduct}
             setIsOpenPopup={setIsOpenPopup}
             key={product.id}
           ></ProductCard>
@@ -121,7 +121,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const SaleButton = styled.div`
+const ProductRegisterButton = styled.div`
   position: relative;
   cursor: pointer;
   margin-top: 10px;

@@ -5,7 +5,7 @@ import * as Api from "api";
 import BestProductCard from "./BestProductCard";
 import LoadingSpinner from "components/LoadingSpinner";
 
-const BestTab = ({}) => {
+const BestTab = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 

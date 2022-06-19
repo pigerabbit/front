@@ -63,7 +63,7 @@ const Category = ({ setIsOpenSideBar, setProducts, setPage }) => {
 
   const navigate = useNavigate();
 
-  const handleClick = (eng) => {
+  const handleCategoryClick = (eng) => {
     return () => {
       if (setIsOpenSideBar) {
         setIsOpenSideBar(false);
@@ -74,6 +74,13 @@ const Category = ({ setIsOpenSideBar, setProducts, setPage }) => {
     };
   };
 
+  const handleOptionClick = (eng, categoryType) => {
+    return () => {
+      setOption(eng);
+      setCategory(categoryType);
+    };
+  };
+
   return (
     <Container>
       <TabContainer>
@@ -81,10 +88,7 @@ const Category = ({ setIsOpenSideBar, setProducts, setPage }) => {
           <Tab
             key={eng}
             selected={eng === option}
-            onClick={() => {
-              setOption(eng);
-              setCategory(categoryType);
-            }}
+            onClick={handleOptionClick(eng, categoryType)}
           >
             {kor}
           </Tab>
@@ -93,7 +97,7 @@ const Category = ({ setIsOpenSideBar, setProducts, setPage }) => {
 
       <CategoryContainer>
         {category.map(({ eng, kor, icon }, idx) => (
-          <span key={idx} onClick={handleClick(eng)}>
+          <span key={idx} onClick={handleCategoryClick(eng)}>
             <FontAwesomeIcon icon={icon} />
             {kor}
           </span>

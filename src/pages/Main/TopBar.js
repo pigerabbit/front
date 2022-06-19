@@ -17,15 +17,15 @@ const TopBar = ({ setSideBarTitle, setIsOpenSideBar }) => {
     };
   };
 
+  const handleSearchBtnClick = () => {
+    navigate("/search");
+  };
+
   return (
     <Container>
       <CategoryButton handleClick={handleClickBtn("카테고리")} />
 
-      <SearchButton
-        onClick={() => {
-          navigate("/search");
-        }}
-      >
+      <SearchButton onClick={handleSearchBtnClick}>
         <span>어떤 판매 품목이 있을까요?</span>
         <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
       </SearchButton>
