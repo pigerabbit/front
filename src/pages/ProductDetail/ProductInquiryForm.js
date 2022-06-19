@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 
+import encodeFileToBase64 from "utils/encodeFileToBase64";
+
 const ProductInquiryForm = ({
   productId,
   setIsWriting,
@@ -57,23 +59,7 @@ const ProductInquiryForm = ({
     const formData = new FormData();
     formData.append("file", img);
     setInquiryImg(img);
-    encodeFileToBase64(img);
-  };
-
-  const encodeFileToBase64 = (fileBlob) => {
-    try {
-      const reader = new FileReader();
-      reader.readAsDataURL(fileBlob);
-      return new Promise((resolve) => {
-        reader.onload = () => {
-          setPreviewImg(reader.result);
-
-          resolve();
-        };
-      });
-    } catch (e) {
-      console.log("preview 생성 실패");
-    }
+    encodeFileToBase64(img, setPreviewImg);
   };
 
   useEffect(() => {}, []);
