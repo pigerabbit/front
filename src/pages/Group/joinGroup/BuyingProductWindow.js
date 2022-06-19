@@ -12,17 +12,12 @@ const BuyingProductWindow = ({
 
   const [quantity, setQuantity] = useState(1);
 
-  const clickCancel = () => {
-    setShowBuyingProduct(false);
-  };
+  const clickCancel = () => setShowBuyingProduct(false);
 
-  const clickDecrease = () => {
-    setQuantity((cur) => (cur === 1 ? cur : cur - 1));
-  };
+  const clickDecrease = () => setQuantity((cur) => (cur === 1 ? cur : cur - 1));
 
-  const clickIncrease = () => {
+  const clickIncrease = () =>
     setQuantity((cur) => (cur === remainedPersonnel ? cur : cur + 1));
-  };
 
   const clickBuying = () => {
     navigate("/group/join/pay", {
