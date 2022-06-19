@@ -11,6 +11,7 @@ import {
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import DetailHeader from "components/DetailHeader";
 import GroupInfoTop from "./GroupInfoTop";
 import CommentsArea from "./CommentsArea";
 import BuyingProductWindow from "./BuyingProductWindow";
@@ -29,12 +30,9 @@ const GroupDetailPage = () => {
 
   const groupId = useParams().id;
 
-  const handleToggle = async (e) => {
-    e.preventDefault();
-
+  const handleWish = async () => {
     try {
-      const res = await Api.put(`toggle/group/${group._id}`);
-      console.log(res.data);
+      await Api.put(`toggle/group/${group._id}`);
       setWish((cur) => !cur);
     } catch (e) {
       console.log("공구 찜하기 실패");
@@ -71,38 +69,9 @@ const GroupDetailPage = () => {
 
   return (
     <Container>
-      <Header>
-        <Top>
-          <GoBack onClick={() => navigate(-1)} />
-          <ProductTitle>{product.name}</ProductTitle>
-          <ButtonTopContainer>
-            <div
-              id="home"
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faHome}
-                style={{ fontSize: "20px", color: "#f79831" }}
-              />
-            </div>
-            <div
-              id="user"
-              onClick={() => {
-                navigate("/mypage");
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faUser}
-                style={{ fontSize: "20px", color: "#f79831" }}
-              />
-            </div>
-          </ButtonTopContainer>
-        </Top>
-      </Header>
       {isFetched && (
         <>
+          <DetailHeader headerTitle={group.groupName} />
           <Body>
             <GroupInfoTop group={group} product={product} seller={seller} />
             <CommentsArea
@@ -124,7 +93,7 @@ const GroupDetailPage = () => {
           )}
 
           <ButtonsContainer>
-            <LeftButton wish={wish} onClick={handleToggle}>
+            <LeftButton wish={wish} onClick={handleWish}>
               <p>
                 {wish ? (
                   <FontAwesomeIcon icon={fullHeart} size="1x" />
@@ -164,67 +133,8 @@ const Container = styled.div`
   }
 `;
 
-const Header = styled.header`
-  position: fixed;
-  width: 100%;
-  min-width: 360px;
-  max-width: 770px;
-  top: 0;
-  z-index: 5;
-  background-color: #ffffff;
-`;
-
 const Body = styled.div`
   padding-bottom: 80px;
-`;
-
-const Top = styled.div`
-  width: 100%;
-  background-color: #ffffff;
-  height: 50px;
-`;
-
-const GoBack = styled.i`
-  border: solid black;
-  border-width: 0 1.5px 1.5px 0;
-  display: inline-block;
-  padding: 5px;
-  margin: 20px 0 0 20px;
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
-  cursor: pointer;
-`;
-
-const ButtonTopContainer = styled.div`
-  width: 60px;
-  position: absolute;
-  top: 18px;
-  right: 20px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  #home,
-  #user {
-    cursor: pointer;
-  }
-`;
-
-const ProductTitle = styled.p`
-  margin-left: 10px;
-  display: inline-block;
-  width: 400px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  vertical-align: middle;
-
-  @media (max-width: 500px) {
-    width: 270px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 `;
 
 const ButtonsContainer = styled.div`
