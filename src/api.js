@@ -1,23 +1,30 @@
-import axios from "axios";
+import axios from 'axios';
 
-const backendPortNumber = "5000";
+const backendPortNumber = '5000';
 const serverUrl =
-  "http://" + window.location.hostname + ":" + backendPortNumber + "/";
+  'http://' + window.location.hostname + ':' + backendPortNumber + '/';
 
-async function get(endpoint, params = "", queryParams = {}) {
-  return axios.get(serverUrl + endpoint + "/" + params, {
+const getURL = (...routes) => {
+  const paths = routes.flat();
+  return paths.join('/').replace(/(\/)+/g, '/');
+};
+
+async function get(endpoint, params = '', queryParams = {}) {
+  const url = getURL(serverUrl, endpoint + '/' + params);
+
+  return axios.get(url, {
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      Authorization: `Bearer ${sessionStorage.getItem('userToken')}`,
     },
     params: queryParams,
   });
 }
 
-async function getNoCache(endpoint, params = "") {
-  return axios.get(serverUrl + endpoint + "/" + params, {
+async function getNoCache(endpoint, params = '') {
+  return axios.get(serverUrl + endpoint + '/' + params, {
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-      "Cache-Control": "no-cache",
+      Authorization: `Bearer ${sessionStorage.getItem('userToken')}`,
+      'Cache-Control': 'no-cache',
     },
   });
 }
@@ -27,8 +34,8 @@ async function post(endpoint, data) {
 
   return axios.post(serverUrl + endpoint, bodyData, {
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sessionStorage.getItem('userToken')}`,
     },
   });
 }
@@ -38,30 +45,31 @@ async function put(endpoint, data) {
 
   return axios.put(serverUrl + endpoint, bodyData, {
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sessionStorage.getItem('userToken')}`,
     },
   });
 }
 
-async function patch(endpoint, params = "", data) {
+async function patch(endpoint, params = '', data) {
   const bodyData = JSON.stringify(data);
 
-  return axios.patch(serverUrl + endpoint + "/" + params, bodyData, {
+  return axios.patch(serverUrl + endpoint + '/' + params, bodyData, {
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sessionStorage.getItem('userToken')}`,
     },
   });
 }
 
-async function del(endpoint, params = "", data = {}) {
+async function del(endpoint, params = '', data = {}) {
   const bodyData = JSON.stringify(data);
+  const url = getURL(serverUrl, endpoint + '/' + params);
 
-  return axios.delete(serverUrl + endpoint + "/" + params, {
+  return axios.delete(url, {
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
-      "Content-Type": "application/json",
+      Authorization: `Bearer ${sessionStorage.getItem('userToken')}`,
+      'Content-Type': 'application/json',
     },
     data: bodyData,
   });
@@ -70,8 +78,8 @@ async function del(endpoint, params = "", data = {}) {
 async function postImg(endpoint, data) {
   return axios.post(serverUrl + endpoint, data, {
     headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${sessionStorage.getItem('userToken')}`,
     },
   });
 }

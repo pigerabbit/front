@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import * as Api from "api";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import * as Api from 'api';
 
-import ConfirmationPopup from "../ConfirmationPopup";
+import ConfirmationPopup from '../ConfirmationPopup';
 
-const ReviewCard = ({ review, deleteReview }) => {
+const ReviewCard = ({ review, onDeleteReview }) => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const navigate = useNavigate();
@@ -20,8 +20,9 @@ const ReviewCard = ({ review, deleteReview }) => {
 
   const handleDelete = async () => {
     try {
-      deleteReview(review.postId);
-      await Api.delete("posts", review.postId);
+      await Api.delete('/posts', review.postId);
+
+      onDeleteReview(review.postId);
     } catch (e) {
       // 에러처리
     }
@@ -47,7 +48,7 @@ const ReviewCard = ({ review, deleteReview }) => {
       <ConfirmationPopup
         isOpenPopup={isOpenPopup}
         setIsOpenPopup={setIsOpenPopup}
-        buttonContent="삭제"
+        buttonContent='삭제'
         handleButtonClick={handleDelete}
       >
         <ConfirmationContent>후기를 정말 삭제하시겠습니까?</ConfirmationContent>
