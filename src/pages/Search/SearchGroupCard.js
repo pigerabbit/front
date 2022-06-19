@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const SearchGroupCard = ({
   name,
+  image,
   price,
   salePrice,
   discountRate,
@@ -11,7 +12,7 @@ const SearchGroupCard = ({
   return (
     <CardContainer>
       <CardWrapper>
-        <CardImage />
+        <CardImage image={image} />
         <CardContent>
           <Name>{name}</Name>
           <Price>{`${price}원`}</Price>
@@ -44,11 +45,14 @@ const CardWrapper = styled.div`
 const CardImage = styled.div`
   background: #c0c0c0;
   width: 150px;
-  height: 110px;
+  height: 150px;
   border-radius: 10px;
+  background-image: url(${(props) => props.image});
+  background-size: 150px 150px;
   @media only screen and (max-width: 400px) {
     width: 100px;
     height: 100px;
+    background-size: 100px 100px;
   }
 `;
 

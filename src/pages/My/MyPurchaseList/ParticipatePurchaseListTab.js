@@ -47,7 +47,7 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
       setFilteredData(onProgress);
     } else if (option === "모집성공") {
       const completed = totalData.filter((group) =>
-        [-5, -4, 4, 5, 1, 2].includes(group.state)
+        [-5, -4, 4, 5, 1].includes(group.state)
       );
       setFilteredData(completed);
     } else if (option === "기간마감") {
@@ -60,9 +60,6 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
         [-7, -6].includes(group.state)
       );
       setFilteredData(canceled);
-    } else if (option === "사용완료") {
-      const completed = totalData.filter((group) => group.state === -2);
-      setFilteredData(completed);
     }
   }, [option, totalData]);
 
@@ -95,16 +92,8 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
           filteredData.map((group) => (
             <MyPurchaseListCard
               key={group.groupId}
-              groupId={group.groupId}
               userId={userId}
-              type={group.groupType}
-              images={group.productInfo.images}
-              state={group.state}
-              title={group.groupName}
-              price={group.productInfo.salePrice}
-              remained={group.remainedPersonnel}
-              participants={group.participants}
-              deadline={group.deadline}
+              group={group}
               isOpenTab={false}
               setIsOpenPopUpCard={setIsOpenPopUpCard}
               setCancelDataId={setCancelDataId}

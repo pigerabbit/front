@@ -31,6 +31,10 @@ const PaymentDetailPage = () => {
     return "loading...";
   }
 
+  const { payment, quantity } = group.participants.filter(
+    (p) => p.userId === user.id
+  )[0];
+
   return (
     <Container>
       <GroupHeader headerTitle={`주문/결제`} />
@@ -45,7 +49,7 @@ const PaymentDetailPage = () => {
       </Info>
       <AddressInfo
         name={user?.name}
-        contact="01012345678"
+        contact={user?.phoneNumber}
         address={group.groupType !== "normal" ? group.location : user?.address}
         type={group.groupType}
         isComplete="true"
@@ -54,21 +58,21 @@ const PaymentDetailPage = () => {
         image={group.productInfo.images}
         title={group.groupName}
         price={group.productInfo.salePrice}
-        count="2"
+        count={quantity}
       />
       <PriceInfo
         price={group.productInfo.salePrice}
-        totalPrice={group.productInfo.salePrice * 2}
+        totalPrice={group.productInfo.salePrice * quantity}
         shippingPrice={CalShippingFee(
           group.groupType,
           group.productInfo.shippingFee,
           group.productInfo.shippingFeeCon,
           group.productInfo.salePrice,
-          group.productInfo.salePrice * 2,
+          group.productInfo.salePrice * quantity,
           group.productInfo.minPurchaseQty
         )}
         type={group.groupType}
-        payment="카드 결제"
+        payment={payment}
       />
     </Container>
   );
