@@ -6,7 +6,8 @@ const Tabs = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const tab = searchParams.get("tab");
+  let tab = searchParams.get("tab");
+  if (!tab) tab = "home";
 
   const handleHomeClick = () => {
     navigate("?tab=home");
