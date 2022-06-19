@@ -49,7 +49,9 @@ const GroupCard = ({ group, minPurchaseQty }) => {
       </GroupInfo>
       <JoinButton
         onClick={() => {
-          navigate(`/groups/${group.groupId}?imminent=${isImminent}`);
+          navigate(`/groups/${group.groupId}`, {
+            state: { isImminent },
+          });
         }}
       >
         참여하기

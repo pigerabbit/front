@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ProductDetailTop = ({ group, product, seller }) => {
   const navigate = useNavigate();
 
-  const [searchParams] = useSearchParams();
-  const imminent = searchParams.get("imminent");
+  const location = useLocation();
+  const { isImminent } = location.state;
 
   const {
     name,
@@ -53,7 +53,7 @@ const ProductDetailTop = ({ group, product, seller }) => {
         <span>
           <p>~ {group.deadline}</p>
           <Deadline>
-            {imminent === "true" && <p id="imminent">"마감 임박"</p>}
+            {isImminent === true && <p id="imminent">"마감 임박"</p>}
             <p id="remain">{group.remainedPersonnel}개</p> 남음
           </Deadline>
         </span>
