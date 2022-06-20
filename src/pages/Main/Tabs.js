@@ -1,38 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
+const tabs = [
+  { tab: "home", title: "HOME" },
+  { tab: "best", title: "BEST" },
+  { tab: "deadline", title: "마감임박" },
+];
 
 const Tabs = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  let tab = searchParams.get("tab");
-  if (!tab) tab = "home";
+  const tab = searchParams.get("tab");
+  const [currentTab, setCurrentTab] = useState(tab === "" ? "home" : tab);
 
-  const handleHomeClick = () => {
-    navigate("?tab=home");
+  const handleTabClick = (tab) => {
+    return () => {
+      setCurrentTab(tab);
+    };
   };
 
-  const handleBestClick = () => {
-    navigate("?tab=best");
-  };
-
-  const handleDeadlineClick = () => {
-    navigate("?tab=deadline");
-  };
+  useEffect(() => {
+    navigate(`?tab=${currentTab}`);
+  }, [currentTab]);
 
   return (
     <TabsContainer>
-      <Tab onClick={handleHomeClick}>
-        <span>HOME</span>
-      </Tab>
-      <Tab onClick={handleBestClick}>
-        <span>BEST</span>
-      </Tab>
-      <Tab onClick={handleDeadlineClick}>
-        <span>마감임박</span>
-      </Tab>
-      <TabLine tab={tab} />
+      {tabs.map(({ tab, title }) => (
+        <Tab onClick={handleTabClick(tab)} key={tab}>
+          <span>{title}</span>
+        </Tab>
+      ))}
+      <TabLine currentTab={currentTab} />
     </TabsContainer>
   );
 };
@@ -63,10 +63,10 @@ const TabLine = styled.div`
   background-color: black;
   width: 33.3%;
   height: 1.5px;
-  left: ${({ tab }) => {
-    if (tab === "home") return "0;";
-    else if (tab === "best") return "33.4%;";
-    else if (tab === "deadline") return "66.7%;";
+  left: ${({ currentTab }) => {
+    if (currentTab === "home") return "0;";
+    else if (currentTab === "best") return "33.4%;";
+    else if (currentTab === "deadline") return "66.7%;";
   }}
   bottom: 0;
   transition: left 0.4s;
