@@ -14,10 +14,9 @@ const Tabs = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const tab = searchParams.get("tab");
-  const [currentTab, setCurrentTab] = useState(
-    !tab ? tabs[0] : tabs.filter((tab) => tab.query === tab)
-  );
+  const tabQuery = searchParams.get("tab");
+  const [tab] = tabs.filter((tab) => tab.query === tabQuery);
+  const [currentTab, setCurrentTab] = useState(!tabQuery ? tabs[0] : tab);
 
   const handleTabClick = (tab) => {
     return () => {
