@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import useUpdateEffect from "hooks/useUpdateEffect";
+
 const tabs = [
-  { tab: "home", title: "HOME" },
-  { tab: "best", title: "BEST" },
-  { tab: "deadline", title: "마감임박" },
+  { query: "home", title: "HOME" },
+  { query: "best", title: "BEST" },
+  { query: "deadline", title: "마감임박" },
 ];
 
 const Tabs = () => {
@@ -13,7 +15,9 @@ const Tabs = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const tab = searchParams.get("tab");
-  const [currentTab, setCurrentTab] = useState(tab === "" ? "home" : tab);
+  const [currentTab, setCurrentTab] = useState(
+    !tab ? tabs[0] : tabs.filter((tab) => tab.query === tab)
+  );
 
   const handleTabClick = (tab) => {
     return () => {
@@ -21,18 +25,18 @@ const Tabs = () => {
     };
   };
 
-  useEffect(() => {
-    navigate(`?tab=${currentTab}`);
+  useUpdateEffect(() => {
+    navigate(`?tab=${currentTab.query}`);
   }, [currentTab]);
 
   return (
     <TabsContainer>
-      {tabs.map(({ tab, title }) => (
-        <Tab onClick={handleTabClick(tab)} key={tab}>
-          <span>{title}</span>
+      {tabs.map((tab) => (
+        <Tab onClick={handleTabClick(tab)} key={tab.query}>
+          <span>{tab.title}</span>
         </Tab>
       ))}
-      <TabLine currentTab={currentTab} />
+      <TabLine currentTab={currentTab.query} />
     </TabsContainer>
   );
 };
