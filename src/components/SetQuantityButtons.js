@@ -46,7 +46,6 @@ const Quantity = styled.div`
   flex-direction: row;
   align-items: center;
 
-  background-color: gray;
   border-top: 1px solid #dde0e3;
   border-bottom: 1px solid #dde0e3;
 

@@ -140,7 +140,7 @@ const QRBottom = styled.div`
   width: 100%;
   max-width: 770px;
   min-width: 360px;
-  height: 120px;
+  height: 15%;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -156,6 +156,7 @@ const QRBottom = styled.div`
     width: 90%;
     display: flex;
     justify-content: flex-start;
+    margin-bottom: 10px;
   }
 
   #quantity {
@@ -164,10 +165,5 @@ const QRBottom = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-top: 10px;
-  }
-
-  @media (max-height: 720px) {
-    height: 90px;
   }
 `;
