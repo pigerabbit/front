@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouseChimney } from "@fortawesome/free-solid-svg-icons";
@@ -9,13 +10,15 @@ import {
   faUser,
 } from "@fortawesome/free-regular-svg-icons";
 
-import { useNavigate } from "react-router-dom";
+import Notice from "pages/Main/Notice";
 
 const TabBar = () => {
+  const [isOpenNotice, setIsOpenNotice] = useState(false);
+
   const navigate = useNavigate();
 
-  const handleBoardClick = () => {
-    navigate("/board");
+  const handleNoticeClick = () => {
+    setIsOpenNotice(true);
   };
 
   const handleWishlistClick = () => {
@@ -32,9 +35,11 @@ const TabBar = () => {
 
   return (
     <>
+      {isOpenNotice && <Notice setIsOpenNotice={setIsOpenNotice} />}
+
       <Container>
         <LeftRight>
-          <Tab onClick={handleBoardClick}>
+          <Tab onClick={handleNoticeClick}>
             <FontAwesomeIcon icon={faBell} size="2x" />
             <span>알림</span>
           </Tab>

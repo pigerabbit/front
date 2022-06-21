@@ -44,6 +44,7 @@ const Container = styled.div`
   min-width: 360px;
   min-height: 100vh;
   background-color: #f6f6f6;
+  overflow: hidden;
 `;
 
 const TopBar = styled.div`

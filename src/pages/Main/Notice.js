@@ -14,7 +14,7 @@ const from = {
   comment: "댓글 알림",
 };
 
-const Notice = () => {
+const Notice = ({ setIsOpenNotice }) => {
   const { user } = useSelector((state) => state.user);
   const [noticeList, setNoticeList] = useState([]);
 
@@ -27,7 +27,7 @@ const Notice = () => {
     getNoticeList();
   }, []);
   return (
-    <SideBar title="알림">
+    <SideBar title="알림" setIsOpenSideBar={setIsOpenNotice}>
       <Container>
         {noticeList.map((notice) => (
           <NoticeCard key={notice._id}>
