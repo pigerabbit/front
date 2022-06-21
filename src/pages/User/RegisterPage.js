@@ -13,6 +13,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
 
@@ -33,15 +34,28 @@ const RegisterPage = () => {
   const isPasswordValid = password.length >= 8;
   const isPasswordSame =
     confirmPassword.length > 0 && password === confirmPassword;
+  const isPhoneNumberValid = phoneNumber.replaceAll("-", "").length === 11;
   const isAddressValid = address.length > 0 && detailAddress.length > 0;
   const isFormValid =
     isNameValid === true &&
     isEmailValid &&
     isPasswordValid &&
     isPasswordSame &&
+    isPhoneNumberValid &&
     isAddressValid;
 
   const navigate = useNavigate();
+
+  const handlePhoneNumberChange = (value) => {
+    if (value.length > 13) return;
+
+    setPhoneNumber(
+      value
+        .replace(/[^0-9]/g, "")
+        .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+        .replace(/(\-{1,2})$/g, "")
+    );
+  };
 
   const handleAddressInputClick = () => {
     setIsDaumPostOpen(true);
@@ -55,6 +69,7 @@ const RegisterPage = () => {
         name,
         email,
         password,
+        phoneNumber: phoneNumber.replaceAll("-", ""),
         address: address + " " + detailAddress,
       });
 
@@ -113,6 +128,14 @@ const RegisterPage = () => {
         />
 
         <UserInput
+          title="휴대폰 번호"
+          type="text"
+          value={phoneNumber}
+          setValue={handlePhoneNumberChange}
+          isValueValid={isPhoneNumberValid}
+        />
+
+        <UserInput
           title="주소"
           type="text"
           value={address}
@@ -160,11 +183,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 `;
 
 const InputListContainter = styled.form`
   width: 70%;
   max-width: 400px;
-  margin-bottom: 10%;
+  margin-top: 10%;
 `;

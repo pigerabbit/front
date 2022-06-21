@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouseChimney } from "@fortawesome/free-solid-svg-icons";
 import {
-  faComments,
+  faBell,
   faHeart,
   faFileLines,
   faUser,
@@ -35,8 +35,8 @@ const TabBar = () => {
       <Container>
         <LeftRight>
           <Tab onClick={handleBoardClick}>
-            <FontAwesomeIcon icon={faComments} size="2x" />
-            <span>소곤소곤</span>
+            <FontAwesomeIcon icon={faBell} size="2x" />
+            <span>알림</span>
           </Tab>
           <Tab onClick={handleWishlistClick}>
             <FontAwesomeIcon icon={faHeart} size="2x" />
