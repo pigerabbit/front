@@ -33,7 +33,7 @@ const OpenGroupPaymentPage = () => {
         setAddress(user.address);
       }
     }
-  }, [user]);
+  }, [user, type]);
 
   const postOpenGroup = async () => {
     try {

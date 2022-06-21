@@ -29,11 +29,11 @@ const JoinGroupPaymentPage = () => {
     if (user) {
       setName(user.name);
       setContact(user.phoneNumber);
-      if (group.type === "normal") {
+      if (group.groupType === "normal") {
         setAddress(user.address);
       }
     }
-  }, [user]);
+  }, [user, group]);
 
   const joinGroup = async () => {
     try {
