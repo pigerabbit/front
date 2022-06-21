@@ -34,6 +34,12 @@ const MyButtons = () => {
     },
   ];
 
+  const handleButtonClick = (url) => {
+    return () => {
+      navigate(url);
+    };
+  };
+
   return (
     <>
       <Buttons seller={user?.seller}>
@@ -43,9 +49,7 @@ const MyButtons = () => {
               <Button
                 key={button.text}
                 areaName={idx}
-                onClick={() => {
-                  navigate(button.url);
-                }}
+                onClick={handleButtonClick(button.url)}
               >
                 <FontAwesomeIcon icon={button.icon} />
                 <span>{button.text}</span>

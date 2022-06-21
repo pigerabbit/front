@@ -1,33 +1,28 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const SideBar = ({ children, title, isOpenSideBar, setIsOpenSideBar }) => {
-  useEffect(() => {
-    if (isOpenSideBar) {
-      document.body.style.cssText = `
-      position: fixed; 
-      top: -${window.scrollY}px;
-      overflow-y: scroll;
-      width: 100%;`;
-    } else {
-      const scrollY = document.body.style.top;
-      document.body.style.cssText = "";
-      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
-    }
-  }, [isOpenSideBar]);
+import usePreventScroll from "hooks/usePreventScroll";
+
+const SideBar = ({ children, title, setIsOpenSideBar }) => {
+  const [show, setShow] = useState(true);
+
+  const handleCancelClick = () => {
+    setShow(false);
+    setTimeout(() => {
+      setIsOpenSideBar(false);
+    }, 500);
+  };
+
+  usePreventScroll();
 
   return (
-    <Container isOpenSideBar={isOpenSideBar}>
+    <Container show={show}>
       <TitleBar>
         <div></div>
         <span>{title}</span>
-        <div
-          onClick={() => {
-            setIsOpenSideBar(false);
-          }}
-        >
+        <div onClick={handleCancelClick}>
           <FontAwesomeIcon icon={faXmark} size="1x" />
         </div>
       </TitleBar>
@@ -38,18 +33,33 @@ const SideBar = ({ children, title, isOpenSideBar, setIsOpenSideBar }) => {
 
 export default SideBar;
 
+const sidebarShow = keyframes`
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 0;
+  }
+`;
+
+const sidebarUnshow = keyframes`
+0% {
+  left: 0;
+}
+100% {
+  left: -100%;
+}
+`;
+
 const Container = styled.div`
-position: absolute;
-top: 0;
-left: ${({ isOpenSideBar }) => {
-  if (isOpenSideBar) return "0;";
-  else return "-100%;";
-}}
-width: 100%;
-height: 100vh;
-background-color: #f6f6f6;
-transition: left 0.5s;
-z-index: 12;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #f6f6f6;
+  z-index: 12;
+  animation: ${sidebarShow} 0.5s;
+  animation: ${({ show }) => (show ? sidebarShow : sidebarUnshow)} 0.5s;
 `;
 
 const TitleBar = styled.div`

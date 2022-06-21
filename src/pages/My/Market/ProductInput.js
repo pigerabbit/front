@@ -54,9 +54,7 @@ const ProductInput = ({
           rows="10"
           width={width}
           value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
+          onChange={handleChange}
         />
       )}
 

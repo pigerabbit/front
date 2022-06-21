@@ -9,6 +9,10 @@ import TabBar from "components/TabBar";
 const MyPageLayout = ({ children, pageName, previousPage }) => {
   const navigate = useNavigate();
 
+  const handlePreviousBtnClick = () => {
+    navigate(previousPage);
+  };
+
   return (
     <Container>
       <TopBar>
@@ -16,9 +20,7 @@ const MyPageLayout = ({ children, pageName, previousPage }) => {
           {previousPage !== "none" && (
             <FontAwesomeIcon
               icon={faArrowLeft}
-              onClick={() => {
-                navigate(previousPage);
-              }}
+              onClick={handlePreviousBtnClick}
             />
           )}
         </div>

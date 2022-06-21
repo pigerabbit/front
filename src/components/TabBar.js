@@ -14,41 +14,41 @@ import { useNavigate } from "react-router-dom";
 const TabBar = () => {
   const navigate = useNavigate();
 
+  const handleBoardClick = () => {
+    navigate("/board");
+  };
+
+  const handleWishlistClick = () => {
+    navigate("/wishlist");
+  };
+
+  const handlepPurchaselistClick = () => {
+    navigate("/purchaselist");
+  };
+
+  const handleMypageClick = () => {
+    navigate("/mypage");
+  };
+
   return (
     <>
       <Container>
         <LeftRight>
-          <Tab
-            onClick={() => {
-              navigate("/board");
-            }}
-          >
+          <Tab onClick={handleBoardClick}>
             <FontAwesomeIcon icon={faComments} size="2x" />
             <span>소곤소곤</span>
           </Tab>
-          <Tab
-            onClick={() => {
-              navigate("/wishlist");
-            }}
-          >
+          <Tab onClick={handleWishlistClick}>
             <FontAwesomeIcon icon={faHeart} size="2x" />
             <span>찜</span>
           </Tab>
         </LeftRight>
         <LeftRight>
-          <Tab
-            onClick={() => {
-              navigate("/purchaselist");
-            }}
-          >
+          <Tab onClick={handlepPurchaselistClick}>
             <FontAwesomeIcon icon={faFileLines} size="2x" />
             <span>공구내역</span>
           </Tab>
-          <Tab
-            onClick={() => {
-              navigate("/mypage");
-            }}
-          >
+          <Tab onClick={handleMypageClick}>
             <FontAwesomeIcon icon={faUser} size="2x" />
             <span>my동구</span>
           </Tab>

@@ -8,6 +8,10 @@ const ConfirmationPopup = ({
   setIsOpenPopup,
   buttonContent,
 }) => {
+  const handleCancelClick = () => {
+    setIsOpenPopup(false);
+  };
+
   return (
     <Container isOpenPopup={isOpenPopup}>
       {children}
@@ -15,12 +19,7 @@ const ConfirmationPopup = ({
         <Button isCancel={false} onClick={handleButtonClick}>
           {buttonContent}
         </Button>
-        <Button
-          isCancel={true}
-          onClick={() => {
-            setIsOpenPopup(false);
-          }}
-        >
+        <Button isCancel={true} onClick={handleCancelClick}>
           닫기
         </Button>
       </ButtonsContainer>

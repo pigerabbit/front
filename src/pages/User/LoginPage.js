@@ -7,6 +7,14 @@ import UserTopBar from "./UserTopBar";
 const LoginPage = () => {
   const navigate = useNavigate();
 
+  const handleLoginClick = () => {
+    navigate("email");
+  };
+
+  const handleRegisterClick = () => {
+    navigate("/register/user");
+  };
+
   return (
     <Container>
       <UserTopBar pageName={"로그인"} />
@@ -21,24 +29,12 @@ const LoginPage = () => {
         </SocialButtonContainer>
 
         <ButtonContainter>
-          <MoveButton
-            onClick={() => {
-              navigate("email");
-            }}
-          >
-            이메일로 로그인
-          </MoveButton>
+          <MoveButton onClick={handleLoginClick}>이메일로 로그인</MoveButton>
         </ButtonContainter>
 
         <ButtonContainter>
           <span>아직 동구라미 회원이 아니신가요?</span>
-          <MoveButton
-            onClick={() => {
-              navigate("/register/user");
-            }}
-          >
-            회원가입
-          </MoveButton>
+          <MoveButton onClick={handleRegisterClick}>회원가입</MoveButton>
         </ButtonContainter>
       </ContentContainer>
     </Container>

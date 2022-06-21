@@ -12,8 +12,9 @@ import { useNavigate } from "react-router-dom";
 import * as Api from "api";
 
 import DaumPost from "components/DaumPostCode";
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
-const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
+const InfoEditForm = ({ setIsOpenPopup }) => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user?.name || "");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -34,47 +35,26 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
   const detailAddressValid = detailAddress?.length > 0;
   const newPasswordValid = newPassword.length >= 8;
   const confirmPasswordValid =
-    confirmPassword.length > 0 && newPassword === confirmPassword;
+    confirmPassword.length >= 8 && newPassword === confirmPassword;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const showConfirmationIcon = useShowComfirmationIcon();
 
-  const handleLogout = () => {
+  const handleClickLogout = () => {
     sessionStorage.removeItem("userToken");
     dispatch(logout());
     navigate("/login");
   };
 
-  const unShowIcon = () => {
-    setTimeout(() => {
-      setConfirmationIcon((cur) => {
-        return { ...cur, show: false };
-      });
-    }, 1600);
+  const handleClickUnregister = () => {
+    setIsOpenPopup(true);
   };
 
-  const CompleteIconShow = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#70BD86;",
-      color: "white",
-      icon: faCheck,
-      text: "완료!",
-    });
-
-    unShowIcon();
-  };
-
-  const AgainIconShow = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#FF6A6A;",
-      color: "white",
-      icon: faXmark,
-      text: "다시!",
-    });
-
-    unShowIcon();
+  const handleChangeEvent = (setValue) => {
+    return (e) => {
+      setValue(e.target.value);
+    };
   };
 
   const isEmptyValue = (obj) => {
@@ -89,10 +69,10 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
       try {
         if (isEmptyValue(updateValueObj)) return;
 
-        const url = password
+        const endpoint = password
           ? `users/${user.id}/changePassword`
           : `users/${user.id}`;
-        const res = await Api.put(url, updateValueObj);
+        const res = await Api.put(endpoint, updateValueObj);
 
         if (!password) {
           dispatch(update(res.data.payload));
@@ -102,10 +82,20 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
           setConfirmPassword("");
         }
 
-        CompleteIconShow();
+        showConfirmationIcon({
+          backgroundColor: "#70BD86;",
+          color: "white",
+          icon: faCheck,
+          text: "완료!",
+        });
       } catch (error) {
         setValueValid("again");
-        AgainIconShow();
+        showConfirmationIcon({
+          backgroundColor: "#FF6A6A;",
+          color: "white",
+          icon: faXmark,
+          text: "다시!",
+        });
       }
     };
   };
@@ -135,9 +125,7 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
             type="text"
             value={name || ""}
             autoComplete="off"
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
+            onChange={handleChangeEvent(setName)}
           />
           <CheckIcon valid={nameValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
@@ -158,9 +146,7 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
             type="password"
             value={currentPassword}
             autoComplete="off"
-            onChange={(e) => {
-              setCurrentPassword(e.target.value);
-            }}
+            onChange={handleChangeEvent(setCurrentPassword)}
           />
           <CheckIcon valid={passwordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
@@ -173,9 +159,7 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
             placeholder="8자 이상의 비밀번호를 입력해주세요."
             autoComplete="off"
             value={newPassword}
-            onChange={(e) => {
-              setNewPassword(e.target.value);
-            }}
+            onChange={handleChangeEvent(setNewPassword)}
           />
           <CheckIcon valid={newPasswordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
@@ -187,9 +171,7 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
             type="password"
             value={confirmPassword}
             autoComplete="off"
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-            }}
+            onChange={handleChangeEvent(setConfirmPassword)}
           />
           <CheckIcon valid={confirmPasswordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
@@ -216,9 +198,7 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
             type="text"
             value={address}
             autoComplete="off"
-            onChange={(e) => {
-              setAddress(e.target.value);
-            }}
+            readOnly
             onClick={() => {
               setIsDaumPostOpen(true);
             }}
@@ -233,9 +213,7 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
             type="text"
             value={detailAddress}
             autoComplete="off"
-            onChange={(e) => {
-              setDetailAddress(e.target.value);
-            }}
+            onChange={handleChangeEvent(setDetailAddress)}
           />
           <CheckIcon valid={detailAddressValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
@@ -257,15 +235,9 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
       )}
 
       <OutButtons>
-        <span onClick={handleLogout}>로그아웃</span>
+        <span onClick={handleClickLogout}>로그아웃</span>
         <span>|</span>
-        <span
-          onClick={() => {
-            setIsOpenPopup(true);
-          }}
-        >
-          회원탈퇴
-        </span>
+        <span onClick={handleClickUnregister}>회원탈퇴</span>
       </OutButtons>
     </Container>
   );

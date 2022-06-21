@@ -13,8 +13,6 @@ const usePreventScroll = () => {
       window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
     };
   }, []);
-
-  return true;
 };
 
 export default usePreventScroll;

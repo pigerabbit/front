@@ -15,6 +15,10 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
       return `${date.slice(0, 4)}.${date.slice(5, 7)}.${date.slice(8, 10)}`;
   };
 
+  const handleDeleteBtnClick = () => {
+    setIsOpenPopup(true);
+  };
+
   const handleDelete = async () => {
     try {
       await Api.delete("posts", inquire.post.postId);
@@ -55,13 +59,7 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
         )}
       </Content>
 
-      <DeleteButton
-        onClick={() => {
-          setIsOpenPopup(true);
-        }}
-      >
-        삭제
-      </DeleteButton>
+      <DeleteButton onClick={handleDeleteBtnClick}>삭제</DeleteButton>
 
       <ConfirmationPopup
         isOpenPopup={isOpenPopup}

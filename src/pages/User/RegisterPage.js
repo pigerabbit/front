@@ -55,6 +55,9 @@ const RegisterPage = () => {
         .replace(/(\-{1,2})$/g, "")
     );
   };
+  const handleAddressInputClick = () => {
+    setIsDaumPostOpen(true);
+  };
 
   const handleRegisterClick = async (event) => {
     event.preventDefault();
@@ -136,9 +139,7 @@ const RegisterPage = () => {
           value={address}
           setValue={setAddress}
           isValueValid={isAddressValid}
-          handleClick={() => {
-            setIsDaumPostOpen(true);
-          }}
+          handleClick={handleAddressInputClick}
         />
 
         <UserInput

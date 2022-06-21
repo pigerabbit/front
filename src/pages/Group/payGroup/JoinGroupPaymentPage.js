@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-
-import { formatDate, headerTitle, CalShippingFee } from "../GroupModule";
 import * as Api from "api";
+
+import { CalShippingFee } from "../GroupModule";
 import GroupHeader from "../GroupHeader";
 import AddressInfo from "./AddressInfo";
-import ProductInfo from "./ProductInfo";
 import PriceInfo from "./PriceInfo";
+import ProductInfo from "./ProductInfo";
 import PaymentInfo from "./PaymentInfo";
 
-const OpenGroupPaymentPage = () => {
+const JoinGroupPaymentPage = () => {
   const navigate = useNavigate();
-  const loc = useLocation();
-  const { product, type, groupName, location, count, hour } = loc.state.data;
+  const location = useLocation();
+  const { group, count } = location.state.data;
 
   const { user } = useSelector((state) => state.user);
 
@@ -22,29 +22,22 @@ const OpenGroupPaymentPage = () => {
   const [name, setName] = useState(user?.name || "");
   const [contact, setContact] = useState(user?.phoneNumber || "");
   const [address, setAddress] = useState(
-    type !== "normal" ? location : user?.address || ""
+    group.type !== "normal" ? group.location : user?.address || ""
   );
 
   useEffect(() => {
     if (user) {
       setName(user.name);
       setContact(user.phoneNumber);
-      if (type === "normal") {
+      if (group.type === "normal") {
         setAddress(user.address);
       }
     }
   }, [user]);
 
-  const postOpenGroup = async () => {
+  const joinGroup = async () => {
     try {
-      const deadline = formatDate(hour);
-      const res = await Api.post(`groups`, {
-        groupType: type,
-        location: address,
-        productId: product.id,
-        state: 0,
-        groupName,
-        deadline,
+      const res = await Api.put(`groups/${group.groupId}/participate/in`, {
         quantity: count,
       });
       if (res.data.success) {
@@ -62,9 +55,6 @@ const OpenGroupPaymentPage = () => {
         payment: payment,
       });
       if (res.data.success) {
-        // if(res.data.payload.groupType==='coupon'){
-        //   postCouponPayment(groupId)
-        // }
         navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {
@@ -72,32 +62,24 @@ const OpenGroupPaymentPage = () => {
     }
   };
 
-  // const postCouponPayment=async()=>{
-  //   try{
-  //     const res=await Api.post('payments',{})
-  //   }catch(err){
-  //     console.log(err)
-  //   }
-  // }
-
-  const nameValid = name?.length > 0;
+  const nameValid = name.length > 0;
   const contactValid = contact.length > 0;
   const addressValid = address.length > 0;
   const paymentValid = payment !== "결제 수단 선택되지 않음";
   const isValid = nameValid && contactValid && addressValid && paymentValid;
 
   const shippingPrice = CalShippingFee(
-    type,
-    product.shippingFee,
-    product.shippingFeeCon,
-    product.salePrice,
-    product.salePrice * count,
-    product.minPurchaseQty
+    group.groupType,
+    group.productInfo.shippingFee,
+    group.productInfo.shippingFeeCon,
+    group.productInfo.salePrice,
+    group.productInfo.salePrice * count,
+    group.productInfo.minPurchaseQty
   );
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제(${headerTitle[type]})`} />
+      <GroupHeader headerTitle={`주문/결제`} />
       <AddressInfo
         name={name}
         contact={contact}
@@ -105,29 +87,33 @@ const OpenGroupPaymentPage = () => {
         setName={setName}
         setContact={setContact}
         setAddress={setAddress}
-        type={type}
+        type={group.groupType}
       />
       <ProductInfo
-        image={product.images}
-        title={groupName}
-        price={product.salePrice}
+        image={group.productInfo.images}
+        title={group.groupName}
+        price={group.productInfo.salePrice}
         count={count}
       />
       <PriceInfo
-        price={product.salePrice}
-        totalPrice={product.salePrice * count}
+        price={group.productInfo.salePrice}
+        totalPrice={group.productInfo.salePrice * count}
         shippingPrice={shippingPrice}
-        type={type}
+        type={group.groupType}
       />
       <PaymentInfo setPayment={setPayment} payment={payment} />
-      <OrderButton disabled={!isValid} valid={isValid} onClick={postOpenGroup}>
-        {product.salePrice * count + shippingPrice}원 주문하기
+      <OrderButton
+        disabled={!isValid}
+        valid={isValid}
+        onClick={() => joinGroup()}
+      >
+        {group.productInfo.salePrice * count + shippingPrice}원 주문하기
       </OrderButton>
     </Container>
   );
 };
 
-export default OpenGroupPaymentPage;
+export default JoinGroupPaymentPage;
 
 const Container = styled.div`
   position: relative;

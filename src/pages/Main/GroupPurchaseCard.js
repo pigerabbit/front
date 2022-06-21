@@ -7,6 +7,7 @@ import * as Api from "api";
 import { useNavigate } from "react-router-dom";
 
 import getDeadline from "utils/getDeadline";
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
 const numTitleInit =
   (window.innerWidth >= 700 && 15) ||
@@ -14,49 +15,28 @@ const numTitleInit =
   (window.innerWidth >= 450 && 25) ||
   16;
 
-const GroupPurchaseCard = ({ purchase, setConfirmationIcon }) => {
+const GroupPurchaseCard = ({ purchase }) => {
   const [wish, setWish] = useState(purchase?.toggle === 0 ? false : true);
   const [numTitle, setNumTitle] = useState(numTitleInit);
 
   const navigate = useNavigate();
-
-  const unShowIcon = () => {
-    setTimeout(() => {
-      setConfirmationIcon((cur) => {
-        return { ...cur, show: false };
-      });
-    }, 1600);
-  };
-
-  const confirmWish = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#FF6A6A;",
-      color: "white",
-      icon: fullHeart,
-      text: "찜!",
-    });
-
-    unShowIcon();
-  };
-
-  const confirmUnwish = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#ABABAB;",
-      color: "white",
-      icon: fullHeart,
-      text: "찜 취소",
-    });
-
-    unShowIcon();
-  };
+  const showConfirmationIcon = useShowComfirmationIcon();
 
   const handleToggle = async () => {
     if (!wish) {
-      confirmWish();
+      showConfirmationIcon({
+        backgroundColor: "#FF6A6A;",
+        color: "white",
+        icon: fullHeart,
+        text: "찜!",
+      });
     } else {
-      confirmUnwish();
+      showConfirmationIcon({
+        backgroundColor: "#ABABAB;",
+        color: "white",
+        icon: fullHeart,
+        text: "찜 취소",
+      });
     }
 
     await Api.put(`toggle/group/${purchase._id}`);

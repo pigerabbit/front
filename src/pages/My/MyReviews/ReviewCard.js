@@ -14,6 +14,10 @@ const ReviewCard = ({ review, deleteReview }) => {
     return `${date.slice(0, 4)}.${date.slice(5, 7)}.${date.slice(8, 10)}`;
   };
 
+  const handleCardClick = () => {
+    navigate(`/products/${review.receiver}`);
+  };
+
   const handleDelete = async () => {
     try {
       deleteReview(review.postId);
@@ -25,11 +29,7 @@ const ReviewCard = ({ review, deleteReview }) => {
 
   return (
     <Container>
-      <Content
-        onClick={() => {
-          navigate(`/products/${review.receiver}`);
-        }}
-      >
+      <Content onClick={handleCardClick}>
         <Title>{review.title}</Title>
         <Date>{getDate(review.createdAt)}</Date>
         {review.postImg && <Image url={review.postImg} />}

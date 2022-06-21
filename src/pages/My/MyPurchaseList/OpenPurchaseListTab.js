@@ -5,7 +5,14 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import MyPurchaseListCard from "./MyPurchaseListCard";
 import * as Api from "api";
 
-const options = ["전체보기", "진행중", "결제완료", "기간마감", "공구취소"];
+const options = [
+  "전체보기",
+  "진행중",
+  "모집성공",
+  "기간마감",
+  "공구취소",
+  "사용완료",
+];
 
 const OpenPurchaseListTab = ({ openedData, userId }) => {
   const [option, setOption] = useState("전체보기");
@@ -20,17 +27,17 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
     if (option === "전체보기") {
       setFilteredData(totalData);
     } else if (option === "진행중") {
-      const onProgress = totalData.filter((group) =>
-        [-3, 0, 1, 2].includes(group.state)
-      );
+      const onProgress = totalData.filter.filter((group) => group.state === 0);
       setFilteredData(onProgress);
-    } else if (option === "결제완료") {
+    } else if (option === "모집성공") {
       const completed = totalData.filter((group) =>
-        [-5, -4, 3, 4, 5].includes(group.state)
+        [-5, -4, 4, 5, 1].includes(group.state)
       );
       setFilteredData(completed);
     } else if (option === "기간마감") {
-      const stopped = totalData.filter((group) => group.state === -1);
+      const stopped = totalData.filter((group) =>
+        [-1, -3].includes(group.state)
+      );
       setFilteredData(stopped);
     } else if (option === "공구취소") {
       const canceled = totalData.filter((group) =>
@@ -45,16 +52,31 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
     setIsOpen(false);
   };
 
-  const handleStopGroupClick = async () => {
+  const handleDeleteGroup = async (groupId) => {
     try {
-      await Api.put(`groups/${cancelDataId}/participate/out`);
-      const data = filteredData.filter((data) => data.groupId !== cancelDataId);
+      await Api.delete(`groups/${groupId}`);
+      const data = filteredData.filter((data) => data.groupId === groupId);
       setFilteredData(data);
-      setIsOpenPopUpCard(false);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const handleRemoveGroupFromMyList = async (groupId) => {
+    try {
+      await Api.put(`groups/${groupId}/participate/out`);
+      const data = filteredData.filter((data) => data.groupId !== groupId);
+      setFilteredData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleStopGroupClick = async () => {
+    handleRemoveGroupFromMyList(cancelDataId);
+    setIsOpenPopUpCard(false);
+  };
+
   return (
     <Container>
       <InfoWrapper>
@@ -84,25 +106,23 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
           filteredData.map((group) => (
             <MyPurchaseListCard
               key={group.groupId}
-              groupId={group.groupId}
-              productId={group.productId}
               userId={userId}
-              type={group.groupType}
-              images={group.productInfo?.images}
-              state={group.state}
-              title={group.groupName}
-              remained={group.remainedPersonnel}
-              participants={group.participants}
-              deadline={group.deadline}
+              group={group}
               isOpenTab={true}
               setIsOpenPopUpCard={setIsOpenPopUpCard}
               setCancelDataId={setCancelDataId}
+              handleRemoveGroupFromMyList={handleRemoveGroupFromMyList}
+              handleDeleteGroup={handleDeleteGroup}
             />
           ))}
         {filteredData.length === 0 && (
-          <PurchaseMessage>
-            <p>공구내역이 없습니다</p>
-          </PurchaseMessage>
+          <NoPurchaseListContainer>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/noProduct.svg`}
+              alt="no openedPurchaseList"
+            />
+            공구 내역이 없습니다.
+          </NoPurchaseListContainer>
         )}
       </PurchaseListWrapper>
       {isOpenPopUpCard && (
@@ -239,12 +259,17 @@ const Button = styled.button`
   }
 `;
 
-const PurchaseMessage = styled.div`
-  width: 100%;
-  text-align: center;
-  margin-top: 25%;
-  > p {
-    color: #c4c4c4;
-    font-size: 30px;
+const NoPurchaseListContainer = styled.div`
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 25px;
+  > img {
+    width: 50%;
+    margin-bottom: 5%;
+  }
+  @media only screen and (max-width: 500px) {
+    margin-top: 25%;
   }
 `;

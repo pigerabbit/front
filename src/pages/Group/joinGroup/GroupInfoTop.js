@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import * as Api from "api";
 
 const ProductDetailTop = ({ group, product, seller }) => {
   const navigate = useNavigate();
@@ -17,8 +16,6 @@ const ProductDetailTop = ({ group, product, seller }) => {
     shippingFee,
     shippingFeeCon,
     images,
-    description,
-    descriptionImg,
   } = product;
 
   const [
@@ -52,7 +49,7 @@ const ProductDetailTop = ({ group, product, seller }) => {
         </GoToProduct>
       </Seller>
       <InfoContainer>
-        {group.groupName}
+        <p id="groupName">{group.groupName}</p>
         <span>
           <p>~ {group.deadline}</p>
           <Deadline>
@@ -135,6 +132,14 @@ const GoToProduct = styled.div`
 const InfoContainer = styled.div`
   margin-left: 20px;
 
+  #groupName {
+    display: inline-block;
+    width: 60%;
+    @media (max-width: 360px) {
+      width: 57%;
+    }
+  }
+
   #shippingFee {
     margin-top: 10px;
     font-size: 13px;
@@ -149,6 +154,10 @@ const InfoContainer = styled.div`
   > span > p {
     color: #f79831;
     font-weight: bold;
+
+    @media (max-width: 500px) {
+      font-size: 12px;
+    }
   }
 `;
 
@@ -221,16 +230,11 @@ const DescriptionContainer = styled.div`
   align-items: start;
   justify-content: center;
   border-top: 1px solid #d0d0d0;
-
-  img {
-    width: 100%;
-    height: auto;
-  }
 `;
 
 const Location = styled.div`
   font-size: 15px;
-  > h3 {
-    margin-bottom: 10px;
+  > p {
+    margin-top: 10px;
   }
 `;

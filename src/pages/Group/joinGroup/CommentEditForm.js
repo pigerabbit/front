@@ -3,21 +3,21 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import * as Api from "api";
 
-const CommentForm = ({ setComments, joinedGroup }) => {
-  const [comment, setComment] = useState("");
-  const groupId = useParams().id;
+const CommentEditForm = ({ postId, content, setComments, setIsEditing }) => {
+  const [comment, setComment] = useState(content);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await Api.post(`posts`, {
-        type: "groupChat",
-        receiver: groupId,
+      const res = await Api.put(`posts/${postId}`, {
         content: comment,
       });
-      setComments((cur) => [...cur, res.data.payload]);
-      setComment("");
+      const editedComment = res.data.payload;
+      setComments((cur) =>
+        cur.map((v) => (v.postId === postId ? editedComment : v))
+      );
+      setIsEditing(false);
     } catch (e) {
       console.log("공구 댓글 post 실패");
     }
@@ -36,16 +36,14 @@ const CommentForm = ({ setComments, joinedGroup }) => {
             onChange={(e) => setComment(e.target.value)}
             required
           />
-          <button id="submit" disabled={!joinedGroup}>
-            등록
-          </button>
+          <button id="submit">확인</button>
         </CommentContainer>
       </form>
     </Container>
   );
 };
 
-export default CommentForm;
+export default CommentEditForm;
 
 const Container = styled.div`
   min-width: 360px;
@@ -54,7 +52,6 @@ const Container = styled.div`
 `;
 
 const CommentContainer = styled.div`
-  margin-top: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -76,11 +73,14 @@ const CommentContainer = styled.div`
     width: 40px;
     height: 38px;
     cursor: pointer;
-    color: #ffffff;
+    color: #ffb564;
     font-weight: bold;
-    background-color: #ffb564;
-    border: none;
-
+    border: 1px solid #ffb564;
+    background-color: #ffffff;
     box-shadow: 1.5px 1.5px 1.5px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      background-color: #e3e3e3;
+    }
   }
 `;

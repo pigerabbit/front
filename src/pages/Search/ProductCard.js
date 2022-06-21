@@ -6,48 +6,33 @@ import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
-const ProductCard = ({ product, setConfirmationIcon }) => {
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
+
+const ProductCard = ({ product }) => {
   const [wish, setWish] = useState(product.toggle ? true : false);
 
   const navigate = useNavigate();
+  const showConfirmationIcon = useShowComfirmationIcon();
 
-  const unShowIcon = () => {
-    setTimeout(() => {
-      setConfirmationIcon((cur) => {
-        return { ...cur, show: false };
-      });
-    }, 1600);
-  };
-
-  const confirmWish = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#FF6A6A;",
-      color: "white",
-      icon: fullHeart,
-      text: "찜!",
-    });
-
-    unShowIcon();
-  };
-
-  const confirmUnwish = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#ABABAB;",
-      color: "white",
-      icon: fullHeart,
-      text: "찜 취소",
-    });
-
-    unShowIcon();
+  const handleCardClick = () => {
+    navigate(`/products/${product.id}`);
   };
 
   const handleToggle = async () => {
     if (!wish) {
-      confirmWish();
+      showConfirmationIcon({
+        backgroundColor: "#FF6A6A;",
+        color: "white",
+        icon: fullHeart,
+        text: "찜!",
+      });
     } else {
-      confirmUnwish();
+      showConfirmationIcon({
+        backgroundColor: "#ABABAB;",
+        color: "white",
+        icon: fullHeart,
+        text: "찜 취소",
+      });
     }
 
     await Api.put(`toggle/product/${product._id}`);
@@ -56,22 +41,11 @@ const ProductCard = ({ product, setConfirmationIcon }) => {
 
   return (
     <Container wish={wish}>
-      <Image
-        className="image"
-        url={product.images}
-        onClick={() => {
-          navigate(`/products/${product.id}`);
-        }}
-      />
+      <Image className="image" url={product.images} onClick={handleCardClick} />
 
-      <Information
-        onClick={() => {
-          navigate(`/products/${product.id}`);
-        }}
-      >
+      <Information onClick={handleCardClick}>
         <Title>
           <span>[{product?.userInfo?.business[0].businessName}]</span>
-          {/* <span>덴탈마스크 100매 덴탈마스크</span> */}
           <span>
             {product.name.slice(0, 28)}
             {product.name.length > 28 && ".."}

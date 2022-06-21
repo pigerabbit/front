@@ -8,36 +8,49 @@ const AddressInfo = ({
   setContact,
   setAddress,
   type,
+  isComplete,
 }) => {
   return (
-    <Container>
+    <Container isComplete={isComplete}>
       <h3>{type === "coupon" ? "이용권 정보" : "배송지 정보"}</h3>
       <Content>
         <Info>
           <h3>받는 사람</h3>
-          <InfoInput
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          {isComplete ? (
+            <p>{name}</p>
+          ) : (
+            <InfoInput
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          )}
         </Info>
         <Info>
           <h3>연락처</h3>
-          <InfoInput
-            type="text"
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
-          />
+          {isComplete ? (
+            <p>{contact}</p>
+          ) : (
+            <InfoInput
+              type="text"
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+            />
+          )}
         </Info>
         <Info>
           <h3>{type === "coupon" ? "이용권 사용지 주소" : "공구 주소"}</h3>
-          <InfoInput
-            type="text"
-            value={address}
-            isLocal={type === "local"}
-            onChange={(e) => setAddress(e.target.value)}
-            disabled={type === "local"}
-          />
+          {isComplete ? (
+            <p>{address}</p>
+          ) : (
+            <InfoInput
+              type="text"
+              value={address}
+              isLocal={type === "local"}
+              onChange={(e) => setAddress(e.target.value)}
+              disabled={type === "local"}
+            />
+          )}
         </Info>
       </Content>
     </Container>
@@ -54,6 +67,11 @@ const Container = styled.div`
   background: #fff;
   margin-top: 70px;
   padding: 3%;
+  ${(props) =>
+    props.isComplete &&
+    css`
+      margin-top: 10px;
+    `}
   @media (max-width: 500px) {
     > h3 {
       font-size: 15px;

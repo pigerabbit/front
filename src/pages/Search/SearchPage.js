@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
@@ -13,62 +13,61 @@ import SearchTrending from "./SearchTrending";
 import SearchGroupCard from "./SearchGroupCard";
 
 const SearchPage = () => {
-  const [IsTrendingPage, setIsTrendingPage] = useState(true);
-  const [deadlineProduct, setDeadlineProduct] = useState({});
-  const slideRef = useRef(null);
+  const [isTrendingPage, setIsTrendingPage] = useState(true);
+  const [deadlineGroup, setDeadlineGroup] = useState(null);
 
-  useEffect(() => {
-    slideRef.current.style.transition = "all 0.5s ease-in-out";
-    slideRef.current.style.transform = `translateX(-${
-      IsTrendingPage ? 0 : 1
-    }00%)`;
-  }, [IsTrendingPage]);
-
-  const fetchProducts = async () => {
+  const fetchGroups = async () => {
     const res = await Api.get("groups/sort/remainedTime");
-    const deadlineProducts = res.data.payload;
-    const randomNum = Math.floor(Math.random() * deadlineProducts.length);
-    setDeadlineProduct(deadlineProducts[randomNum]);
+    const deadlineGroups = res.data.payload;
+    const randomNum = Math.floor(Math.random() * deadlineGroups.length);
+    setDeadlineGroup(deadlineGroups[randomNum]);
   };
   useEffect(() => {
-    fetchProducts();
+    fetchGroups();
   }, []);
 
   return (
     <Container>
       <SearchInputForm />
       <SearchContentContainer>
-        <SliderContainer ref={slideRef}>
+        <SliderContainer isTrendingPage={isTrendingPage}>
           <SearchTrending />
           <SearchCurrent />
         </SliderContainer>
       </SearchContentContainer>
-      {!IsTrendingPage && (
-        <PrevBtn onClick={() => setIsTrendingPage(true)}>
+      {!isTrendingPage && (
+        <StyledButton
+          onClick={() => setIsTrendingPage(true)}
+          isTrendingPage={isTrendingPage}
+        >
           <FontAwesomeIcon
             icon={faChevronLeft}
             style={{ background: "transparent" }}
           />
-        </PrevBtn>
+        </StyledButton>
       )}
-      {IsTrendingPage && (
-        <NextBtn onClick={() => setIsTrendingPage(false)}>
+      {isTrendingPage && (
+        <StyledButton
+          onClick={() => setIsTrendingPage(false)}
+          isTrendingPage={isTrendingPage}
+        >
           <FontAwesomeIcon
             icon={faChevronRight}
             style={{ background: "transparent" }}
           />
-        </NextBtn>
+        </StyledButton>
       )}
-      {deadlineProduct && (
+      {deadlineGroup && (
         <DeadLineContainer>
           <h3>마감 임박</h3>
           <SearchGroupCard
-            name={deadlineProduct.groupName}
-            price="10000"
-            salePrice="9000"
-            discountRate="10"
-            leftParticipants={deadlineProduct.remainedPersonnel}
-            deadline={deadlineProduct.deadline}
+            name={deadlineGroup.groupName}
+            image={deadlineGroup.productInfo.images}
+            price={deadlineGroup.productInfo.price}
+            salePrice={deadlineGroup.productInfo.salePrice}
+            discountRate={deadlineGroup.productInfo.discountRate}
+            leftParticipants={deadlineGroup.remainedPersonnel}
+            deadline={deadlineGroup.deadline}
           />
         </DeadLineContainer>
       )}
@@ -110,14 +109,18 @@ const SearchContentContainer = styled.div`
 const SliderContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
+  transition: all 0.5s ease-in-out;
   @media only screen and (max-width: 400px) {
     justify-content: flex-start;
     width: 300px;
     margin: auto;
+    transform: translateX(
+      -${(props) => (props.isTrendingPage ? "0px" : "100%")}
+    );
   }
 `;
 
-const PrevBtn = styled.div`
+const StyledButton = styled.div`
   visibility: hidden;
   pointer-events: none;
   @media only screen and (max-width: 500px) {
@@ -126,19 +129,15 @@ const PrevBtn = styled.div`
     position: absolute;
     font-size: 30px;
     top: 270px;
-    left: 10px;
   }
-`;
-
-const NextBtn = styled.div`
-  visibility: hidden;
-  pointer-events: none;
-  @media only screen and (max-width: 500px) {
-    visibility: visible;
-    pointer-events: auto;
-    position: absolute;
-    font-size: 30px;
-    top: 270px;
-    right: 10px;
-  }
+  ${(props) =>
+    props.isTrendingPage &&
+    css`
+      right: 10px;
+    `}
+  ${(props) =>
+    !props.isTrendingPage &&
+    css`
+      left: 10px;
+    `}
 `;
