@@ -14,7 +14,7 @@ import Notice from "pages/Main/Notice";
 import { useSelector } from "react-redux";
 
 const TabBar = () => {
-  const { isNoticeExist } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const [isOpenNotice, setIsOpenNotice] = useState(false);
 
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ const TabBar = () => {
       <Cricle shadow={true} width={110} color={"white"} bottom={0} />
       <Container>
         <Tab onClick={handleNoticeClick}>
-          {isNoticeExist && <Dot />}
+          {user?.alertsExist && <Dot />}
           <FontAwesomeIcon icon={faBell} size="2x" />
           <span>알림</span>
         </Tab>
