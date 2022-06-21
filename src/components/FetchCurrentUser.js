@@ -16,7 +16,7 @@ const FetchCurrentUser = ({ children }) => {
         const data = res.data.payload;
 
         dispatch(
-          login({ user: data.resultUser, isNoticeExist: data.alertExist })
+          login({ user: data.resultUser, isNoticeExist: data.alertsExist })
         );
       }
     } catch {

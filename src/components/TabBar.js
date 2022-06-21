@@ -11,8 +11,10 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 
 import Notice from "pages/Main/Notice";
+import { useSelector } from "react-redux";
 
 const TabBar = () => {
+  const { isNoticeExist } = useSelector((state) => state.user);
   const [isOpenNotice, setIsOpenNotice] = useState(false);
 
   const navigate = useNavigate();
@@ -21,20 +23,10 @@ const TabBar = () => {
     setIsOpenNotice(true);
   };
 
-  const handleWishlistClick = () => {
-    navigate("/wishlist");
-  };
-
-  const handleHomeClick = () => {
-    navigate("/");
-  };
-
-  const handlepPurchaselistClick = () => {
-    navigate("/purchaselist");
-  };
-
-  const handleMypageClick = () => {
-    navigate("/mypage");
+  const handleTabClick = (url) => {
+    return () => {
+      navigate(url);
+    };
   };
 
   return (
@@ -44,10 +36,12 @@ const TabBar = () => {
       <Cricle shadow={true} width={110} color={"white"} bottom={0} />
       <Container>
         <Tab onClick={handleNoticeClick}>
+          {isNoticeExist && <Dot />}
           <FontAwesomeIcon icon={faBell} size="2x" />
           <span>알림</span>
         </Tab>
-        <Tab onClick={handleWishlistClick}>
+
+        <Tab onClick={handleTabClick("/wishlist")}>
           <FontAwesomeIcon icon={faHeart} size="2x" />
           <span>찜</span>
         </Tab>
@@ -58,18 +52,19 @@ const TabBar = () => {
             width={80}
             color={"#FFB564"}
             bottom={15}
-            onClick={handleHomeClick}
+            onClick={handleTabClick("/")}
           >
             <FontAwesomeIcon icon={faHouseChimney} size="2x" />
             <span>동구라미</span>
           </Cricle>
         </CriclesContainer>
 
-        <Tab onClick={handlepPurchaselistClick}>
+        <Tab onClick={handleTabClick("/purchaselist")}>
           <FontAwesomeIcon icon={faFileLines} size="2x" />
           <span>공구내역</span>
         </Tab>
-        <Tab onClick={handleMypageClick}>
+
+        <Tab onClick={handleTabClick("/mypage")}>
           <FontAwesomeIcon icon={faUser} size="2x" />
           <span>my동구</span>
         </Tab>
@@ -149,6 +144,7 @@ const Cricle = styled.div`
 
 const Tab = styled.div`
   cursor: pointer;
+  position: relative;
   width: 60px;
   @media (max-width: 440px) {
     width: 45px;
@@ -170,4 +166,18 @@ const Tab = styled.div`
   span {
     margin-top: 10px;
   }
+`;
+
+const Dot = styled.div`
+  position: absolute;
+  top: 10%;
+  right: 15%;
+  width: 6px;
+  height: 6px;
+  @media (max-width: 440px) {
+    width: 5px;
+    height: 5px;
+  }
+  border-radius: 50%;
+  background-color: red;
 `;
