@@ -57,7 +57,7 @@ const ProductsPage = () => {
           page: page,
           perPage: 6,
           search: search,
-          option: option,
+          option: option.eng,
         });
 
         setProducts((cur) => [...cur, ...res.data.payload.resultList]);
