@@ -48,22 +48,29 @@ const OpenGroupPaymentPage = () => {
         quantity: count,
       });
       if (res.data.success) {
-        const groupId = res.data.payload.groupId;
-        postPaymentType(groupId);
+        const { groupId } = res.data.payload;
+        postPayment(groupId);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const postPaymentType = async (groupId) => {
+  const postPayment = async (groupId) => {
     try {
-      const res = await Api.put(`groups/${groupId}/payment`, {
+      const group = await Api.put(`groups/${groupId}/payment`, {
         payment: payment,
       });
-      if (res.data.success) {
-        // if(res.data.payload.groupType==='coupon'){
-        //   postCouponPayment(groupId)
+      if (group.data.success) {
+        // if (type === "coupon") {
+        //   const { _id } = group.data.payload;
+        //   const updatedGroup = await Api.post("payments", {
+        //     groupId: _id,
+        //   });
+        //   if (updatedGroup.data.success) {
+        //     navigate(`/group/payment/${groupId}`);
+        //     return;
+        //   }
         // }
         navigate(`/group/payment/${groupId}`);
       }
@@ -71,14 +78,6 @@ const OpenGroupPaymentPage = () => {
       console.log(err);
     }
   };
-
-  // const postCouponPayment=async()=>{
-  //   try{
-  //     const res=await Api.post('payments',{})
-  //   }catch(err){
-  //     console.log(err)
-  //   }
-  // }
 
   const nameValid = name?.length > 0;
   const contactValid = contact.length > 0;

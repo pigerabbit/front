@@ -41,27 +41,36 @@ const JoinGroupPaymentPage = () => {
         quantity: count,
       });
       if (res.data.success) {
-        const groupId = res.data.payload.groupId;
-        postPaymentType(groupId);
+        const { groupId } = res.data.payload;
+        postPayment(groupId);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  const postPaymentType = async (groupId) => {
+  const postPayment = async (groupId) => {
     try {
-      const res = await Api.put(`groups/${groupId}/payment`, {
+      const groupData = await Api.put(`groups/${groupId}/payment`, {
         payment: payment,
       });
-      if (res.data.success) {
+      if (groupData.data.success) {
+        // if (group.groupType === "coupon") {
+        //   const { _id } = groupData.data.payload;
+        //   const updatedGroup = await Api.post("payments", {
+        //     groupId: _id,
+        //   });
+        //   if (updatedGroup.data.success) {
+        //     navigate(`/group/payment/${groupId}`);
+        //     return;
+        //   }
+        // }
         navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {
       console.log(err);
     }
   };
-
   const nameValid = name.length > 0;
   const contactValid = contact.length > 0;
   const addressValid = address.length > 0;
