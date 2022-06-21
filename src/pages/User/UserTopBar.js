@@ -31,8 +31,6 @@ const UserTopBar = ({ pageName }) => {
 export default UserTopBar;
 
 const TopBar = styled.div`
-  position: absolute;
-  top: 0;
   background-color: white;
   width: 100%;
   height: 18vw;
@@ -40,7 +38,7 @@ const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 4px -4px #f79831;
+  box-shadow: 0 1px 4px -1px #ababab;
   color: #939393;
   font-size: 4.5vw;
   @media (min-width: 500px) {
