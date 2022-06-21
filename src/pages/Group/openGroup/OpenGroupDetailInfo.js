@@ -25,6 +25,7 @@ const OpenGroupDetailInfo = ({ product, type }) => {
       setLocation(product.userInfo.business[0].businessLocation);
     }
   }, [product]);
+
   return (
     <>
       <DetailInfoContainer>
