@@ -18,7 +18,7 @@ const Notice = () => {
 
   const getNoticeList = async () => {
     const res = await Api.get("users", `${user.id}/alert`);
-    setNoticeList(res.data.payload[0].alertList);
+    setNoticeList(res.data.payload);
   };
 
   useEffect(() => {
