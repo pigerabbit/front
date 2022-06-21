@@ -10,7 +10,7 @@ import Category from "components/Category";
 import TabBar from "components/TabBar";
 import InfiniteScroll from "./InfiniteScroll";
 import LoadingSpinner from "components/LoadingSpinner";
-import useDidMountEffect from "hooks/useDidMountEffect";
+import useUpdateEffect from "hooks/useUpdateEffect";
 
 const options = [
   { eng: "groups", kor: "추천순" },
@@ -71,7 +71,7 @@ const ProductsPage = () => {
     setLoading(false);
   };
 
-  useDidMountEffect(() => {
+  useUpdateEffect(() => {
     setProducts([]);
     setTotalPage(1);
     setPage(0);

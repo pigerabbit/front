@@ -122,7 +122,7 @@ export default HomeTab;
 
 const Container = styled.div`
   min-height: 70%;
-  margin-bottom: 150px;
+  margin-bottom: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
