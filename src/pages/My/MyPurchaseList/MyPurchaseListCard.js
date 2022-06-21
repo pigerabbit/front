@@ -20,6 +20,7 @@ const MyPurchaseListCard = ({
 }) => {
   const navigate = useNavigate();
   const myInfo = group.participants.filter((p) => p.userId === userId);
+  console.log(group.type);
 
   const handleClick = () => {
     setIsOpenPopUpCard(true);
@@ -74,7 +75,7 @@ const MyPurchaseListCard = ({
           {isOpenTab ? "공구 중지" : "참여 취소"}
         </CardButton>
       )}
-      {group.state === 1 && group.type === "coupon" && (
+      {group.state === 1 && group.groupType === "coupon" && (
         <CardButton bgColor="#ff9b2f" onClick={moveToQRCode}>
           QR 코드
         </CardButton>
