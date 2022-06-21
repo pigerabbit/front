@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const OpenGroupBasicInfo = ({ product, type }) => {
   const { businessLocation, businessName } = product.userInfo.business[0];
+
   return (
     <Container>
       <p>공구 기본 정보</p>
