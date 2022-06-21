@@ -32,7 +32,7 @@ const SearchPage = () => {
   const fetchGroups = async () => {
     const res = await Api.get("groups/sort/remainedTime");
     const deadlineGroups = res.data.payload;
-    if (deadlineGroup.length !== 0) {
+    if (deadlineGroups.length !== 0) {
       const randomNum = Math.floor(Math.random() * deadlineGroups.length);
       setDeadlineGroup(deadlineGroups[randomNum]);
     }
@@ -41,7 +41,6 @@ const SearchPage = () => {
     fetchGroups();
   }, []);
 
-  console.log(deadlineGroup);
   return (
     <Container>
       <SearchInputForm />

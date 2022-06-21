@@ -1,47 +1,62 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { productList } from "./SearchMockData";
+//import { productList } from "./SearchMockData";
 import SearchProductCard from "./SearchProductCard";
 import * as Api from "api";
 
 const SearchCurrent = () => {
   const [currentKeyword, setCurrentKeyword] = useState([]);
-  const fetchSearchWords = async () => {
+  const [productList, setProductList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getSearchCurrent = async () => {
+    const getSearchWords = Api.get("toggle/searchWords");
+    const getSearchProducts = Api.get("toggle/viewedProducts");
+
     try {
-      const res = await Api.get("toggle/searchWords");
-      setCurrentKeyword(res.data.reverse());
+      setLoading(true);
+
+      const [currentKeyword, productList] = await Promise.all([
+        getSearchWords,
+        getSearchProducts,
+      ]);
+
+      setCurrentKeyword(currentKeyword.data.reverse());
+      setProductList(
+        [...new Set(productList.data.map(JSON.stringify))].map(JSON.parse)
+      );
+
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
-    fetchSearchWords();
+    getSearchCurrent();
   }, []);
   return (
     <Container>
-      <CurrentKeywordContainer>
-        <h4>최근 검색어</h4>
-        <CurrentKeywordWrapper>
-          {currentKeyword.map((k, idx) => (
-            <Keyword key={idx}>{k}</Keyword>
-          ))}
-          {currentKeyword.length === 0 && <p>검색 기록이 없습니다.</p>}
-        </CurrentKeywordWrapper>
-      </CurrentKeywordContainer>
-      <CurrentProductContainer>
-        <h4>최근 본 판매상품</h4>
-        <CurrentProductWrapper>
-          {productList.map((product) => (
-            <SearchProductCard
-              key={product.id}
-              name={product.name}
-              price={product.price}
-              salePrice={product.salePrice}
-              discountRate={product.discountRate}
-            />
-          ))}
-        </CurrentProductWrapper>
-      </CurrentProductContainer>
+      {!loading && (
+        <>
+          <CurrentKeywordContainer>
+            <h4>최근 검색어</h4>
+            <CurrentKeywordWrapper>
+              {currentKeyword.map((k, idx) => (
+                <Keyword key={idx}>{k}</Keyword>
+              ))}
+              {currentKeyword.length === 0 && <p>검색 기록이 없습니다.</p>}
+            </CurrentKeywordWrapper>
+          </CurrentKeywordContainer>
+          <CurrentProductContainer>
+            <h4>최근 본 판매상품</h4>
+            <CurrentProductWrapper>
+              {productList.map((product) => (
+                <SearchProductCard key={product.id} product={product} />
+              ))}
+            </CurrentProductWrapper>
+          </CurrentProductContainer>
+        </>
+      )}
     </Container>
   );
 };
