@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
+import SetQuantityButtons from "components/SetQuantityButtons";
+
 const BuyingProductWindow = ({
   group,
   salePrice,
@@ -11,13 +13,6 @@ const BuyingProductWindow = ({
   const navigate = useNavigate();
 
   const [quantity, setQuantity] = useState(1);
-
-  const onChange = (e) => {
-    if (e.target.value === 0) setQuantity(1);
-    setQuantity(
-      e.target.value > remainedPersonnel ? remainedPersonnel : e.target.value
-    );
-  };
 
   return (
     <Container>
@@ -30,37 +25,11 @@ const BuyingProductWindow = ({
           />
         </div>
         <div id="quantity">
-          <Quantity>
-            <button
-              onClick={() => {
-                setQuantity((cur) => (cur === 1 ? cur : cur - 1));
-              }}
-            >
-              -
-            </button>
-            <input
-              type="number"
-              value={quantity}
-              onChange={onChange}
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-                } else if (event.key === "0" && quantity === "") {
-                  setQuantity(1);
-                  event.preventDefault();
-                }
-              }}
-            />
-            <button
-              onClick={() => {
-                setQuantity((cur) =>
-                  cur === remainedPersonnel ? cur : cur + 1
-                );
-              }}
-            >
-              +
-            </button>
-          </Quantity>
+          <SetQuantityButtons
+            quantity={quantity}
+            setQuantity={setQuantity}
+            maxQuantity={remainedPersonnel}
+          />
         </div>
         <div id="result">
           <ShowQuantity>
@@ -154,49 +123,6 @@ const Cancel = styled.div`
   }
   :after {
     transform: rotate(-45deg);
-  }
-`;
-
-const Quantity = styled.div`
-  width: 114px;
-  height: 34px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  background-color: gray;
-  border-top: 1px solid #dde0e3;
-  border-bottom: 1px solid #dde0e3;
-
-  > button {
-    width: 34px;
-    height: 100%;
-    background-color: #f1f2f4;
-    font-size: 20px;
-    cursor: pointer;
-    border: none;
-    border-right: 1px solid #dde0e3;
-    border-left: 1px solid #dde0e3;
-  }
-
-  > input {
-    width: 44px;
-    text-align: center;
-    line-height: 33px;
-    margin: 0;
-    font-weight: bold;
-    font-size: 12px;
-    border: none;
-  }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  input[type="number"] {
-    -moz-appearance: textfield;
   }
 `;
 
