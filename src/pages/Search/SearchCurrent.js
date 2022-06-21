@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-//import { productList } from "./SearchMockData";
 import SearchProductCard from "./SearchProductCard";
 import * as Api from "api";
 
