@@ -102,6 +102,38 @@ const ProductRegisterPage = () => {
     };
   };
 
+  const postImages = async (productId) => {
+    try {
+      const ImagesFormData = new FormData();
+      ImagesFormData.append("images", productImage);
+
+      const descriptionImageFormData = new FormData();
+      descriptionImageFormData.append("descriptionImg", descriptionImage);
+
+      const detailImageFormData = new FormData();
+      detailImageFormData.append("detailImg", detailInfoImage);
+
+      const imagesReq = productImage
+        ? Api.postImg(`products/${productId}/images`, ImagesFormData)
+        : null;
+      const descriptionImgReq = descriptionImage
+        ? Api.postImg(
+            `products/${productId}/descriptionImg`,
+            descriptionImageFormData
+          )
+        : null;
+      const detailImgReq = detailInfoImage
+        ? Api.postImg(`products/${productId}/detailImg`, detailImageFormData)
+        : null;
+
+      await Promise.all([imagesReq, descriptionImgReq, detailImgReq]);
+
+      navigate(`/markets/${user.id}`, { replace: true });
+    } catch (e) {
+      // 에러처리
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -134,35 +166,7 @@ const ProductRegisterPage = () => {
         await Api.put(`products/${productId}`, bodyData);
       }
 
-      try {
-        const ImagesFormData = new FormData();
-        ImagesFormData.append("images", productImage);
-
-        const descriptionImageFormData = new FormData();
-        descriptionImageFormData.append("descriptionImg", descriptionImage);
-
-        const detailImageFormData = new FormData();
-        detailImageFormData.append("detailImg", detailInfoImage);
-
-        const imagesReq = productImage
-          ? Api.postImg(`products/${productId}/images`, ImagesFormData)
-          : null;
-        const descriptionImgReq = descriptionImage
-          ? Api.postImg(
-              `products/${productId}/descriptionImg`,
-              descriptionImageFormData
-            )
-          : null;
-        const detailImgReq = detailInfoImage
-          ? Api.postImg(`products/${productId}/detailImg`, detailImageFormData)
-          : null;
-
-        await Promise.all([imagesReq, descriptionImgReq, detailImgReq]);
-
-        navigate(`/markets/${user.id}`, { replace: true });
-      } catch (e) {
-        // 에러처리
-      }
+      postImages(productId);
     } catch (error) {
       // 에러처리
     }
