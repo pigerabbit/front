@@ -15,41 +15,39 @@ const BuyingProductWindow = ({
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <Container>
-      <CardContainer>
-        <div id="cancel">
-          <Cancel
-            onClick={() => {
-              setShowBuyingProduct(false);
-            }}
-          />
-        </div>
-        <div id="quantity">
-          <SetQuantityButtons
-            quantity={quantity}
-            setQuantity={setQuantity}
-            maxQuantity={remainedPersonnel}
-          />
-        </div>
-        <div id="result">
-          <ShowQuantity>
-            총 구매수량 <p>{quantity}</p>개
-          </ShowQuantity>
-          <Total>합계 {(quantity * salePrice).toLocaleString()}원</Total>
-        </div>
-        <Button
+    <CardContainer>
+      <div id="cancel">
+        <Cancel
           onClick={() => {
-            navigate("/group/join/pay", {
-              state: {
-                data: { group, count: quantity },
-              },
-            });
+            setShowBuyingProduct(false);
           }}
-        >
-          구매하기
-        </Button>
-      </CardContainer>
-    </Container>
+        />
+      </div>
+      <div id="quantity">
+        <SetQuantityButtons
+          quantity={quantity}
+          setQuantity={setQuantity}
+          maxQuantity={remainedPersonnel}
+        />
+      </div>
+      <div id="result">
+        <ShowQuantity>
+          총 구매수량 <p>{quantity}</p>개
+        </ShowQuantity>
+        <Total>합계 {(quantity * salePrice).toLocaleString()}원</Total>
+      </div>
+      <Button
+        onClick={() => {
+          navigate("/group/join/pay", {
+            state: {
+              data: { group, count: quantity },
+            },
+          });
+        }}
+      >
+        구매하기
+      </Button>
+    </CardContainer>
   );
 };
 
@@ -64,25 +62,15 @@ const PopupAnimation = keyframes`
   }
 `;
 
-const Container = styled.div`
-  position: fixed;
-  width: 100%;
-  max-width: 770px;
-  min-width: 360px;
-  min-height: 100vh;
-  top: 0;
-  margin: 0 auto;
-  z-index: 10;
-`;
-
 const CardContainer = styled.div`
-  background: #ffffff;
-  border-radius: 10px 10px 0 0;
+  position: fixed;
   width: 100%;
   max-width: 770px;
   min-width: 360px;
   height: 250px;
-  position: fixed;
+
+  background: #ffffff;
+  border-radius: 10px 10px 0 0;
   z-index: 10;
   bottom: 0;
   animation: ${PopupAnimation} 0.7s ease-in-out;
