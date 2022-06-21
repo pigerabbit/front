@@ -77,14 +77,3 @@ const Container = styled.div`
   background-color: #f6f6f6;
   padding-bottom: 220px;
 `;
-
-const WishListTitle = styled.div`
-  width: 100%;
-  height: 75px;
-  background-color: #fff;
-  h2 {
-    text-align: center;
-    line-height: 75px;
-    color: #939393;
-  }
-`;
