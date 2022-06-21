@@ -6,12 +6,13 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import TabBar from "components/TabBar";
 
-const MyPageLayout = ({ children, pageName, previousPage }) => {
+const MyPageLayout = ({ children, pageName, previousPage, noTabBar }) => {
   const navigate = useNavigate();
 
   const handlePreviousBtnClick = () => {
     navigate(previousPage);
   };
+  console.log(noTabBar);
 
   return (
     <Container>
@@ -30,7 +31,7 @@ const MyPageLayout = ({ children, pageName, previousPage }) => {
 
       {children}
 
-      <TabBar />
+      {!noTabBar && <TabBar />}
     </Container>
   );
 };

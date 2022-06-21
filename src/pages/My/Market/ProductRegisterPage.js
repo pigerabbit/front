@@ -172,6 +172,7 @@ const ProductRegisterPage = () => {
     <MyPageLayout
       pageName={!state ? "판매 등록" : "판매 편집"}
       previousPage={`/markets/${user.id}`}
+      noTabBar={true}
     >
       {isOpenCategoryPopup && (
         <CategoryPopup
@@ -406,8 +407,6 @@ const ProductRegisterPage = () => {
           등록하기
         </SubmitButtom>
       </form>
-
-      <Section />
     </MyPageLayout>
   );
 };
@@ -494,7 +493,7 @@ const SubmitButtom = styled.button`
   ${({ disabled }) => !disabled && "cursor: pointer;"};
   box-sizing: border-box;
   width: 40%;
-  margin: 3% 30% 8% 30%;
+  margin: 3% 30% 3% 30%;
   padding: 3%;
   border: none;
   border-radius: 5px;
