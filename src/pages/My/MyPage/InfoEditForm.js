@@ -64,39 +64,48 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
     return false;
   };
 
-  const handleUpdate = (updateValueObj, setValueValid, password = false) => {
-    return async () => {
-      try {
-        if (isEmptyValue(updateValueObj)) return;
+  const handleUpdate = async (
+    updateValueObj,
+    setValueValid,
+    isPassword = false
+  ) => {
+    try {
+      if (isEmptyValue(updateValueObj)) return;
 
-        const endpoint = password
-          ? `users/${user.id}/changePassword`
-          : `users/${user.id}`;
-        const res = await Api.put(endpoint, updateValueObj);
+      const endpoint = isPassword
+        ? `users/${user.id}/changePassword`
+        : `users/${user.id}`;
+      const res = await Api.put(endpoint, updateValueObj);
 
-        if (!password) {
-          dispatch(update(res.data.payload));
-        } else {
-          setCurrentPassword("");
-          setNewPassword("");
-          setConfirmPassword("");
-        }
-
-        showConfirmationIcon({
-          backgroundColor: "#70BD86;",
-          color: "white",
-          icon: faCheck,
-          text: "완료!",
-        });
-      } catch (error) {
-        setValueValid("again");
-        showConfirmationIcon({
-          backgroundColor: "#FF6A6A;",
-          color: "white",
-          icon: faXmark,
-          text: "다시!",
-        });
+      if (!isPassword) {
+        dispatch(update(res.data.payload));
+      } else {
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
       }
+
+      showConfirmationIcon({
+        backgroundColor: "#70BD86;",
+        color: "white",
+        icon: faCheck,
+        text: "완료!",
+      });
+    } catch (error) {
+      setValueValid("again");
+      showConfirmationIcon({
+        backgroundColor: "#FF6A6A;",
+        color: "white",
+        icon: faXmark,
+        text: "다시!",
+      });
+    }
+  };
+
+  const handleSubmit = (updateValueObj, setValueValid, isPassword = false) => {
+    return (e) => {
+      e.preventDefault();
+      handleUpdate(updateValueObj, setValueValid, isPassword);
     };
   };
 
@@ -118,7 +127,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
 
   return (
     <Container>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={handleSubmit({ name }, setNameValid)}>
         <InputContainer>
           <div>이름</div>
           <input
@@ -131,15 +140,18 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
-        <SubmitButton
-          onClick={handleUpdate({ name }, setNameValid)}
-          disabled={!nameValid}
-        >
+        <SubmitButton type="submit" disabled={!nameValid}>
           이름 변경
         </SubmitButton>
       </form>
 
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form
+        onSubmit={handleSubmit(
+          { currentPassword, newPassword },
+          setPasswordValid,
+          true
+        )}
+      >
         <InputContainer>
           <div>현재 비밀번호</div>
           <input
@@ -178,11 +190,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
           </CheckIcon>
         </InputContainer>
         <SubmitButton
-          onClick={handleUpdate(
-            { currentPassword, newPassword },
-            setPasswordValid,
-            true
-          )}
+          type="submit"
           disabled={
             !(passwordValid && newPasswordValid && confirmPasswordValid)
           }
@@ -191,7 +199,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
         </SubmitButton>
       </form>
 
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={handleSubmit({ address: address + " " + detailAddress })}>
         <InputContainer>
           <div>주소</div>
           <input
@@ -220,7 +228,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
           </CheckIcon>
         </InputContainer>
         <SubmitButton
-          onClick={handleUpdate({ address: address + " " + detailAddress })}
+          type="submit"
           disabled={!(addressValid && detailAddressValid)}
         >
           주소 변경
