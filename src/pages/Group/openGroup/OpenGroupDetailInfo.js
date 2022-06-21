@@ -24,7 +24,7 @@ const OpenGroupDetailInfo = ({ product, type }) => {
     if (product && type === "coupon") {
       setLocation(product.userInfo.business[0].businessLocation);
     }
-  }, [product]);
+  }, [product, type]);
 
   return (
     <>
