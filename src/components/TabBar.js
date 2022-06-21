@@ -11,8 +11,10 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 
 import Notice from "pages/Main/Notice";
+import { useSelector } from "react-redux";
 
 const TabBar = () => {
+  const { isNoticeExist } = useSelector((state) => state.user);
   const [isOpenNotice, setIsOpenNotice] = useState(false);
 
   const navigate = useNavigate();
@@ -44,9 +46,11 @@ const TabBar = () => {
       <Cricle shadow={true} width={110} color={"white"} bottom={0} />
       <Container>
         <Tab onClick={handleNoticeClick}>
+          {isNoticeExist && <Dot />}
           <FontAwesomeIcon icon={faBell} size="2x" />
           <span>알림</span>
         </Tab>
+
         <Tab onClick={handleWishlistClick}>
           <FontAwesomeIcon icon={faHeart} size="2x" />
           <span>찜</span>
@@ -69,6 +73,7 @@ const TabBar = () => {
           <FontAwesomeIcon icon={faFileLines} size="2x" />
           <span>공구내역</span>
         </Tab>
+
         <Tab onClick={handleMypageClick}>
           <FontAwesomeIcon icon={faUser} size="2x" />
           <span>my동구</span>
@@ -149,6 +154,7 @@ const Cricle = styled.div`
 
 const Tab = styled.div`
   cursor: pointer;
+  position: relative;
   width: 60px;
   @media (max-width: 440px) {
     width: 45px;
@@ -170,4 +176,18 @@ const Tab = styled.div`
   span {
     margin-top: 10px;
   }
+`;
+
+const Dot = styled.div`
+  position: absolute;
+  top: 10%;
+  right: 15%;
+  width: 6px;
+  height: 6px;
+  @media (max-width: 440px) {
+    width: 5px;
+    height: 5px;
+  }
+  border-radius: 50%;
+  background-color: red;
 `;
