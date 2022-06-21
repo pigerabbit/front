@@ -21,17 +21,17 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState(
-    user?.phoneNumber.slice(0, 3) +
+    user?.phoneNumber?.slice(0, 3) +
       "-" +
-      user?.phoneNumber.slice(3, 7) +
+      user?.phoneNumber?.slice(3, 7) +
       "-" +
-      user?.phoneNumber.slice(7, 11) || ""
+      user?.phoneNumber?.slice(7, 11) || ""
   );
   const [address, setAddress] = useState(
-    user?.address.split(") ")[0] + ")" || ""
+    user?.address?.split(") ")[0] + ")" || ""
   );
   const [detailAddress, setDetailAddress] = useState(
-    user?.address.split(") ")[1] || ""
+    user?.address?.split(") ")[1] || ""
   );
 
   const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
