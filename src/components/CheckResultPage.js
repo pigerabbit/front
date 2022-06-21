@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import * as Api from "api";
 
-const ResultView = ({ state }) => {
-  return <div>{state}</div>;
-};
+import CouponSuccessPage from "./CouponSuccessPage";
+import CouponFailPage from "./CouponFailPage";
 
 const CheckResultPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = location.state;
+  const isSuccess = location.state.success;
 
   return (
     <Container>
-      <ResultView state={state} />
+      {isSuccess ? <CouponSuccessPage /> : <CouponFailPage />}
     </Container>
   );
 };

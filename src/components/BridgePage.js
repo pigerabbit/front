@@ -15,13 +15,15 @@ const BridgePage = () => {
       const res = await Api.get(`payments/${groupObjId}/${userId}`);
       if (res.data.success) {
         try {
+          const group = res.data.payload.group;
+          console.log(res.data.payload);
           const paymentId = res.data.payload.paymentId;
           const resUse = await Api.put(`payments/${paymentId}`, { used: true });
           if (resUse.data.success) {
-            navigate("/check/result", { state: "success" });
+            navigate("/check/result", { state: { success: true } });
           }
         } catch (e) {
-          navigate("/check/result", { state: "fail" });
+          navigate("/check/result", { state: { success: false } });
         }
       }
     } catch (e) {
