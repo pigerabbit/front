@@ -55,16 +55,16 @@ const JoinGroupPaymentPage = () => {
         payment: payment,
       });
       if (groupData.data.success) {
-        if (group.groupType === "coupon") {
-          const { _id } = groupData.data.payload;
-          const updatedGroup = await Api.post("payments", {
-            groupId: _id,
-          });
-          if (updatedGroup.data.success) {
-            navigate(`/group/payment/${groupId}`);
-            return;
-          }
-        }
+        // if (group.groupType === "coupon") {
+        //   const { _id } = groupData.data.payload;
+        //   const updatedGroup = await Api.post("payments", {
+        //     groupId: _id,
+        //   });
+        //   if (updatedGroup.data.success) {
+        //     navigate(`/group/payment/${groupId}`);
+        //     return;
+        //   }
+        // }
         navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {

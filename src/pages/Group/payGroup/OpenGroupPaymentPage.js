@@ -62,16 +62,16 @@ const OpenGroupPaymentPage = () => {
         payment: payment,
       });
       if (group.data.success) {
-        if (type === "coupon") {
-          const { _id } = group.data.payload;
-          const updatedGroup = await Api.post("payments", {
-            groupId: _id,
-          });
-          if (updatedGroup.data.success) {
-            navigate(`/group/payment/${groupId}`);
-            return;
-          }
-        }
+        // if (type === "coupon") {
+        //   const { _id } = group.data.payload;
+        //   const updatedGroup = await Api.post("payments", {
+        //     groupId: _id,
+        //   });
+        //   if (updatedGroup.data.success) {
+        //     navigate(`/group/payment/${groupId}`);
+        //     return;
+        //   }
+        // }
         navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {
