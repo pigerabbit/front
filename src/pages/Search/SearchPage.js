@@ -12,6 +12,19 @@ import SearchInputForm from "./SearchInputForm";
 import SearchTrending from "./SearchTrending";
 import SearchGroupCard from "./SearchGroupCard";
 
+const Button = ({ isTrendingPage, setIsTrendingPage }) => {
+  const icon = isTrendingPage ? faChevronRight : faChevronLeft;
+
+  return (
+    <StyledButton
+      onClick={() => setIsTrendingPage(!isTrendingPage)}
+      isTrendingPage={isTrendingPage}
+    >
+      <FontAwesomeIcon icon={icon} style={{ background: "transparent" }} />
+    </StyledButton>
+  );
+};
+
 const SearchPage = () => {
   const [isTrendingPage, setIsTrendingPage] = useState(true);
   const [deadlineGroup, setDeadlineGroup] = useState(null);
@@ -19,13 +32,16 @@ const SearchPage = () => {
   const fetchGroups = async () => {
     const res = await Api.get("groups/sort/remainedTime");
     const deadlineGroups = res.data.payload;
-    const randomNum = Math.floor(Math.random() * deadlineGroups.length);
-    setDeadlineGroup(deadlineGroups[randomNum]);
+    if (deadlineGroup.length !== 0) {
+      const randomNum = Math.floor(Math.random() * deadlineGroups.length);
+      setDeadlineGroup(deadlineGroups[randomNum]);
+    }
   };
   useEffect(() => {
     fetchGroups();
   }, []);
 
+  console.log(deadlineGroup);
   return (
     <Container>
       <SearchInputForm />
@@ -35,54 +51,28 @@ const SearchPage = () => {
           <SearchCurrent />
         </SliderContainer>
       </SearchContentContainer>
-      {!isTrendingPage && (
-        <StyledButton
-          onClick={() => setIsTrendingPage(true)}
-          isTrendingPage={isTrendingPage}
-        >
-          <FontAwesomeIcon
-            icon={faChevronLeft}
-            style={{ background: "transparent" }}
-          />
-        </StyledButton>
-      )}
-      {isTrendingPage && (
-        <StyledButton
-          onClick={() => setIsTrendingPage(false)}
-          isTrendingPage={isTrendingPage}
-        >
-          <FontAwesomeIcon
-            icon={faChevronRight}
-            style={{ background: "transparent" }}
-          />
-        </StyledButton>
-      )}
-      {deadlineGroup && (
-        <DeadLineContainer>
-          <h3>마감 임박</h3>
-          <SearchGroupCard
-            name={deadlineGroup.groupName}
-            image={deadlineGroup.productInfo.images}
-            price={deadlineGroup.productInfo.price}
-            salePrice={deadlineGroup.productInfo.salePrice}
-            discountRate={deadlineGroup.productInfo.discountRate}
-            leftParticipants={deadlineGroup.remainedPersonnel}
-            deadline={deadlineGroup.deadline}
-          />
-        </DeadLineContainer>
-      )}
+      <Button
+        isTrendingPage={isTrendingPage}
+        setIsTrendingPage={setIsTrendingPage}
+      />
+      <DeadLineContainer isEmpty={!deadlineGroup}>
+        {deadlineGroup && (
+          <>
+            <h3>마감 임박</h3>
+            <SearchGroupCard group={deadlineGroup} />
+          </>
+        )}
+        {!deadlineGroup && (
+          <NoDeadlineGroupContainer>
+            <h3> 마감 임박 공동구매 상품이 없습니다</h3>
+          </NoDeadlineGroupContainer>
+        )}
+      </DeadLineContainer>
     </Container>
   );
 };
 
 export default SearchPage;
-
-const DeadLineContainer = styled.div`
-  width: 100%;
-  height: 30vh;
-  background: #f6f6f6;
-  padding: 3.5%;
-`;
 
 const Container = styled.div`
   position: relative;
@@ -140,4 +130,30 @@ const StyledButton = styled.div`
     css`
       left: 10px;
     `}
+`;
+
+const DeadLineContainer = styled.div`
+  width: 100%;
+  height: 30vh;
+  background: #f6f6f6;
+  padding: 3.5%;
+  @media only screen and (max-width: 500px) {
+    padding: ${(props) => (props.isEmpty ? "0" : "3.5%")};
+  }
+`;
+
+const NoDeadlineGroupContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  > h3 {
+    font-size: 25px;
+    color: #969696;
+  }
+  @media only screen and (max-width: 500px) {
+    > h3 {
+      font-size: 20px;
+    }
+  }
 `;
