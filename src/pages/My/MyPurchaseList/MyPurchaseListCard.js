@@ -20,7 +20,6 @@ const MyPurchaseListCard = ({
 }) => {
   const navigate = useNavigate();
   const myInfo = group.participants.filter((p) => p.userId === userId);
-  console.log(group.type);
 
   const handleClick = () => {
     setIsOpenPopUpCard(true);
