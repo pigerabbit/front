@@ -144,14 +144,14 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
   useEffect(() => {
     if (user) {
       setName(user.name);
-      setAddress(user.address.split(") ")[0] + ")");
-      setDetailAddress(user.address.split(") ")[1]);
+      setAddress(user.address?.split(") ")[0] + ")");
+      setDetailAddress(user.address?.split(") ")[1]);
       setPhoneNumber(
-        user.phoneNumber.slice(0, 3) +
+        user.phoneNumber?.slice(0, 3) +
           "-" +
-          user?.phoneNumber.slice(3, 7) +
+          user.phoneNumber?.slice(3, 7) +
           "-" +
-          user?.phoneNumber.slice(7, 11) || ""
+          user.phoneNumber?.slice(7, 11) || ""
       );
     }
   }, [user]);

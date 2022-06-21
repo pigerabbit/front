@@ -76,8 +76,8 @@ const BusinessAuthPage = () => {
 
     try {
       const res = await Api.post(`users/${user.id}/seller`, bodyData);
-      const updatedUser = res.data.payload;
-      dispatch(update(updatedUser));
+      const updatedUserData = res.data.payload;
+      dispatch(update(updatedUserData));
       navigate("/mypage");
     } catch (e) {
       if (e.response.data.error === "사업자 인증에 실패했습니다.") {
