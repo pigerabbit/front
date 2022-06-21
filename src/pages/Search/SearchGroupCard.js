@@ -1,25 +1,19 @@
 import styled from "styled-components";
 
 const SearchGroupCard = ({
-  name,
-  image,
-  price,
-  salePrice,
-  discountRate,
-  leftParticipants,
-  deadline,
+  group
 }) => {
   return (
     <CardContainer>
       <CardWrapper>
-        <CardImage image={image} />
+        <CardImage image={group.productInfo.images} />
         <CardContent>
-          <Name>{name}</Name>
-          <Price>{`${price}원`}</Price>
-          <DiscountRate>{`${discountRate}%`}</DiscountRate>
-          <SalePrice>{`${salePrice}원`}</SalePrice>
-          <Leftparticipants>{`${leftParticipants}개 남음`}</Leftparticipants>
-          <Deadline>{`${deadline}까지`}</Deadline>
+          <Name>{group.groupName}</Name>
+          <Price>{`${group.productInfo.price}원`}</Price>
+          <DiscountRate>{`${group.productInfo.discountRate}%`}</DiscountRate>
+          <SalePrice>{`${group.productInfo.salePrice}원`}</SalePrice>
+          <Leftparticipants>{`${group.remainedPersonnel}개 남음`}</Leftparticipants>
+          <Deadline>{`${group.deadline}까지`}</Deadline>
         </CardContent>
       </CardWrapper>
     </CardContainer>
