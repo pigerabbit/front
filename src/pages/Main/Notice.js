@@ -20,7 +20,7 @@ const Notice = ({ setIsOpenNotice }) => {
 
   const getNoticeList = async () => {
     const res = await Api.get("users", `${user.id}/alert`);
-    setNoticeList(res.data.payload);
+    setNoticeList(res.data.payload || []);
   };
 
   useEffect(() => {
