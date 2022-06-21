@@ -7,45 +7,46 @@ import ParticipatePurchaseListTab from "./ParticipatePurchaseListTab";
 import OpenPurchaseListTab from "./OpenPurchaseListTab";
 import * as Api from "api";
 import MyPageLayout from "../MyPageLayout";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const MyPurchaseListPage = () => {
   const { user } = useSelector((state) => state.user);
 
   const [tab, setTab] = useState("tab1");
-  const [participatedData, setParticipatedData] = useState(null);
-  const [openedData, setOpenedData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [participatedGroups, setParticipatedGroups] = useState([]);
+  const [openedGroups, setOpenedGroups] = useState([]);
 
-  const getOpenedGroupData = async () => {
+  const getGroupData = async () => {
+    const getOpenedGroups = Api.get("groups/manager/true");
+    const getParticipatedGroups = Api.get("groups/manager/false");
     try {
-      const res = await Api.get("groups/manager/true");
-      const data = res.data.payload;
-      setOpenedData(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+      setLoading(true);
 
-  const getParticipatedGroupData = async () => {
-    try {
-      const res = await Api.get("groups/manager/false");
-      const data = res.data.payload;
-      setParticipatedData(data);
+      const [openedGroups, participatedGroups] = await Promise.all([
+        getOpenedGroups,
+        getParticipatedGroups,
+      ]);
+
+      setParticipatedGroups(participatedGroups.data.payload);
+      setOpenedGroups(openedGroups.data.payload);
+
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
-    getParticipatedGroupData();
-    getOpenedGroupData();
+    getGroupData();
   }, []);
 
-  if (participatedData === null || openedData === null) {
-    return "loading...";
+  if (loading) {
+    return <LoadingSpinner />;
   }
 
   return (
-    <MyPageLayout pageName="공구 내역" previousPage="/mypage">
+    <MyPageLayout pageName="공구 내역" previousPage="/">
       <Container>
         <MyWishListTabs
           tab={tab}
@@ -54,12 +55,12 @@ const MyPurchaseListPage = () => {
         />
         {tab === "tab1" && (
           <ParticipatePurchaseListTab
-            participatedData={participatedData}
+            participatedData={participatedGroups}
             userId={user?.id}
           />
         )}
         {tab === "tab2" && (
-          <OpenPurchaseListTab openedData={openedData} userId={user?.id} />
+          <OpenPurchaseListTab openedData={openedGroups} userId={user?.id} />
         )}
       </Container>
     </MyPageLayout>

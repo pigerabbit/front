@@ -136,8 +136,14 @@ const DeadLineContainer = styled.div`
   height: 30vh;
   background: #f6f6f6;
   padding: 3.5%;
+  > h3 {
+    font-size: 20px;
+  }
   @media only screen and (max-width: 500px) {
     padding: ${(props) => (props.isEmpty ? "0" : "3.5%")};
+    > h3 {
+      font-size: 18px;
+    }
   }
 `;
 

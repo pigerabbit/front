@@ -8,6 +8,7 @@ const SelectGroupTypes = ({ type, product, isChecked }) => {
     <Container>
       {Object.entries(groupTypes).map(([key, value]) => (
         <ButtonContainer
+          key={key}
           isActive={productTypes[type].includes(key) && isChecked}
           onClick={() =>
             navigate(`/group/open?type=${value[1]}`, {
