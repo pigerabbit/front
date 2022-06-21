@@ -58,6 +58,7 @@ const UserInput = ({
           value={value}
           autoComplete="off"
           onChange={handleInputChange}
+          onClick={handleClick}
         />
         {confirmButton && (
           <UserButton
