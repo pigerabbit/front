@@ -46,7 +46,7 @@ const UserInput = ({
   }, [value]);
 
   return (
-    <InputContainer onClick={handleClick} noCheck={noCheck}>
+    <InputContainer noCheck={noCheck}>
       <InputTitle>
         {title} <span>{errMessage}</span>
       </InputTitle>

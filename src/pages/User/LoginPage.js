@@ -53,13 +53,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 `;
 
 const ContentContainer = styled.div`
   width: 70%;
   max-width: 400px;
   height: 50%;
+  margin-top: 10%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
