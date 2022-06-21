@@ -65,7 +65,3 @@ const SearchButton = styled.div`
   color: #cccccc;
   font-size: 12px;
 `;
-
-const AlarmButton = styled.div`
-  cursor: pointer;
-`;

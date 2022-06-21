@@ -12,7 +12,6 @@ const MyPageLayout = ({ children, pageName, previousPage, noTabBar }) => {
   const handlePreviousBtnClick = () => {
     navigate(previousPage);
   };
-  console.log(noTabBar);
 
   return (
     <Container>
