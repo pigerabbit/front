@@ -28,7 +28,7 @@ const MyWishListPage = () => {
   }, []);
 
   return (
-    <MyPageLayout pageName="찜" previousPage="/mypage">
+    <MyPageLayout pageName="찜" previousPage="/">
       <Container>
         <MyWishListTabs
           tab={tab}
