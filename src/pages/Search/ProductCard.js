@@ -87,6 +87,10 @@ const Container = styled.div`
     box-shadow: 0 0 8px #e0e0e0;
   }
 
+  &:active {
+    background-color: #fafafa;
+  }
+
   > svg {
     position: absolute;
     right: 5px;
