@@ -77,6 +77,10 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
     );
   };
 
+  const handleAddressInputClick = () => {
+    setIsDaumPostOpen(true);
+  };
+
   const isEmptyValue = (obj) => {
     if (obj.constructor === Object && Object.values(obj)[0].length === 0) {
       return true;
@@ -256,9 +260,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             value={address}
             autoComplete="off"
             readOnly
-            onClick={() => {
-              setIsDaumPostOpen(true);
-            }}
+            onClick={handleAddressInputClick}
           />
           <CheckIcon valid={isAddressValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
