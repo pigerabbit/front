@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { confirmNotice } from "redux/userSlice";
 
 import SideBar from "components/SideBar";
 
@@ -18,9 +19,16 @@ const Notice = ({ setIsOpenNotice }) => {
   const { user } = useSelector((state) => state.user);
   const [noticeList, setNoticeList] = useState([]);
 
+  const dispatch = useDispatch();
+
   const getNoticeList = async () => {
-    const res = await Api.get("users", `${user.id}/alert`);
-    setNoticeList(res.data.payload || []);
+    try {
+      const res = await Api.get("users", `${user.id}/alert`);
+      setNoticeList(res.data.payload || []);
+      dispatch(confirmNotice());
+    } catch (e) {
+      // 에러처리
+    }
   };
 
   useEffect(() => {
