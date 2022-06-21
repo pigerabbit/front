@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SearchProductCard from "./SearchProductCard";
 import * as Api from "api";
@@ -6,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const SearchCurrent = () => {
+  const navigate = useNavigate();
+
   const [currentKeyword, setCurrentKeyword] = useState([]);
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -33,7 +36,8 @@ const SearchCurrent = () => {
     }
   };
 
-  const deleteKeyword = async (keyword) => {
+  const deleteKeyword = async (e, keyword) => {
+    e.stopPropagation();
     try {
       const filteredKeywords = await Api.delete(`toggle/searchWord/${keyword}`);
       setCurrentKeyword(filteredKeywords.data.searchWords.reverse());
@@ -53,9 +57,12 @@ const SearchCurrent = () => {
             <h4>최근 검색어</h4>
             <CurrentKeywordWrapper>
               {currentKeyword.map((k, idx) => (
-                <Keyword key={idx}>
+                <Keyword
+                  key={idx}
+                  onClick={() => navigate(`/products?search=${k}`)}
+                >
                   <span>{k}</span>
-                  <button onClick={() => deleteKeyword(k)}>
+                  <button onClick={(e) => deleteKeyword(e, k)}>
                     <FontAwesomeIcon icon={faXmark} />
                   </button>
                 </Keyword>
@@ -140,6 +147,7 @@ const Keyword = styled.div`
   background: #ffe9d1;
   border: none;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
   > span {
     color: #ff8500;
     font-weight: 500;
