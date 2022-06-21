@@ -17,8 +17,8 @@ const ProductDetailPage = () => {
 
   const [showJoinGroup, setShowJoinGroup] = useState(false);
   const [currentTab, setCurrentTab] = useState({
-    index: -1,
-    name: "fetch전",
+    name: "beforeFetch",
+    title: "fetch전",
   });
 
   const navigate = useNavigate();
@@ -28,8 +28,8 @@ const ProductDetailPage = () => {
   const fetchProductInfo = (isFetched) => {
     if (isFetched) {
       setCurrentTab({
-        index: 0,
-        name: "상품설명",
+        name: "description",
+        title: "상품설명",
       });
     }
   };
@@ -67,17 +67,15 @@ const ProductDetailPage = () => {
         <ProductTabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
       </Tabs>
       <Body>
-        {currentTab.index === 0 && (
+        {currentTab.name === "description" && (
           <ProductDescriptionTab product={product} seller={seller} />
         )}
-        {currentTab.index === 1 && (
-          <ProductInformationTab product={product} seller={seller} />
+        {currentTab.name === "information" && (
+          <ProductInformationTab product={product} />
         )}
-        {currentTab.index === 2 && (
-          <ProductReviewTab product={product} seller={seller} />
-        )}
-        {currentTab.index === 3 && (
-          <ProductInquiryTab product={product} seller={seller} />
+        {currentTab.name === "review" && <ProductReviewTab product={product} />}
+        {currentTab.name === "inquiry" && (
+          <ProductInquiryTab product={product} />
         )}
         {showJoinGroup && (
           <JoinGroupWindow
