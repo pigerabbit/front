@@ -41,6 +41,7 @@ const RegisterPage = () => {
     isEmailValid &&
     isPasswordValid &&
     isPasswordSame &&
+    isPhoneNumberValid &&
     isAddressValid;
 
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ const RegisterPage = () => {
         .replace(/(\-{1,2})$/g, "")
     );
   };
+
   const handleAddressInputClick = () => {
     setIsDaumPostOpen(true);
   };

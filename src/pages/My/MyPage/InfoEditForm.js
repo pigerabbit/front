@@ -20,6 +20,13 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(
+    user?.phoneNumber.slice(0, 3) +
+      "-" +
+      user?.phoneNumber.slice(3, 7) +
+      "-" +
+      user?.phoneNumber.slice(7, 11) || ""
+  );
   const [address, setAddress] = useState(
     user?.address.split(") ")[0] + ")" || ""
   );
@@ -29,13 +36,14 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
 
   const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
 
-  const [nameValid, setNameValid] = useState(name);
-  const [passwordValid, setPasswordValid] = useState(false);
-  const addressValid = address?.length > 0;
-  const detailAddressValid = detailAddress?.length > 0;
-  const newPasswordValid = newPassword.length >= 8;
-  const confirmPasswordValid =
+  const [isNameValid, setIsNameValid] = useState(name);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const isAddressValid = address?.length > 0;
+  const isDetailAddressValid = detailAddress?.length > 0;
+  const isNewPasswordValid = newPassword.length >= 8;
+  const isConfirmPasswordValid =
     confirmPassword.length >= 8 && newPassword === confirmPassword;
+  const isPhoneNumberValid = phoneNumber.replaceAll("-", "").length === 11;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,10 +59,22 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
     setIsOpenPopup(true);
   };
 
-  const handleChangeEvent = (setValue) => {
+  const handleChange = (setValue) => {
     return (e) => {
       setValue(e.target.value);
     };
+  };
+
+  const handlePhoneNumberChange = (e) => {
+    const value = e.target.value;
+    if (value.length > 13) return;
+
+    setPhoneNumber(
+      value
+        .replace(/[^0-9]/g, "")
+        .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+        .replace(/(\-{1,2})$/g, "")
+    );
   };
 
   const isEmptyValue = (obj) => {
@@ -110,11 +130,11 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
   };
 
   useEffect(() => {
-    setNameValid(name?.length > 0);
+    setIsNameValid(name?.length > 0);
   }, [name]);
 
   useEffect(() => {
-    setPasswordValid(currentPassword?.length >= 8);
+    setIsPasswordValid(currentPassword?.length >= 8);
   }, [currentPassword]);
 
   useEffect(() => {
@@ -122,25 +142,32 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
       setName(user.name);
       setAddress(user.address.split(") ")[0] + ")");
       setDetailAddress(user.address.split(") ")[1]);
+      setPhoneNumber(
+        user.phoneNumber.slice(0, 3) +
+          "-" +
+          user?.phoneNumber.slice(3, 7) +
+          "-" +
+          user?.phoneNumber.slice(7, 11) || ""
+      );
     }
   }, [user]);
 
   return (
     <Container>
-      <form onSubmit={handleSubmit({ name }, setNameValid)}>
+      <form onSubmit={handleSubmit({ name }, setIsNameValid)}>
         <InputContainer>
           <div>이름</div>
           <input
             type="text"
             value={name || ""}
             autoComplete="off"
-            onChange={handleChangeEvent(setName)}
+            onChange={handleChange(setName)}
           />
-          <CheckIcon valid={nameValid}>
+          <CheckIcon valid={isNameValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
-        <SubmitButton type="submit" disabled={!nameValid}>
+        <SubmitButton type="submit" disabled={!isNameValid}>
           이름 변경
         </SubmitButton>
       </form>
@@ -148,7 +175,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
       <form
         onSubmit={handleSubmit(
           { currentPassword, newPassword },
-          setPasswordValid,
+          setIsPasswordValid,
           true
         )}
       >
@@ -158,9 +185,9 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             type="password"
             value={currentPassword}
             autoComplete="off"
-            onChange={handleChangeEvent(setCurrentPassword)}
+            onChange={handleChange(setCurrentPassword)}
           />
-          <CheckIcon valid={passwordValid}>
+          <CheckIcon valid={isPasswordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
@@ -171,9 +198,9 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             placeholder="8자 이상의 비밀번호를 입력해주세요."
             autoComplete="off"
             value={newPassword}
-            onChange={handleChangeEvent(setNewPassword)}
+            onChange={handleChange(setNewPassword)}
           />
-          <CheckIcon valid={newPasswordValid}>
+          <CheckIcon valid={isNewPasswordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
@@ -183,19 +210,41 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             type="password"
             value={confirmPassword}
             autoComplete="off"
-            onChange={handleChangeEvent(setConfirmPassword)}
+            onChange={handleChange(setConfirmPassword)}
           />
-          <CheckIcon valid={confirmPasswordValid}>
+          <CheckIcon valid={isConfirmPasswordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
         <SubmitButton
           type="submit"
           disabled={
-            !(passwordValid && newPasswordValid && confirmPasswordValid)
+            !(isPasswordValid && isNewPasswordValid && isConfirmPasswordValid)
           }
         >
           비밀번호 변경
+        </SubmitButton>
+      </form>
+
+      <form
+        onSubmit={handleSubmit({
+          phoneNumber: phoneNumber.replaceAll("-", ""),
+        })}
+      >
+        <InputContainer>
+          <div>전화번호</div>
+          <input
+            type="text"
+            value={phoneNumber}
+            autoComplete="off"
+            onChange={handlePhoneNumberChange}
+          />
+          <CheckIcon valid={isPhoneNumberValid}>
+            <FontAwesomeIcon icon={faCircleCheck} />
+          </CheckIcon>
+        </InputContainer>
+        <SubmitButton type="submit" disabled={!isPhoneNumberValid}>
+          전화번호 변경
         </SubmitButton>
       </form>
 
@@ -211,7 +260,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
               setIsDaumPostOpen(true);
             }}
           />
-          <CheckIcon valid={addressValid}>
+          <CheckIcon valid={isAddressValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
@@ -221,15 +270,15 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             type="text"
             value={detailAddress}
             autoComplete="off"
-            onChange={handleChangeEvent(setDetailAddress)}
+            onChange={handleChange(setDetailAddress)}
           />
-          <CheckIcon valid={detailAddressValid}>
+          <CheckIcon valid={isDetailAddressValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
         <SubmitButton
           type="submit"
-          disabled={!(addressValid && detailAddressValid)}
+          disabled={!(isAddressValid && isDetailAddressValid)}
         >
           주소 변경
         </SubmitButton>
