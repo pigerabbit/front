@@ -1,35 +1,59 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import QRCode from "qrcode.react";
+import * as Api from "api";
 
 import GroupHeader from "pages/Group/GroupHeader";
+import SetQuantityButtons from "./SetQuantityButtons";
 
 const QRCodePage = () => {
   const { user } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
   const location = useLocation();
   const { groupObjId } = location.state.data;
 
-  const checkurl = `http://localhost:3000/check?group=${groupObjId}&user=${user.id}`;
+  const [maxQuantity, setMaxQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(1);
+
+  const checkurl = `http://localhost:3000/check?group=${groupObjId}&user=${user.id}&quantity=${quantity}`;
 
   const handleClick = () => {
     try {
-      navigate(`/check?group=${groupObjId}&user=${user.id}`);
+      navigate(
+        `/check?group=${groupObjId}&user=${user.id}&quantity=${quantity}`
+      );
     } catch (e) {
       console.log("이동 실패");
     }
   };
+
+  const getMaxQuantity = async () => {
+    try {
+      const res = await Api.get(`payments/${groupObjId}/${user.id}`);
+      const availableMaxQuantity = res.data.payload.voucher || 10;
+      setMaxQuantity(availableMaxQuantity);
+    } catch (e) {
+      console.log("구매 가능 최대 수량 get 실패");
+    }
+  };
+
+  useEffect(() => {
+    getMaxQuantity();
+  }, []);
+
   return (
     <Container>
       <GroupHeader />
       <QRInfo>
         <p id="title">이용권 사용을 위한 QR코드입니다.</p>
         <p id="inform">
-          이용권을 사용하실 구매처 사장님께 보여주세요! <br />본 이용권은 정해진
-          기간 내에만 사용할 수 있으며, 기간 만료 시 포인트로 환불될 수 있음을
-          알려드립니다.
+          하단에 있는 상품 수량을 선택한 후, 이용권을 사용하실 구매처 사장님께
+          보여주세요!
+          <br />본 이용권은 정해진 기간 내에만 사용할 수 있으며, 기간 만료 시
+          포인트로 환불될 수 있음을 알려드립니다.
         </p>
       </QRInfo>
       <QRContainer>
@@ -41,11 +65,31 @@ const QRCodePage = () => {
           onClick={handleClick}
         />
       </QRContainer>
+      <QRBottom>
+        <h4>사용할 상품 수량</h4>
+        <div id="quantity">
+          <SetQuantityButtons
+            quantity={quantity}
+            setQuantity={setQuantity}
+            maxQuantity={maxQuantity}
+          />
+          (남은 수량 {maxQuantity - quantity}개 / 최대 {maxQuantity}개)
+        </div>
+      </QRBottom>
     </Container>
   );
 };
 
 export default QRCodePage;
+
+const popupAnimation = keyframes`
+  from{
+    transform: translateY(50%);
+  }
+  to{
+    transform: none;
+  }
+`;
 
 const Container = styled.div`
   position: relative;
@@ -54,6 +98,16 @@ const Container = styled.div`
   min-height: 100vh;
   height: 100vh;
   background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const QRInfo = styled.div`
+  width: 90%;
+  height: 80px;
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,18 +125,49 @@ const Container = styled.div`
   }
 `;
 
-const QRInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 80px;
-  padding: 10px 30px;
-`;
-
 const QRContainer = styled.div`
   margin: 20px;
   padding: 50px;
   border: 4px solid #ffb564;
   border-radius: 10px;
+`;
+
+const QRBottom = styled.div`
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+
+  width: 100%;
+  max-width: 770px;
+  min-width: 360px;
+  height: 120px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+
+  animation: ${popupAnimation} 1s ease-in-out;
+
+  > h4 {
+    width: 90%;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  #quantity {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  @media (max-height: 720px) {
+    height: 90px;
+  }
 `;
