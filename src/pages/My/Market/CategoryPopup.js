@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { parcelCategory, subscribeCategory } from "./category";
+import { parcelCategory, subscribeCategory } from "./CategoryModule";
 import usePreventScroll from "hooks/usePreventScroll";
 
 const parcelList = [];

@@ -1,64 +1,47 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 import { useSelector } from "react-redux";
 
-const NoticeList = [
-  {
-    groupType: "normal",
-    title: "싱싱한 왕딸기 공구해요!",
-    content: "결제가 완료되었습니다. 배송이 곧 시작됩니다.",
-    image:
-      "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500",
-  },
-  {
-    groupType: "local",
-    title: "딸기 케이크 공구",
-    content: "기간이 마감되어 공동구매가 취소되었습니다.",
-    image:
-      "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500",
-  },
-  {
-    groupType: "local",
-    title: "샐러드 공구합니다.",
-    content: "판매자의 판매 중단으로 공동구매가 취소되었습니다.",
-    image:
-      "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500",
-  },
-  {
-    groupType: "normal",
-    title: "맛있는 감자감자",
-    content: "공동구매 개최자의 중단으로 공동구매가 취소되었습니다.",
-    image:
-      "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500",
-  },
-];
+import SideBar from "components/SideBar";
+
+const from = {
+  product: "상품 삭제",
+  cs: "상품 문의",
+  review: "상품 후기",
+  group: "공구 알림",
+  groupChat: "댓글 알림",
+  comment: "댓글 알림",
+};
 
 const Notice = () => {
   const { user } = useSelector((state) => state.user);
+  const [noticeList, setNoticeList] = useState([]);
 
-  const getAlert = async () => {
+  const getNoticeList = async () => {
     const res = await Api.get("users", `${user.id}/alert`);
-    console.log(res);
+    setNoticeList(res.data.payload);
   };
 
   useEffect(() => {
-    getAlert();
+    getNoticeList();
   }, []);
   return (
-    <Container>
-      {NoticeList.map(({ groupType, title, content, image }, idx) => (
-        <NoticeCard key={idx}>
-          <Image url={image} />
-          <Text>
-            <span>
-              [{groupType === "local" ? "지역공구" : "택배공구"}] {title}
-            </span>
-            <span>{content}</span>
-          </Text>
-        </NoticeCard>
-      ))}
-    </Container>
+    <SideBar title="알림">
+      <Container>
+        {noticeList.map((notice) => (
+          <NoticeCard key={notice._id}>
+            <Image url={notice.image} />
+            <Text>
+              <span>
+                [{from[notice.from]}] {}
+              </span>
+              <span>{notice.content}</span>
+            </Text>
+          </NoticeCard>
+        ))}
+      </Container>
+    </SideBar>
   );
 };
 
@@ -91,7 +74,7 @@ const Image = styled.div`
   min-width:75px
   height: 75px;
   min-height:75px;
-  margin-right: 10px;
+  margin-right: 15px;
   border-radius: 50%;
   background-image: url(${({ url }) => url});
   background-size: 100%;

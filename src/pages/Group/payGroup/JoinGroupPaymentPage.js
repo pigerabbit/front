@@ -20,7 +20,7 @@ const JoinGroupPaymentPage = () => {
 
   const [payment, setPayment] = useState("결제 수단 선택되지 않음");
   const [name, setName] = useState(user?.name || "");
-  const [contact, setContact] = useState("");
+  const [contact, setContact] = useState(user?.phoneNumber || "");
   const [address, setAddress] = useState(
     group.type !== "normal" ? group.location : user?.address || ""
   );
@@ -28,6 +28,7 @@ const JoinGroupPaymentPage = () => {
   useEffect(() => {
     if (user) {
       setName(user.name);
+      setContact(user.phoneNumber);
       if (group.type === "normal") {
         setAddress(user.address);
       }
@@ -40,7 +41,21 @@ const JoinGroupPaymentPage = () => {
         quantity: count,
       });
       if (res.data.success) {
-        navigate(`/group/payment/${res.data.payload.groupId}`);
+        const groupId = res.data.payload.groupId;
+        postPaymentType(groupId);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const postPaymentType = async (groupId) => {
+    try {
+      const res = await Api.put(`groups/${groupId}/payment`, {
+        payment: payment,
+      });
+      if (res.data.success) {
+        navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {
       console.log(err);

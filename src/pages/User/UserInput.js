@@ -20,6 +20,10 @@ const UserInput = ({
   errMessage,
   setErrMessage,
 }) => {
+  const handleInputChange = (e) => {
+    setValue(e.target.value);
+  };
+
   const handleConfirmButtonClick = async (e) => {
     e.preventDefault();
 
@@ -42,7 +46,7 @@ const UserInput = ({
   }, [value]);
 
   return (
-    <InputContainer onClick={handleClick} noCheck={noCheck}>
+    <InputContainer noCheck={noCheck}>
       <InputTitle>
         {title} <span>{errMessage}</span>
       </InputTitle>
@@ -53,9 +57,8 @@ const UserInput = ({
           placeholder={placeholder}
           value={value}
           autoComplete="off"
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
+          onChange={handleInputChange}
+          onClick={handleClick}
         />
         {confirmButton && (
           <UserButton

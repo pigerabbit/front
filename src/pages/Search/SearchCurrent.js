@@ -1,47 +1,78 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { productList } from "./SearchMockData";
 import SearchProductCard from "./SearchProductCard";
 import * as Api from "api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const SearchCurrent = () => {
   const [currentKeyword, setCurrentKeyword] = useState([]);
-  const fetchSearchWords = async () => {
+  const [productList, setProductList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getSearchCurrent = async () => {
+    const getSearchWords = Api.get("toggle/searchWords");
+    const getSearchProducts = Api.get("toggle/viewedProducts");
+
     try {
-      const res = await Api.get("toggle/searchWords");
-      setCurrentKeyword(res.data.reverse());
+      setLoading(true);
+
+      const [currentKeyword, productList] = await Promise.all([
+        getSearchWords,
+        getSearchProducts,
+      ]);
+
+      setCurrentKeyword(currentKeyword.data.reverse());
+      setProductList(
+        [...new Set(productList.data.map(JSON.stringify))].map(JSON.parse)
+      );
+
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const deleteKeyword = async (keyword) => {
+    try {
+      const filteredKeywords = await Api.delete(`toggle/searchWord/${keyword}`);
+      setCurrentKeyword(filteredKeywords.data.searchWords.reverse());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    fetchSearchWords();
+    getSearchCurrent();
   }, []);
   return (
     <Container>
-      <CurrentKeywordContainer>
-        <h4>최근 검색어</h4>
-        <CurrentKeywordWrapper>
-          {currentKeyword.map((k, idx) => (
-            <Keyword key={idx}>{k}</Keyword>
-          ))}
-          {currentKeyword.length === 0 && <p>검색 기록이 없습니다.</p>}
-        </CurrentKeywordWrapper>
-      </CurrentKeywordContainer>
-      <CurrentProductContainer>
-        <h4>최근 본 판매상품</h4>
-        <CurrentProductWrapper>
-          {productList.map((product) => (
-            <SearchProductCard
-              key={product.id}
-              name={product.name}
-              price={product.price}
-              salePrice={product.salePrice}
-              discountRate={product.discountRate}
-            />
-          ))}
-        </CurrentProductWrapper>
-      </CurrentProductContainer>
+      {!loading && (
+        <>
+          <CurrentKeywordContainer>
+            <h4>최근 검색어</h4>
+            <CurrentKeywordWrapper>
+              {currentKeyword.map((k, idx) => (
+                <Keyword key={idx}>
+                  <span>{k}</span>
+                  <button onClick={() => deleteKeyword(k)}>
+                    <FontAwesomeIcon icon={faXmark} />
+                  </button>
+                </Keyword>
+              ))}
+              {currentKeyword.length === 0 && <p>검색 기록이 없습니다.</p>}
+            </CurrentKeywordWrapper>
+          </CurrentKeywordContainer>
+          <CurrentProductContainer>
+            <h4>최근 본 판매상품</h4>
+            <CurrentProductWrapper>
+              {productList.map((product) => (
+                <SearchProductCard key={product.id} product={product} />
+              ))}
+            </CurrentProductWrapper>
+          </CurrentProductContainer>
+        </>
+      )}
     </Container>
   );
 };
@@ -83,6 +114,7 @@ const CurrentKeywordWrapper = styled.div`
   white-space: nowrap;
   overflow-x: scroll;
   margin: 25px 0;
+  display: flex;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;
@@ -96,16 +128,30 @@ const CurrentKeywordWrapper = styled.div`
   }
 `;
 
-const Keyword = styled.button`
-  width: 90px;
+const Keyword = styled.div`
+  display: flex;
+  padding: 0 3%;
   height: 35px;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 35px;
   margin-right: 10px;
   border-radius: 16px;
   background: #ffe9d1;
-  color: #ff8500;
-  font-weight: 500;
   border: none;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.15);
+  > span {
+    color: #ff8500;
+    font-weight: 500;
+    font-size: 15px;
+  }
+  > button {
+    background: transparent;
+    border: none;
+    margin-left: 5%;
+    color: #969696;
+    cursor: pointer;
+  }
 `;
 
 const CurrentProductWrapper = styled.div`

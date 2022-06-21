@@ -8,40 +8,35 @@ import BestTab from "./BestTab";
 import DeadlineTab from "./DeadlineTab";
 import SideBar from "../../components/SideBar";
 import Category from "../../components/Category";
-import Notice from "./Notice";
 import TabBar from "components/TabBar";
-import ConfirmationIcon from "components/ConfirmationIcon";
+import { useLocation } from "react-router-dom";
+
+const tabs = {
+  home: <HomeTab />,
+  best: <BestTab />,
+  deadline: <DeadlineTab />,
+};
 
 const MainPage = () => {
-  const [tab, setTab] = useState("home");
-  const [sideBarTitle, setSideBarTitle] = useState("카테고리");
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
-  const [confirmationIcon, setConfirmationIcon] = useState({ show: false });
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  let tab = searchParams.get("tab");
+  if (!tab) tab = "home";
 
   return (
     <Container>
-      <TopBar
-        setSideBarTitle={setSideBarTitle}
-        setIsOpenSideBar={setIsOpenSideBar}
-      />
+      <TopBar setIsOpenSideBar={setIsOpenSideBar} />
 
-      {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
+      <Tabs />
+      {tabs[tab]}
 
-      <Tabs tab={tab} setTab={setTab} />
-      {tab === "home" && <HomeTab setConfirmationIcon={setConfirmationIcon} />}
-      {tab === "best" && <BestTab setConfirmationIcon={setConfirmationIcon} />}
-      {tab === "deadline" && (
-        <DeadlineTab setConfirmationIcon={setConfirmationIcon} />
+      {isOpenSideBar && (
+        <SideBar title="카테고리" setIsOpenSideBar={setIsOpenSideBar}>
+          <Category />
+        </SideBar>
       )}
-
-      <SideBar
-        title={sideBarTitle}
-        isOpenSideBar={isOpenSideBar}
-        setIsOpenSideBar={setIsOpenSideBar}
-      >
-        {sideBarTitle === "카테고리" && <Category />}
-        {sideBarTitle === "알림" && <Notice />}
-      </SideBar>
 
       <TabBar />
     </Container>

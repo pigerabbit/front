@@ -1,26 +1,23 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector } from "react-redux";
 
-/**
- * 
- * @param {object} style = {
-                            backgroundColor: "#70BD86;",
-                            color: "white",
-                            icon: faCheck,
-                            text: "완료!"
-                            } 
- * @returns ConfirmationIcon
- */
-const ConfirmationIcon = ({ style }) => {
-  return (
-    <Container>
-      <Circle backgroundColor={style.backgroundColor} color={style.color}>
-        <FontAwesomeIcon icon={style.icon} />
-        <span>{style.text}</span>
-      </Circle>
-    </Container>
+const ConfirmationIcon = () => {
+  const { show, backgroundColor, color, icon, text } = useSelector(
+    (state) => state.confirmationIcon
   );
+
+  if (show)
+    return (
+      <Container show={show}>
+        <Circle backgroundColor={backgroundColor} color={color}>
+          <FontAwesomeIcon icon={icon} />
+          <span>{text}</span>
+        </Circle>
+      </Container>
+    );
+  else return null;
 };
 
 export default ConfirmationIcon;

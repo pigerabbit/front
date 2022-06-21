@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import * as Api from "api";
 
 import ProductsTopBar from "./ProductsTopBar";
@@ -8,9 +8,8 @@ import ProductCard from "./ProductCard";
 import SideBar from "components/SideBar";
 import Category from "components/Category";
 import TabBar from "components/TabBar";
-import ConfirmationIcon from "components/ConfirmationIcon";
 import InfiniteScroll from "./InfiniteScroll";
-
+import LoadingSpinner from "components/LoadingSpinner";
 import useDidMountEffect from "hooks/useDidMountEffect";
 
 const options = [
@@ -22,19 +21,12 @@ const options = [
 
 const ProductsPage = () => {
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
-  const [option, setOption] = useState("groups");
+  const [option, setOption] = useState(options[0]);
   const [products, setProducts] = useState([]);
   const [totalProductsNum, setTotalProductsNum] = useState(1);
   const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(100);
+  const [totalPage, setTotalPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [confirmationIcon, setConfirmationIcon] = useState({
-    show: false,
-    backgroundColor: "#70BD86;",
-    color: "",
-    icon: "",
-    text: "",
-  });
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -51,10 +43,10 @@ const ProductsPage = () => {
 
       if (category) {
         const res = await Api.get("products", "", {
-          page: page,
+          page,
           perPage: 6,
-          category: category,
-          option: option,
+          category,
+          option: option.eng,
         });
 
         setProducts((cur) => [...cur, ...res.data.payload.resultList]);
@@ -81,7 +73,7 @@ const ProductsPage = () => {
 
   useDidMountEffect(() => {
     setProducts([]);
-    setTotalPage(100);
+    setTotalPage(1);
     setPage(0);
   }, [category, search]);
 
@@ -100,47 +92,33 @@ const ProductsPage = () => {
       <ProductsInfo>
         <span>총 {totalProductsNum}건</span>
         <SelectBox>
-          {options.map(({ eng, kor }) => (
+          {options.map((option) => (
             <Option
-              key={eng}
-              selected={option === eng}
+              key={option.eng}
+              selected={option === option.eng}
               onClick={() => {
-                setOption(eng);
+                setOption(option);
                 setPage(0);
                 setProducts([]);
               }}
             >
-              {kor}
+              {option.kor}
             </Option>
           ))}
         </SelectBox>
       </ProductsInfo>
 
-      {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
-
       <ProductsCardContainer>
         <>
           {products.map((product) => (
-            <ProductCard
-              product={product}
-              setConfirmationIcon={setConfirmationIcon}
-              key={product.id}
-            />
+            <ProductCard product={product} key={product.id} />
           ))}
         </>
       </ProductsCardContainer>
 
-      {loading && (
-        <Loading>
-          <div></div>
-          <div></div>
-          <div></div>
-        </Loading>
-      )}
+      {loading && <LoadingSpinner />}
 
-      {totalProductsNum !== 0 && !loading && (
-        <InfiniteScroll setPage={setPage} />
-      )}
+      {page !== totalPage && !loading && <InfiniteScroll setPage={setPage} />}
 
       {totalProductsNum === 0 && !loading && (
         <NoProductContainer>
@@ -152,17 +130,15 @@ const ProductsPage = () => {
         </NoProductContainer>
       )}
 
-      <SideBar
-        title={"카테고리"}
-        isOpenSideBar={isOpenSideBar}
-        setIsOpenSideBar={setIsOpenSideBar}
-      >
-        <Category
-          setIsOpenSideBar={setIsOpenSideBar}
-          setProducts={setProducts}
-          setPage={setPage}
-        />
-      </SideBar>
+      {isOpenSideBar && (
+        <SideBar title={"카테고리"} setIsOpenSideBar={setIsOpenSideBar}>
+          <Category
+            setIsOpenSideBar={setIsOpenSideBar}
+            setProducts={setProducts}
+            setPage={setPage}
+          />
+        </SideBar>
+      )}
 
       <TabBar />
     </Container>
@@ -230,42 +206,6 @@ const ProductsCardContainer = styled.div`
   grid-gap: 15px;
   @media (min-width: 600px) {
     grid-template-columns: repeat(3, 1fr);
-  }
-`;
-
-const rotate = keyframes`
-  0% {
-    transform: rotate(0);
-  }
-  25% {
-    transform: rotate(180deg);
-  }
-  50% {
-    transform: rotate(180deg);
-  }
-  75% {
-    transform: rotate(360deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-const Loading = styled.div`
-  margin-top: 40px;
-  margin-bottom: 20px;
-  width: 100px;
-  height: 100px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  animation: ${rotate} 2s linear infinite;
-
-  > div {
-    background-color: #f79831;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
   }
 `;
 

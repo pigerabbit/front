@@ -35,6 +35,22 @@ const ProductsTopBar = ({ search, category, setIsOpenSideBar }) => {
 
   const navigate = useNavigate();
 
+  const handlePreviousBtnClick = () => {
+    navigate("/");
+  };
+
+  const handleCategoryBtnClick = () => {
+    setIsOpenSideBar(true);
+  };
+
+  const handleInputChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleDeleteBtnClick = () => {
+    setSearchText("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -45,20 +61,13 @@ const ProductsTopBar = ({ search, category, setIsOpenSideBar }) => {
 
   return (
     <TopBar>
-      <FontAwesomeIcon
-        icon={faArrowLeft}
-        onClick={() => {
-          navigate("/");
-        }}
-      />
+      <FontAwesomeIcon icon={faArrowLeft} onClick={handlePreviousBtnClick} />
       {category && (
         <>
           <span>{categoryList[category]}</span>
           <CategoryButton
             color={"#939393"}
-            handleClick={() => {
-              setIsOpenSideBar(true);
-            }}
+            handleClick={handleCategoryBtnClick}
           />
         </>
       )}
@@ -69,17 +78,10 @@ const ProductsTopBar = ({ search, category, setIsOpenSideBar }) => {
             <input
               placeholder="검색어를 입력해주세요."
               value={searchText}
-              onChange={(e) => {
-                setSearchText(e.target.value);
-              }}
+              onChange={handleInputChange}
             />
           </form>
-          <FontAwesomeIcon
-            icon={faDeleteLeft}
-            onClick={() => {
-              setSearchText("");
-            }}
-          />
+          <FontAwesomeIcon icon={faDeleteLeft} onClick={handleDeleteBtnClick} />
         </>
       )}
     </TopBar>

@@ -9,18 +9,20 @@ import MyPageLayout from "../MyPageLayout";
 import MyButtons from "./MyButtons";
 import InfoEditForm from "./InfoEditForm";
 import ConfirmationPopup from "../ConfirmationPopup";
-import ConfirmationIcon from "components/ConfirmationIcon";
 
 const MyPage = () => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [password, setPassword] = useState("");
   const [placeholder, setPlaceholder] = useState("비밀번호를 입력해주세요.");
   const [InputBorderColor, setInputBorderColor] = useState("#e6e6e6");
-  const [confirmationIcon, setConfirmationIcon] = useState({ show: false });
   const { user } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
   const handleUnregister = async () => {
     if (!password) return setInputBorderColor("#FFB564");
@@ -43,8 +45,6 @@ const MyPage = () => {
 
   return (
     <MyPageLayout pageName={"my동구"} previousPage="none">
-      {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
-
       <Section>
         <Profile>
           <ProfileImg url={user?.imageLink}></ProfileImg>
@@ -61,10 +61,7 @@ const MyPage = () => {
       </Section>
 
       <Section>
-        <InfoEditForm
-          setIsOpenPopup={setIsOpenPopup}
-          setConfirmationIcon={setConfirmationIcon}
-        />
+        <InfoEditForm setIsOpenPopup={setIsOpenPopup} />
       </Section>
 
       <ConfirmationPopup
@@ -81,9 +78,7 @@ const MyPage = () => {
               type="password"
               value={password}
               placeholder={placeholder}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
+              onChange={handlePasswordChange}
               autoComplete="off"
             />
           </form>

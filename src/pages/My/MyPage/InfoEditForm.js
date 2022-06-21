@@ -12,69 +12,73 @@ import { useNavigate } from "react-router-dom";
 import * as Api from "api";
 
 import DaumPost from "components/DaumPostCode";
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
-const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
+const InfoEditForm = ({ setIsOpenPopup }) => {
   const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user?.name || "");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(
+    user?.phoneNumber?.slice(0, 3) +
+      "-" +
+      user?.phoneNumber?.slice(3, 7) +
+      "-" +
+      user?.phoneNumber?.slice(7, 11) || ""
+  );
   const [address, setAddress] = useState(
-    user?.address.split(") ")[0] + ")" || ""
+    user?.address?.split(") ")[0] + ")" || ""
   );
   const [detailAddress, setDetailAddress] = useState(
-    user?.address.split(") ")[1] || ""
+    user?.address?.split(") ")[1] || ""
   );
 
   const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
 
-  const [nameValid, setNameValid] = useState(name);
-  const [passwordValid, setPasswordValid] = useState(false);
-  const addressValid = address?.length > 0;
-  const detailAddressValid = detailAddress?.length > 0;
-  const newPasswordValid = newPassword.length >= 8;
-  const confirmPasswordValid =
-    confirmPassword.length > 0 && newPassword === confirmPassword;
+  const [isNameValid, setIsNameValid] = useState(name);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const isAddressValid = address?.length > 0;
+  const isDetailAddressValid = detailAddress?.length > 0;
+  const isNewPasswordValid = newPassword.length >= 8;
+  const isConfirmPasswordValid =
+    confirmPassword.length >= 8 && newPassword === confirmPassword;
+  const isPhoneNumberValid = phoneNumber.replaceAll("-", "").length === 11;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const showConfirmationIcon = useShowComfirmationIcon();
 
-  const handleLogout = () => {
+  const handleClickLogout = () => {
     sessionStorage.removeItem("userToken");
     dispatch(logout());
     navigate("/login");
   };
 
-  const unShowIcon = () => {
-    setTimeout(() => {
-      setConfirmationIcon((cur) => {
-        return { ...cur, show: false };
-      });
-    }, 1600);
+  const handleClickUnregister = () => {
+    setIsOpenPopup(true);
   };
 
-  const CompleteIconShow = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#70BD86;",
-      color: "white",
-      icon: faCheck,
-      text: "완료!",
-    });
-
-    unShowIcon();
+  const handleChange = (setValue) => {
+    return (e) => {
+      setValue(e.target.value);
+    };
   };
 
-  const AgainIconShow = () => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#FF6A6A;",
-      color: "white",
-      icon: faXmark,
-      text: "다시!",
-    });
+  const handlePhoneNumberChange = (e) => {
+    const value = e.target.value;
+    if (value.length > 13) return;
 
-    unShowIcon();
+    setPhoneNumber(
+      value
+        .replace(/[^0-9]/g, "")
+        .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3")
+        .replace(/(\-{1,2})$/g, "")
+    );
+  };
+
+  const handleAddressInputClick = () => {
+    setIsDaumPostOpen(true);
   };
 
   const isEmptyValue = (obj) => {
@@ -84,85 +88,110 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
     return false;
   };
 
-  const handleUpdate = (updateValueObj, setValueValid, password = false) => {
-    return async () => {
-      try {
-        if (isEmptyValue(updateValueObj)) return;
+  const handleUpdate = async (
+    updateValueObj,
+    setValueValid,
+    isPassword = false
+  ) => {
+    try {
+      if (isEmptyValue(updateValueObj)) return;
 
-        const url = password
-          ? `users/${user.id}/changePassword`
-          : `users/${user.id}`;
-        const res = await Api.put(url, updateValueObj);
+      const endpoint = isPassword
+        ? `users/${user.id}/changePassword`
+        : `users/${user.id}`;
+      const res = await Api.put(endpoint, updateValueObj);
 
-        if (!password) {
-          dispatch(update(res.data.payload));
-        } else {
-          setCurrentPassword("");
-          setNewPassword("");
-          setConfirmPassword("");
-        }
-
-        CompleteIconShow();
-      } catch (error) {
-        setValueValid("again");
-        AgainIconShow();
+      if (!isPassword) {
+        dispatch(update(res.data.payload));
+      } else {
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
       }
+
+      showConfirmationIcon({
+        backgroundColor: "#70BD86;",
+        color: "white",
+        icon: faCheck,
+        text: "완료!",
+      });
+    } catch (error) {
+      setValueValid("again");
+      showConfirmationIcon({
+        backgroundColor: "#FF6A6A;",
+        color: "white",
+        icon: faXmark,
+        text: "다시!",
+      });
+    }
+  };
+
+  const handleSubmit = (updateValueObj, setValueValid, isPassword = false) => {
+    return (e) => {
+      e.preventDefault();
+      handleUpdate(updateValueObj, setValueValid, isPassword);
     };
   };
 
   useEffect(() => {
-    setNameValid(name?.length > 0);
+    setIsNameValid(name?.length > 0);
   }, [name]);
 
   useEffect(() => {
-    setPasswordValid(currentPassword?.length >= 8);
+    setIsPasswordValid(currentPassword?.length >= 8);
   }, [currentPassword]);
 
   useEffect(() => {
     if (user) {
       setName(user.name);
-      setAddress(user.address.split(") ")[0] + ")");
-      setDetailAddress(user.address.split(") ")[1]);
+      setAddress(user.address?.split(") ")[0] + ")");
+      setDetailAddress(user.address?.split(") ")[1]);
+      setPhoneNumber(
+        user.phoneNumber?.slice(0, 3) +
+          "-" +
+          user.phoneNumber?.slice(3, 7) +
+          "-" +
+          user.phoneNumber?.slice(7, 11) || ""
+      );
     }
   }, [user]);
 
   return (
     <Container>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={handleSubmit({ name }, setIsNameValid)}>
         <InputContainer>
           <div>이름</div>
           <input
             type="text"
             value={name || ""}
             autoComplete="off"
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
+            onChange={handleChange(setName)}
           />
-          <CheckIcon valid={nameValid}>
+          <CheckIcon valid={isNameValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
-        <SubmitButton
-          onClick={handleUpdate({ name }, setNameValid)}
-          disabled={!nameValid}
-        >
+        <SubmitButton type="submit" disabled={!isNameValid}>
           이름 변경
         </SubmitButton>
       </form>
 
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form
+        onSubmit={handleSubmit(
+          { currentPassword, newPassword },
+          setIsPasswordValid,
+          true
+        )}
+      >
         <InputContainer>
           <div>현재 비밀번호</div>
           <input
             type="password"
             value={currentPassword}
             autoComplete="off"
-            onChange={(e) => {
-              setCurrentPassword(e.target.value);
-            }}
+            onChange={handleChange(setCurrentPassword)}
           />
-          <CheckIcon valid={passwordValid}>
+          <CheckIcon valid={isPasswordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
@@ -173,11 +202,9 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
             placeholder="8자 이상의 비밀번호를 입력해주세요."
             autoComplete="off"
             value={newPassword}
-            onChange={(e) => {
-              setNewPassword(e.target.value);
-            }}
+            onChange={handleChange(setNewPassword)}
           />
-          <CheckIcon valid={newPasswordValid}>
+          <CheckIcon valid={isNewPasswordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
@@ -187,43 +214,55 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
             type="password"
             value={confirmPassword}
             autoComplete="off"
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-            }}
+            onChange={handleChange(setConfirmPassword)}
           />
-          <CheckIcon valid={confirmPasswordValid}>
+          <CheckIcon valid={isConfirmPasswordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
         <SubmitButton
-          onClick={handleUpdate(
-            { currentPassword, newPassword },
-            setPasswordValid,
-            true
-          )}
+          type="submit"
           disabled={
-            !(passwordValid && newPasswordValid && confirmPasswordValid)
+            !(isPasswordValid && isNewPasswordValid && isConfirmPasswordValid)
           }
         >
           비밀번호 변경
         </SubmitButton>
       </form>
 
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form
+        onSubmit={handleSubmit({
+          phoneNumber: phoneNumber.replaceAll("-", ""),
+        })}
+      >
+        <InputContainer>
+          <div>전화번호</div>
+          <input
+            type="text"
+            value={phoneNumber}
+            autoComplete="off"
+            onChange={handlePhoneNumberChange}
+          />
+          <CheckIcon valid={isPhoneNumberValid}>
+            <FontAwesomeIcon icon={faCircleCheck} />
+          </CheckIcon>
+        </InputContainer>
+        <SubmitButton type="submit" disabled={!isPhoneNumberValid}>
+          전화번호 변경
+        </SubmitButton>
+      </form>
+
+      <form onSubmit={handleSubmit({ address: address + " " + detailAddress })}>
         <InputContainer>
           <div>주소</div>
           <input
             type="text"
             value={address}
             autoComplete="off"
-            onChange={(e) => {
-              setAddress(e.target.value);
-            }}
-            onClick={() => {
-              setIsDaumPostOpen(true);
-            }}
+            readOnly
+            onClick={handleAddressInputClick}
           />
-          <CheckIcon valid={addressValid}>
+          <CheckIcon valid={isAddressValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
@@ -233,17 +272,15 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
             type="text"
             value={detailAddress}
             autoComplete="off"
-            onChange={(e) => {
-              setDetailAddress(e.target.value);
-            }}
+            onChange={handleChange(setDetailAddress)}
           />
-          <CheckIcon valid={detailAddressValid}>
+          <CheckIcon valid={isDetailAddressValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
           </CheckIcon>
         </InputContainer>
         <SubmitButton
-          onClick={handleUpdate({ address: address + " " + detailAddress })}
-          disabled={!(addressValid && detailAddressValid)}
+          type="submit"
+          disabled={!(isAddressValid && isDetailAddressValid)}
         >
           주소 변경
         </SubmitButton>
@@ -257,15 +294,9 @@ const InfoEditForm = ({ setIsOpenPopup, setConfirmationIcon }) => {
       )}
 
       <OutButtons>
-        <span onClick={handleLogout}>로그아웃</span>
+        <span onClick={handleClickLogout}>로그아웃</span>
         <span>|</span>
-        <span
-          onClick={() => {
-            setIsOpenPopup(true);
-          }}
-        >
-          회원탈퇴
-        </span>
+        <span onClick={handleClickUnregister}>회원탈퇴</span>
       </OutButtons>
     </Container>
   );

@@ -11,6 +11,7 @@ import UserInput from "./UserInput";
 import UserButton from "./UserButton";
 import DaumPost from "components/DaumPostCode";
 import ConfirmationIcon from "components/ConfirmationIcon";
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
 const BusinessAuthPage = () => {
   const { user } = useSelector((state) => state.user);
@@ -26,7 +27,6 @@ const BusinessAuthPage = () => {
   const [businessName, setBusinessName] = useState(
     (user?.business && user?.business[0].businessName) || ""
   );
-  const [confirmationIcon, setConfirmationIcon] = useState({ show: false });
 
   const businessNumberValid = businessNumber.length === 10;
   const representativeValid = representative?.length > 0;
@@ -44,26 +44,7 @@ const BusinessAuthPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const unShowIcon = () => {
-    setTimeout(() => {
-      setConfirmationIcon((cur) => {
-        return { ...cur, show: false };
-      });
-    }, 1600);
-  };
-
-  const failureIconShow = (text) => {
-    setConfirmationIcon({
-      show: true,
-      backgroundColor: "#FF6A6A;",
-      color: "white",
-      icon: faXmark,
-      text,
-    });
-
-    unShowIcon();
-  };
+  const showComfirmationIcon = useShowComfirmationIcon();
 
   const handleAuthClick = async () => {
     const bodyData = {
@@ -76,17 +57,27 @@ const BusinessAuthPage = () => {
 
     try {
       const res = await Api.post(`users/${user.id}/seller`, bodyData);
-      const updatedUser = res.data.payload;
-      dispatch(update(updatedUser));
+      const updatedUserData = res.data.payload;
+      dispatch(update(updatedUserData));
       navigate("/mypage");
     } catch (e) {
       if (e.response.data.error === "사업자 인증에 실패했습니다.") {
-        failureIconShow("인증 실패");
+        showComfirmationIcon({
+          backgroundColor: "#FF6A6A;",
+          color: "white",
+          icon: faXmark,
+          text: "인증 실패",
+        });
       } else if (
         e.response.data.errorMessage ===
         "이미 존재하는 상호명입니다. 다른 상호명을 입력해주십시오."
       ) {
-        failureIconShow("판매처 중복");
+        showComfirmationIcon({
+          backgroundColor: "#FF6A6A;",
+          color: "white",
+          icon: faXmark,
+          text: "판매처 중복",
+        });
         setBusinessNameValid("again");
       }
     }
@@ -170,7 +161,7 @@ const BusinessAuthPage = () => {
         {user?.business ? "판매처 수정하기" : "사업자 인증하기"}
       </UserButton>
 
-      {confirmationIcon.show && <ConfirmationIcon style={confirmationIcon} />}
+      <ConfirmationIcon />
     </Container>
   );
 };
@@ -187,11 +178,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 `;
 
 const InputListContainter = styled.form`
   width: 70%;
   max-width: 400px;
+  margin-top: 10%;
   margin-bottom: 10%;
 `;

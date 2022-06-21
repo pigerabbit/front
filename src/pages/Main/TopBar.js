@@ -1,38 +1,31 @@
 import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 import { useNavigate } from "react-router-dom";
 
 import CategoryButton from "../../components/CategoryButton";
 
-const TopBar = ({ setSideBarTitle, setIsOpenSideBar }) => {
+const TopBar = ({ setIsOpenSideBar }) => {
   const navigate = useNavigate();
 
-  const handleClickBtn = (title) => {
-    return () => {
-      setSideBarTitle(title);
-      setIsOpenSideBar(true);
-    };
+  const handleCategoryBtnClick = () => {
+    setIsOpenSideBar(true);
+  };
+
+  const handleSearchBtnClick = () => {
+    navigate("/search");
   };
 
   return (
     <Container>
-      <CategoryButton handleClick={handleClickBtn("카테고리")} />
+      <CategoryButton handleClick={handleCategoryBtnClick} />
 
-      <SearchButton
-        onClick={() => {
-          navigate("/search");
-        }}
-      >
+      <SearchButton onClick={handleSearchBtnClick}>
         <span>어떤 판매 품목이 있을까요?</span>
         <FontAwesomeIcon icon={faMagnifyingGlass} size="1x" />
       </SearchButton>
-
-      <AlarmButton onClick={handleClickBtn("알림")}>
-        <FontAwesomeIcon icon={faBell} size="2x" />
-      </AlarmButton>
     </Container>
   );
 };

@@ -4,6 +4,8 @@ import DaumPostCode from "react-daum-postcode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
+import usePreventScroll from "hooks/usePreventScroll";
+
 const DaumPost = ({ setAddress, setIsDaumPostOpen }) => {
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -21,15 +23,17 @@ const DaumPost = ({ setAddress, setIsDaumPostOpen }) => {
     setAddress(fullAddress);
     setIsDaumPostOpen(false);
   };
+
+  const handleCancelClick = () => {
+    setIsDaumPostOpen(false);
+  };
+
+  usePreventScroll([]);
+
   return (
     <Container>
       <DaumPostCodeContainer>
-        <FontAwesomeIcon
-          icon={faXmark}
-          onClick={() => {
-            setIsDaumPostOpen(false);
-          }}
-        />
+        <FontAwesomeIcon icon={faXmark} onClick={handleCancelClick} />
         <DaumPostCode
           onComplete={handleComplete}
           className="post-code"

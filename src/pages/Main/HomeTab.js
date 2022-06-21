@@ -6,103 +6,114 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import * as Api from "api";
-import axios from "axios";
 
 import SliderCard from "./SliderCard";
 import CardsContainer from "./CardsContainer";
+import LoadingSpinner from "components/LoadingSpinner";
 
-const HomeTab = ({ setConfirmationIcon }) => {
-  const [groupPurchaseList, setGroupPurchaseList] = useState([]);
+const HomeTab = () => {
+  const [recommendationGroups, setRecommendationGroups] = useState([]);
   const [nearbyGroups, setNearbyGroups] = useState([]);
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
-  const [transition, setTransition] = useState("transition: left 0.4s;");
-  const lastPage = groupPurchaseList.length;
+  const [transition, setTransition] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const lastPage = recommendationGroups.length;
   const nearbyTitle = "근처에 있는 공동구매에요!";
 
-  const handleClickLeft = () => {
-    setTransition("transition: left 0.4s;");
-    setCardPosition((cur) => cur - 1);
-    if (page === 1) {
-      setPage(lastPage);
-      setTimeout(() => {
-        setTransition("");
-        setCardPosition(lastPage);
-      }, [400]);
-    } else {
-      setPage((cur) => cur - 1);
+  const handleChevronClick = (leftClick) => {
+    return () => {
+      setTransition(true);
+      setCardPosition((cur) => (leftClick ? cur - 1 : cur + 1));
+
+      if (page === (leftClick ? 1 : lastPage)) {
+        setPage(leftClick ? lastPage : 1);
+        setTimeout(() => {
+          setTransition(false);
+          setCardPosition(leftClick ? lastPage : 1);
+        }, [400]);
+      } else {
+        setPage((cur) => (leftClick ? cur - 1 : cur + 1));
+      }
+    };
+  };
+
+  const getGroupsData = async () => {
+    const getRecommendationGroups = Api.get("recommendations/group");
+    const getNearbyGroups = Api.get("groups/sort/locations");
+
+    try {
+      setLoading(true);
+
+      const [recommendationGroups, nearbyGroups] = await Promise.all([
+        getRecommendationGroups,
+        getNearbyGroups,
+      ]);
+
+      setRecommendationGroups(recommendationGroups.data.payload);
+      setNearbyGroups(nearbyGroups.data.payload);
+
+      setLoading(false);
+    } catch (e) {
+      // 에러처리
     }
-  };
-
-  const handleClickRight = () => {
-    setTransition("transition: left 0.4s;");
-    setCardPosition((cur) => cur + 1);
-    if (page === lastPage) {
-      setPage(1);
-      setTimeout(() => {
-        setTransition("");
-        setCardPosition(1);
-      }, [400]);
-    } else {
-      setPage((cur) => cur + 1);
-    }
-  };
-
-  const getGroupPurchaseData = async () => {
-    const data = await axios("/data/groupList.json", { method: "GET" });
-    setGroupPurchaseList(data.data.groupList);
-  };
-
-  const getNearbyGroupsData = async () => {
-    const res = await Api.get("groups/sort/locations");
-    setNearbyGroups(res.data.payload);
   };
 
   useEffect(() => {
-    getNearbyGroupsData();
-    getGroupPurchaseData();
+    getGroupsData();
   }, []);
 
   return (
     <Container>
-      <Interest>
-        <Title>
-          <span>관심 있으실만한</span>
-          <span>공동구매 추천해드려요</span>
-        </Title>
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <InterestGroups>
+            <Title>
+              <span>관심 있으실만한</span>
+              <span>공동구매 추천해드려요</span>
+            </Title>
 
-        <SliderContainer>
-          <CardList
-            length={groupPurchaseList.length + 2}
-            left={cardPosition}
-            transition={transition}
-          >
-            {groupPurchaseList.length > 0 && (
-              <SliderCard purchase={groupPurchaseList[lastPage - 1]} />
-            )}
-            {groupPurchaseList.map((purchase) => (
-              <SliderCard purchase={purchase} key={purchase.groupId} />
-            ))}
-            {groupPurchaseList.length > 0 && (
-              <SliderCard purchase={groupPurchaseList[0]} />
-            )}
-          </CardList>
-        </SliderContainer>
+            <SliderContainer>
+              <CardList
+                length={recommendationGroups.length + 2}
+                left={cardPosition}
+                transition={transition}
+              >
+                {recommendationGroups.length > 0 && (
+                  <SliderCard purchase={recommendationGroups[lastPage - 1]} />
+                )}
+                {recommendationGroups.map((group) => (
+                  <SliderCard group={group} key={group.groupId} />
+                ))}
+                {recommendationGroups.length > 0 && (
+                  <SliderCard group={recommendationGroups[0]} />
+                )}
+              </CardList>
+            </SliderContainer>
 
-        <Pagination>
-          <FontAwesomeIcon icon={faChevronLeft} onClick={handleClickLeft} />
-          <div>
-            <span>{page}</span> / {lastPage}
-          </div>
-          <FontAwesomeIcon icon={faChevronRight} onClick={handleClickRight} />
-        </Pagination>
-      </Interest>
+            <Pagination>
+              <FontAwesomeIcon
+                icon={faChevronLeft}
+                onClick={handleChevronClick(true)}
+              />
+              <div>
+                <span>{page}</span> / {lastPage}
+              </div>
+              <FontAwesomeIcon
+                icon={faChevronRight}
+                onClick={handleChevronClick(false)}
+              />
+            </Pagination>
+          </InterestGroups>
 
-      <CardsContainer
-        title={nearbyTitle}
-        groupPurchaseList={nearbyGroups}
-        setConfirmationIcon={setConfirmationIcon}
-      />
+          <CardsContainer
+            title={nearbyTitle}
+            groupPurchaseList={nearbyGroups}
+          />
+        </>
+      )}
     </Container>
   );
 };
@@ -110,14 +121,19 @@ const HomeTab = ({ setConfirmationIcon }) => {
 export default HomeTab;
 
 const Container = styled.div`
+  min-height: 70%;
   margin-bottom: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
-const Interest = styled.div`
+const InterestGroups = styled.div`
   display: flex;
   flex-direction: column;
   width: 80%;
-  margin: 6vw 10% 10vw 10%;
+  margin: 6vw 0 10vw 0;
   @media (min-width: 770px) {
     margin: 45px 10% 75px 10%;
   }
@@ -151,7 +167,7 @@ const CardList = styled.div`
   left: ${({ left }) => -left * 100 + "%;"}
   display: flex;
   width: calc(100% * ${({ length }) => length});
-  ${({ transition }) => transition}
+  transition: ${({ transition }) => (transition ? "left 0.4s;" : ";")}
 `;
 
 const Pagination = styled.div`

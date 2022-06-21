@@ -28,9 +28,10 @@ import SearchPage from "./pages/Search/SearchPage";
 import QRCodePage from "./components/QRCodePage";
 import BridgePage from "./components/BridgePage";
 import CheckResultPage from "./components/CheckResultPage";
+import ConfirmationIcon from "components/ConfirmationIcon";
 
-import ScrollToTop from "ScrollToTop";
-import FetchCurrentUser from "FetchCurrentUser";
+import ScrollToTop from "components/ScrollToTop";
+import FetchCurrentUser from "components/FetchCurrentUser";
 
 function App() {
   const wrapFetchUser = (child) => {
@@ -62,6 +63,7 @@ function App() {
     <Router>
       <ScrollToTop />
       <Container>
+        <ConfirmationIcon />
         <Routes>
           <Route path="/" element={mainPage} />
           <Route path="/products" element={productsPage} />

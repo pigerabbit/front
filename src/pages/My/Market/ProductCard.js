@@ -7,9 +7,9 @@ import {
   faEllipsisVertical,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { parcelCategory, subscribeCategory } from "./category";
+import { parcelCategory, subscribeCategory } from "./CategoryModule";
 
-const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
+const ProductCard = ({ product, setCurrentProduct, setIsOpenPopup }) => {
   const { user } = useSelector((state) => state.user);
   const { id } = useParams();
   const [isControllerOpen, setIsControllerOpen] = useState(false);
@@ -20,13 +20,36 @@ const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
 
   const navigate = useNavigate();
 
+  const handleCardClick = () => {
+    navigate(`/products/${product.id}`);
+  };
+
+  const handleEllipsisClick = () => {
+    setCurrentProduct(product.id);
+    setIsControllerOpen(true);
+  };
+
+  const handleGroupListBtnClick = () => {
+    navigate(`/markets/groups/${product.id}`, {
+      state: { productName: product.name },
+    });
+  };
+
+  const handleEditingClick = () => {
+    navigate("/register/product", { state: product });
+  };
+
+  const handleDeleteClick = () => {
+    setIsOpenPopup(true);
+  };
+
+  const handleCancelClick = () => {
+    setIsControllerOpen(false);
+  };
+
   return (
     <Container>
-      <Content
-        onClick={() => {
-          navigate(`/products/${product.id}`);
-        }}
-      >
+      <Content onClick={handleCardClick}>
         <Image url={product.images} />
 
         <Information>
@@ -49,18 +72,9 @@ const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
           <>
             <FontAwesomeIcon
               icon={faEllipsisVertical}
-              onClick={() => {
-                SetCurrentProduct(product.id);
-                setIsControllerOpen(true);
-              }}
+              onClick={handleEllipsisClick}
             />
-            <GroupsButton
-              onClick={() => {
-                navigate(`/markets/groups/${product.id}`, {
-                  state: { productName: product.name },
-                });
-              }}
-            >
+            <GroupsButton onClick={handleGroupListBtnClick}>
               공구 목록
             </GroupsButton>
           </>
@@ -69,26 +83,11 @@ const ProductCard = ({ product, SetCurrentProduct, setIsOpenPopup }) => {
 
       {user.id === id && (
         <UpdateController isControllerOpen={isControllerOpen}>
-          <ControllerButton
-            onClick={() => {
-              navigate("/register/product", { state: product });
-            }}
-          >
-            편집
-          </ControllerButton>
-          <ControllerButton
-            onClick={() => {
-              setIsOpenPopup(true);
-            }}
-          >
+          <ControllerButton onClick={handleEditingClick}>편집</ControllerButton>
+          <ControllerButton onClick={handleDeleteClick}>
             판매 삭제
           </ControllerButton>
-          <FontAwesomeIcon
-            icon={faCircleXmark}
-            onClick={() => {
-              setIsControllerOpen(false);
-            }}
-          />
+          <FontAwesomeIcon icon={faCircleXmark} onClick={handleCancelClick} />
         </UpdateController>
       )}
     </Container>

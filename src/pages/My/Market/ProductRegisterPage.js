@@ -7,7 +7,7 @@ import getKeyByValue from "utils/getKeyByValue";
 import MyPageLayout from "../MyPageLayout";
 import ProductInput from "./ProductInput";
 import CategoryPopup from "./CategoryPopup";
-import { parcelCategory, subscribeCategory } from "./category";
+import { parcelCategory, subscribeCategory } from "./CategoryModule";
 import { useSelector } from "react-redux";
 
 const ProductRegisterPage = () => {

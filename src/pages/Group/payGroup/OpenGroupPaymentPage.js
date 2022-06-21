@@ -20,7 +20,7 @@ const OpenGroupPaymentPage = () => {
 
   const [payment, setPayment] = useState("결제 수단 선택되지 않음");
   const [name, setName] = useState(user?.name || "");
-  const [contact, setContact] = useState("");
+  const [contact, setContact] = useState(user?.phoneNumber || "");
   const [address, setAddress] = useState(
     type !== "normal" ? location : user?.address || ""
   );
@@ -28,6 +28,7 @@ const OpenGroupPaymentPage = () => {
   useEffect(() => {
     if (user) {
       setName(user.name);
+      setContact(user.phoneNumber);
       if (type === "normal") {
         setAddress(user.address);
       }
@@ -47,12 +48,37 @@ const OpenGroupPaymentPage = () => {
         quantity: count,
       });
       if (res.data.success) {
-        navigate(`/group/payment/${res.data.payload.groupId}`);
+        const groupId = res.data.payload.groupId;
+        postPaymentType(groupId);
       }
     } catch (err) {
       console.log(err);
     }
   };
+
+  const postPaymentType = async (groupId) => {
+    try {
+      const res = await Api.put(`groups/${groupId}/payment`, {
+        payment: payment,
+      });
+      if (res.data.success) {
+        // if(res.data.payload.groupType==='coupon'){
+        //   postCouponPayment(groupId)
+        // }
+        navigate(`/group/payment/${groupId}`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // const postCouponPayment=async()=>{
+  //   try{
+  //     const res=await Api.post('payments',{})
+  //   }catch(err){
+  //     console.log(err)
+  //   }
+  // }
 
   const nameValid = name?.length > 0;
   const contactValid = contact.length > 0;
@@ -94,11 +120,7 @@ const OpenGroupPaymentPage = () => {
         type={type}
       />
       <PaymentInfo setPayment={setPayment} payment={payment} />
-      <OrderButton
-        disabled={!isValid}
-        valid={isValid}
-        onClick={() => postOpenGroup()}
-      >
+      <OrderButton disabled={!isValid} valid={isValid} onClick={postOpenGroup}>
         {product.salePrice * count + shippingPrice}원 주문하기
       </OrderButton>
     </Container>
