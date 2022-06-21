@@ -3,9 +3,6 @@ import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
 import * as Api from "api";
 
-import { faUser, faHome } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import DetailHeader from "components/DetailHeader";
 import ProductTabs from "./ProductTabs";
 import ProductDescriptionTab from "./ProductDescriptionTab";
@@ -28,16 +25,29 @@ const ProductDetailPage = () => {
 
   const productId = useParams().id;
 
-  const getProductDetail = async () => {
-    try {
-      const res = await Api.get(`products/${productId}`);
-      const resUser = await Api.get(`users/${res.data.payload.userId}`);
-      setProduct(res.data.payload);
-      setSeller(resUser.data.payload);
+  const fetchProductInfo = (isFetched) => {
+    if (isFetched) {
       setCurrentTab({
         index: 0,
         name: "상품설명",
       });
+    }
+  };
+
+  const getSellerDetail = ({ userInfo }) => {
+    setSeller(userInfo);
+  };
+
+  const getProductDetail = async () => {
+    try {
+      const res = await Api.get(`products/${productId}`);
+      const productInfo = res.data.payload;
+      if (res.data.success) {
+        setProduct(productInfo);
+        getSellerDetail(productInfo);
+
+        fetchProductInfo(res.data.success);
+      }
     } catch (e) {
       console.log("product 못 가져옴");
     }
