@@ -1,26 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProductTabs = ({ currentTab, setCurrentTab }) => {
-  const tabArr = [
-    {
-      index: 0,
-      name: "상품설명",
-    },
-    {
-      index: 1,
-      name: "상세정보",
-    },
-    {
-      index: 2,
-      name: "후기",
-    },
-    {
-      index: 3,
-      name: "문의",
-    },
-  ];
+const tabArr = [
+  {
+    index: 0,
+    name: "상품설명",
+  },
+  {
+    index: 1,
+    name: "상세정보",
+  },
+  {
+    index: 2,
+    name: "후기",
+  },
+  {
+    index: 3,
+    name: "문의",
+  },
+];
 
+const ProductTabs = ({ currentTab, setCurrentTab }) => {
   const handleTab = (e) => {
     const clickedTab = tabArr.filter((v) => v.name === e.target.innerHTML)[0];
     setCurrentTab(clickedTab);
