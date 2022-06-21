@@ -8,7 +8,6 @@ import BestTab from "./BestTab";
 import DeadlineTab from "./DeadlineTab";
 import SideBar from "../../components/SideBar";
 import Category from "../../components/Category";
-import Notice from "./Notice";
 import TabBar from "components/TabBar";
 import { useLocation } from "react-router-dom";
 
@@ -19,7 +18,6 @@ const tabs = {
 };
 
 const MainPage = () => {
-  const [sideBarTitle, setSideBarTitle] = useState("카테고리");
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
 
   const location = useLocation();
@@ -29,18 +27,14 @@ const MainPage = () => {
 
   return (
     <Container>
-      <TopBar
-        setSideBarTitle={setSideBarTitle}
-        setIsOpenSideBar={setIsOpenSideBar}
-      />
+      <TopBar setIsOpenSideBar={setIsOpenSideBar} />
 
       <Tabs />
       {tabs[tab]}
 
       {isOpenSideBar && (
-        <SideBar title={sideBarTitle} setIsOpenSideBar={setIsOpenSideBar}>
-          {sideBarTitle === "카테고리" && <Category />}
-          {sideBarTitle === "알림" && <Notice />}
+        <SideBar title="카테고리" setIsOpenSideBar={setIsOpenSideBar}>
+          <Category />
         </SideBar>
       )}
 

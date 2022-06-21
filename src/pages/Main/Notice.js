@@ -3,6 +3,8 @@ import styled from "styled-components";
 import * as Api from "api";
 import { useSelector } from "react-redux";
 
+import SideBar from "components/SideBar";
+
 const from = {
   product: "상품 삭제",
   cs: "상품 문의",
@@ -25,23 +27,21 @@ const Notice = () => {
     getNoticeList();
   }, []);
   return (
-    <Container>
-      {noticeList.map((notice) => (
-        <NoticeCard key={notice._id}>
-          <Image
-            url={
-              "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500"
-            }
-          />
-          <Text>
-            <span>
-              [{from[notice.from]}] {}
-            </span>
-            <span>{notice.content}</span>
-          </Text>
-        </NoticeCard>
-      ))}
-    </Container>
+    <SideBar title="알림">
+      <Container>
+        {noticeList.map((notice) => (
+          <NoticeCard key={notice._id}>
+            <Image url={notice.image} />
+            <Text>
+              <span>
+                [{from[notice.from]}] {}
+              </span>
+              <span>{notice.content}</span>
+            </Text>
+          </NoticeCard>
+        ))}
+      </Container>
+    </SideBar>
   );
 };
 
