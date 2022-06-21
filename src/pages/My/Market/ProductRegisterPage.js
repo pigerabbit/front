@@ -52,7 +52,7 @@ const ProductRegisterPage = () => {
       ? ""
       : state?.shippingFeeCon?.toLocaleString() || ""
   );
-  const [useBy, setUseBy] = useState(state?.dueDate || "");
+  const [useBy, setUseBy] = useState(state?.term || "");
   const [detailInfo, setDetailInfo] = useState(state?.detail || "");
   const [detailInfoImage, setDetailInfoImage] = useState("");
   const [DetailInfoPreviewImg, setDetailInfoPreviewImg] = useState(
@@ -151,7 +151,7 @@ const ProductRegisterPage = () => {
       maxPurchaseQty: Number(maxPurchaseQty),
       shippingFee: Number(shippingFee.replaceAll(",", "")),
       shippingFeeCon: Number(shippingFeeCon.replaceAll(",", "")),
-      dueDate: useBy,
+      term: useBy,
       detail: detailInfo,
       shippingInfo,
     };
