@@ -187,11 +187,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 `;
 
 const InputListContainter = styled.form`
   width: 70%;
   max-width: 400px;
+  margin-top: 10%;
   margin-bottom: 10%;
 `;
