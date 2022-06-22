@@ -26,21 +26,23 @@ const CouponSuccessPage = ({ payment, quantity }) => {
       <div id="roundIcon">
         <FontAwesomeIcon icon={faCheck} />
       </div>
-      <GroupInfo>
-        <h2>{product.name}</h2>
-        <img src={product.images} alt={product.name + " 사진"} />
-        <p id="seller">
-          <span className="emphasize">
-            {product?.userInfo?.business[0]?.businessName}{" "}
-          </span>
-          의 이용권 입니다.
-        </p>
-        <br />
-        <p className="emphasize">공구명: {payment.group.groupName}</p>
-        <p className="emphasize">
-          상품 수량: <span id="quantity">{quantity}</span>개
-        </p>
-      </GroupInfo>
+      {product.name && (
+        <GroupInfo>
+          <h2>{product.name}</h2>
+          <img src={product.images} alt={product.name + " 사진"} />
+          <p id="seller">
+            <span className="emphasize">
+              {product?.userInfo?.business[0]?.businessName}{" "}
+            </span>
+            의 이용권 입니다.
+          </p>
+          <br />
+          <p className="emphasize">공구명: {payment.group.groupName}</p>
+          <p className="emphasize">
+            상품 수량: <span id="quantity">{quantity}</span>개
+          </p>
+        </GroupInfo>
+      )}
     </Container>
   );
 };
