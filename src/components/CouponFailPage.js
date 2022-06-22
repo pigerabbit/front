@@ -8,8 +8,8 @@ const CouponSuccessPage = () => {
   return (
     <Container>
       <Result>
-        <p>유효하지 않은 이용권입니다.</p>
-        <p>유효한 이용권인지 확인해주세요.</p>
+        <p>이용권 사용에 실패하였습니다.</p>
+        <p>이용권을 다시 확인해주시기 바랍니다.</p>
       </Result>
       <div id="round">
         <FontAwesomeIcon icon={faBan} />
