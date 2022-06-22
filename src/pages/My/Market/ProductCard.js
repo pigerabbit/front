@@ -130,9 +130,11 @@ const Content = styled.div`
 const Image = styled.div`
   margin-right: 10px;
   width: 18vw;
+  min-width: 18vw;
   height: 18vw;
   @media (min-width: 620px) {
     width: 112px;
+    min-width: 112px;
     height: 112px;
   }
   border-radius: 10px;
