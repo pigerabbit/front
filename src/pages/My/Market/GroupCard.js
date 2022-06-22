@@ -1,31 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import getDeadline from "utils/getDeadline";
+import { groupType, groupState, returnBgColor } from "../MyPageModule";
 
-const ProductCard = ({}) => {
-  const { user } = useSelector((state) => state.user);
-
+const ProductCard = ({ group }) => {
   const navigate = useNavigate();
 
+  const handleCardClick = () => {
+    navigate(`/groups/${group.groupId}`);
+  };
+
   return (
-    <Container>
-      <Content onClick={() => {}}>
+    <Container onClick={handleCardClick}>
+      <Content>
         <Title>
-          <span>[{"택배공구"}]</span>
-          <span>{"감자 공구해요!"}</span>
+          <span>[{groupType[group.groupType]}]</span>
+          <span>{group.groupName}</span>
         </Title>
 
-        <State>모집 성공</State>
+        <State bgColor={returnBgColor(group.state)}>
+          {groupState[group.state][0]}
+        </State>
 
-        <Deadline>{getDeadline("2022-06-11 15:00:00")}</Deadline>
+        <Deadline>{getDeadline(group.deadline)}</Deadline>
+
+        <PurchasersButton onClick={() => {}}>참여자 목록</PurchasersButton>
       </Content>
-
-      <ButtonContainer>
-        <PurchasersButton onClick={() => {}}>구매자 목록</PurchasersButton>
-      </ButtonContainer>
     </Container>
   );
 };
@@ -33,6 +35,7 @@ const ProductCard = ({}) => {
 export default ProductCard;
 
 const Container = styled.div`
+  cursor: pointer;
   background-color: white;
   position: relative;
   margin-top: 7px;
@@ -68,7 +71,6 @@ const Container = styled.div`
 const Content = styled.div`
   z-index: 2;
   background-color: white;
-  cursor: pointer;
   position: relative;
   width: 90%;
   max-width: 550px;
@@ -101,8 +103,9 @@ const Title = styled.div`
 `;
 
 const State = styled.div`
-  width: 12%;
-  background-color: #ffb564;
+  box-sizing: border-box;
+  width: 14%;
+  background-color: ${({ bgColor }) => bgColor};
   color: white;
   border-radius: 5px;
   font-size: 2.2vw;
@@ -110,7 +113,8 @@ const State = styled.div`
     font-size: 13.5px;
   }
   text-align: center;
-  padding: 1.4%;
+  padding: 1.3%;
+  padding-top: 1.6%;
   margin-top: 2%;
 `;
 
@@ -123,21 +127,10 @@ const Deadline = styled.span`
   }
 `;
 
-const ButtonContainer = styled.div`
-width 100%;
-position: absolute;
-width: 90%;
-max-width: 550px;
-bottom: 3vw;
-@media (min-width: 620px) {
-    bottom: 18px;
-  }
-
-display: flex;
-justify-content: flex-end;
-`;
-
 const PurchasersButton = styled.button`
+  position: absolute;
+  bottom: 0;
+  right: 0;
   width: 16%;
   max-width: 100px;
   z-index: 3;
