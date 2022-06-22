@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "api";
 
@@ -8,24 +7,39 @@ import MyPageLayout from "../MyPageLayout";
 import GroupCard from "pages/My/Market/GroupCard";
 
 const GroupListPage = () => {
-  const { user } = useSelector((state) => state.user);
   const [groups, setGroups] = useState([]);
   const { productId } = useParams();
 
+  const navigate = useNavigate();
   const location = useLocation();
+
+  const getGroupsData = async () => {
+    try {
+      const res = await Api.get(`groups/productId/${productId}`);
+      setGroups(res.data.payload);
+    } catch (e) {
+      // 에러처리
+    }
+  };
+
+  useEffect(() => {
+    if (!location.state?.isSeller) navigate("/");
+
+    getGroupsData();
+  }, [productId]);
 
   return (
     <MyPageLayout pageName={"공구 목록"} previousPage={-1}>
       <Container>
-        <ProductName>{location.state.productName}</ProductName>
-        {/* {products.length > 0 && ( */}
-        <TotalNumber>총 {}개</TotalNumber>
-        {/* )} */}
+        <ProductName>{location.state?.productName}</ProductName>
+        {groups.length > 0 && <TotalNumber>총 {groups.length}개</TotalNumber>}
 
-        <GroupCard />
+        {groups.map((group) => (
+          <GroupCard key={group.groupId} group={group} />
+        ))}
       </Container>
 
-      {/* {groups.length === 0 && (
+      {groups.length === 0 && (
         <NoContentContainer>
           <img
             src={`${process.env.PUBLIC_URL}/images/noSale.svg`}
@@ -33,7 +47,7 @@ const GroupListPage = () => {
           />
           오픈된 공동구매가 없습니다.
         </NoContentContainer>
-      )} */}
+      )}
     </MyPageLayout>
   );
 };

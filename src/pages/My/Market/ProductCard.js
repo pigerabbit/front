@@ -35,7 +35,7 @@ const ProductCard = ({ product, setCurrentProduct, setIsOpenPopup }) => {
     e.stopPropagation();
 
     navigate(`/markets/groups/${product.id}`, {
-      state: { productName: product.name },
+      state: { productName: product.name, isSeller: true },
     });
   };
 
