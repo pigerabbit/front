@@ -1,18 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 import CouponSuccessPage from "./CouponSuccessPage";
 import CouponFailPage from "./CouponFailPage";
 
 const CheckResultPage = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const isSuccess = location.state.success;
+  const payment = location.state.payment;
+  const quantity = location.state.quantity;
 
   return (
     <Container>
-      {isSuccess ? <CouponSuccessPage /> : <CouponFailPage />}
+      {isSuccess ? (
+        <CouponSuccessPage payment={payment} quantity={quantity} />
+      ) : (
+        <CouponFailPage />
+      )}
     </Container>
   );
 };
