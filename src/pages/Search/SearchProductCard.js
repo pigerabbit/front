@@ -45,7 +45,7 @@ const CardWrapper = styled.div`
 const CardImage = styled.div`
   background: #c0c0c0;
   background-image: url(${(props) => props.image});
-  background-size: cover;
+  background-size: 70px 70px;
   width: 70px;
   height: 70px;
   border-radius: 10px;
