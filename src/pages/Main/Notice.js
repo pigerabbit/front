@@ -36,7 +36,16 @@ const Notice = ({ setIsOpenNotice }) => {
   }, []);
   return (
     <SideBar title="알림" setIsOpenSideBar={setIsOpenNotice}>
-      <Container>
+      <Container noContents={noticeList.length === 0}>
+        {noticeList.length === 0 && (
+          <NoContentContainer>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/noSale.svg`}
+              alt="no nearby"
+            />
+            알림이 없습니다.
+          </NoContentContainer>
+        )}
         {noticeList.map((notice) => (
           <NoticeCard key={notice._id}>
             <Image url={notice.image} />
@@ -56,11 +65,16 @@ const Notice = ({ setIsOpenNotice }) => {
 export default Notice;
 
 const Container = styled.div`
-  width: 90%;
-  margin: 3% 5%;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 770px;
+  height: 90vh;
+  padding: 3% 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: ${({ noContents }) => noContents && "center;"};
+  overflow: scroll;
 `;
 
 const NoticeCard = styled.div`
@@ -105,5 +119,20 @@ const Text = styled.div`
     font-size: 14px;
     line-height: 20px;
     color: #ff9b2f;
+  }
+`;
+
+const NoContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 3vw;
+  @media (min-width: 650px) {
+    font-size: 20px;
+  }
+
+  > img {
+    width: 50%;
+    margin-bottom: 5%;
   }
 `;
