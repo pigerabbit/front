@@ -22,7 +22,9 @@ const GroupPurchaseCard = ({ purchase }) => {
   const navigate = useNavigate();
   const showConfirmationIcon = useShowComfirmationIcon();
 
-  const handleToggle = async () => {
+  const handleToggle = async (e) => {
+    e.stopPropagation();
+
     if (!wish) {
       showConfirmationIcon({
         backgroundColor: "#FF6A6A;",
@@ -43,6 +45,10 @@ const GroupPurchaseCard = ({ purchase }) => {
     setWish((cur) => !cur);
   };
 
+  const handleCardClick = () => {
+    navigate(`/groups/${purchase.groupId}`);
+  };
+
   const handleResize = () => {
     if (window.innerWidth >= 700) setNumTitle(15);
     else if (window.innerWidth >= 550) setNumTitle(32);
@@ -58,12 +64,9 @@ const GroupPurchaseCard = ({ purchase }) => {
   }, []);
 
   return (
-    <Container wish={wish}>
-      <Image
-        url={purchase?.productInfo?.images}
-        onClick={() => navigate(`/groups/${purchase.groupId}`)}
-      />
-      <Information onClick={() => navigate(`/groups/${purchase.groupId}`)}>
+    <Container wish={wish} onClick={handleCardClick}>
+      <Image url={purchase?.productInfo?.images} />
+      <Information>
         <CardTitle>
           <span>
             {purchase.groupType === "local" ? purchase.location : "택배공구"}
@@ -113,9 +116,9 @@ const Container = styled.div`
 `;
 
 const Image = styled.div`
-  width: 85px;
-  min-width: 85px;
-  height: 85px;
+  width: 90px;
+  min-width: 90px;
+  height: 90px;
   border-radius: 5px;
   background-image: url(${({ url }) => url});
   background-size: cover;

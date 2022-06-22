@@ -56,7 +56,7 @@ const ProductsTopBar = ({ search, category, setIsOpenSideBar }) => {
 
     if (!searchText) return;
 
-    navigate(`/products?search=${searchText}`);
+    navigate(`/products?search=${encodeURIComponent(searchText)}`);
   };
 
   return (

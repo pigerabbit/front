@@ -61,7 +61,9 @@ const SearchCurrent = () => {
               {currentKeyword.map((k, idx) => (
                 <Keyword
                   key={idx}
-                  onClick={() => navigate(`/products?search=${k}`)}
+                  onClick={() =>
+                    navigate(`/products?search=${encodeURIComponent(k)}`)
+                  }
                 >
                   <span>{k}</span>
                   <button onClick={(e) => deleteKeyword(e, k)}>
