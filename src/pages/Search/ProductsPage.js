@@ -21,7 +21,7 @@ const options = [
 
 const ProductsPage = () => {
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
-  const [option, setOption] = useState(options[0]);
+  const [currentOption, setCurrentOption] = useState(options[0]);
   const [products, setProducts] = useState([]);
   const [totalProductsNum, setTotalProductsNum] = useState(1);
   const [page, setPage] = useState(1);
@@ -46,7 +46,7 @@ const ProductsPage = () => {
           page,
           perPage: 6,
           category,
-          option: option.eng,
+          option: currentOption.eng,
         });
 
         setProducts((cur) => [...cur, ...res.data.payload.resultList]);
@@ -57,7 +57,7 @@ const ProductsPage = () => {
           page: page,
           perPage: 6,
           search: search,
-          option: option.eng,
+          option: currentOption.eng,
         });
 
         setProducts((cur) => [...cur, ...res.data.payload.resultList]);
@@ -95,9 +95,9 @@ const ProductsPage = () => {
           {options.map((option) => (
             <Option
               key={option.eng}
-              selected={option === option.eng}
+              selected={currentOption.eng === option.eng}
               onClick={() => {
-                setOption(option);
+                setCurrentOption(option);
                 setPage(0);
                 setProducts([]);
               }}
