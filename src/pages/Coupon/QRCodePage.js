@@ -76,7 +76,7 @@ const QRCodePage = () => {
             setQuantity={setQuantity}
             maxQuantity={maxQuantity}
           />
-          (남은 수량 {maxQuantity - quantity}개 / 최대 {maxQuantity}개)
+          (남는 수량 {maxQuantity - quantity}개 / 최대 {maxQuantity}개)
         </div>
       </QRBottom>
     </Container>
