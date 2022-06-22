@@ -163,8 +163,7 @@ const Container = styled.div`
 
 const ProductsInfo = styled.div`
   width: 84%;
-  margin: 25px 8%;
-  margin-left: 8%;
+  margin: 25px 0;
   display: flex;
   align-items: center;
   font-size: 12px;

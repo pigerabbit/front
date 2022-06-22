@@ -104,10 +104,10 @@ const EmailLoginPage = () => {
       >
         로그인
       </UserButton>
-      <MoveButtonsContainer>
+      <ButtonsContainer>
         <span>비밀번호 찾기</span>
         <span onClick={handleRegisterClick}>이메일로 회원가입</span>
-      </MoveButtonsContainer>
+      </ButtonsContainer>
     </Container>
   );
 };
@@ -124,16 +124,16 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 `;
 
 const InputListContainter = styled.form`
   width: 70%;
   max-width: 400px;
+  margin-top: 15%;
   margin-bottom: 10%;
 `;
 
-const MoveButtonsContainer = styled.div`
+const ButtonsContainer = styled.div`
   width: 70%;
   max-width: 400px;
   display: flex;

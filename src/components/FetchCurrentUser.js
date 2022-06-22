@@ -13,9 +13,9 @@ const FetchCurrentUser = ({ children }) => {
     try {
       if (!user) {
         const res = await Api.get("users/current");
-        const currentUser = res.data.payload;
+        const userData = res.data.payload.resultUser;
 
-        dispatch(login(currentUser));
+        dispatch(login(userData));
       }
     } catch {
       navigate("/login");

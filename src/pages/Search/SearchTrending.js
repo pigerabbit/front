@@ -29,6 +29,11 @@ const SearchTrending = () => {
           <span>{keyword}</span>
         </KeywordWrapper>
       ))}
+      {trendingKeyword.length === 0 && (
+        <NoKeywordsContainer>
+          <h3>최근 1시간 동안 검색된 키워드가 없습니다</h3>
+        </NoKeywordsContainer>
+      )}
     </Container>
   );
 };
@@ -37,7 +42,6 @@ export default SearchTrending;
 
 const Container = styled.div`
   width: 35%;
-  height: 55vh;
   border: 1px #dcdcde solid;
   border-radius: 5px;
   padding: 3.5%;
@@ -59,4 +63,15 @@ const KeywordWrapper = styled.div`
 const KeywordNumber = styled.strong`
   margin-right: 8px;
   color: #f79831;
+`;
+
+const NoKeywordsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  > h3 {
+    font-size: 15px;
+    color: #969696;
+  }
 `;

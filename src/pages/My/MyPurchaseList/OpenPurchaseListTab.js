@@ -31,7 +31,7 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
       setFilteredData(onProgress);
     } else if (option === "모집성공") {
       const completed = totalData.filter((group) =>
-        [-5, -4, 4, 5, 1, 2].includes(group.state)
+        [-5, -4, 4, 5, 1].includes(group.state)
       );
       setFilteredData(completed);
     } else if (option === "기간마감") {
@@ -44,9 +44,6 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
         [-7, -6].includes(group.state)
       );
       setFilteredData(canceled);
-    } else if (option === "사용완료") {
-      const completed = totalData.filter((group) => group.state === -2);
-      setFilteredData(completed);
     }
   }, [option, totalData]);
 
@@ -55,16 +52,31 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
     setIsOpen(false);
   };
 
-  const handleStopGroupClick = async () => {
+  const handleDeleteGroup = async (groupId) => {
     try {
-      await Api.put(`groups/${cancelDataId}/participate/out`);
-      const data = filteredData.filter((data) => data.groupId !== cancelDataId);
+      await Api.delete(`groups/${groupId}`);
+      const data = filteredData.filter((data) => data.groupId === groupId);
       setFilteredData(data);
-      setIsOpenPopUpCard(false);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const handleRemoveGroupFromMyList = async (groupId) => {
+    try {
+      await Api.put(`groups/${groupId}/participate/out`);
+      const data = filteredData.filter((data) => data.groupId !== groupId);
+      setFilteredData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleStopGroupClick = async () => {
+    handleRemoveGroupFromMyList(cancelDataId);
+    setIsOpenPopUpCard(false);
+  };
+
   return (
     <Container>
       <InfoWrapper>
@@ -94,19 +106,13 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
           filteredData.map((group) => (
             <MyPurchaseListCard
               key={group.groupId}
-              groupId={group.groupId}
-              productId={group.productId}
               userId={userId}
-              type={group.groupType}
-              images={group.productInfo?.images}
-              state={group.state}
-              title={group.groupName}
-              remained={group.remainedPersonnel}
-              participants={group.participants}
-              deadline={group.deadline}
+              group={group}
               isOpenTab={true}
               setIsOpenPopUpCard={setIsOpenPopUpCard}
               setCancelDataId={setCancelDataId}
+              handleRemoveGroupFromMyList={handleRemoveGroupFromMyList}
+              handleDeleteGroup={handleDeleteGroup}
             />
           ))}
         {filteredData.length === 0 && (

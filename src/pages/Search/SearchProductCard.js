@@ -1,19 +1,23 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-const SearchProductCard = ({ name, price, salePrice, discountRate }) => {
+const SearchProductCard = ({ product }) => {
+  const navigate = useNavigate();
   return (
     <CardContainer>
       <CardWrapper>
-        <CardImage />
+        <CardImage image={product.images} />
         <CardContent>
-          <Name>{name}</Name>
+          <Name>{product.name}</Name>
           <DescriptionWrapper>
             <Description>
-              <Price>{`${price}원`}</Price>
-              <DiscountRate>{`${discountRate}%`}</DiscountRate>
-              <SalePrice>{`${salePrice}원`}</SalePrice>
+              <Price>{`${product.price}원`}</Price>
+              <DiscountRate>{`${product.discountRate}%`}</DiscountRate>
+              <SalePrice>{`${product.salePrice}원`}</SalePrice>
             </Description>
-            <InfoButton>보러가기</InfoButton>
+            <InfoButton onClick={() => navigate(`/products/${product.id}`)}>
+              보러가기
+            </InfoButton>
           </DescriptionWrapper>
         </CardContent>
       </CardWrapper>
@@ -40,6 +44,8 @@ const CardWrapper = styled.div`
 
 const CardImage = styled.div`
   background: #c0c0c0;
+  background-image: url(${(props) => props.image});
+  background-size: cover;
   width: 70px;
   height: 70px;
   border-radius: 10px;
@@ -86,4 +92,5 @@ const InfoButton = styled.button`
   border: none;
   border-radius: 5px;
   align-self: flex-end;
+  cursor: pointer;
 `;

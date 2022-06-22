@@ -10,27 +10,20 @@ import {
 } from "../MyPageModule";
 
 const MyPurchaseListCard = ({
-  type,
-  images,
-  groupId,
-  productId,
   userId,
-  state,
-  title,
-  price,
-  remained,
-  participants,
-  deadline,
+  group,
   isOpenTab,
   setIsOpenPopUpCard,
   setCancelDataId,
+  handleRemoveGroupFromMyList,
+  handleDeleteGroup,
 }) => {
   const navigate = useNavigate();
-  const myInfo = participants.filter((p) => p.userId === userId);
+  const myInfo = group.participants.filter((p) => p.userId === userId);
 
   const handleClick = () => {
     setIsOpenPopUpCard(true);
-    setCancelDataId(groupId);
+    setCancelDataId(group.groupId);
   };
 
   return (
@@ -38,52 +31,67 @@ const MyPurchaseListCard = ({
       {!isOpenTab && <p>{formatParticipateDate(myInfo[0].participantDate)}</p>}
       <CardWrapper>
         <CardImageWrapper>
-          <CardImage images={images} />
-          {groupState[state].length > 1 && (
+          <CardImage images={group.productInfo.images} />
+          {groupState[group.state].length > 1 && (
             <StateMessage>
-              <p>{groupState[state][1]}</p>
+              <p>{groupState[group.state][1]}</p>
             </StateMessage>
           )}
         </CardImageWrapper>
         <CardContent>
           <Title>
-            <strong>{`[${groupType[type]}] `}</strong>
-            {title}
+            <strong>{`[${groupType[group.groupType]}] `}</strong>
+            {group.groupName}
           </Title>
           <State
-            bgColor={() => returnBgColor(state)}
-            fontColor={() => returnFontColor(state)}
+            bgColor={() => returnBgColor(group.state)}
+            fontColor={() => returnFontColor(group.state)}
           >
-            {groupState[state][0]}
+            {groupState[group.state][0]}
           </State>
-          {(state === 0 || state === 2) && <span>{`${remained}개 남음`}</span>}
+          {group.state === 0 && (
+            <span>{`${group.remainedPersonnel}개 남음`}</span>
+          )}
           {isOpenTab ? (
-            <Message>{formatDate(deadline)}</Message>
+            <Message>{formatDate(group.deadline)}</Message>
           ) : (
             <Message>{`${myInfo[0].quantity}개 ${(
-              myInfo[0].quantity * price
+              myInfo[0].quantity * group.productInfo.salePrice
             ).toLocaleString()}원`}</Message>
           )}
         </CardContent>
       </CardWrapper>
-      {state === 0 && (
+      {group.state === 0 && (
         <CardButton bgColor="#A0A0A0" onClick={() => handleClick()}>
           {isOpenTab ? "공구 중지" : "참여 취소"}
         </CardButton>
       )}
-      {state === 5 && myInfo[0].review === true && (
+      {group.state === 5 && myInfo[0].review === true && (
         <CardButton bgColor="#A0A0A0">후기 완료</CardButton>
       )}
-      {state === 5 && myInfo[0].review === false && (
+      {group.state === 5 && myInfo[0].review === false && (
         <CardButton
           bgColor="#FFB564"
-          onClick={() => navigate(`products/${productId}`)}
+          onClick={() => navigate(`products/${group.productInfo.productId}`)}
         >
           후기 작성
         </CardButton>
       )}
-      {isOpenTab && state === -1 && (
-        <CardButton bgColor="#A0A0A0">공구 삭제</CardButton>
+      {isOpenTab && group.state === -1 && (
+        <CardButton
+          onClick={() => handleDeleteGroup(group.groupId)}
+          bgColor="#A0A0A0"
+        >
+          공구 삭제
+        </CardButton>
+      )}
+      {(group.state == -6 || group.state == -7) && (
+        <CardButton
+          onClick={() => handleRemoveGroupFromMyList(group.groupId)}
+          bgColor="#A0A0A0"
+        >
+          공구 삭제
+        </CardButton>
       )}
     </CardContainer>
   );

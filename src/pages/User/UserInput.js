@@ -46,7 +46,7 @@ const UserInput = ({
   }, [value]);
 
   return (
-    <InputContainer onClick={handleClick} noCheck={noCheck}>
+    <InputContainer noCheck={noCheck}>
       <InputTitle>
         {title} <span>{errMessage}</span>
       </InputTitle>
@@ -58,6 +58,7 @@ const UserInput = ({
           value={value}
           autoComplete="off"
           onChange={handleInputChange}
+          onClick={handleClick}
         />
         {confirmButton && (
           <UserButton

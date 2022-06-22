@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { confirmNotice } from "redux/userSlice";
+
+import SideBar from "components/SideBar";
 
 const from = {
   product: "상품 삭제",
@@ -12,47 +15,66 @@ const from = {
   comment: "댓글 알림",
 };
 
-const Notice = () => {
+const Notice = ({ setIsOpenNotice }) => {
   const { user } = useSelector((state) => state.user);
   const [noticeList, setNoticeList] = useState([]);
 
+  const dispatch = useDispatch();
+
   const getNoticeList = async () => {
-    const res = await Api.get("users", `${user.id}/alert`);
-    setNoticeList(res.data.payload[0].alertList);
+    try {
+      const res = await Api.get("users", `${user.id}/alert`);
+      setNoticeList(res.data.payload || []);
+      dispatch(confirmNotice());
+    } catch (e) {
+      // 에러처리
+    }
   };
 
   useEffect(() => {
     getNoticeList();
   }, []);
   return (
-    <Container>
-      {noticeList.map((notice) => (
-        <NoticeCard key={notice._id}>
-          <Image
-            url={
-              "https://images.unsplash.com/photo-1630431341973-02e1b662ec35?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fHBvdGF0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500"
-            }
-          />
-          <Text>
-            <span>
-              [{from[notice.from]}] {}
-            </span>
-            <span>{notice.content}</span>
-          </Text>
-        </NoticeCard>
-      ))}
-    </Container>
+    <SideBar title="알림" setIsOpenSideBar={setIsOpenNotice}>
+      <Container noContents={noticeList.length === 0}>
+        {noticeList.length === 0 && (
+          <NoContentContainer>
+            <img
+              src={`${process.env.PUBLIC_URL}/images/noSale.svg`}
+              alt="no nearby"
+            />
+            알림이 없습니다.
+          </NoContentContainer>
+        )}
+        {noticeList.map((notice) => (
+          <NoticeCard key={notice._id}>
+            <Image url={notice.image} />
+            <Text>
+              <span>
+                [{from[notice.from]}] {}
+              </span>
+              <span>{notice.content}</span>
+            </Text>
+          </NoticeCard>
+        ))}
+      </Container>
+    </SideBar>
   );
 };
 
 export default Notice;
 
 const Container = styled.div`
-  width: 90%;
-  margin: 3% 5%;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 770px;
+  height: 90vh;
+  padding: 3% 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: ${({ noContents }) => noContents && "center;"};
+  overflow: scroll;
 `;
 
 const NoticeCard = styled.div`
@@ -77,7 +99,7 @@ const Image = styled.div`
   margin-right: 15px;
   border-radius: 50%;
   background-image: url(${({ url }) => url});
-  background-size: 100%;
+  background-size: cover;
   background-position: center;
 `;
 
@@ -97,5 +119,20 @@ const Text = styled.div`
     font-size: 14px;
     line-height: 20px;
     color: #ff9b2f;
+  }
+`;
+
+const NoContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 3vw;
+  @media (min-width: 650px) {
+    font-size: 20px;
+  }
+
+  > img {
+    width: 50%;
+    margin-bottom: 5%;
   }
 `;

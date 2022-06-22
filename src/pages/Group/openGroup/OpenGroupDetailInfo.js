@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SelectBox from "../../../components/SeletBox";
+
+import SelectBox from "components/SeletBox";
+import Counter from "components/Counter";
 import { options } from "../GroupModule";
 
 const OpenGroupDetailInfo = ({ product, type }) => {
@@ -24,7 +24,8 @@ const OpenGroupDetailInfo = ({ product, type }) => {
     if (product && type === "coupon") {
       setLocation(product.userInfo.business[0].businessLocation);
     }
-  }, [product]);
+  }, [product, type]);
+
   return (
     <>
       <DetailInfoContainer>
@@ -40,24 +41,11 @@ const OpenGroupDetailInfo = ({ product, type }) => {
           </Line>
           <Line>
             <h3>참여 개수</h3>
-            <CounterWrapper>
-              <Counter>
-                <button
-                  disabled={count <= 0}
-                  onClick={() => setCount((prev) => prev - 1)}
-                >
-                  <FontAwesomeIcon icon={faMinus} />
-                </button>
-                <span>{count}</span>
-                <button
-                  disabled={count >= product.minPurchaseQty}
-                  onClick={() => setCount((prev) => prev + 1)}
-                >
-                  <FontAwesomeIcon icon={faPlus} />
-                </button>
-              </Counter>
-              <span>{`최대 ${product.minPurchaseQty}개 가능`}</span>
-            </CounterWrapper>
+            <Counter
+              count={count}
+              setCount={setCount}
+              minPurchaseQty={product.minPurchaseQty}
+            />
           </Line>
           {type !== "coupon" && (
             <Line>
@@ -150,33 +138,6 @@ const Line = styled.div`
     > p {
       font-size: 13px;
     }
-  }
-`;
-
-const CounterWrapper = styled.div`
-  display: inline-block;
-  width: 358px;
-  > span {
-    margin-left: 10px;
-    font-size: 13px;
-    color: #6c6c6c;
-  }
-`;
-
-const Counter = styled.div`
-  display: inline-block;
-  border: 1px solid #c4c4c4;
-  border-radius: 5px;
-  width: 80px;
-  text-align: center;
-  box-sizing: border-box;
-  padding: 1%;
-  > button {
-    border: none;
-    background: transparent;
-    margin: 0 3%;
-    cursor: pointer;
-    color: #767676;
   }
 `;
 

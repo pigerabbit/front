@@ -30,7 +30,7 @@ const GroupCard = ({ group, minPurchaseQty }) => {
     `${remain.getSeconds() < 10 ? "0" : ""}${remain.getSeconds()}`,
   ];
 
-  if (hours < 0) {
+  if (hours < 0 && date > 0) {
     date -= 1;
     hours += 24;
   }

@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import * as Api from "api";
 
-import GroupHeader from "../GroupHeader";
 import { states, subDate, CalShippingFee } from "../GroupModule";
+import GroupHeader from "../GroupHeader";
 import AddressInfo from "./AddressInfo";
 import ProductInfo from "./ProductInfo";
 import PriceInfo from "./PriceInfo";
-import * as Api from "api";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const PaymentDetailPage = () => {
   const params = useParams();
@@ -16,20 +17,24 @@ const PaymentDetailPage = () => {
 
   const { user } = useSelector((state) => state.user);
 
-  const [group, setGroup] = useState(null);
+  const [group, setGroup] = useState([]);
 
-  const fetchGroup = async () => {
+  const getGroup = async () => {
     const res = await Api.get(`groups/groupId/${id}`);
     setGroup(res.data.payload[0]);
   };
 
   useEffect(() => {
-    fetchGroup();
+    getGroup();
   }, []);
 
-  if (group === null) {
-    return "loading...";
+  if (group.length === 0) {
+    return <LoadingSpinner />;
   }
+
+  const { payment, quantity } = group.participants.filter(
+    (p) => p.userId === user.id
+  )[0];
 
   return (
     <Container>
@@ -45,7 +50,7 @@ const PaymentDetailPage = () => {
       </Info>
       <AddressInfo
         name={user?.name}
-        contact="01012345678"
+        contact={user?.phoneNumber}
         address={group.groupType !== "normal" ? group.location : user?.address}
         type={group.groupType}
         isComplete="true"
@@ -54,21 +59,21 @@ const PaymentDetailPage = () => {
         image={group.productInfo.images}
         title={group.groupName}
         price={group.productInfo.salePrice}
-        count="2"
+        count={quantity}
       />
       <PriceInfo
         price={group.productInfo.salePrice}
-        totalPrice={group.productInfo.salePrice * 2}
+        totalPrice={group.productInfo.salePrice * quantity}
         shippingPrice={CalShippingFee(
           group.groupType,
           group.productInfo.shippingFee,
           group.productInfo.shippingFeeCon,
           group.productInfo.salePrice,
-          group.productInfo.salePrice * 2,
+          group.productInfo.salePrice * quantity,
           group.productInfo.minPurchaseQty
         )}
         type={group.groupType}
-        payment="카드 결제"
+        payment={payment}
       />
     </Container>
   );
