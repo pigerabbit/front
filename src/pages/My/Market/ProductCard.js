@@ -24,32 +24,42 @@ const ProductCard = ({ product, setCurrentProduct, setIsOpenPopup }) => {
     navigate(`/products/${product.id}`);
   };
 
-  const handleEllipsisClick = () => {
+  const handleEllipsisClick = (e) => {
+    e.stopPropagation();
+
     setCurrentProduct(product.id);
     setIsControllerOpen(true);
   };
 
-  const handleGroupListBtnClick = () => {
+  const handleGroupListBtnClick = (e) => {
+    e.stopPropagation();
+
     navigate(`/markets/groups/${product.id}`, {
       state: { productName: product.name },
     });
   };
 
-  const handleEditingClick = () => {
+  const handleEditingClick = (e) => {
+    e.stopPropagation();
+
     navigate("/register/product", { state: product });
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (e) => {
+    e.stopPropagation();
+
     setIsOpenPopup(true);
   };
 
-  const handleCancelClick = () => {
+  const handleCancelClick = (e) => {
+    e.stopPropagation();
+
     setIsControllerOpen(false);
   };
 
   return (
-    <Container>
-      <Content onClick={handleCardClick}>
+    <Container onClick={handleCardClick}>
+      <Content>
         <Image url={product.images} />
 
         <Information>
@@ -65,9 +75,7 @@ const ProductCard = ({ product, setCurrentProduct, setIsOpenPopup }) => {
             </div>
           </Price>
         </Information>
-      </Content>
 
-      <ButtonsContainer>
         {user.id === id && (
           <>
             <FontAwesomeIcon
@@ -79,7 +87,7 @@ const ProductCard = ({ product, setCurrentProduct, setIsOpenPopup }) => {
             </GroupsButton>
           </>
         )}
-      </ButtonsContainer>
+      </Content>
 
       {user.id === id && (
         <UpdateController isControllerOpen={isControllerOpen}>
@@ -97,6 +105,7 @@ const ProductCard = ({ product, setCurrentProduct, setIsOpenPopup }) => {
 export default ProductCard;
 
 const Container = styled.div`
+  cursor: pointer;
   background-color: white;
   position: relative;
   margin-top: 7px;
@@ -115,8 +124,8 @@ const Container = styled.div`
 
 const Content = styled.div`
   z-index: 2;
+  position: relative;
   background-color: white;
-  cursor: pointer;
   position: relative;
   width: 90%;
   max-width: 550px;
@@ -125,6 +134,26 @@ const Content = styled.div`
     margin: 18px 0;
   }
   display: flex;
+
+  > svg {
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5%;
+    margin-right: -2.5%;
+    margin-top: 0.5%;
+    color: #aaaaaa;
+    font-size: 3vw;
+    @media (min-width: 620px) {
+      font-size: 20px;
+    }
+    transition: color 0.4s;
+
+    &:hover {
+      color: #ffb564;
+    }
+  }
 `;
 
 const Image = styled.div`
@@ -194,43 +223,12 @@ const Price = styled.div`
   }
 `;
 
-const ButtonsContainer = styled.div`
-  position: absolute;
-  width: 90%;
-  max-width: 550px;
-  top: 3vw;
-  bottom: 3vw;
-  @media (min-width: 620px) {
-    top: 18px;
-    bottom: 18px;
-  }
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
-
-  > svg {
-    z-index: 3;
-    cursor: pointer;
-    width: 5%;
-    margin-right: -2.5%;
-    margin-top: 0.5%;
-    color: #aaaaaa;
-    font-size: 3vw;
-    @media (min-width: 620px) {
-      font-size: 20px;
-    }
-    transition: color 0.4s;
-
-    &:hover {
-      color: #ffb564;
-    }
-  }
-`;
-
 const GroupsButton = styled.button`
   cursor: pointer;
   z-index: 3;
+  position: absolute;
+  bottom: 0;
+  right: 0;
   width: 13%;
   max-width: 80px;
   margin-bottom: 0.5%;

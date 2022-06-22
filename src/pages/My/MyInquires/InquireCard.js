@@ -15,7 +15,13 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
       return `${date.slice(0, 4)}.${date.slice(5, 7)}.${date.slice(8, 10)}`;
   };
 
-  const handleDeleteBtnClick = () => {
+  const handleCardClick = () => {
+    navigate(`/products/${inquire.post.receiver}`);
+  };
+
+  const handleDeleteBtnClick = (e) => {
+    e.stopPropagation();
+
     setIsOpenPopup(true);
   };
 
@@ -29,37 +35,35 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
   };
 
   return (
-    <Container>
-      <Content
-        onClick={() => {
-          navigate(`/products/${inquire.post.receiver}`);
-        }}
-      >
-        <Badge reply={inquire?.post.reply}>
-          {inquire?.post.reply ? "답변완료" : "미답변"}
-        </Badge>
+    <>
+      <Container onClick={handleCardClick}>
+        <Content>
+          <Badge reply={inquire?.post.reply}>
+            {inquire?.post.reply ? "답변완료" : "미답변"}
+          </Badge>
 
-        <Title>{inquire?.post.title}</Title>
-        <Date>{getDate(inquire?.post.createdAt)}</Date>
-        <Inquire reply={inquire?.post.reply}>{inquire?.post.content}</Inquire>
+          <Title>{inquire?.post.title}</Title>
+          <Date>{getDate(inquire?.post.createdAt)}</Date>
+          <Inquire reply={inquire?.post.reply}>{inquire?.post.content}</Inquire>
 
-        {inquire?.post.reply && (
-          <Reply>
-            <ReplyTitle>
-              <span>답변</span>
-              <span>{getDate(inquire?.commentList[0].createdAt)}</span>
-            </ReplyTitle>
-            <ReplyContent>{inquire?.commentList[0].content}</ReplyContent>
-            <div>
-              ※ 답변 내용은 각 판매사에서 작성되며,
-              <br />
-              소공소공의 서비스/정책과 상이할 수 있습니다.
-            </div>
-          </Reply>
-        )}
-      </Content>
+          {inquire?.post.reply && (
+            <Reply>
+              <ReplyTitle>
+                <span>답변</span>
+                <span>{getDate(inquire?.commentList[0].createdAt)}</span>
+              </ReplyTitle>
+              <ReplyContent>{inquire?.commentList[0].content}</ReplyContent>
+              <div>
+                ※ 답변 내용은 각 판매사에서 작성되며,
+                <br />
+                소공소공의 서비스/정책과 상이할 수 있습니다.
+              </div>
+            </Reply>
+          )}
+        </Content>
 
-      <DeleteButton onClick={handleDeleteBtnClick}>삭제</DeleteButton>
+        <DeleteButton onClick={handleDeleteBtnClick}>삭제</DeleteButton>
+      </Container>
 
       <ConfirmationPopup
         isOpenPopup={isOpenPopup}
@@ -69,7 +73,7 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
       >
         <ConfirmationContent>문의를 정말 삭제하시겠습니까?</ConfirmationContent>
       </ConfirmationPopup>
-    </Container>
+    </>
   );
 };
 
