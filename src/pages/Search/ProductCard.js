@@ -18,7 +18,9 @@ const ProductCard = ({ product }) => {
     navigate(`/products/${product.id}`);
   };
 
-  const handleToggle = async () => {
+  const handleToggle = async (e) => {
+    e.stopPropagation();
+
     if (!wish) {
       showConfirmationIcon({
         backgroundColor: "#FF6A6A;",
@@ -40,10 +42,10 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <Container wish={wish}>
-      <Image className="image" url={product.images} onClick={handleCardClick} />
+    <Container wish={wish} onClick={handleCardClick}>
+      <Image className="image" url={product.images} />
 
-      <Information onClick={handleCardClick}>
+      <Information>
         <Title>
           <span>[{product?.userInfo?.business[0].businessName}]</span>
           <span>
