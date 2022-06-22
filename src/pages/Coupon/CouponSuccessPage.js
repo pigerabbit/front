@@ -122,6 +122,7 @@ const GroupInfo = styled.div`
     height: 300px;
     margin-bottom: 15px;
     border-radius: 10px;
+    box-shadow: 0 0 8px #d0d0d0;
   }
 
   > p {
