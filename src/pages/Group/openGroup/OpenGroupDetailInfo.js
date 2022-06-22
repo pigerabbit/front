@@ -5,24 +5,27 @@ import styled from "styled-components";
 import SelectBox from "components/SeletBox";
 import Counter from "components/Counter";
 import { options } from "../GroupModule";
+import DaumPost from "components/DaumPostCode";
 
 const OpenGroupDetailInfo = ({ product, type }) => {
   const navigate = useNavigate();
 
   const [count, setCount] = useState(0);
   const [groupName, setGroupName] = useState("");
-  const [location, setLocation] = useState("");
+  const [address, setAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState("");
+  const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
   const [hour, setHour] = useState(12);
   const [isOpen, setIsOpen] = useState(false);
 
   const groupNameValid = groupName.length > 0;
-  const locationValid = location.length > 0;
+  const locationValid = address.length > 0 && detailAddress.length > 0;
   const isValid =
     type === "coupon" ? groupNameValid : groupNameValid && locationValid;
 
   useEffect(() => {
     if (product && type === "coupon") {
-      setLocation(product.userInfo.business[0].businessLocation);
+      setAddress(product.userInfo.business[0].businessLocation);
     }
   }, [product, type]);
 
@@ -50,12 +53,34 @@ const OpenGroupDetailInfo = ({ product, type }) => {
           {type !== "coupon" && (
             <Line>
               <h3>공구 주소</h3>
-              <input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "354px",
+                }}
+              >
+                <input
+                  type="text"
+                  value={address}
+                  onChange={setAddress}
+                  onClick={() => setIsDaumPostOpen(true)}
+                />
+                <input
+                  type="text"
+                  placeholder="상세 주소를 입력해주세요."
+                  value={detailAddress}
+                  onChange={(e) => setDetailAddress(e.target.value)}
+                  style={{ marginTop: "20px" }}
+                />
+              </div>
             </Line>
+          )}
+          {isDaumPostOpen && (
+            <DaumPost
+              setAddress={setAddress}
+              setIsDaumPostOpen={setIsDaumPostOpen}
+            />
           )}
           <Line>
             <h3>공구 기간</h3>
@@ -78,7 +103,14 @@ const OpenGroupDetailInfo = ({ product, type }) => {
           onClick={() =>
             navigate("/group/open/pay", {
               state: {
-                data: { product, type, groupName, location, count, hour },
+                data: {
+                  product,
+                  type,
+                  groupName,
+                  location: `${address} ${detailAddress}`,
+                  count,
+                  hour,
+                },
               },
             })
           }
@@ -123,10 +155,10 @@ const Line = styled.div`
     display: inline-block;
     font-size: 16px;
   }
-  > input {
-    width: 350px;
+  input {
+    width: 353px;
   }
-  > input[type="text"] {
+  input[type="text"] {
     border: none;
     border-bottom: 2px solid #f79831;
   }
@@ -137,6 +169,9 @@ const Line = styled.div`
     }
     > p {
       font-size: 13px;
+    }
+    input {
+      width: 100%;
     }
   }
 `;
