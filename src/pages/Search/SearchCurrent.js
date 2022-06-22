@@ -37,7 +37,10 @@ const SearchCurrent = () => {
   const deleteKeyword = async (e, keyword) => {
     e.stopPropagation();
     try {
-      const filteredKeywords = await Api.delete(`toggle/searchWord/${keyword}`);
+      const encodingKeyword = encodeURIComponent(keyword);
+      const filteredKeywords = await Api.delete(
+        `toggle/searchWord/${encodingKeyword}`
+      );
       setCurrentKeyword(filteredKeywords.data.searchWords.reverse());
     } catch (err) {
       console.log(err);
