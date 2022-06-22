@@ -26,9 +26,11 @@ const SearchCurrent = () => {
       ]);
 
       setCurrentKeyword(currentKeyword.data.reverse());
-      setProductList(
-        [...new Set(productList.data.map(JSON.stringify))].map(JSON.parse)
-      );
+      // const filteredProductList = productList.data.filter(
+      //   (arr, index, callback) =>
+      //     index === callback.findIndex((t) => t.id === arr.id)
+      // );
+      setProductList(productList.data);
 
       setLoading(false);
     } catch (err) {
