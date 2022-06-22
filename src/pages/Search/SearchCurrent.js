@@ -26,11 +26,7 @@ const SearchCurrent = () => {
       ]);
 
       setCurrentKeyword(currentKeyword.data.reverse());
-      const filteredProductList = productList.data.filter(
-        (arr, index, callback) =>
-          index === callback.findIndex((t) => t.id === arr.id)
-      );
-      setProductList(filteredProductList);
+      setProductList(productList.data);
 
       setLoading(false);
     } catch (err) {
