@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "api";
+
+import ConfirmationUsagePage from "./ConfirmationUsagePage";
 
 const BridgePage = () => {
   const navigate = useNavigate();
@@ -10,6 +12,8 @@ const BridgePage = () => {
   const groupObjId = searchParams.get("group");
   const userId = searchParams.get("user");
   const quantity = searchParams.get("quantity");
+
+  const [confirmation, setConfirmation] = useState(false);
 
   const getPaymentDetail = async () => {
     try {
@@ -34,11 +38,14 @@ const BridgePage = () => {
   };
 
   useEffect(() => {
-    getPaymentDetail();
-  }, []);
+    if (confirmation === true) getPaymentDetail();
+  }, [confirmation]);
+
   return (
     <Container>
-      <div />
+      {!confirmation && (
+        <ConfirmationUsagePage setConfirmation={setConfirmation} />
+      )}
     </Container>
   );
 };
