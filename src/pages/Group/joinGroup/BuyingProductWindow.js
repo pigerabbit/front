@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
+import SetQuantityButtons from "components/SetQuantityButtons";
+
 const BuyingProductWindow = ({
   group,
   salePrice,
@@ -12,75 +14,40 @@ const BuyingProductWindow = ({
 
   const [quantity, setQuantity] = useState(1);
 
-  const onChange = (e) => {
-    if (e.target.value === 0) setQuantity(1);
-    setQuantity(
-      e.target.value > remainedPersonnel ? remainedPersonnel : e.target.value
-    );
-  };
-
   return (
-    <Container>
-      <CardContainer>
-        <div id="cancel">
-          <Cancel
-            onClick={() => {
-              setShowBuyingProduct(false);
-            }}
-          />
-        </div>
-        <div id="quantity">
-          <Quantity>
-            <button
-              onClick={() => {
-                setQuantity((cur) => (cur === 1 ? cur : cur - 1));
-              }}
-            >
-              -
-            </button>
-            <input
-              type="number"
-              value={quantity}
-              onChange={onChange}
-              onKeyPress={(event) => {
-                if (!/[0-9]/.test(event.key)) {
-                  event.preventDefault();
-                } else if (event.key === "0" && quantity === "") {
-                  setQuantity(1);
-                  event.preventDefault();
-                }
-              }}
-            />
-            <button
-              onClick={() => {
-                setQuantity((cur) =>
-                  cur === remainedPersonnel ? cur : cur + 1
-                );
-              }}
-            >
-              +
-            </button>
-          </Quantity>
-        </div>
-        <div id="result">
-          <ShowQuantity>
-            총 구매수량 <p>{quantity}</p>개
-          </ShowQuantity>
-          <Total>합계 {(quantity * salePrice).toLocaleString()}원</Total>
-        </div>
-        <Button
+    <CardContainer>
+      <div id="cancel">
+        <Cancel
           onClick={() => {
-            navigate("/group/join/pay", {
-              state: {
-                data: { group, count: quantity },
-              },
-            });
+            setShowBuyingProduct(false);
           }}
-        >
-          구매하기
-        </Button>
-      </CardContainer>
-    </Container>
+        />
+      </div>
+      <div id="quantity">
+        <SetQuantityButtons
+          quantity={quantity}
+          setQuantity={setQuantity}
+          maxQuantity={remainedPersonnel}
+        />
+      </div>
+      <div id="result">
+        <ShowQuantity>
+          총 구매수량 <p>{quantity}</p>개
+        </ShowQuantity>
+        <Total>합계 {(quantity * salePrice).toLocaleString()}원</Total>
+      </div>
+      <Button
+        onClick={() => {
+          navigate("/group/join/pay", {
+            state: {
+              data: { group, count: quantity },
+            },
+          });
+        }}
+      >
+        구매하기
+      </Button>
+    </CardContainer>
   );
 };
 
@@ -95,25 +62,15 @@ const PopupAnimation = keyframes`
   }
 `;
 
-const Container = styled.div`
-  position: fixed;
-  width: 100%;
-  max-width: 770px;
-  min-width: 360px;
-  min-height: 100vh;
-  top: 0;
-  margin: 0 auto;
-  z-index: 10;
-`;
-
 const CardContainer = styled.div`
-  background: #ffffff;
-  border-radius: 10px 10px 0 0;
+  position: fixed;
   width: 100%;
   max-width: 770px;
   min-width: 360px;
   height: 250px;
-  position: fixed;
+
+  background: #ffffff;
+  border-radius: 10px 10px 0 0;
   z-index: 10;
   bottom: 0;
   animation: ${PopupAnimation} 0.7s ease-in-out;
@@ -154,49 +111,6 @@ const Cancel = styled.div`
   }
   :after {
     transform: rotate(-45deg);
-  }
-`;
-
-const Quantity = styled.div`
-  width: 114px;
-  height: 34px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  background-color: gray;
-  border-top: 1px solid #dde0e3;
-  border-bottom: 1px solid #dde0e3;
-
-  > button {
-    width: 34px;
-    height: 100%;
-    background-color: #f1f2f4;
-    font-size: 20px;
-    cursor: pointer;
-    border: none;
-    border-right: 1px solid #dde0e3;
-    border-left: 1px solid #dde0e3;
-  }
-
-  > input {
-    width: 44px;
-    text-align: center;
-    line-height: 33px;
-    margin: 0;
-    font-weight: bold;
-    font-size: 12px;
-    border: none;
-  }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  input[type="number"] {
-    -moz-appearance: textfield;
   }
 `;
 
