@@ -23,7 +23,7 @@ const CouponSuccessPage = ({ payment, quantity }) => {
   return (
     <Container>
       <Result>이용권 사용이 확인되었습니다.</Result>
-      <div id="round">
+      <div id="roundIcon">
         <FontAwesomeIcon icon={faCheck} />
       </div>
       <GroupInfo>
@@ -69,7 +69,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  #round {
+  #roundIcon {
     width: 100px;
     height: 100px;
     background-color: #ffb564;
