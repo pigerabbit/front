@@ -42,7 +42,7 @@ const ProductCard = ({ product, setCurrentProduct, setIsOpenPopup }) => {
   const handleEditingClick = (e) => {
     e.stopPropagation();
 
-    navigate("/register/product", { state: product });
+    navigate("/register/product", { replace: true, state: product });
   };
 
   const handleDeleteClick = (e) => {

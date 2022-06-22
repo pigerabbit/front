@@ -46,7 +46,7 @@ const MarketPage = () => {
   };
 
   const handleRegisterBtnClick = () => {
-    navigate("/register/product");
+    navigate("/register/product", { replace: true });
   };
 
   useEffect(() => {
