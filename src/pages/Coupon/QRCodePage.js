@@ -6,7 +6,7 @@ import QRCode from "qrcode.react";
 import * as Api from "api";
 
 import GroupHeader from "pages/Group/GroupHeader";
-import SetQuantityButtons from "./SetQuantityButtons";
+import SetQuantityButtons from "components/SetQuantityButtons";
 
 const QRCodePage = () => {
   const { user } = useSelector((state) => state.user);
