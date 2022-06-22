@@ -22,7 +22,7 @@ const OpenGroupPaymentPage = () => {
   const [name, setName] = useState(user?.name || "");
   const [contact, setContact] = useState(user?.phoneNumber || "");
   const [address, setAddress] = useState(
-    type !== "normal" ? location : user?.address || ""
+    type !== "normal" ? location.trim() : user?.address || ""
   );
 
   useEffect(() => {
