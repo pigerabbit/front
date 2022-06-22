@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ProductDescriptionTab = ({ product, seller }) => {
   const navigate = useNavigate();
+  console.log(seller);
 
   const [wish, setWish] = useState(false);
 
@@ -41,7 +42,7 @@ const ProductDescriptionTab = ({ product, seller }) => {
 
   const putWish = async () => {
     try {
-      const res = await Api.put(`toggle/product/${product._id}`);
+      await Api.put(`toggle/product/${product._id}`);
       setWish((cur) => !cur);
     } catch (e) {
       console.log("wish put 실패");
@@ -70,7 +71,7 @@ const ProductDescriptionTab = ({ product, seller }) => {
       </ImgContainer>
       <Seller
         onClick={() => {
-          navigate(`/markets/${seller.id}`);
+          navigate(`/markets/${seller.userId}`);
         }}
       >
         {seller.business[0].businessName}
