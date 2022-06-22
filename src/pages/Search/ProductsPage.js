@@ -56,7 +56,7 @@ const ProductsPage = () => {
         const res = await Api.get("products/search", "", {
           page: page,
           perPage: 6,
-          search: search,
+          search: encodeURIComponent(search),
           option: currentOption.eng,
         });
 

@@ -23,7 +23,9 @@ const SearchTrending = () => {
       {trendingKeyword.map((keyword, idx) => (
         <KeywordWrapper
           key={idx}
-          onClick={() => navigate(`/products?search=${keyword}`)}
+          onClick={() =>
+            navigate(`/products?search=${encodeURIComponent(keyword)}`)
+          }
         >
           <KeywordNumber>{idx + 1}</KeywordNumber>
           <span>{keyword}</span>
