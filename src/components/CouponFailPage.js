@@ -45,7 +45,8 @@ const Container = styled.div`
   justify-content: center;
 
   #round {
-    padding: 50px;
+    width: 350px;
+    height: 350px;
     background-color: #ba0000;
     display: flex;
     align-items: center;
@@ -53,9 +54,18 @@ const Container = styled.div`
     border-radius: 50%;
 
     > svg {
+      width: 250px;
+      height: 250px;
+      color: #ffffff;
+    }
+
+    @media (max-width: 400px) {
       width: 300px;
       height: 300px;
-      color: #ffffff;
+      > svg {
+        width: 200px;
+        height: 200px;
+      }
     }
   }
 
@@ -63,6 +73,7 @@ const Container = styled.div`
 `;
 
 const Result = styled.div`
+  width: 90%;
   font-size: 30px;
   font-weight: bold;
   margin-bottom: 30px;
@@ -70,4 +81,8 @@ const Result = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 400px) {
+    font-size: 25px;
+  }
 `;
