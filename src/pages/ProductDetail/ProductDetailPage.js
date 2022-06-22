@@ -34,8 +34,8 @@ const ProductDetailPage = () => {
     }
   };
 
-  const getSellerDetail = ({ userInfo }) => {
-    setSeller(userInfo);
+  const getSellerDetail = ({ userId, userInfo }) => {
+    setSeller({ userId, ...userInfo });
   };
 
   const getProductDetail = async () => {
