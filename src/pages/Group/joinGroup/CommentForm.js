@@ -5,7 +5,10 @@ import * as Api from "api";
 
 const CommentForm = ({ setComments, joinedGroup }) => {
   const [comment, setComment] = useState("");
+
   const groupId = useParams().id;
+
+  const handleChange = (e) => setComment(e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +19,8 @@ const CommentForm = ({ setComments, joinedGroup }) => {
         receiver: groupId,
         content: comment,
       });
-      setComments((cur) => [...cur, res.data.payload]);
+      const newComment = res.data.payload;
+      setComments((cur) => [...cur, newComment]);
       setComment("");
     } catch (e) {
       console.log("공구 댓글 post 실패");
@@ -33,7 +37,7 @@ const CommentForm = ({ setComments, joinedGroup }) => {
             placeholder="댓글을 입력해주세요."
             name="comment"
             value={comment}
-            onChange={(e) => setComment(e.target.value)}
+            onChange={handleChange}
             required
           />
           <button id="submit" disabled={!joinedGroup}>

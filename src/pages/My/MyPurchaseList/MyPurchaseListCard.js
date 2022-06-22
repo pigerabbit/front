@@ -26,6 +26,14 @@ const MyPurchaseListCard = ({
     setCancelDataId(group.groupId);
   };
 
+  const moveToQRCode = () => {
+    navigate(`/qrcode`, {
+      state: {
+        data: { groupObjId: group._id },
+      },
+    });
+  };
+
   return (
     <CardContainer>
       {!isOpenTab && <p>{formatParticipateDate(myInfo[0].participantDate)}</p>}
@@ -64,6 +72,11 @@ const MyPurchaseListCard = ({
       {group.state === 0 && (
         <CardButton bgColor="#A0A0A0" onClick={() => handleClick()}>
           {isOpenTab ? "공구 중지" : "참여 취소"}
+        </CardButton>
+      )}
+      {group.state === 1 && group.groupType === "coupon" && (
+        <CardButton bgColor="#ff9b2f" onClick={moveToQRCode}>
+          QR 코드
         </CardButton>
       )}
       {group.state === 5 && myInfo[0].review === true && (

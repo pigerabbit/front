@@ -17,7 +17,7 @@ const CommentsArea = ({ group, setJoinedGroup, joinedGroup }) => {
         receiver: group.groupId,
         type: "groupChat",
       });
-      if (res.data) {
+      if (res.data.success) {
         setComments(res.data.payload);
       }
     } catch (e) {
@@ -44,13 +44,13 @@ const CommentsArea = ({ group, setJoinedGroup, joinedGroup }) => {
         <CommentForm setComments={setComments} joinedGroup={joinedGroup} />
         <div id="comments">
           {comments.length > 0 &&
-            comments.map((v) => (
+            comments.map((comment) => (
               <CommentCard
-                key={v.postId}
-                postId={v.postId}
-                content={v.content}
-                writerId={v.writer}
-                createdAt={v.createdAt}
+                key={comment.postId}
+                postId={comment.postId}
+                content={comment.content}
+                writerId={comment.writer}
+                createdAt={comment.createdAt}
                 setComments={setComments}
               />
             ))}

@@ -25,6 +25,9 @@ import PaymentDetailPage from "pages/Group/payGroup/PaymentDetailPage";
 import MyWishListPage from "pages/My/MyWishList/MyWishListPage";
 import MyPurchaseListPage from "pages/My/MyPurchaseList/MyPurchaseListPage";
 import SearchPage from "./pages/Search/SearchPage";
+import QRCodePage from "./pages/Coupon/QRCodePage";
+import BridgePage from "./pages/Coupon/BridgePage";
+import CheckResultPage from "./pages/Coupon/CheckResultPage";
 import ConfirmationIcon from "components/ConfirmationIcon";
 
 import ScrollToTop from "components/ScrollToTop";
@@ -54,6 +57,7 @@ function App() {
   const openpaymentPage = wrapFetchUser(<OpenGroupPaymentPage />);
   const joinpaymentPage = wrapFetchUser(<JoinGroupPaymentPage />);
   const paymentDetailPage = wrapFetchUser(<PaymentDetailPage />);
+  const qrcodePage = wrapFetchUser(<QRCodePage />);
 
   return (
     <Router>
@@ -83,6 +87,9 @@ function App() {
           <Route path="/group/open/pay" element={openpaymentPage} />
           <Route path="/group/join/pay" element={joinpaymentPage} />
           <Route path="/group/payment/:groupId" element={paymentDetailPage} />
+          <Route path="/qrcode" element={qrcodePage} />
+          <Route path="/check" element={<BridgePage />} />
+          <Route path="/check/result" element={<CheckResultPage />} />
         </Routes>
       </Container>
     </Router>
