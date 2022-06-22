@@ -26,11 +26,11 @@ const SearchCurrent = () => {
       ]);
 
       setCurrentKeyword(currentKeyword.data.reverse());
-      // const filteredProductList = productList.data.filter(
-      //   (arr, index, callback) =>
-      //     index === callback.findIndex((t) => t.id === arr.id)
-      // );
-      setProductList(productList.data);
+      const filteredProductList = productList.data.filter(
+        (arr, index, callback) =>
+          index === callback.findIndex((t) => t.id === arr.id)
+      );
+      setProductList(filteredProductList);
 
       setLoading(false);
     } catch (err) {
