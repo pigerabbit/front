@@ -162,7 +162,6 @@ const Container = styled.div`
 `;
 
 const ProductsInfo = styled.div`
-  border: 2px solid red;
   width: 84%;
   margin: 25px 0;
   display: flex;
