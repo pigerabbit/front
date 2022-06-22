@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -19,3 +19,13 @@ export function useInterval(callback, delay) {
     }
   }, [delay]);
 }
+
+export const useResultOfIntervalCalculator = (calculator, delay) => {
+  const [result, setResult] = useState(calculator());
+  useInterval(() => {
+    const newResult = calculator();
+    if (newResult !== result) setResult(newResult);
+  }, delay);
+
+  return result;
+};

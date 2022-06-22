@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useInterval } from "pages/Group/joinGroup/hooks";
+import { useInterval } from "hooks/useInterval";
 import styled from "styled-components";
 
 const useResultOfIntervalCalculator = (calculator, delay) => {
