@@ -33,7 +33,10 @@ const QRCodePage = () => {
   const getMaxQuantity = async () => {
     try {
       const res = await Api.get(`payments/${groupObjId}/${user.id}`);
-      const availableMaxQuantity = res.data.payload.voucher || 10;
+      const availableMaxQuantity = res.data.payload.voucher;
+      if (availableMaxQuantity === 0) {
+        navigate("/check/result", { state: { success: false } });
+      }
       setMaxQuantity(availableMaxQuantity);
     } catch (e) {
       console.log("구매 가능 최대 수량 get 실패");
@@ -73,7 +76,7 @@ const QRCodePage = () => {
             setQuantity={setQuantity}
             maxQuantity={maxQuantity}
           />
-          (남은 수량 {maxQuantity - quantity}개 / 최대 {maxQuantity}개)
+          (남는 수량 {maxQuantity - quantity}개 / 최대 {maxQuantity}개)
         </div>
       </QRBottom>
     </Container>

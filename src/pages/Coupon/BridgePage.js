@@ -21,11 +21,15 @@ const BridgePage = () => {
       if (res.data.success) {
         try {
           const payment = res.data.payload;
-          const paymentId = res.data.payload.paymentId;
-          const resUse = await Api.put(`payments/${paymentId}`, { used: true });
+          const { paymentId, voucher } = payment;
+          const remainQuantity = voucher - quantity;
+          const resUse = await Api.put(`payments/${paymentId}`, {
+            used: true,
+            voucher: remainQuantity,
+          });
           if (resUse.data.success) {
             navigate("/check/result", {
-              state: { success: true, payment, quantity },
+              state: { success: true, group: payment.group, quantity },
             });
           }
         } catch (e) {

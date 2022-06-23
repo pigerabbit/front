@@ -23,6 +23,7 @@ const MyPurchaseListCard = ({
   const { groupId, state, groupType, groupName, remainedPersonnel, deadline } =
     group;
   const { productId, images, salePrice } = group.productInfo;
+  const isVoucherRemained = myInfo[0].payment.voucher !== 0;
 
   const handleClick = () => {
     setIsOpenPopUpCard(true);
@@ -61,7 +62,7 @@ const MyPurchaseListCard = ({
             bgColor={returnBgColor(state)}
             fontColor={returnFontColor(state)}
           >
-            {groupState[state][0]}
+            {!isVoucherRemained ? "사용완료" : groupState[group.state][0]}
           </State>
           {group.state === 0 && <span>{`${remainedPersonnel}개 남음`}</span>}
           {isOpenTab ? (
@@ -81,9 +82,9 @@ const MyPurchaseListCard = ({
       {state === 1 && groupType === "coupon" && (
         <CardButton
           onClick={moveToQRCode}
-          disabled={myInfo[0].payment.used}
-          bgColor={myInfo[0].payment.used ? "#A0A0A0" : "#ff9b2f"}
-          cursor={myInfo[0].payment.used ? "auto" : "pointer"}
+          disabled={!isVoucherRemained}
+          bgColor={!isVoucherRemained ? "#A0A0A0" : "#ff9b2f"}
+          cursor={!isVoucherRemained ? "auto" : "pointer"}
         >
           QR 코드
         </CardButton>
