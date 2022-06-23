@@ -52,19 +52,15 @@ const ProductReviewTab = ({ product }) => {
         receiver: product.id,
         type: "review",
       });
-      setReviews(res.data.payload.filter((v) => v.type === "review"));
+      const productReviews = res.data.payload;
+      setReviews(productReviews);
       setMyReviews(
-        res.data.payload.filter(
-          (v) => v.type === "review" && v.writer === user.id
-        )
+        productReviews.filter((review) => review.writer === user.id)
       );
     } catch (e) {
-      console.log(e);
+      console.log("후기 get 실패");
     }
   };
-
-  // 구매 이력이 있고, 후기를 쓴 적이 없으면 후기 작성하기 버튼 보여주기
-  // myReviews 길이가 0이면 보여주지 않음.
 
   useEffect(() => {
     getReviews();
