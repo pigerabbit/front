@@ -33,12 +33,17 @@ const ProductReviewTab = ({ product }) => {
         ])
         .filter((participant) => participant.userId === user.id);
 
-      if (joinedGroups.length > 0 && joinedGroups.length > myReviews.length)
-        setWritable(true);
-      else setWritable(false);
+      return joinedGroups;
     } catch (e) {
       console.log("구매 기록 get 실패");
     }
+  };
+
+  const checkWritable = async () => {
+    const joinedGroups = await checkBuyingRecord();
+    if (joinedGroups.length > 0 && joinedGroups.length > myReviews.length)
+      setWritable(true);
+    else setWritable(false);
   };
 
   const getReviews = async () => {
@@ -53,7 +58,6 @@ const ProductReviewTab = ({ product }) => {
           (v) => v.type === "review" && v.writer === user.id
         )
       );
-      console.log(myReviews);
     } catch (e) {
       console.log(e);
     }
@@ -64,7 +68,7 @@ const ProductReviewTab = ({ product }) => {
 
   useEffect(() => {
     getReviews();
-    checkBuyingRecord();
+    checkWritable();
   }, []);
 
   return (
