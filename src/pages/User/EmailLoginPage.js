@@ -6,26 +6,25 @@ import * as Api from "api";
 import UserTopBar from "./UserTopBar";
 import UserInput from "./UserInput";
 import UserButton from "./UserButton";
+import FindePwModal from "./FindPwModal";
+import validateEmail from "utils/validateEmail";
 
 const EmailLoginPage = () => {
+  const [isFindPwModalOpen, setIsFindPwModalOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailErrMessage, setEmailErrMessage] = useState("");
   const [passwordErrMessage, setPasswordErrMessage] = useState("");
-
-  const validateEmail = (email) => {
-    return email
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
 
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const isFormValid = isEmailValid && isPasswordValid;
 
   const navigate = useNavigate();
+
+  const handleFindPwClick = () => {
+    setIsFindPwModalOpen(true);
+  };
 
   const handleLoginClick = async (event) => {
     event.preventDefault();
@@ -74,41 +73,47 @@ const EmailLoginPage = () => {
   }, [password]);
 
   return (
-    <Container>
-      <UserTopBar pageName={"이메일로 로그인"} />
+    <>
+      <Container>
+        <UserTopBar pageName={"이메일로 로그인"} />
 
-      <InputListContainter>
-        <UserInput
-          title="이메일"
-          type="text"
-          value={email}
-          setValue={setEmail}
-          isValueValid={isEmailValid}
-          errMessage={emailErrMessage}
-        />
+        <InputListContainter>
+          <UserInput
+            title="이메일"
+            type="text"
+            value={email}
+            setValue={setEmail}
+            isValueValid={isEmailValid}
+            errMessage={emailErrMessage}
+          />
 
-        <UserInput
-          title="비밀번호"
-          type="password"
-          value={password}
-          setValue={setPassword}
-          isValueValid={isPasswordValid}
-          errMessage={passwordErrMessage}
-        />
-      </InputListContainter>
+          <UserInput
+            title="비밀번호"
+            type="password"
+            value={password}
+            setValue={setPassword}
+            isValueValid={isPasswordValid}
+            errMessage={passwordErrMessage}
+          />
+        </InputListContainter>
 
-      <UserButton
-        handleClick={handleLoginClick}
-        valid={isFormValid}
-        width={"long"}
-      >
-        로그인
-      </UserButton>
-      <ButtonsContainer>
-        <span>비밀번호 찾기</span>
-        <span onClick={handleRegisterClick}>이메일로 회원가입</span>
-      </ButtonsContainer>
-    </Container>
+        <UserButton
+          handleClick={handleLoginClick}
+          valid={isFormValid}
+          width={"long"}
+        >
+          로그인
+        </UserButton>
+        <ButtonsContainer>
+          <span onClick={handleFindPwClick}>비밀번호 찾기</span>
+          <span onClick={handleRegisterClick}>이메일로 회원가입</span>
+        </ButtonsContainer>
+      </Container>
+
+      {isFindPwModalOpen && (
+        <FindePwModal setIsFindPwModalOpen={setIsFindPwModalOpen} />
+      )}
+    </>
   );
 };
 
