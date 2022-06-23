@@ -56,7 +56,7 @@ const MyPurchaseListCard = ({
             bgColor={() => returnBgColor(group.state)}
             fontColor={() => returnFontColor(group.state)}
           >
-            {groupState[group.state][0]}
+            {!isVoucherRemained ? "사용완료" : groupState[group.state][0]}
           </State>
           {group.state === 0 && (
             <span>{`${group.remainedPersonnel}개 남음`}</span>
