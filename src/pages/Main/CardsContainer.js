@@ -10,10 +10,11 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
   const [to, setTo] = useState(4);
   const [page, setPage] = useState(1);
   const last = groupPurchaseList?.length;
-  const totalPage = last / 4;
+  const totalPage = Math.ceil(last / 4);
+  const emptyNum = 4 - (last % 4);
 
   const handleButtonClick = () => {
-    if (to === last) {
+    if (page === totalPage) {
       setFrom(0);
       setTo(4);
       setPage(1);
