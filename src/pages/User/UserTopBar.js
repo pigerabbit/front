@@ -35,7 +35,7 @@ export default UserTopBar;
 const TopBar = styled.div`
   background-color: white;
   width: 100%;
-  height: 18vw;
+  height: 10vh;
   max-height: 90px;
   display: flex;
   justify-content: space-between;

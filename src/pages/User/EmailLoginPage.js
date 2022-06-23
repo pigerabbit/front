@@ -77,37 +77,39 @@ const EmailLoginPage = () => {
       <Container>
         <UserTopBar pageName={"이메일로 로그인"} />
 
-        <InputListContainter>
-          <UserInput
-            title="이메일"
-            type="text"
-            value={email}
-            setValue={setEmail}
-            isValueValid={isEmailValid}
-            errMessage={emailErrMessage}
-          />
+        <Form>
+          <InputListContainter>
+            <UserInput
+              title="이메일"
+              type="text"
+              value={email}
+              setValue={setEmail}
+              isValueValid={isEmailValid}
+              errMessage={emailErrMessage}
+            />
 
-          <UserInput
-            title="비밀번호"
-            type="password"
-            value={password}
-            setValue={setPassword}
-            isValueValid={isPasswordValid}
-            errMessage={passwordErrMessage}
-          />
-        </InputListContainter>
+            <UserInput
+              title="비밀번호"
+              type="password"
+              value={password}
+              setValue={setPassword}
+              isValueValid={isPasswordValid}
+              errMessage={passwordErrMessage}
+            />
+          </InputListContainter>
 
-        <UserButton
-          handleClick={handleLoginClick}
-          valid={isFormValid}
-          width={"long"}
-        >
-          로그인
-        </UserButton>
-        <ButtonsContainer>
-          <span onClick={handleFindPwClick}>비밀번호 찾기</span>
-          <span onClick={handleRegisterClick}>이메일로 회원가입</span>
-        </ButtonsContainer>
+          <UserButton
+            handleClick={handleLoginClick}
+            valid={isFormValid}
+            width={"long"}
+          >
+            로그인
+          </UserButton>
+          <ButtonsContainer>
+            <span onClick={handleFindPwClick}>비밀번호 찾기</span>
+            <span onClick={handleRegisterClick}>이메일로 회원가입</span>
+          </ButtonsContainer>
+        </Form>
       </Container>
 
       {isFindPwModalOpen && (
@@ -131,10 +133,19 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const InputListContainter = styled.form`
+const Form = styled.form`
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const InputListContainter = styled.div`
   width: 70%;
   max-width: 400px;
-  margin-top: 15%;
+  margin-top: -15%;
   margin-bottom: 10%;
 `;
 
