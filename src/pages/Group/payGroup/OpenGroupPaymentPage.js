@@ -46,22 +46,10 @@ const OpenGroupPaymentPage = () => {
         groupName,
         deadline,
         quantity: count,
+        paymentMethod: payment,
       });
       if (res.data.success) {
         const { groupId } = res.data.payload;
-        postPayment(groupId);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const postPayment = async (groupId) => {
-    try {
-      const group = await Api.put(`groups/${groupId}/payment`, {
-        payment: payment,
-      });
-      if (group.data.success) {
         navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {
