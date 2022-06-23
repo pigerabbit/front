@@ -59,7 +59,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
     setIsOpenPopup(true);
   };
 
-  const handleChange = (setValue) => {
+  const handleInputChange = (setValue) => {
     return (e) => {
       setValue(e.target.value);
     };
@@ -165,7 +165,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             type="text"
             value={name || ""}
             autoComplete="off"
-            onChange={handleChange(setName)}
+            onChange={handleInputChange(setName)}
           />
           <CheckIcon valid={isNameValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
@@ -189,7 +189,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             type="password"
             value={currentPassword}
             autoComplete="off"
-            onChange={handleChange(setCurrentPassword)}
+            onChange={handleInputChange(setCurrentPassword)}
           />
           <CheckIcon valid={isPasswordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
@@ -202,7 +202,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             placeholder="8자 이상의 비밀번호를 입력해주세요."
             autoComplete="off"
             value={newPassword}
-            onChange={handleChange(setNewPassword)}
+            onChange={handleInputChange(setNewPassword)}
           />
           <CheckIcon valid={isNewPasswordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
@@ -214,7 +214,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             type="password"
             value={confirmPassword}
             autoComplete="off"
-            onChange={handleChange(setConfirmPassword)}
+            onChange={handleInputChange(setConfirmPassword)}
           />
           <CheckIcon valid={isConfirmPasswordValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
@@ -272,7 +272,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
             type="text"
             value={detailAddress}
             autoComplete="off"
-            onChange={handleChange(setDetailAddress)}
+            onChange={handleInputChange(setDetailAddress)}
           />
           <CheckIcon valid={isDetailAddressValid}>
             <FontAwesomeIcon icon={faCircleCheck} />
