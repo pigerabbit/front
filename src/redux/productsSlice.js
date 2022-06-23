@@ -11,9 +11,12 @@ export const productsSlice = createSlice({
     setBest: (state, action) => {
       return { ...state, bestProducts: action.payload };
     },
+    init: (state, action) => {
+      return initialState;
+    },
   },
 });
 
-export const { setBest } = productsSlice.actions;
+export const { setBest, init } = productsSlice.actions;
 
 export default productsSlice.reducer;
