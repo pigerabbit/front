@@ -37,7 +37,7 @@ const ProductReviewCard = ({
     }
   };
 
-  const getComments = async () => {
+  const getComment = async () => {
     try {
       const res = await Api.get(`posts`, "", {
         receiver: postId,
@@ -51,7 +51,7 @@ const ProductReviewCard = ({
 
   useEffect(() => {
     getWriter();
-    if (commentCount > 0) getComments();
+    if (commentCount > 0) getComment();
   }, []);
 
   return (
