@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  homeTabGroupsTitle: "",
   recommendationGroups: [],
   nearbyGroups: [],
   personNearGroups: [],
@@ -11,6 +12,9 @@ export const groupsSlice = createSlice({
   name: "groups",
   initialState,
   reducers: {
+    setHomeTabGroupsTitle: (state, action) => {
+      return { ...state, homeTabGroupsTitle: action.payload };
+    },
     setRecommendation: (state, action) => {
       return { ...state, recommendationGroups: action.payload };
     },
@@ -26,7 +30,12 @@ export const groupsSlice = createSlice({
   },
 });
 
-export const { setRecommendation, setNearby, setPersonNear, setTimeNear } =
-  groupsSlice.actions;
+export const {
+  setHomeTabGroupsTitle,
+  setRecommendation,
+  setNearby,
+  setPersonNear,
+  setTimeNear,
+} = groupsSlice.actions;
 
 export default groupsSlice.reducer;

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setRecommendation, setNearby } from "redux/groupsSlice";
+import {
+  setHomeTabGroupsTitle,
+  setRecommendation,
+  setNearby,
+} from "redux/groupsSlice";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,15 +18,13 @@ import CardsContainer from "./CardsContainer";
 import LoadingSpinner from "components/LoadingSpinner";
 
 const HomeTab = () => {
-  const { recommendationGroups, nearbyGroups } = useSelector(
-    (state) => state.groups
-  );
+  const { homeTabGroupsTitle, recommendationGroups, nearbyGroups } =
+    useSelector((state) => state.groups);
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
   const [transition, setTransition] = useState(true);
   const [loading, setLoading] = useState(false);
   const lastPage = recommendationGroups.length;
-  const nearbyTitle = "근처에 있는 공동구매에요!";
 
   const dispatch = useDispatch();
 
@@ -54,6 +56,12 @@ const HomeTab = () => {
         getRecommendationGroups,
         getNearbyGroups,
       ]);
+
+      if (nearbyGroupsRes.data.data) {
+        dispatch(setHomeTabGroupsTitle("근처에 있는 공동구매에요!"));
+      } else {
+        dispatch(setHomeTabGroupsTitle("추천드리는 택배공구에요!"));
+      }
 
       dispatch(setRecommendation(recommendationGroupsRes.data.payload));
       dispatch(setNearby(nearbyGroupsRes.data.payload));
@@ -115,7 +123,7 @@ const HomeTab = () => {
           </InterestGroups>
 
           <CardsContainer
-            title={nearbyTitle}
+            title={homeTabGroupsTitle}
             groupPurchaseList={nearbyGroups}
           />
         </>
