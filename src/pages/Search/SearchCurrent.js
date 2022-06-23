@@ -9,24 +9,24 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 const SearchCurrent = () => {
   const navigate = useNavigate();
 
-  const [currentKeyword, setCurrentKeyword] = useState([]);
+  const [keyword, setKeyword] = useState([]);
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getSearchCurrent = async () => {
-    const getSearchWords = Api.get("toggle/searchWords");
-    const getSearchProducts = Api.get("toggle/viewedProducts");
+    const getViewedWords = Api.get("toggle/searchWords");
+    const getViewedProducts = Api.get("toggle/viewedProducts");
 
     try {
       setLoading(true);
 
-      const [currentKeyword, productList] = await Promise.all([
-        getSearchWords,
-        getSearchProducts,
+      const [viewedKeyword, viewedProductList] = await Promise.all([
+        getViewedWords,
+        getViewedProducts,
       ]);
 
-      setCurrentKeyword(currentKeyword.data.reverse());
-      setProductList(productList.data);
+      setKeyword(viewedKeyword.data.reverse());
+      setProductList(viewedProductList.data);
 
       setLoading(false);
     } catch (err) {
@@ -41,7 +41,7 @@ const SearchCurrent = () => {
       const filteredKeywords = await Api.delete(
         `toggle/searchWord/${encodingKeyword}`
       );
-      setCurrentKeyword(filteredKeywords.data.searchWords.reverse());
+      setKeyword(filteredKeywords.data.searchWords.reverse());
     } catch (err) {
       console.log(err);
     }
@@ -61,7 +61,7 @@ const SearchCurrent = () => {
           <CurrentKeywordContainer>
             <h4>최근 검색어</h4>
             <CurrentKeywordWrapper>
-              {currentKeyword.map((k, idx) => (
+              {keyword.map((k, idx) => (
                 <Keyword key={idx} onClick={goToProductPage(k)}>
                   <span>{k}</span>
                   <button onClick={deleteKeyword(k)}>
@@ -69,7 +69,7 @@ const SearchCurrent = () => {
                   </button>
                 </Keyword>
               ))}
-              {currentKeyword.length === 0 && <p>검색 기록이 없습니다.</p>}
+              {keyword.length === 0 && <p>검색 기록이 없습니다.</p>}
             </CurrentKeywordWrapper>
           </CurrentKeywordContainer>
           <CurrentProductContainer>

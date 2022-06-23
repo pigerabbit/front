@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const SearchProductCard = ({ product }) => {
   const navigate = useNavigate();
+
   return (
     <CardContainer>
       <CardWrapper>
