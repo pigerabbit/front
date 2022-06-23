@@ -19,7 +19,7 @@ export const groupState = {
   "-7": ["공구취소", "상품 삭제됨"],
 };
 
-export const returnBgColor = (state) => {
+export const returnBgColor = (state) => () => {
   //진행중
   if (state === 0) {
     return "#00c75a";
@@ -38,7 +38,7 @@ export const returnBgColor = (state) => {
   }
 };
 
-export const returnFontColor = (state) => {
+export const returnFontColor = (state) => () => {
   if ([-1, -3].includes(state)) {
     return "#505050";
   } else {

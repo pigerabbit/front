@@ -58,8 +58,8 @@ const MyPurchaseListCard = ({
             </span>
           </Title>
           <State
-            bgColor={() => returnBgColor(group.state)}
-            fontColor={() => returnFontColor(group.state)}
+            bgColor={returnBgColor(state)}
+            fontColor={returnFontColor(state)}
           >
             {groupState[state][0]}
           </State>
