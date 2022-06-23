@@ -5,19 +5,22 @@ import * as Api from "api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
-const CouponSuccessPage = ({ payment, quantity }) => {
-  const [product, setProduct] = useState({});
+const CouponSuccessPage = ({ group, quantity }) => {
+  const [businessName, setBusinessName] = useState("");
 
-  const getProduct = async () => {
+  const product = group.productInfo;
+
+  const getBusinessName = async () => {
     try {
-      const res = await Api.get(`products/${payment.group.productId}`);
-      setProduct(res.data.payload);
+      const resSeller = await Api.get(`users/${product.userId}`);
+      const seller = resSeller.data.payload;
+      setBusinessName(seller.business[0].businessName);
     } catch (e) {
-      console.log("product 정보 get 실패");
+      console.log("사업장 이름 get 실패");
     }
   };
   useEffect(() => {
-    getProduct();
+    getBusinessName();
   }, []);
 
   return (
@@ -26,18 +29,15 @@ const CouponSuccessPage = ({ payment, quantity }) => {
       <div id="roundIcon">
         <FontAwesomeIcon icon={faCheck} />
       </div>
-      {product.name && (
+      {businessName && (
         <GroupInfo>
           <h2>{product.name}</h2>
           <img src={product.images} alt={product.name + " 사진"} />
-          <p id="seller">
-            <span className="emphasize">
-              {product?.userInfo?.business[0]?.businessName}{" "}
-            </span>
-            의 이용권 입니다.
+          <p id="businessName">
+            <span className="emphasize">{businessName} </span>의 이용권 입니다.
           </p>
           <br />
-          <p className="emphasize">공구명: {payment.group.groupName}</p>
+          <p className="emphasize">공구명: {group.groupName}</p>
           <p className="emphasize">
             상품 수량: <span id="quantity">{quantity}</span>개
           </p>
@@ -122,7 +122,6 @@ const GroupInfo = styled.div`
     height: 300px;
     margin-bottom: 15px;
     border-radius: 10px;
-    box-shadow: 0 0 8px #d0d0d0;
   }
 
   > p {
@@ -135,7 +134,7 @@ const GroupInfo = styled.div`
     font-weight: bold;
   }
 
-  #seller {
+  #businessName {
     color: #636363;
   }
 

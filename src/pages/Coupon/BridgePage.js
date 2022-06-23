@@ -29,7 +29,7 @@ const BridgePage = () => {
           });
           if (resUse.data.success) {
             navigate("/check/result", {
-              state: { success: true, payment, quantity },
+              state: { success: true, group: payment.group, quantity },
             });
           }
         } catch (e) {
