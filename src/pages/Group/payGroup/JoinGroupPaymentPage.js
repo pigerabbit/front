@@ -90,11 +90,7 @@ const JoinGroupPaymentPage = () => {
         type={group.groupType}
       />
       <PaymentInfo setPayment={setPayment} payment={payment} />
-      <OrderButton
-        disabled={!isValid}
-        valid={isValid}
-        onClick={() => joinGroup()}
-      >
+      <OrderButton disabled={!isValid} valid={isValid} onClick={joinGroup}>
         {group.productInfo.salePrice * count + shippingPrice}원 주문하기
       </OrderButton>
     </Container>

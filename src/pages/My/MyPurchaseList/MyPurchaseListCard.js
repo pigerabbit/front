@@ -50,6 +50,9 @@ const MyPurchaseListCard = ({
           <Title>
             <strong>{`[${groupTypes[group.groupType]}] `}</strong>
             {group.groupName}
+            <span onClick={() => navigate(`/group/payment/${group.groupId}`)}>
+              결제 페이지
+            </span>
           </Title>
           <State
             bgColor={() => returnBgColor(group.state)}
@@ -192,6 +195,17 @@ const CardContent = styled.div`
 
 const Title = styled.p`
   line-height: 20px;
+  padding: 1% 0;
+  > span {
+    margin-left: 1%;
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffa849;
+    cursor: pointer;
+    &:hover {
+      color: #ffd3a4;
+    }
+  }
 `;
 
 const State = styled.div`

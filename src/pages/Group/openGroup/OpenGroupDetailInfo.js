@@ -18,6 +18,8 @@ const OpenGroupDetailInfo = ({ product, type }) => {
   const [hour, setHour] = useState(12);
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleDaumPostOpen = () => setIsDaumPostOpen(true);
+
   const groupNameValid = groupName.length > 0;
   const locationValid = address.length > 0 && detailAddress.length > 0;
   const isValid =
@@ -64,7 +66,7 @@ const OpenGroupDetailInfo = ({ product, type }) => {
                   type="text"
                   value={address}
                   onChange={setAddress}
-                  onClick={() => setIsDaumPostOpen(true)}
+                  onClick={handleDaumPostOpen}
                 />
                 <input
                   type="text"
@@ -89,8 +91,9 @@ const OpenGroupDetailInfo = ({ product, type }) => {
                 setIsOpen={setIsOpen}
                 isOpen={isOpen}
                 options={options}
-                setHour={setHour}
-                hour={hour}
+                setValue={setHour}
+                value={hour}
+                isHour
               />
             </SelectBoxContainer>
           </Line>

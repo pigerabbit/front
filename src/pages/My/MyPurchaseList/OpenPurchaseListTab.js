@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import MyPurchaseListCard from "./MyPurchaseListCard";
+import SelectBox from "components/SeletBox";
 import * as Api from "api";
 
 const options = [
@@ -21,36 +20,6 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
   const [cancelDataId, setCancelDataId] = useState("");
-
-  useEffect(() => {
-    setTotalData(openedData);
-    if (option === "전체보기") {
-      setFilteredData(totalData);
-    } else if (option === "진행중") {
-      const onProgress = totalData.filter.filter((group) => group.state === 0);
-      setFilteredData(onProgress);
-    } else if (option === "모집성공") {
-      const completed = totalData.filter((group) =>
-        [-5, -4, 4, 5, 1].includes(group.state)
-      );
-      setFilteredData(completed);
-    } else if (option === "기간마감") {
-      const stopped = totalData.filter((group) =>
-        [-1, -3].includes(group.state)
-      );
-      setFilteredData(stopped);
-    } else if (option === "공구취소") {
-      const canceled = totalData.filter((group) =>
-        [-7, -6].includes(group.state)
-      );
-      setFilteredData(canceled);
-    }
-  }, [option, totalData]);
-
-  const handleOptionClick = (option) => {
-    setOption(option);
-    setIsOpen(false);
-  };
 
   const handleDeleteGroup = async (groupId) => {
     try {
@@ -72,10 +41,37 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
     }
   };
 
-  const handleStopGroupClick = async () => {
+  const handleStopGroupClick = () => {
     handleRemoveGroupFromMyList(cancelDataId);
     setIsOpenPopUpCard(false);
   };
+
+  const handleClosePopUpCard = () => setIsOpenPopUpCard(false);
+
+  useEffect(() => {
+    setTotalData(openedData);
+    if (option === "전체보기") {
+      setFilteredData(totalData);
+    } else if (option === "진행중") {
+      const onProgress = totalData.filter((group) => group.state === 0);
+      setFilteredData(onProgress);
+    } else if (option === "모집성공") {
+      const completed = totalData.filter((group) =>
+        [-5, -4, 4, 5, 1].includes(group.state)
+      );
+      setFilteredData(completed);
+    } else if (option === "기간마감") {
+      const stopped = totalData.filter((group) =>
+        [-1, -3].includes(group.state)
+      );
+      setFilteredData(stopped);
+    } else if (option === "공구취소") {
+      const canceled = totalData.filter((group) =>
+        [-7, -6].includes(group.state)
+      );
+      setFilteredData(canceled);
+    }
+  }, [option, totalData]);
 
   return (
     <Container>
@@ -83,23 +79,13 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
         <p>
           총 <strong>{filteredData.length}</strong>개
         </p>
-        <SelectBoxContainer>
-          <SelectBoxWrapper>
-            <span>{option}</span>
-            <OpenButton onClick={() => setIsOpen(!isOpen)}>
-              <FontAwesomeIcon icon={faCaretDown} />
-            </OpenButton>
-          </SelectBoxWrapper>
-          {options.map((option) => (
-            <Option
-              key={option}
-              onClick={() => handleOptionClick(option)}
-              open={isOpen ? "block" : "none"}
-            >
-              {option}
-            </Option>
-          ))}
-        </SelectBoxContainer>
+        <SelectBox
+          setIsOpen={setIsOpen}
+          isOpen={isOpen}
+          options={options}
+          setValue={setOption}
+          value={option}
+        />
       </InfoWrapper>
       <PurchaseListWrapper>
         {filteredData.length !== 0 &&
@@ -129,10 +115,10 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
         <PopUpCard>
           <h3>공동구매를 정말 중지하시겠습니까?</h3>
           <ButtonWrapper>
-            <Button bgColor="#FFB564" onClick={() => handleStopGroupClick()}>
+            <Button bgColor="#FFB564" onClick={handleStopGroupClick}>
               공구 중지하기
             </Button>
-            <Button bgColor="#D0D0D0" onClick={() => setIsOpenPopUpCard(false)}>
+            <Button bgColor="#D0D0D0" onClick={handleClosePopUpCard}>
               닫기
             </Button>
           </ButtonWrapper>
@@ -174,39 +160,6 @@ const InfoWrapper = styled.div`
   > p {
     padding: 10px 0;
   }
-`;
-
-const SelectBoxContainer = styled.div`
-  position: absolute;
-  z-index: 10;
-  width: 100px;
-  right: 0px;
-  display: inline-block;
-  border: 1px solid #c4c4c4;
-  border-radius: 5px;
-  padding: 5px 0 5px 5px;
-  line-height: 25px;
-  background: #fff;
-`;
-
-const SelectBoxWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  > span {
-    font-weight: bold;
-  }
-`;
-
-const Option = styled.div`
-  display: ${(props) => props.open};
-  postion: abosolute;
-  cursor: pointer;
-`;
-
-const OpenButton = styled.button`
-  border: none;
-  background: transparent;
-  cursor: pointer;
 `;
 
 const PurchaseListWrapper = styled.div`

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import MyPurchaseListCard from "./MyPurchaseListCard";
+import SelectBox from "components/SeletBox";
 import * as Api from "api";
 
 const options = [
@@ -22,11 +21,6 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
   const [cancelDataId, setCancelDataId] = useState("");
 
-  const handleOptionClick = (option) => {
-    setOption(option);
-    setIsOpen(false);
-  };
-
   const handleCancelGroupClick = async () => {
     try {
       await Api.put(`groups/${cancelDataId}/participate/out`);
@@ -38,12 +32,14 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
     }
   };
 
+  const handleClosePopUpCard = () => setIsOpenPopUpCard(false);
+
   useEffect(() => {
     setTotalData(participatedData);
     if (option === "전체보기") {
       setFilteredData(totalData);
     } else if (option === "진행중") {
-      const onProgress = totalData.filter.filter((group) => group.state === 0);
+      const onProgress = totalData.filter((group) => group.state === 0);
       setFilteredData(onProgress);
     } else if (option === "모집성공") {
       const completed = totalData.filter((group) =>
@@ -69,23 +65,13 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
         <p>
           총 <strong>{filteredData.length}</strong>개
         </p>
-        <SelectBoxContainer>
-          <SelectBoxWrapper>
-            <span>{option}</span>
-            <OpenButton onClick={() => setIsOpen(!isOpen)}>
-              <FontAwesomeIcon icon={faCaretDown} />
-            </OpenButton>
-          </SelectBoxWrapper>
-          {options.map((option) => (
-            <Option
-              key={option}
-              onClick={() => handleOptionClick(option)}
-              open={isOpen ? "block" : "none"}
-            >
-              {option}
-            </Option>
-          ))}
-        </SelectBoxContainer>
+        <SelectBox
+          setIsOpen={setIsOpen}
+          isOpen={isOpen}
+          options={options}
+          setValue={setOption}
+          value={option}
+        />
       </InfoWrapper>
       <PurchaseListWrapper>
         {filteredData.length !== 0 &&
@@ -113,10 +99,10 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
         <PopUpCard>
           <h3>공동구매 참여를 정말 취소하시겠습니까?</h3>
           <ButtonWrapper>
-            <Button bgColor="#FFB564" onClick={() => handleCancelGroupClick()}>
+            <Button bgColor="#FFB564" onClick={handleCancelGroupClick}>
               참여 취소하기
             </Button>
-            <Button bgColor="#D0D0D0" onClick={() => setIsOpenPopUpCard(false)}>
+            <Button bgColor="#D0D0D0" onClick={handleClosePopUpCard}>
               닫기
             </Button>
           </ButtonWrapper>
@@ -158,39 +144,6 @@ const InfoWrapper = styled.div`
   > p {
     padding: 10px 0;
   }
-`;
-
-const SelectBoxContainer = styled.div`
-  position: absolute;
-  width: 100px;
-  right: 0px;
-  display: inline-block;
-  border: 1px solid #c4c4c4;
-  border-radius: 5px;
-  padding: 5px 0 5px 5px;
-  line-height: 25px;
-  background: #fff;
-  z-index: 11;
-`;
-
-const SelectBoxWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  > span {
-    font-weight: bold;
-  }
-`;
-
-const Option = styled.div`
-  display: ${(props) => props.open};
-  postion: abosolute;
-  cursor: pointer;
-`;
-
-const OpenButton = styled.button`
-  border: none;
-  background: transparent;
-  cursor: pointer;
 `;
 
 const PurchaseListWrapper = styled.div`
