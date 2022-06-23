@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setPersonNear, setTimeNear } from "redux/groupsSlice";
 import styled from "styled-components";
 import * as Api from "api";
 
@@ -6,26 +8,29 @@ import CardContainer from "./CardsContainer";
 import LoadingSpinner from "components/LoadingSpinner";
 
 const DeadlineTab = () => {
+  const { personNearGroups, timeNearGroups } = useSelector(
+    (state) => state.groups
+  );
   const [loading, setLoading] = useState(false);
-  const [personGroupList, setPersonGroupList] = useState([]);
-  const [timeGroupList, setTimeGroupList] = useState([]);
   const productDeadlineTitle = "달성 인원이 얼마 남지 않았어요!";
   const timeDeadlineTitle = "24시간 이내 마감되는 공동구매에요!";
+
+  const dispatch = useDispatch();
 
   const getGroupsData = async () => {
     try {
       setLoading(true);
 
-      const getPersonGroupList = Api.get("groups/sort/remainedPersonnel");
-      const getTimeGroupList = Api.get("groups/sort/remainedTime");
+      const getPersonNearGroups = Api.get("groups/sort/remainedPersonnel");
+      const getTimeNearGroups = Api.get("groups/sort/remainedTime");
 
-      const [personRes, timeRes] = await Promise.all([
-        getPersonGroupList,
-        getTimeGroupList,
+      const [personNearRes, timeNearRes] = await Promise.all([
+        getPersonNearGroups,
+        getTimeNearGroups,
       ]);
 
-      setPersonGroupList(personRes.data.payload);
-      setTimeGroupList(timeRes.data.payload);
+      dispatch(setPersonNear(personNearRes.data.payload));
+      dispatch(setTimeNear(timeNearRes.data.payload));
 
       setLoading(false);
     } catch (e) {
@@ -34,7 +39,8 @@ const DeadlineTab = () => {
   };
 
   useEffect(() => {
-    getGroupsData();
+    if (personNearGroups.length === 0 || timeNearGroups.legnth === 0)
+      getGroupsData();
   }, []);
 
   return (
@@ -45,12 +51,12 @@ const DeadlineTab = () => {
         <Contents>
           <CardContainer
             title={productDeadlineTitle}
-            groupPurchaseList={personGroupList}
+            groupPurchaseList={personNearGroups}
           ></CardContainer>
 
           <CardContainer
             title={timeDeadlineTitle}
-            groupPurchaseList={timeGroupList}
+            groupPurchaseList={timeNearGroups}
           ></CardContainer>
         </Contents>
       )}
