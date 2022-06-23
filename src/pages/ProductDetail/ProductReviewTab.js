@@ -20,17 +20,20 @@ const ProductReviewTab = ({ product }) => {
   const checkBuyingRecord = async () => {
     try {
       const resGroups = await Api.get(`groups/productId/${product.id}`);
-      const myBuying = resGroups.data.payload
+      const joinedGroups = resGroups.data.payload
         .filter(
           (group) =>
             group.state === 5 ||
             (group.state === 1 && group.groupType === "coupon")
         )
-        .map((v) => v.participants)
-        .reduce((prev, cur) => [...prev, ...cur])
-        .filter((v) => (v) => v.userId === user.id);
+        .map((group) => group.participants)
+        .reduce((addedParticipants, participants) => [
+          ...addedParticipants,
+          ...participants,
+        ])
+        .filter((participant) => participant.userId === user.id);
 
-      if (myBuying.length > 0 && myBuying.length > myReviews.length)
+      if (joinedGroups.length > 0 && joinedGroups.length > myReviews.length)
         setWritable(true);
       else setWritable(false);
     } catch (e) {
