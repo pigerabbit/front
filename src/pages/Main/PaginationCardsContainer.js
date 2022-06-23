@@ -79,7 +79,7 @@ const CardsContainer = styled.div`
 
 const EmptyCard = styled.div`
   width: 100%;
-  height: 90px;
+  height: 100px;
   background-color: #f7f7f7;
   border-radius: 5px;
 `;

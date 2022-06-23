@@ -101,13 +101,20 @@ export default GroupPurchaseCard;
 const Container = styled.div`
   cursor: pointer;
   position: relative;
+  box-sizing: border-box;
   width: 100%;
+  padding: 5px;
   display: flex;
+  border-radius: 5px;
+
+  &:active {
+    background-color: #f7f7f7;
+  }
 
   > svg {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 5px;
+    bottom: 5px;
     color: ${({ wish }) => {
       if (wish) return "#FF6A6A;";
       else return "#9c9c9c;";
