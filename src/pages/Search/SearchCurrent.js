@@ -34,7 +34,7 @@ const SearchCurrent = () => {
     }
   };
 
-  const deleteKeyword = async (e, keyword) => {
+  const deleteKeyword = (keyword) => async (e) => {
     e.stopPropagation();
     try {
       const encodingKeyword = encodeURIComponent(keyword);
@@ -47,9 +47,13 @@ const SearchCurrent = () => {
     }
   };
 
+  const goToProductPage = (k) => () =>
+    navigate(`/products?search=${encodeURIComponent(k)}`);
+
   useEffect(() => {
     getSearchCurrent();
   }, []);
+
   return (
     <Container>
       {!loading && (
@@ -58,14 +62,9 @@ const SearchCurrent = () => {
             <h4>최근 검색어</h4>
             <CurrentKeywordWrapper>
               {currentKeyword.map((k, idx) => (
-                <Keyword
-                  key={idx}
-                  onClick={() =>
-                    navigate(`/products?search=${encodeURIComponent(k)}`)
-                  }
-                >
+                <Keyword key={idx} onClick={goToProductPage(k)}>
                   <span>{k}</span>
-                  <button onClick={(e) => deleteKeyword(e, k)}>
+                  <button onClick={deleteKeyword(k)}>
                     <FontAwesomeIcon icon={faXmark} />
                   </button>
                 </Keyword>

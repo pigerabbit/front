@@ -38,6 +38,8 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
     }
   };
 
+  const handleClosePopUpCard = () => setIsOpenPopUpCard(false);
+
   useEffect(() => {
     setTotalData(participatedData);
     if (option === "전체보기") {
@@ -113,10 +115,10 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
         <PopUpCard>
           <h3>공동구매 참여를 정말 취소하시겠습니까?</h3>
           <ButtonWrapper>
-            <Button bgColor="#FFB564" onClick={() => handleCancelGroupClick()}>
+            <Button bgColor="#FFB564" onClick={handleCancelGroupClick}>
               참여 취소하기
             </Button>
-            <Button bgColor="#D0D0D0" onClick={() => setIsOpenPopUpCard(false)}>
+            <Button bgColor="#D0D0D0" onClick={handleClosePopUpCard}>
               닫기
             </Button>
           </ButtonWrapper>

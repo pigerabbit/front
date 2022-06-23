@@ -22,6 +22,38 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
   const [cancelDataId, setCancelDataId] = useState("");
 
+  const handleOptionClick = (option) => () => {
+    setOption(option);
+    setIsOpen(false);
+  };
+
+  const handleDeleteGroup = async (groupId) => {
+    try {
+      await Api.delete(`groups/${groupId}`);
+      const data = filteredData.filter((data) => data.groupId === groupId);
+      setFilteredData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleRemoveGroupFromMyList = async (groupId) => {
+    try {
+      await Api.put(`groups/${groupId}/participate/out`);
+      const data = filteredData.filter((data) => data.groupId !== groupId);
+      setFilteredData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleStopGroupClick = () => {
+    handleRemoveGroupFromMyList(cancelDataId);
+    setIsOpenPopUpCard(false);
+  };
+
+  const handleClosePopUpCard = () => setIsOpenPopUpCard(false);
+
   useEffect(() => {
     setTotalData(openedData);
     if (option === "전체보기") {
@@ -47,36 +79,6 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
     }
   }, [option, totalData]);
 
-  const handleOptionClick = (option) => {
-    setOption(option);
-    setIsOpen(false);
-  };
-
-  const handleDeleteGroup = async (groupId) => {
-    try {
-      await Api.delete(`groups/${groupId}`);
-      const data = filteredData.filter((data) => data.groupId === groupId);
-      setFilteredData(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleRemoveGroupFromMyList = async (groupId) => {
-    try {
-      await Api.put(`groups/${groupId}/participate/out`);
-      const data = filteredData.filter((data) => data.groupId !== groupId);
-      setFilteredData(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleStopGroupClick = async () => {
-    handleRemoveGroupFromMyList(cancelDataId);
-    setIsOpenPopUpCard(false);
-  };
-
   return (
     <Container>
       <InfoWrapper>
@@ -93,7 +95,7 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
           {options.map((option) => (
             <Option
               key={option}
-              onClick={() => handleOptionClick(option)}
+              onClick={handleOptionClick(option)}
               open={isOpen ? "block" : "none"}
             >
               {option}
@@ -129,10 +131,10 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
         <PopUpCard>
           <h3>공동구매를 정말 중지하시겠습니까?</h3>
           <ButtonWrapper>
-            <Button bgColor="#FFB564" onClick={() => handleStopGroupClick()}>
+            <Button bgColor="#FFB564" onClick={handleStopGroupClick}>
               공구 중지하기
             </Button>
-            <Button bgColor="#D0D0D0" onClick={() => setIsOpenPopUpCard(false)}>
+            <Button bgColor="#D0D0D0" onClick={handleClosePopUpCard}>
               닫기
             </Button>
           </ButtonWrapper>
