@@ -5,16 +5,17 @@ import * as Api from "api";
 import ProductReplyForm from "./ProductReplyForm";
 import ProductCommentCard from "./ProductCommentCard";
 
-const ProductReviewCard = ({
-  postId,
-  writerId,
-  title,
-  content,
-  image,
-  createdAt,
-  commentCount,
-  isSeller,
-}) => {
+const ProductReviewCard = ({ review, isSeller }) => {
+  const {
+    postId,
+    writer: writerId,
+    title,
+    content,
+    postImg: image,
+    createdAt,
+    commentCount,
+  } = review;
+
   const [writer, setWriter] = useState({});
   const [comment, setComment] = useState({});
 
@@ -63,7 +64,6 @@ const ProductReviewCard = ({
       isSeller={isSeller}
     >
       <Header mobile={isSeller && open && !showReply && !isReplied}>
-        {/* <WriterImg src={writer.imageLink} alt="상세정보 사진"></WriterImg> */}
         <WriterImg>
           <img src={writer.imageLink} alt="사용자 사진" />
         </WriterImg>

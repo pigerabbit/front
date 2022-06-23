@@ -108,30 +108,15 @@ const ProductReviewTab = ({ product }) => {
           )}
         </ReviewTop>
         {!showMyReviews
-          ? reviews.map((v, i) => (
+          ? reviews.map((review) => (
               <ProductReviewCard
-                key={v.postId}
-                postId={v.postId}
-                writerId={v.writer}
-                title={v.title}
-                content={v.content}
-                image={v.postImg}
-                createdAt={v.createdAt}
-                commentCount={v.commentCount}
+                key={review.postId}
+                review={review}
                 isSeller={isSeller}
               />
             ))
-          : myReviews.map((v, i) => (
-              <ProductReviewCard
-                key={v.postId}
-                postId={v.postId}
-                writerId={v.writer}
-                title={v.title}
-                content={v.content}
-                image={v.postImg}
-                createdAt={v.createdAt}
-                commentCount={v.commentCount}
-              />
+          : myReviews.map((review) => (
+              <ProductReviewCard key={review.postId} review={review} />
             ))}
       </Review>
     </Container>
