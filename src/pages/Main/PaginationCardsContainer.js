@@ -5,15 +5,16 @@ import { faArrowRotateLeft } from "@fortawesome/free-solid-svg-icons";
 
 import GroupPurchaseCard from "./GroupPurchaseCard";
 
-const CardsContainer = ({ title, groupPurchaseList }) => {
+const PaginationCardsContainer = ({ title, groupPurchaseList }) => {
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(4);
   const [page, setPage] = useState(1);
-  const last = groupPurchaseList?.length;
-  const totalPage = last / 4;
+  const last = groupPurchaseList.length;
+  const totalPage = Math.ceil(last / 4);
+  const emptyNum = 4 - (last % 4);
 
   const handleButtonClick = () => {
-    if (to === last) {
+    if (page === totalPage) {
       setFrom(0);
       setTo(4);
       setPage(1);
@@ -28,14 +29,15 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
     <Container>
       <Title>{title}</Title>
 
-      <CardList>
-        {groupPurchaseList?.slice(from, to).map((purchase, idx) => (
-          <CardContainer key={purchase.groupId}>
-            <GroupPurchaseCard purchase={purchase} />
-            {idx < 3 && <div className="line" />}
-          </CardContainer>
+      <CardsContainer>
+        {groupPurchaseList?.slice(from, to).map((group, idx) => (
+          <GroupPurchaseCard key={group.groupId} group={group} />
         ))}
-      </CardList>
+
+        {emptyNum > 0 && emptyNum !== 4 && <EmptyCard />}
+        {emptyNum > 1 && emptyNum !== 4 && <EmptyCard />}
+        {emptyNum > 2 && emptyNum !== 4 && <EmptyCard />}
+      </CardsContainer>
 
       <NextButton onClick={handleButtonClick}>
         <span>
@@ -47,7 +49,7 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
   );
 };
 
-export default CardsContainer;
+export default PaginationCardsContainer;
 
 const Container = styled.div`
   margin-top: 30px;
@@ -63,30 +65,23 @@ const Title = styled.div`
   font-weight: 600;
 `;
 
-const CardList = styled.div`
+const CardsContainer = styled.div`
   margin-top: 20px;
   width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
-const CardContainer = styled.div`
+const EmptyCard = styled.div`
   width: 100%;
-  display: inline-block;
-  @media (min-width: 700px) {
-    width: 45%;
-    margin-left: 2.5%;
-  }
-  margin-top: 15px;
-
-  .line {
-    width: 100%;
-    height: 1px;
-    background-color: #cdcdcd;
-    margin-top: 15px;
-    @media (min-width: 700px) {
-      width: 44%;
-      background-color: white;
-    }
-  }
+  height: 100px;
+  background-color: #f7f7f7;
+  border-radius: 5px;
 `;
 
 const NextButton = styled.div`
