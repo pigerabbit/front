@@ -91,8 +91,9 @@ const OpenGroupDetailInfo = ({ product, type }) => {
                 setIsOpen={setIsOpen}
                 isOpen={isOpen}
                 options={options}
-                setHour={setHour}
-                hour={hour}
+                setValue={setHour}
+                value={hour}
+                isHour
               />
             </SelectBoxContainer>
           </Line>
