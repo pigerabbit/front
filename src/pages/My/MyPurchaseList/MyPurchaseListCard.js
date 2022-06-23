@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import {
-  groupType,
+  groupTypes,
   groupState,
   returnBgColor,
   returnFontColor,
@@ -40,7 +40,7 @@ const MyPurchaseListCard = ({
         </CardImageWrapper>
         <CardContent>
           <Title>
-            <strong>{`[${groupType[group.groupType]}] `}</strong>
+            <strong>{`[${groupTypes[group.groupType]}] `}</strong>
             {group.groupName}
           </Title>
           <State

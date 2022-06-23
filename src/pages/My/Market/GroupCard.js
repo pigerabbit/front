@@ -1,34 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import ParticipantsList from "./ParticipantsList";
 import getDeadline from "utils/getDeadline";
-import { groupType, groupState, returnBgColor } from "../MyPageModule";
+import { groupTypes, groupState, returnBgColor } from "../MyPageModule";
 
 const ProductCard = ({ group }) => {
+  const [isParticipantsListOpen, setIsParticipantsListOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const handleCardClick = () => {
     navigate(`/groups/${group.groupId}`);
   };
 
+  const handleParticipantsListClick = (e) => {
+    e.stopPropagation();
+
+    setIsParticipantsListOpen(true);
+  };
   return (
-    <Container onClick={handleCardClick}>
-      <Content>
-        <Title>
-          <span>[{groupType[group.groupType]}]</span>
-          <span>{group.groupName}</span>
-        </Title>
+    <>
+      <Container onClick={handleCardClick}>
+        <Content>
+          <Title>
+            <span>[{groupTypes[group.groupType]}]</span>
+            <span>{group.groupName}</span>
+          </Title>
 
-        <State bgColor={returnBgColor(group.state)}>
-          {groupState[group.state][0]}
-        </State>
+          <State bgColor={returnBgColor(group.state)}>
+            {groupState[group.state][0]}
+          </State>
 
-        <Deadline>{getDeadline(group.deadline)}</Deadline>
+          <Deadline>{getDeadline(group.deadline)}</Deadline>
 
-        <PurchasersButton onClick={() => {}}>참여자 목록</PurchasersButton>
-      </Content>
-    </Container>
+          {group.state > 0 && (
+            <PurchasersButton onClick={handleParticipantsListClick}>
+              참여자 목록
+            </PurchasersButton>
+          )}
+        </Content>
+      </Container>
+
+      {isParticipantsListOpen && (
+        <ParticipantsList
+          groupName={group.groupName}
+          groupType={group.groupType}
+          participants={group.participants}
+          setIsParticipantsListOpen={setIsParticipantsListOpen}
+        />
+      )}
+    </>
   );
 };
 

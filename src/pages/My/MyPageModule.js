@@ -1,4 +1,4 @@
-export const groupType = {
+export const groupTypes = {
   normal: "택배공구",
   local: "지역공구",
   coupon: "이용권공구",
