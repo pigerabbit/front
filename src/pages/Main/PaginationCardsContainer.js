@@ -5,7 +5,7 @@ import { faArrowRotateLeft } from "@fortawesome/free-solid-svg-icons";
 
 import GroupPurchaseCard from "./GroupPurchaseCard";
 
-const CardsContainer = ({ title, groupPurchaseList }) => {
+const PaginationCardsContainer = ({ title, groupPurchaseList }) => {
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(4);
   const [page, setPage] = useState(1);
@@ -29,14 +29,11 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
     <Container>
       <Title>{title}</Title>
 
-      <CardList>
-        {groupPurchaseList?.slice(from, to).map((purchase, idx) => (
-          <CardContainer key={purchase.groupId}>
-            <GroupPurchaseCard purchase={purchase} />
-            {idx < 3 && <div className="line" />}
-          </CardContainer>
+      <CardsContainer>
+        {groupPurchaseList?.slice(from, to).map((group, idx) => (
+          <GroupPurchaseCard key={group.groupId} group={group} />
         ))}
-      </CardList>
+      </CardsContainer>
 
       <NextButton onClick={handleButtonClick}>
         <span>
@@ -48,7 +45,7 @@ const CardsContainer = ({ title, groupPurchaseList }) => {
   );
 };
 
-export default CardsContainer;
+export default PaginationCardsContainer;
 
 const Container = styled.div`
   margin-top: 30px;
@@ -64,29 +61,15 @@ const Title = styled.div`
   font-weight: 600;
 `;
 
-const CardList = styled.div`
+const CardsContainer = styled.div`
   margin-top: 20px;
   width: 100%;
-`;
 
-const CardContainer = styled.div`
-  width: 100%;
-  display: inline-block;
-  @media (min-width: 700px) {
-    width: 45%;
-    margin-left: 2.5%;
-  }
-  margin-top: 15px;
-
-  .line {
-    width: 100%;
-    height: 1px;
-    background-color: #cdcdcd;
-    margin-top: 15px;
-    @media (min-width: 700px) {
-      width: 44%;
-      background-color: white;
-    }
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
 

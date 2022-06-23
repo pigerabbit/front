@@ -15,8 +15,8 @@ const numTitleInit =
   (window.innerWidth >= 450 && 25) ||
   16;
 
-const GroupPurchaseCard = ({ purchase }) => {
-  const [wish, setWish] = useState(purchase?.toggle === 0 ? false : true);
+const GroupPurchaseCard = ({ group }) => {
+  const [wish, setWish] = useState(group?.toggle === 0 ? false : true);
   const [numTitle, setNumTitle] = useState(numTitleInit);
 
   const navigate = useNavigate();
@@ -41,12 +41,12 @@ const GroupPurchaseCard = ({ purchase }) => {
       });
     }
 
-    await Api.put(`toggle/group/${purchase._id}`);
+    await Api.put(`toggle/group/${group._id}`);
     setWish((cur) => !cur);
   };
 
   const handleCardClick = () => {
-    navigate(`/groups/${purchase.groupId}`);
+    navigate(`/groups/${group.groupId}`);
   };
 
   const handleResize = () => {
@@ -65,28 +65,28 @@ const GroupPurchaseCard = ({ purchase }) => {
 
   return (
     <Container wish={wish} onClick={handleCardClick}>
-      <Image url={purchase?.productInfo?.images} />
+      <Image url={group?.productInfo?.images} />
       <Information>
         <CardTitle>
           <span>
-            {purchase.groupType === "local" ? purchase.location : "택배공구"}
+            {group.groupType === "local" ? group.location : "택배공구"}
           </span>
           <span>
-            {purchase.groupName.slice(0, numTitle)}
-            {purchase.groupName.length > numTitle && ".."}
+            {group.groupName.slice(0, numTitle)}
+            {group.groupName.length > numTitle && ".."}
           </span>
         </CardTitle>
         <Price>
-          <span>{purchase?.productInfo?.discountRate}%</span>
-          <span>{purchase?.productInfo?.salePrice.toLocaleString()}원</span>
-          <span>{purchase?.productInfo?.price.toLocaleString()}원</span>
+          <span>{group?.productInfo?.discountRate}%</span>
+          <span>{group?.productInfo?.salePrice.toLocaleString()}원</span>
+          <span>{group?.productInfo?.price.toLocaleString()}원</span>
         </Price>
         <Deadline>
           <div>
-            <span>{purchase?.remainedPersonnel}개</span>
+            <span>{group?.remainedPersonnel}개</span>
             <span> 남음</span>
           </div>
-          <span>{getDeadline(purchase?.deadline)}</span>
+          <span>{getDeadline(group?.deadline)}</span>
         </Deadline>
       </Information>
 

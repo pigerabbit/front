@@ -4,7 +4,7 @@ import { setPersonNear, setTimeNear } from "redux/groupsSlice";
 import styled from "styled-components";
 import * as Api from "api";
 
-import CardContainer from "./CardsContainer";
+import PaginationCardsContainer from "./PaginationCardsContainer";
 import LoadingSpinner from "components/LoadingSpinner";
 
 const DeadlineTab = () => {
@@ -49,15 +49,15 @@ const DeadlineTab = () => {
         <LoadingSpinner />
       ) : (
         <Contents>
-          <CardContainer
+          <PaginationCardsContainer
             title={productDeadlineTitle}
             groupPurchaseList={personNearGroups}
-          ></CardContainer>
+          />
 
-          <CardContainer
+          <PaginationCardsContainer
             title={timeDeadlineTitle}
             groupPurchaseList={timeNearGroups}
-          ></CardContainer>
+          />
         </Contents>
       )}
     </Container>

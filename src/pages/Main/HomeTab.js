@@ -14,7 +14,7 @@ import {
 import * as Api from "api";
 
 import SliderCard from "./SliderCard";
-import CardsContainer from "./CardsContainer";
+import PaginationCardsContainer from "./PaginationCardsContainer";
 import LoadingSpinner from "components/LoadingSpinner";
 
 const HomeTab = () => {
@@ -122,7 +122,7 @@ const HomeTab = () => {
             </Pagination>
           </InterestGroups>
 
-          <CardsContainer
+          <PaginationCardsContainer
             title={homeTabGroupsTitle}
             groupPurchaseList={nearbyGroups}
           />
