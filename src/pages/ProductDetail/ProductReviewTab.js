@@ -14,6 +14,7 @@ const ProductReviewTab = ({ product }) => {
   const [isWriting, setIsWriting] = useState(false);
   const [showMyReviews, setShowMyReviews] = useState(false);
   const [writable, setWritable] = useState(false);
+  const [isReviewFetched, setIsReviewFetched] = useState(false);
 
   const isSeller = product.userId === user.id;
 
@@ -57,6 +58,8 @@ const ProductReviewTab = ({ product }) => {
       setMyReviews(
         productReviews.filter((review) => review.writer === user.id)
       );
+      setIsReviewFetched(true);
+      return true;
     } catch (e) {
       console.log("후기 get 실패");
     }
@@ -64,7 +67,7 @@ const ProductReviewTab = ({ product }) => {
 
   useEffect(() => {
     getReviews();
-    checkWritable();
+    if (isReviewFetched) checkWritable();
   }, []);
 
   return (
