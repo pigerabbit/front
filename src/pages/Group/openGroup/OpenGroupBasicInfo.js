@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 const OpenGroupBasicInfo = ({ product, type }) => {
+  const { businessLocation, businessName } = product.userInfo.business[0];
+
   return (
     <Container>
       <p>공구 기본 정보</p>
@@ -9,7 +11,7 @@ const OpenGroupBasicInfo = ({ product, type }) => {
         <Content>
           <Line>
             <h3>상품명</h3>
-            <p>{product.name}</p>
+            <p>{`[${businessName}] ${product.name}`}</p>
           </Line>
           <Line>
             <h3>정가</h3>
@@ -19,18 +21,10 @@ const OpenGroupBasicInfo = ({ product, type }) => {
             <h3>할인가</h3>
             <p>{product.salePrice}원</p>
           </Line>
-          {/* <Line>
-                <h3>이름</h3>
-                <p>{}</p>
-            </Line> */}
-          {/* <Line>
-            <h3>사업자명</h3>
-            <p>{product.businessName}</p>
-          </Line> */}
-          {/* <Line>
-                <h3>사업장 주소</h3>
-                <p>{}</p>
-            </Line> */}
+          <Line>
+            <h3>사업장 주소</h3>
+            <p>{businessLocation}</p>
+          </Line>
           {type === "local" && (
             <Line>
               <h3>배송비</h3>

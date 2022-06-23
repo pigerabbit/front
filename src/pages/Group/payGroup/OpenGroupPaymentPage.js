@@ -22,7 +22,7 @@ const OpenGroupPaymentPage = () => {
   const [name, setName] = useState(user?.name || "");
   const [contact, setContact] = useState(user?.phoneNumber || "");
   const [address, setAddress] = useState(
-    type !== "normal" ? location : user?.address || ""
+    type !== "normal" ? location.trim() : user?.address || ""
   );
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const OpenGroupPaymentPage = () => {
         setAddress(user.address);
       }
     }
-  }, [user]);
+  }, [user, type]);
 
   const postOpenGroup = async () => {
     try {
@@ -46,32 +46,10 @@ const OpenGroupPaymentPage = () => {
         groupName,
         deadline,
         quantity: count,
+        paymentMethod: payment,
       });
       if (res.data.success) {
         const { groupId } = res.data.payload;
-        postPayment(groupId);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const postPayment = async (groupId) => {
-    try {
-      const group = await Api.put(`groups/${groupId}/payment`, {
-        payment: payment,
-      });
-      if (group.data.success) {
-        // if (type === "coupon") {
-        //   const { _id } = group.data.payload;
-        //   const updatedGroup = await Api.post("payments", {
-        //     groupId: _id,
-        //   });
-        //   if (updatedGroup.data.success) {
-        //     navigate(`/group/payment/${groupId}`);
-        //     return;
-        //   }
-        // }
         navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {

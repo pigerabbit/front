@@ -26,6 +26,14 @@ const MyPurchaseListCard = ({
     setCancelDataId(group.groupId);
   };
 
+  const moveToQRCode = () => {
+    navigate(`/qrcode`, {
+      state: {
+        data: { groupObjId: group._id },
+      },
+    });
+  };
+
   return (
     <CardContainer>
       {!isOpenTab && <p>{formatParticipateDate(myInfo[0].participantDate)}</p>}
@@ -62,17 +70,30 @@ const MyPurchaseListCard = ({
         </CardContent>
       </CardWrapper>
       {group.state === 0 && (
-        <CardButton bgColor="#A0A0A0" onClick={() => handleClick()}>
+        <CardButton onClick={handleClick} bgColor="#A0A0A0" cursor="pointer">
           {isOpenTab ? "공구 중지" : "참여 취소"}
         </CardButton>
       )}
+      {group.state === 1 && group.groupType === "coupon" && (
+        <CardButton
+          onClick={moveToQRCode}
+          disabled={myInfo[0].payment.used}
+          bgColor={myInfo[0].payment.used ? "#A0A0A0" : "#ff9b2f"}
+          cursor={myInfo[0].payment.used ? "auto" : "pointer"}
+        >
+          QR 코드
+        </CardButton>
+      )}
       {group.state === 5 && myInfo[0].review === true && (
-        <CardButton bgColor="#A0A0A0">후기 완료</CardButton>
+        <CardButton bgColor="#A0A0A0" cursor="auto">
+          후기 완료
+        </CardButton>
       )}
       {group.state === 5 && myInfo[0].review === false && (
         <CardButton
-          bgColor="#FFB564"
           onClick={() => navigate(`products/${group.productInfo.productId}`)}
+          bgColor="#FFB564"
+          cursor="pointer"
         >
           후기 작성
         </CardButton>
@@ -81,14 +102,16 @@ const MyPurchaseListCard = ({
         <CardButton
           onClick={() => handleDeleteGroup(group.groupId)}
           bgColor="#A0A0A0"
+          cursor="pointer"
         >
           공구 삭제
         </CardButton>
       )}
-      {(group.state == -6 || group.state == -7) && (
+      {(group.state === -6 || group.state === -7) && (
         <CardButton
           onClick={() => handleRemoveGroupFromMyList(group.groupId)}
           bgColor="#A0A0A0"
+          cursor="pointer"
         >
           공구 삭제
         </CardButton>
@@ -200,7 +223,7 @@ const CardButton = styled.button`
   padding: 8px 10px;
   border: none;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
+  cursor: ${(props) => props.cursor};
   @media only screen and (max-width: 400px) {
     bottom: 35px;
   }

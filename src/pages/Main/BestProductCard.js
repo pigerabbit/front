@@ -23,7 +23,9 @@ const BestProductCard = ({ product, index }) => {
 
   const showConfirmationIcon = useShowComfirmationIcon();
 
-  const handleToggle = async () => {
+  const handleToggle = async (e) => {
+    e.stopPropagation();
+
     if (!wish) {
       showConfirmationIcon({
         backgroundColor: "#FF6A6A;",
@@ -44,6 +46,10 @@ const BestProductCard = ({ product, index }) => {
     setWish((cur) => !cur);
   };
 
+  const handleCardClick = () => {
+    navigate(`/products/${product.id}`);
+  };
+
   const handleResize = () => {
     if (window.innerWidth >= 700) setTitleLength(35);
     else if (window.innerWidth >= 600) setTitleLength(30);
@@ -61,19 +67,10 @@ const BestProductCard = ({ product, index }) => {
   }, []);
 
   return (
-    <Container wish={wish}>
+    <Container wish={wish} onClick={handleCardClick}>
       <span>{index + 1}</span>
-      <Image
-        url={product.images}
-        onClick={() => {
-          navigate(`/products/${product.id}`);
-        }}
-      />
-      <Information
-        onClick={() => {
-          navigate(`/products/${product.id}`);
-        }}
-      >
+      <Image url={product.images} />
+      <Information>
         <Title>
           <span>[{product.userInfo.business[0].businessName}]</span>
           <span>

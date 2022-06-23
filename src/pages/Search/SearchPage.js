@@ -12,13 +12,13 @@ import SearchInputForm from "./SearchInputForm";
 import SearchTrending from "./SearchTrending";
 import SearchGroupCard from "./SearchGroupCard";
 
-const Button = ({ isTrendingPage, setIsTrendingPage }) => {
-  const icon = isTrendingPage ? faChevronRight : faChevronLeft;
+const Button = ({ isTrending, setIsTrending }) => {
+  const icon = isTrending ? faChevronRight : faChevronLeft;
 
   return (
     <StyledButton
-      onClick={() => setIsTrendingPage(!isTrendingPage)}
-      isTrendingPage={isTrendingPage}
+      onClick={() => setIsTrending(!isTrending)}
+      isTrendingPage={isTrending}
     >
       <FontAwesomeIcon icon={icon} style={{ background: "transparent" }} />
     </StyledButton>
@@ -26,10 +26,10 @@ const Button = ({ isTrendingPage, setIsTrendingPage }) => {
 };
 
 const SearchPage = () => {
-  const [isTrendingPage, setIsTrendingPage] = useState(true);
-  const [deadlineGroup, setDeadlineGroup] = useState(null);
+  const [isTrending, setIsTrending] = useState(true);
+  const [deadlineGroup, setDeadlineGroup] = useState([]);
 
-  const fetchGroups = async () => {
+  const getImminentGroups = async () => {
     const res = await Api.get("groups/sort/remainedTime");
     const deadlineGroups = res.data.payload;
     if (deadlineGroups.length !== 0) {
@@ -38,24 +38,21 @@ const SearchPage = () => {
     }
   };
   useEffect(() => {
-    fetchGroups();
+    getImminentGroups();
   }, []);
 
   return (
     <Container>
       <SearchInputForm />
       <SearchContentContainer>
-        <SliderContainer isTrendingPage={isTrendingPage}>
+        <SliderContainer isTrendingPage={isTrending}>
           <SearchTrending />
           <SearchCurrent />
         </SliderContainer>
       </SearchContentContainer>
-      <Button
-        isTrendingPage={isTrendingPage}
-        setIsTrendingPage={setIsTrendingPage}
-      />
+      <Button isTrending={isTrending} setIsTrending={setIsTrending} />
       <DeadLineContainer isEmpty={!deadlineGroup}>
-        {deadlineGroup && (
+        {deadlineGroup.length !== 0 && (
           <>
             <h3>마감 임박</h3>
             <SearchGroupCard group={deadlineGroup} />
@@ -136,8 +133,14 @@ const DeadLineContainer = styled.div`
   height: 30vh;
   background: #f6f6f6;
   padding: 3.5%;
+  > h3 {
+    font-size: 20px;
+  }
   @media only screen and (max-width: 500px) {
     padding: ${(props) => (props.isEmpty ? "0" : "3.5%")};
+    > h3 {
+      font-size: 18px;
+    }
   }
 `;
 

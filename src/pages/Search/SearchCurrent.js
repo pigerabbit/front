@@ -26,9 +26,7 @@ const SearchCurrent = () => {
       ]);
 
       setCurrentKeyword(currentKeyword.data.reverse());
-      setProductList(
-        [...new Set(productList.data.map(JSON.stringify))].map(JSON.parse)
-      );
+      setProductList(productList.data);
 
       setLoading(false);
     } catch (err) {
@@ -39,7 +37,10 @@ const SearchCurrent = () => {
   const deleteKeyword = async (e, keyword) => {
     e.stopPropagation();
     try {
-      const filteredKeywords = await Api.delete(`toggle/searchWord/${keyword}`);
+      const encodingKeyword = encodeURIComponent(keyword);
+      const filteredKeywords = await Api.delete(
+        `toggle/searchWord/${encodingKeyword}`
+      );
       setCurrentKeyword(filteredKeywords.data.searchWords.reverse());
     } catch (err) {
       console.log(err);
@@ -59,7 +60,9 @@ const SearchCurrent = () => {
               {currentKeyword.map((k, idx) => (
                 <Keyword
                   key={idx}
-                  onClick={() => navigate(`/products?search=${k}`)}
+                  onClick={() =>
+                    navigate(`/products?search=${encodeURIComponent(k)}`)
+                  }
                 >
                   <span>{k}</span>
                   <button onClick={(e) => deleteKeyword(e, k)}>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import ProductInfoCard from "./ProductInfoCard";
 
-const ProductInformationTab = ({ product, seller }) => {
+const ProductInformationTab = ({ product }) => {
   const { detail, detailImg, shippingInfo } = product;
   const policy = `교환 및 환불이 필요하신 경우, 상단의 '문의'에 남겨주세요!
   `;

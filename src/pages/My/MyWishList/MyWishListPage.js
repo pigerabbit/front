@@ -28,7 +28,7 @@ const MyWishListPage = () => {
   }, []);
 
   return (
-    <MyPageLayout pageName="찜" previousPage="/mypage">
+    <MyPageLayout pageName="찜" previousPage="/">
       <Container>
         <MyWishListTabs
           tab={tab}
@@ -51,15 +51,4 @@ const Container = styled.div`
   min-width: 360px;
   background-color: #f6f6f6;
   padding-bottom: 220px;
-`;
-
-const WishListTitle = styled.div`
-  width: 100%;
-  height: 75px;
-  background-color: #fff;
-  h2 {
-    text-align: center;
-    line-height: 75px;
-    color: #939393;
-  }
 `;

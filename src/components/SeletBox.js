@@ -31,6 +31,9 @@ const SelectBox = ({ setIsOpen, isOpen, options, setHour, hour }) => {
 export default SelectBox;
 
 const SelectBoxContainer = styled.div`
+  position: absolute;
+  z-index: 10;
+  top: -15px;
   display: inline-block;
   width: 100px;
   border: 1px solid #c4c4c4;

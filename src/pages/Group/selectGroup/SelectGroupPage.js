@@ -38,7 +38,7 @@ const SelectGroupPage = () => {
             type="checkbox"
             name="confirm"
             checked={isChecked}
-            onClick={() => handleClick()}
+            onChange={handleClick}
           />
           <span>확인했습니다</span>
         </ConfirmButton>
