@@ -20,7 +20,7 @@ const MyPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordInputChange = (e) => {
     setPassword(e.target.value);
   };
 
@@ -78,7 +78,7 @@ const MyPage = () => {
               type="password"
               value={password}
               placeholder={placeholder}
-              onChange={handlePasswordChange}
+              onChange={handlePasswordInputChange}
               autoComplete="off"
             />
           </form>
