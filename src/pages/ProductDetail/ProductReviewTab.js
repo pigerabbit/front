@@ -17,11 +17,15 @@ const ProductReviewTab = ({ product }) => {
 
   const isSeller = product.userId === user.id;
 
-  const checkBuying = async () => {
+  const checkBuyingRecord = async () => {
     try {
-      const check = await Api.get(`groups/productId/${product.id}`);
-      const myBuying = check.data.payload
-        .filter((v) => v.state === 5)
+      const resGroups = await Api.get(`groups/productId/${product.id}`);
+      const myBuying = resGroups.data.payload
+        .filter(
+          (group) =>
+            group.state === 5 ||
+            (group.state === 1 && group.groupType === "coupon")
+        )
         .map((v) => v.participants)
         .reduce((prev, cur) => [...prev, ...cur])
         .filter((v) => (v) => v.userId === user.id);
@@ -57,7 +61,7 @@ const ProductReviewTab = ({ product }) => {
 
   useEffect(() => {
     getReviews();
-    checkBuying();
+    checkBuyingRecord();
   }, []);
 
   return (
