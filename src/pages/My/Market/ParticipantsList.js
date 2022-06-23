@@ -15,6 +15,16 @@ const ParticipantsList = ({
     setIsParticipantsListOpen(false);
   };
 
+  const formatPhoneNumber = (phoneNumber) => {
+    return (
+      phoneNumber.slice(0, 3) +
+      "-" +
+      phoneNumber.slice(3, 7) +
+      "-" +
+      phoneNumber.slice(7, 11)
+    );
+  };
+
   return (
     <Background>
       <Container>
@@ -24,11 +34,13 @@ const ParticipantsList = ({
         </GroupName>
 
         {participants.map((participant) => (
-          <ParticipantCard key={participant._id}>
+          <ParticipantCard key={participant.userId}>
             <div>이름(닉네임): {participant.userInfo.name}</div>
             <div>구매수량: {participant.quantity}</div>
             <div>주소: {participant.userInfo.address}</div>
-            <div>전화번호: {participant.userInfo.phoneNumber}</div>
+            <div>
+              전화번호: {formatPhoneNumber(participant.userInfo.phoneNumber)}
+            </div>
             <div>이메일: {participant.userInfo.email}</div>
           </ParticipantCard>
         ))}
