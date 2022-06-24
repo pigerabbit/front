@@ -41,26 +41,31 @@ const MyPurchaseListPage = () => {
     getGroupData();
   }, []);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
   return (
     <MyPageLayout pageName="공구 내역" previousPage={-1}>
-      <Container>
-        <MyWishListTabs
-          tab={tab}
-          setTab={setTab}
-          tabNames={["내가 참여한 공구", "내가 연 공구"]}
-        />
-        {tab === "tab1" && (
-          <ParticipatePurchaseListTab
-            participatedData={participatedGroups}
-            userId={user?.id}
-          />
-        )}
-        {tab === "tab2" && (
-          <OpenPurchaseListTab openedData={openedGroups} userId={user?.id} />
+      <Container loading={loading}>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <MyWishListTabs
+              tab={tab}
+              setTab={setTab}
+              tabNames={["내가 참여한 공구", "내가 연 공구"]}
+            />
+            {tab === "tab1" && (
+              <ParticipatePurchaseListTab
+                participatedData={participatedGroups}
+                userId={user?.id}
+              />
+            )}
+            {tab === "tab2" && (
+              <OpenPurchaseListTab
+                openedData={openedGroups}
+                userId={user?.id}
+              />
+            )}
+          </>
         )}
       </Container>
     </MyPageLayout>
@@ -72,8 +77,13 @@ export default MyPurchaseListPage;
 const Container = styled.div`
   position: relative;
   width: 100%;
+  height: ${(props) => (props.loading ? "70%" : "100%")};
   max-width: 770px;
   min-width: 360px;
   background-color: #f6f6f6;
   padding-bottom: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
