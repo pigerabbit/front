@@ -105,7 +105,13 @@ const ProductDescriptionTab = ({ product, seller }) => {
         </p>
       </InfoContainer>
       <DescriptionContainer>
-        {description && <div>{description}</div>}
+        {description && (
+          <div>
+            {description.split("\n").map((row, key) => (
+              <div key={key}>{row}</div>
+            ))}
+          </div>
+        )}
         {descriptionImg && (
           <img
             id="descriptionImg"
