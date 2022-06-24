@@ -62,12 +62,10 @@ const ProductDetailTop = ({ group, product, seller }) => {
           <p>~ {group.deadline}</p>
           <GroupState>
             {group.state === 0 ? (
-              isImminent === true && (
-                <>
-                  <p id="imminent">"마감 임박"</p>
-                  <p id="remain">{group.remainedPersonnel}개</p> 남음
-                </>
-              )
+              <>
+                {isImminent === true && <p id="imminent">"마감 임박"</p>}
+                <p id="remain">{group.remainedPersonnel}개</p> 남음
+              </>
             ) : (
               <EndedState
                 color={states[group.state][2]}

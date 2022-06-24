@@ -50,7 +50,6 @@ const GroupDetailPage = () => {
     try {
       const res = await Api.get(`groups/groupId/${groupId}`);
       setGroup(res.data.payload[0]);
-      console.log(group);
       setProduct(res.data.payload[0].productInfo);
       setIsSeller(user.id === res.data.payload[0].productInfo.userId);
 
@@ -65,7 +64,6 @@ const GroupDetailPage = () => {
         `users/${res.data.payload[0].productInfo.userId}`
       );
       setSeller(resUser.data.payload);
-
       setIsFetched(true);
     } catch (e) {
       console.log("group 못 가져옴");
