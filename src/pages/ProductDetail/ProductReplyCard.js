@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const ProductReplyCard = ({
   createdAt,
   content,
   isSeller,
+  setIsEditingReply,
   reverseBackgroundColor = false,
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
-
   const date = createdAt.split("T")[0];
 
   const handleEditButton = (e) => {
     e.stopPropagation();
-    setIsEditing(true);
+    setIsEditingReply(true);
   };
 
   return (
