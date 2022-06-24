@@ -1,12 +1,19 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProductCommentCard = ({
+const ProductReplyCard = ({
   createdAt,
   content,
+  isSeller,
+  setIsEditingReply,
   reverseBackgroundColor = false,
 }) => {
   const date = createdAt.split("T")[0];
+
+  const handleEditButton = (e) => {
+    e.stopPropagation();
+    setIsEditingReply(true);
+  };
 
   return (
     <Container reverseBackgroundColor={reverseBackgroundColor}>
@@ -14,14 +21,18 @@ const ProductCommentCard = ({
         <div id="header">
           <span id="title">답변</span> <span id="date">{date}</span>
         </div>
-        <button>편집</button>
-        <div id="comment">{content}</div>
+        {isSeller && <EditButton onClick={handleEditButton}>편집</EditButton>}
+        <div id="comment">
+          {content.split("\n").map((row, key) => (
+            <div key={key}>{row}</div>
+          ))}
+        </div>
       </Comment>
     </Container>
   );
 };
 
-export default ProductCommentCard;
+export default ProductReplyCard;
 
 const Container = styled.div`
   position: relative;
@@ -67,5 +78,26 @@ const Comment = styled.div`
 
   #comment {
     margin: 20px;
+  }
+`;
+
+const EditButton = styled.button`
+  position: absolute;
+  right: 50px;
+  top: 15px;
+  border: 1px solid #dedede;
+  background-color: #ffffff;
+
+  color: #555;
+  padding: 5px;
+  font-size: 13px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #f0f0f0;
+  }
+
+  @media (max-width: 500px) {
+    right: 40px;
   }
 `;
