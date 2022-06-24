@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "redux/userSlice";
+import { logout, update } from "redux/userSlice";
+import { init as groupsInit } from "redux/groupsSlice";
+import { init as productsInit } from "redux/productsSlice";
 import styled from "styled-components";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import * as Api from "api";
 
 import MyPageLayout from "../MyPageLayout";
 import MyButtons from "./MyButtons";
 import InfoEditForm from "./InfoEditForm";
 import ConfirmationPopup from "../ConfirmationPopup";
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
 const MyPage = () => {
   const [isOpenPopup, setIsOpenPopup] = useState(false);
@@ -19,9 +23,41 @@ const MyPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const showConfirmationIcon = useShowComfirmationIcon();
+  const profileImgRef = useRef(null);
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordInputChange = (e) => {
     setPassword(e.target.value);
+  };
+
+  const handleProfileImageChange = async (e) => {
+    const img = e.target.files[0];
+
+    const imageFormData = new FormData();
+    imageFormData.append("userImg", img);
+
+    try {
+      const res = await Api.putImg(
+        `users/${user.id}/profileImage`,
+        imageFormData
+      );
+      dispatch(update(res.data));
+
+      showConfirmationIcon({
+        backgroundColor: "#70BD86;",
+        color: "white",
+        icon: faCheck,
+        text: "완료!",
+      });
+    } catch (error) {
+      profileImgRef.current.value = null;
+      showConfirmationIcon({
+        backgroundColor: "#FF6A6A;",
+        color: "white",
+        icon: faXmark,
+        text: "실패",
+      });
+    }
   };
 
   const handleUnregister = async () => {
@@ -29,9 +65,11 @@ const MyPage = () => {
 
     try {
       await Api.delete("users", user.id, { password });
-      navigate("/login");
-      dispatch(logout());
       sessionStorage.removeItem("userToken");
+      dispatch(logout());
+      dispatch(groupsInit());
+      dispatch(productsInit());
+      navigate("/login");
     } catch (e) {
       setPassword("");
       setPlaceholder(e.response.data);
@@ -47,7 +85,16 @@ const MyPage = () => {
     <MyPageLayout pageName={"my동구"} previousPage="none">
       <Section>
         <Profile>
-          <ProfileImg url={user?.imageLink}></ProfileImg>
+          <ProfileImg url={user?.imageLink}>
+            <ProfileEditButton htmlFor="profile">편집</ProfileEditButton>
+            <ProfileInput
+              id="profile"
+              type="file"
+              accept="image/*"
+              onChange={handleProfileImageChange}
+              ref={profileImgRef}
+            />
+          </ProfileImg>
           <div className="name">
             {user?.seller && `${user?.business[0].businessName}, `}
             {user?.name}
@@ -78,7 +125,7 @@ const MyPage = () => {
               type="password"
               value={password}
               placeholder={placeholder}
-              onChange={handlePasswordChange}
+              onChange={handlePasswordInputChange}
               autoComplete="off"
             />
           </form>
@@ -146,7 +193,30 @@ const ProfileImg = styled.div`
   max-width: 140px;
   height: 18vw;
   max-height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
   border-radius: 50%;
+`;
+
+const ProfileEditButton = styled.label`
+  cursor: pointer;
+  width: 40%;
+  padding: 5% 0;
+  margin-bottom: 3%;
+  background-color: #000000;
+  opacity: 0.7;
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+  font-size: 2vw;
+  @media (min-width: 770px) {
+    font-size: 15px;
+  }
+`;
+
+const ProfileInput = styled.input`
+  display: none;
 `;
 
 const ConfirmationContent = styled.div`

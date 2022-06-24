@@ -39,7 +39,7 @@ const JoinGroupPaymentPage = () => {
     try {
       const res = await Api.put(`groups/${group.groupId}/participate/in`, {
         quantity: count,
-        paymentMehod: payment,
+        paymentMethod: payment,
       });
       if (res.data.success) {
         const { groupId } = res.data.payload;
@@ -67,7 +67,7 @@ const JoinGroupPaymentPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제`} />
+      <GroupHeader headerTitle={`주문/결제`} goBack={-1} />
       <AddressInfo
         name={name}
         contact={contact}

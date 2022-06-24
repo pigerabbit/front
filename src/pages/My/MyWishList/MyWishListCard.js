@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { formatDate } from "../MyPageModule";
 
 const MyWishListCard = ({
+  id,
   title,
   images,
   price,
@@ -10,16 +12,23 @@ const MyWishListCard = ({
   leftParticipants,
   deadline,
   contentPercent,
+  isGroup,
 }) => {
+  const navigate = useNavigate();
+
+  const goToDetailPage = (isGroup, id) => () => {
+    const route = isGroup ? `/groups/${id}` : `/products/${id}`;
+    return navigate(route);
+  };
   return (
     <CardContainer>
       <CardWrapper>
-        <CardImage images={images} />
+        <CardImage images={images} onClick={goToDetailPage(isGroup, id)} />
         <CardContent contentPercent={contentPercent}>
-          <Name>{title}</Name>
-          <Price>{`${price}원`}</Price>
+          <Name onClick={goToDetailPage(isGroup, id)}>{title}</Name>
+          <Price>{`${price.toLocaleString()}원`}</Price>
           <DiscountRate>{`${discountRate}%`}</DiscountRate>
-          <SalePrice>{`${salePrice}원`}</SalePrice>
+          <SalePrice>{`${salePrice.toLocaleString()}원`}</SalePrice>
           {deadline && <Deadline>{`${formatDate(deadline)}`}</Deadline>}
         </CardContent>
         {leftParticipants && (
@@ -53,6 +62,7 @@ const CardImage = styled.div`
   width: 150px;
   height: 110px;
   border-radius: 10px;
+  cursor: pointer;
   @media only screen and (max-width: 400px) {
     background-size: 100px 100px;
     width: 100px;
@@ -70,6 +80,7 @@ const CardContent = styled.div`
 `;
 const Name = styled.p`
   font-size: 18px;
+  cursor: pointer;
   @media only screen and (max-width: 400px) {
     font-size: 15px;
   }

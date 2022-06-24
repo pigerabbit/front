@@ -3,15 +3,7 @@ import styled, { keyframes } from "styled-components";
 import MyPurchaseListCard from "./MyPurchaseListCard";
 import SelectBox from "components/SeletBox";
 import * as Api from "api";
-
-const options = [
-  "전체보기",
-  "진행중",
-  "모집성공",
-  "기간마감",
-  "공구취소",
-  "사용완료",
-];
+import { options } from "../MyPageModule";
 
 const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
   const [option, setOption] = useState("전체보기");
@@ -57,7 +49,7 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
       );
       setFilteredData(canceled);
     }
-  }, [option, totalData]);
+  }, [participatedData, option, totalData]);
 
   return (
     <Container>

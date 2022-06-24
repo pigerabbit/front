@@ -20,6 +20,7 @@ const ProductCard = ({ group }) => {
 
     setIsParticipantsListOpen(true);
   };
+
   return (
     <>
       <Container onClick={handleCardClick}>

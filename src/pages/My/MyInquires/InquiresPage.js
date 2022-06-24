@@ -38,7 +38,9 @@ const InquiresPage = () => {
   };
 
   useEffect(() => {
-    getInquires();
+    if (user) {
+      getInquires();
+    }
   }, [option, user]);
 
   return (
