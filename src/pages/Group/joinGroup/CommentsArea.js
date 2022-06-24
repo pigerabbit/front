@@ -6,12 +6,14 @@ import * as Api from "api";
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
 
-const CommentsArea = ({ group, setJoinedGroup, joinedGroup }) => {
-  const { user } = useSelector((state) => state.user);
-
+const CommentsArea = ({
+  user,
+  group,
+  isSeller,
+  setJoinedGroup,
+  joinedGroup,
+}) => {
   const [comments, setComments] = useState([]);
-
-  const isSeller = user.id === group.productInfo.userId;
 
   const getComments = async () => {
     try {
