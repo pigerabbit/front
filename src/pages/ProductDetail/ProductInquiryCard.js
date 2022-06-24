@@ -3,7 +3,7 @@ import styled from "styled-components";
 import * as Api from "api";
 
 import ProductReplyForm from "./ProductReplyForm";
-import ProductCommentCard from "./ProductCommentCard";
+import ProductReplyCard from "./ProductReplyCard";
 
 const ProductInquiryCard = ({
   writerId,
@@ -110,7 +110,7 @@ const ProductInquiryCard = ({
               </div>
             )}
             {isReplied && (
-              <ProductCommentCard
+              <ProductReplyCard
                 createdAt={comment.createdAt}
                 content={comment.content}
               />

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import * as Api from "api";
 
 import ProductReplyForm from "./ProductReplyForm";
-import ProductCommentCard from "./ProductCommentCard";
+import ProductReplyCard from "./ProductReplyCard";
 
 const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
   const {
@@ -122,7 +122,7 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
             </div>
           )}
           {isReplied && (
-            <ProductCommentCard
+            <ProductReplyCard
               createdAt={comment.createdAt}
               content={comment.content}
               reverseBackgroundColor={!isSeller}

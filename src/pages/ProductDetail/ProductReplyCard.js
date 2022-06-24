@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-const ProductCommentCard = ({
+const ProductReplyCard = ({
   createdAt,
   content,
   reverseBackgroundColor = false,
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
   const date = createdAt.split("T")[0];
 
   return (
@@ -21,7 +23,7 @@ const ProductCommentCard = ({
   );
 };
 
-export default ProductCommentCard;
+export default ProductReplyCard;
 
 const Container = styled.div`
   position: relative;
