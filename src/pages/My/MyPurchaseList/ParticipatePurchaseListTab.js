@@ -57,7 +57,7 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
       );
       setFilteredData(canceled);
     }
-  }, [option, totalData]);
+  }, [participatedData, option, totalData]);
 
   return (
     <Container>
