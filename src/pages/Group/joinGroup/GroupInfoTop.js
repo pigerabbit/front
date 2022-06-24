@@ -5,8 +5,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 const ProductDetailTop = ({ group, product, seller }) => {
   const navigate = useNavigate();
 
+  const dateHoursDifference = Math.floor(
+    (new Date(group.deadline) - new Date()) / (3600 * 1000)
+  );
+
   const location = useLocation();
-  const { isImminent } = location.state || false;
+  const isImminent = location.state
+    ? location.state.isImminent
+    : dateHoursDifference < 24 ||
+      group.remainedPersonnel / product.minPurchaseQty < 0.1;
 
   const {
     name,

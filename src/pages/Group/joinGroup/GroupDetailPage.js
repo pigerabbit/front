@@ -11,8 +11,11 @@ import DetailHeader from "components/DetailHeader";
 import GroupInfoTop from "./GroupInfoTop";
 import CommentsArea from "./CommentsArea";
 import BuyingProductWindow from "./BuyingProductWindow";
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
 const GroupDetailPage = () => {
+  const showConfirmationIcon = useShowComfirmationIcon();
+
   const [group, setGroup] = useState({});
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
@@ -27,6 +30,14 @@ const GroupDetailPage = () => {
   const handleWish = async () => {
     try {
       await Api.put(`toggle/group/${group._id}`);
+
+      showConfirmationIcon({
+        icon: fullHeart,
+        color: "#fff",
+        backgroundColor: `${wish ? "#ababab" : "#ff6a6a"}`,
+        text: `${wish ? "찜 취소" : "찜"}`,
+      });
+
       setWish((cur) => !cur);
     } catch (e) {
       console.log("공구 찜하기 실패");
@@ -88,13 +99,13 @@ const GroupDetailPage = () => {
 
           <ButtonsContainer>
             <LeftButton wish={wish} onClick={handleWish}>
-              <p>
+              <span>
                 {wish ? (
                   <FontAwesomeIcon icon={fullHeart} size="1x" />
                 ) : (
                   <FontAwesomeIcon icon={Heart} size="1x" />
                 )}
-              </p>
+              </span>
               {!wish ? "찜 하기" : "찜 취소하기"}
             </LeftButton>
             {joinedGroup ? (
@@ -163,7 +174,7 @@ const LeftButton = styled.div`
   color: #f79831;
   border: 2px solid #f79831;
 
-  > p {
+  > span {
     margin-right: 5px;
   }
 

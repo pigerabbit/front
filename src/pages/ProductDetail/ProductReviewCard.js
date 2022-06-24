@@ -5,27 +5,35 @@ import * as Api from "api";
 import ProductReplyForm from "./ProductReplyForm";
 import ProductCommentCard from "./ProductCommentCard";
 
-const ProductReviewCard = ({
-  postId,
-  writerId,
-  title,
-  content,
-  image,
-  createdAt,
-  commentCount,
-  isSeller,
-}) => {
+const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
+  const {
+    postId,
+    writer: writerId,
+    title,
+    content,
+    postImg: image,
+    createdAt,
+    commentCount,
+  } = review;
+
   const [writer, setWriter] = useState({});
   const [comment, setComment] = useState({});
 
   const [open, setOpen] = useState(false);
   const [showReply, setShowReply] = useState(false);
   const [isReplied, setIsReplied] = useState(commentCount > 0 ? true : false);
+  const [isEditing, setIsEditing] = useState(false);
+
   const date = createdAt.split("T")[0];
+  console.log(isMyReview);
 
   const showDetail = (e) => {
-    if (e.target.id.includes("reply")) return;
     setOpen((cur) => !cur);
+  };
+
+  const handleEditButton = (e) => {
+    e.stopPropagation();
+    setIsEditing(true);
   };
 
   const getWriter = async () => {
@@ -37,7 +45,7 @@ const ProductReviewCard = ({
     }
   };
 
-  const getComments = async () => {
+  const getComment = async () => {
     try {
       const res = await Api.get(`posts`, "", {
         receiver: postId,
@@ -51,7 +59,7 @@ const ProductReviewCard = ({
 
   useEffect(() => {
     getWriter();
-    if (commentCount > 0) getComments();
+    if (commentCount > 0) getComment();
   }, []);
 
   return (
@@ -63,18 +71,22 @@ const ProductReviewCard = ({
       isSeller={isSeller}
     >
       <Header mobile={isSeller && open && !showReply && !isReplied}>
-        {/* <WriterImg src={writer.imageLink} alt="상세정보 사진"></WriterImg> */}
-        <WriterImg>
+        <WriterImgContainer>
           <img src={writer.imageLink} alt="사용자 사진" />
-        </WriterImg>
-        <div id="reviewTop">
+        </WriterImgContainer>
+        <ReviewTopContainer>
           <ReviewTitle open={open} image={image}>
             {title}
           </ReviewTitle>
-          <WriterInfo>
+          <span id="reviewInfo">
             {writer.name} | {date}
-          </WriterInfo>
-        </div>
+          </span>
+          {isMyReview && !isEditing && (
+            <span>
+              {" | "} <EditButton onClick={handleEditButton}>편집</EditButton>
+            </span>
+          )}
+        </ReviewTopContainer>
       </Header>
       {isSeller && open && !showReply && !isReplied && (
         <button
@@ -94,7 +106,7 @@ const ProductReviewCard = ({
 
       {isReplied && !open && <CommentArrow />}
       {open && (
-        <div>
+        <>
           {showReply && !isReplied && (
             <div
               onClick={(e) => {
@@ -102,7 +114,6 @@ const ProductReviewCard = ({
               }}
             >
               <ProductReplyForm
-                id="replyForm"
                 postId={postId}
                 setShowReply={setShowReply}
                 setComment={setComment}
@@ -114,10 +125,10 @@ const ProductReviewCard = ({
             <ProductCommentCard
               createdAt={comment.createdAt}
               content={comment.content}
-              reverse={!isSeller}
+              reverseBackgroundColor={!isSeller}
             />
           )}
-        </div>
+        </>
       )}
     </Container>
   );
@@ -173,7 +184,7 @@ const Header = styled.div`
   }
 `;
 
-const WriterImg = styled.div`
+const WriterImgContainer = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -181,13 +192,22 @@ const WriterImg = styled.div`
   box-shadow: 0.5px 0.5px 0.5px 0.5px #d0d0d0;
   position: absolute;
 
-  img {
+  > img {
     width: 100%;
     height: 100%;
     max-width: 100%;
     max-height: 100%;
     border-radius: 50%;
     font-size: 10px;
+  }
+`;
+
+const ReviewTopContainer = styled.div`
+  > span {
+    font-size: 14px;
+  }
+  #reviewInfo {
+    margin-left: 50px;
   }
 `;
 
@@ -202,10 +222,17 @@ const ReviewTitle = styled.div`
   }
 `;
 
-const WriterInfo = styled.div`
-  display: inline-block;
-  margin-left: 50px;
+const EditButton = styled.button`
+  border: none;
+  background: none;
+  color: #f79831;
+  padding: 0;
   font-size: 14px;
+
+  &:hover {
+    cursor: pointer;
+    font-weight: bold;
+  }
 `;
 
 const Content = styled.div`
