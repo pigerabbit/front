@@ -1,16 +1,21 @@
+const isPositiveInteger = (number) => {
+  const num = Number(number);
+
+  const isNumber = !Number.isNaN(Number(num));
+  const isFinite = num !== Infinity && num !== -Infinity;
+  const isPositive = num > 0;
+  const isInteger = Number.isInteger(num);
+
+  return isNumber && isFinite && isPositive && isInteger;
+};
+
 const game_369 = (num) => {
-  if (isNaN(Number(num)) || num === Infinity || num === -Infinity) {
-    return "숫자가 아니거나 무한대입니다.";
-  }
-  const stringifyNum = num.toString();
-  if (
-    stringifyNum.includes("3") ||
-    stringifyNum.includes("6") ||
-    stringifyNum.includes("9")
-  ) {
+  if (!isPositiveInteger(num)) return "게임을 진행할 수 없습니다";
+
+  if (!!String(num).match(/[369]+/g)) {
     return "박수";
   }
-  return Number(num);
+  return num;
 };
 
 export default game_369;
