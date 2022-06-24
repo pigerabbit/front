@@ -7,9 +7,11 @@ import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
+
 const ProductDescriptionTab = ({ product, seller }) => {
   const navigate = useNavigate();
-  console.log(seller);
+  const showConfirmationIcon = useShowComfirmationIcon();
 
   const [wish, setWish] = useState(false);
 
@@ -43,6 +45,14 @@ const ProductDescriptionTab = ({ product, seller }) => {
   const putWish = async () => {
     try {
       await Api.put(`toggle/product/${product._id}`);
+
+      showConfirmationIcon({
+        icon: fullHeart,
+        color: "#fff",
+        backgroundColor: `${wish ? "#ababab" : "#ff6a6a"}`,
+        text: `${wish ? "찜 취소" : "찜"}`,
+      });
+
       setWish((cur) => !cur);
     } catch (e) {
       console.log("wish put 실패");
@@ -79,10 +89,10 @@ const ProductDescriptionTab = ({ product, seller }) => {
       </Seller>
       <InfoContainer>
         {name}
-        <span onClick={putWish}>
+        <Wish wish={wish} onClick={putWish}>
           {wish && <FontAwesomeIcon icon={fullHeart} size="1x" />}
           {!wish && <FontAwesomeIcon icon={Heart} size="1x" />}
-        </span>
+        </Wish>
         <PriceInfo>
           <DiscountRate>{discountRateStr}%</DiscountRate>
           <Price>
@@ -159,12 +169,12 @@ const InfoContainer = styled.div`
     margin-top: 10px;
     font-size: 13px;
   }
+`;
 
-  span {
-    position: absolute;
-    right: 30px;
-    color: #ff0000;
-  }
+const Wish = styled.span`
+  position: absolute;
+  right: 30px;
+  color: ${({ wish }) => (wish ? "#ff6a6a" : "#ababab")};
 `;
 
 const PriceInfo = styled.div`
