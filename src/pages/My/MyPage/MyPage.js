@@ -214,7 +214,9 @@ const ProfileEditButton = styled.label`
   }
 `;
 
-const ProfileInput = styled.input``;
+const ProfileInput = styled.input`
+  display: none;
+`;
 
 const ConfirmationContent = styled.div`
   width: 60%;
