@@ -67,7 +67,7 @@ const JoinGroupPaymentPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제`} />
+      <GroupHeader headerTitle={`주문/결제`} goBack={-1} />
       <AddressInfo
         name={name}
         contact={contact}

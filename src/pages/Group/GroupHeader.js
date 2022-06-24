@@ -5,9 +5,14 @@ import styled from "styled-components";
 
 const GroupHeader = ({ headerTitle, goBack }) => {
   const navigate = useNavigate();
+
+  const handlePreviousBtnClick = () => {
+    navigate(goBack, { replace: true });
+  };
+
   return (
     <Header>
-      <GoBack onClick={() => navigate(goBack || "/")} />
+      <GoBack onClick={handlePreviousBtnClick} />
       <Title>{headerTitle}</Title>
       <ButtonTopContainer>
         <div

@@ -46,7 +46,7 @@ const MyPurchaseListPage = () => {
   }
 
   return (
-    <MyPageLayout pageName="공구 내역" previousPage="/">
+    <MyPageLayout pageName="공구 내역" previousPage={-1}>
       <Container>
         <MyWishListTabs
           tab={tab}

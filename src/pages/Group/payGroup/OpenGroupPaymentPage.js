@@ -74,7 +74,10 @@ const OpenGroupPaymentPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제(${headerTitle[type]})`} />
+      <GroupHeader
+        headerTitle={`주문/결제(${headerTitle[type]})`}
+        goBack={-1}
+      />
       <AddressInfo
         name={name}
         contact={contact}
