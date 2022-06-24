@@ -97,7 +97,7 @@ const GroupDetailPage = () => {
             </div>
           )}
 
-          <ButtonsContainer>
+          <ButtonsContainer state={group.state}>
             <LeftButton wish={wish} onClick={handleWish}>
               <span>
                 {wish ? (
@@ -149,7 +149,7 @@ const ButtonsContainer = styled.div`
   right: 0px;
   max-width: 770px;
   width: 100%;
-  display: flex;
+  display: ${({ state }) => (state === 0 ? "flex" : "none")};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
