@@ -7,6 +7,7 @@ import UserTopBar from "./UserTopBar";
 import UserInput from "./UserInput";
 import UserButton from "./UserButton";
 import DaumPost from "../../components/DaumPostCode";
+import validateEmail from "utils/validateEmail";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -20,14 +21,6 @@ const RegisterPage = () => {
   const [nameErrMessage, setNameErrMessage] = useState("");
   const [emailErrMessage, setEmailErrMessage] = useState("");
   const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
-
-  const validateEmail = (email) => {
-    return email
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
 
   const [isNameValid, setIsNameValid] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);

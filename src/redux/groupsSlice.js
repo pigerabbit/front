@@ -27,6 +27,9 @@ export const groupsSlice = createSlice({
     setTimeNear: (state, action) => {
       return { ...state, timeNearGroups: action.payload };
     },
+    init: (state, action) => {
+      return initialState;
+    },
   },
 });
 
@@ -36,6 +39,7 @@ export const {
   setNearby,
   setPersonNear,
   setTimeNear,
+  init,
 } = groupsSlice.actions;
 
 export default groupsSlice.reducer;

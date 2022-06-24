@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "redux/userSlice";
+import { init as groupsInit } from "redux/groupsSlice";
+import { init as productsInit } from "redux/productsSlice";
 import styled from "styled-components";
 import * as Api from "api";
 
@@ -20,7 +22,7 @@ const MyPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordInputChange = (e) => {
     setPassword(e.target.value);
   };
 
@@ -29,9 +31,11 @@ const MyPage = () => {
 
     try {
       await Api.delete("users", user.id, { password });
-      navigate("/login");
-      dispatch(logout());
       sessionStorage.removeItem("userToken");
+      dispatch(logout());
+      dispatch(groupsInit());
+      dispatch(productsInit());
+      navigate("/login");
     } catch (e) {
       setPassword("");
       setPlaceholder(e.response.data);
@@ -78,7 +82,7 @@ const MyPage = () => {
               type="password"
               value={password}
               placeholder={placeholder}
-              onChange={handlePasswordChange}
+              onChange={handlePasswordInputChange}
               autoComplete="off"
             />
           </form>
