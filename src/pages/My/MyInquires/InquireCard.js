@@ -44,7 +44,11 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
 
           <Title>{inquire?.post.title}</Title>
           <Date>{getDate(inquire?.post.createdAt)}</Date>
-          <Inquire reply={inquire?.post.reply}>{inquire?.post.content}</Inquire>
+          <Inquire reply={inquire?.post.reply}>
+            {inquire?.post.content.split("\n").map((i, key) => (
+              <div key={key}>{i}</div>
+            ))}
+          </Inquire>
 
           {inquire?.post.reply && (
             <Reply>
@@ -52,7 +56,11 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
                 <span>답변</span>
                 <span>{getDate(inquire?.commentList[0].createdAt)}</span>
               </ReplyTitle>
-              <ReplyContent>{inquire?.commentList[0].content}</ReplyContent>
+              <ReplyContent>
+                {inquire?.commentList[0].content.split("\n").map((i, key) => (
+                  <div key={key}>{i}</div>
+                ))}
+              </ReplyContent>
               <div>
                 ※ 답변 내용은 각 판매사에서 작성되며,
                 <br />
