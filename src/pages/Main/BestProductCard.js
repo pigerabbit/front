@@ -26,21 +26,12 @@ const BestProductCard = ({ product, index }) => {
   const handleToggle = async (e) => {
     e.stopPropagation();
 
-    if (!wish) {
-      showConfirmationIcon({
-        backgroundColor: "#FF6A6A;",
-        color: "white",
-        icon: fullHeart,
-        text: "찜!",
-      });
-    } else {
-      showConfirmationIcon({
-        backgroundColor: "#ABABAB;",
-        color: "white",
-        icon: fullHeart,
-        text: "찜 취소",
-      });
-    }
+    showConfirmationIcon({
+      backgroundColor: wish ? "#ABABAB;" : "#FF6A6A;",
+      color: "white",
+      icon: fullHeart,
+      text: wish ? "찜 취소" : "찜!",
+    });
 
     await Api.put(`toggle/product/${product._id}`);
     setWish((cur) => !cur);
