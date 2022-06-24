@@ -34,7 +34,7 @@ const GroupDetailPage = () => {
       showConfirmationIcon({
         icon: fullHeart,
         color: "#fff",
-        backgroundColor: `${wish ? "#ababab" : "#f79831"}`,
+        backgroundColor: `${wish ? "#ababab" : "#ff6a6a"}`,
         text: `${wish ? "찜 취소" : "찜"}`,
       });
 
