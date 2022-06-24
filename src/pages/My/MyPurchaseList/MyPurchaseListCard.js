@@ -38,12 +38,19 @@ const MyPurchaseListCard = ({
     });
   };
 
+  const goToPaymentPage = (groupId) => (e) => {
+    e.stopPropagation();
+    navigate(`/group/payment/${groupId}`);
+  };
+
+  const goToGroupPage = (groupId) => () => navigate(`/groups/${groupId}`);
+
   return (
     <CardContainer>
       {!isOpenTab && <p>{formatParticipateDate(myInfo[0].participantDate)}</p>}
       <CardWrapper>
         <CardImageWrapper>
-          <CardImage images={images} />
+          <CardImage images={images} onClick={goToGroupPage(groupId)} />
           {groupState[state].length > 1 && (
             <StateMessage>
               <p>{groupState[state][1]}</p>
@@ -52,12 +59,14 @@ const MyPurchaseListCard = ({
         </CardImageWrapper>
         <CardContent>
           <Title>
-            <strong>{`[${groupTypes[groupType]}] `}</strong>
-            {groupName}
-            <span onClick={() => navigate(`/group/payment/${group.groupId}`)}>
-              결제 페이지
-            </span>
+            <p onClick={goToGroupPage(groupId)}>
+              <strong>{`[${groupTypes[groupType]}] `}</strong>
+              {groupName}
+            </p>
+
+            <span onClick={goToPaymentPage(groupId)}>결제 페이지</span>
           </Title>
+
           <State
             bgColor={returnBgColor(state)}
             fontColor={returnFontColor(state)}
@@ -150,7 +159,7 @@ const CardImageWrapper = styled.div`
   position: relative;
   width: 150px;
   height: 110px;
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 600px) {
     width: 100px;
     height: 100px;
   }
@@ -163,6 +172,7 @@ const CardImage = styled.div`
   border-radius: 10px;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 `;
 
 const StateMessage = styled.div`
@@ -195,9 +205,13 @@ const CardContent = styled.div`
   }
 `;
 
-const Title = styled.p`
+const Title = styled.div`
   line-height: 20px;
   padding: 1% 0;
+  > p {
+    display: inline-block;
+    cursor: pointer;
+  }
   > span {
     margin-left: 1%;
     font-size: 13px;
@@ -206,6 +220,11 @@ const Title = styled.p`
     cursor: pointer;
     &:hover {
       color: #ffd3a4;
+    }
+  }
+  @media only screen and (max-width: 400px) {
+    > span {
+      display: block;
     }
   }
 `;
