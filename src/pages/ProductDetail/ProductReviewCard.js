@@ -25,7 +25,6 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const date = createdAt.split("T")[0];
-  console.log(isMyReview);
 
   const showDetail = (e) => {
     setOpen((cur) => !cur);
@@ -89,15 +88,14 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
         </ReviewTopContainer>
       </Header>
       {isSeller && open && !showReply && !isReplied && (
-        <button
-          id="replyButton"
+        <ReplyButton
           onClick={(e) => {
             e.stopPropagation();
             setShowReply(true);
           }}
         >
           답변하기
-        </button>
+        </ReplyButton>
       )}
       <Content open={open} image={image}>
         {content}
@@ -125,6 +123,7 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
             <ProductReplyCard
               createdAt={comment.createdAt}
               content={comment.content}
+              isSeller={isSeller}
               reverseBackgroundColor={!isSeller}
             />
           )}
@@ -154,19 +153,6 @@ const Container = styled.div`
     cursor: default;
     background-color: ${({ open, isSeller }) =>
       open && isSeller ? "#f8f8fB" : "#ffffff"};
-  }
-
-  #replyButton {
-    position: absolute;
-    right: 20px;
-    width: 70px;
-    height: 30px;
-    color: #ffffff;
-    border: none;
-    background-color: #ababab;
-    @media (max-width: 500px) {
-      top: 20px;
-    }
   }
 `;
 
@@ -232,6 +218,19 @@ const EditButton = styled.button`
   &:hover {
     cursor: pointer;
     font-weight: bold;
+  }
+`;
+
+const ReplyButton = styled.button`
+  position: absolute;
+  right: 20px;
+  width: 70px;
+  height: 30px;
+  color: #ffffff;
+  border: none;
+  background-color: #ababab;
+  @media (max-width: 500px) {
+    top: 20px;
   }
 `;
 
