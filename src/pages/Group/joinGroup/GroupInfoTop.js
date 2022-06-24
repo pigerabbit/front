@@ -10,10 +10,12 @@ const ProductDetailTop = ({ group, product, seller }) => {
   );
 
   const location = useLocation();
-  const isImminent = location.state
-    ? location.state.isImminent
-    : dateHoursDifference < 24 ||
-      group.remainedPersonnel / product.minPurchaseQty < 0.1;
+  const isImminent =
+    group.state === 0 &&
+    (location.state
+      ? location.state.isImminent
+      : dateHoursDifference < 24 ||
+        group.remainedPersonnel / product.minPurchaseQty < 0.1);
 
   const {
     name,
