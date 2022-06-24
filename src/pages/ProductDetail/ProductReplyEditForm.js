@@ -10,7 +10,6 @@ const ProductReplyEditForm = ({ comment, setComment, setIsEditingReply }) => {
     e.preventDefault();
 
     try {
-      console.log(comment);
       const res = await Api.put(`posts/${postId}`, {
         content: commentText,
       });
@@ -28,12 +27,11 @@ const ProductReplyEditForm = ({ comment, setComment, setIsEditingReply }) => {
         <textarea
           id="replyText"
           name="replyText"
+          defaultValue={commentText}
           rows="6"
           onChange={(e) => setCommentText(e.target.value)}
           required
-        >
-          {commentText}
-        </textarea>
+        />
       </form>
       <ButtonContainer>
         <Button
