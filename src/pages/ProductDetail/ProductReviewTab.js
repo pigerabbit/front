@@ -113,10 +113,15 @@ const ProductReviewTab = ({ product }) => {
                 key={review.postId}
                 review={review}
                 isSeller={isSeller}
+                isMyReview={review.writer === user.id}
               />
             ))
           : myReviews.map((review) => (
-              <ProductReviewCard key={review.postId} review={review} />
+              <ProductReviewCard
+                key={review.postId}
+                review={review}
+                isMyReview={review.writer === user.id}
+              />
             ))}
       </Review>
     </Container>
