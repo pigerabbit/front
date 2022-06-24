@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "redux/userSlice";
+import { logout, update } from "redux/userSlice";
 import { init as groupsInit } from "redux/groupsSlice";
 import { init as productsInit } from "redux/productsSlice";
 import styled from "styled-components";
@@ -41,6 +41,7 @@ const MyPage = () => {
         `users/${user.id}/profileImage`,
         imageFormData
       );
+      dispatch(update(res.data));
 
       showConfirmationIcon({
         backgroundColor: "#70BD86;",
