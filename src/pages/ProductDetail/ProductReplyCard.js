@@ -22,7 +22,11 @@ const ProductReplyCard = ({
           <span id="title">답변</span> <span id="date">{date}</span>
         </div>
         {isSeller && <EditButton onClick={handleEditButton}>편집</EditButton>}
-        <div id="comment">{content}</div>
+        <div id="comment">
+          {content.split("\n").map((row, key) => (
+            <div key={key}>{row}</div>
+          ))}
+        </div>
       </Comment>
     </Container>
   );

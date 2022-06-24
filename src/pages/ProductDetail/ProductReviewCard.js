@@ -100,7 +100,9 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
         </ReplyButton>
       )}
       <Content open={open} image={image}>
-        {content}
+        {content.split("\n").map((row, key) => (
+          <div key={key}>{row}</div>
+        ))}
       </Content>
       {image && <ReviewImg src={image} alt="리뷰 사진" open={open}></ReviewImg>}
 

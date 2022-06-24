@@ -88,7 +88,11 @@ const ProductInquiryCard = ({
                 답변하기
               </button>
             )}
-            <Content isReplied={isReplied}>{content}</Content>
+            <Content isReplied={isReplied}>
+              {content.split("\n").map((row, key) => (
+                <div key={key}>{row}</div>
+              ))}
+            </Content>
           </div>
         )}
 
