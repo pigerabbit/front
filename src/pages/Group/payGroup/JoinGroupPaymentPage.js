@@ -39,7 +39,7 @@ const JoinGroupPaymentPage = () => {
     try {
       const res = await Api.put(`groups/${group.groupId}/participate/in`, {
         quantity: count,
-        paymentMehod: payment,
+        paymentMethod: payment,
       });
       if (res.data.success) {
         const { groupId } = res.data.payload;
