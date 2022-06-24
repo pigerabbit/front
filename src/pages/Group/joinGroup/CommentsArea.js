@@ -11,6 +11,8 @@ const CommentsArea = ({ group, setJoinedGroup, joinedGroup }) => {
 
   const [comments, setComments] = useState([]);
 
+  const isSeller = user.id === group.productInfo.userId;
+
   const getComments = async () => {
     try {
       const res = await Api.get(`posts`, "", {
@@ -38,7 +40,9 @@ const CommentsArea = ({ group, setJoinedGroup, joinedGroup }) => {
 
   return (
     <Container>
-      {!joinedGroup && <Blur>댓글 읽기/작성은 공동구매 참여 후 가능</Blur>}
+      {!(joinedGroup || isSeller) && (
+        <Blur>댓글 읽기/작성은 공동구매 참여 후 가능</Blur>
+      )}
       <CommentsContainer>
         <h4>댓글 ({comments.length})</h4>
         <CommentForm setComments={setComments} joinedGroup={joinedGroup} />
