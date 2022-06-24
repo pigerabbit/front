@@ -113,6 +113,7 @@ const ProductInquiryCard = ({
               <ProductReplyCard
                 createdAt={comment.createdAt}
                 content={comment.content}
+                isSeller={isSeller}
               />
             )}
           </div>
