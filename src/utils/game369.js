@@ -1,18 +1,24 @@
-const game369 = (inputNumber) => {
-  const isNumber = typeof inputNumber === "number";
-  const isFinite = Number.isFinite(inputNumber);
-  const isPositive = inputNumber > 0;
-  const isInteger = Number.isInteger(inputNumber);
+const IsPositiveInteger = (num) => {
+  const isNumber = typeof num === "number";
+  const isFinite = Number.isFinite(num);
+  const isPositive = num > 0;
+  const isInteger = Number.isInteger(num);
 
-  const validNumber = isNumber && isFinite && isPositive && isInteger;
-  if (!validNumber) return "type이 number인 양의 정수를 입력해주세요.";
+  return isNumber && isFinite && isPositive && isInteger;
+};
+
+const game369 = (inputNumber) => {
+  const isValidNumber = IsPositiveInteger(inputNumber);
+  if (!isValidNumber) return null;
 
   const stringifyNumber = inputNumber.toString();
-  const includes3 = stringifyNumber.includes("3");
-  const includes6 = stringifyNumber.includes("6");
-  const includes9 = stringifyNumber.includes("9");
 
-  if (includes3 || includes6 || includes9) return "박수";
+  const clap = stringifyNumber.split("").reduce((acc, cur) => {
+    if (cur === "3" || cur === "6" || cur === "9") return acc + "짝";
+    else return acc;
+  }, "");
+
+  if (clap.length > 0) return clap;
   else return inputNumber;
 };
 
