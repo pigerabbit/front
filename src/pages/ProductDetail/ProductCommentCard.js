@@ -1,15 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProductCommentCard = ({ createdAt, content, reverse = null }) => {
+const ProductCommentCard = ({
+  createdAt,
+  content,
+  reverseBackgroundColor = false,
+}) => {
   const date = createdAt.split("T")[0];
 
   return (
-    <Container reverse={reverse}>
-      <Comment reverse={reverse}>
+    <Container reverseBackgroundColor={reverseBackgroundColor}>
+      <Comment reverseBackgroundColor={reverseBackgroundColor}>
         <div id="header">
           <span id="title">답변</span> <span id="date">{date}</span>
         </div>
+        <button>편집</button>
         <div id="comment">{content}</div>
       </Comment>
     </Container>
@@ -30,7 +35,8 @@ const Container = styled.div`
   padding: 5px 0;
 
   @media (max-width: 500px) {
-    background-color: ${({ reverse }) => (reverse ? "#ffffff" : "#f8f8fb")};
+    background-color: ${({ reverseBackgroundColor }) =>
+      reverseBackgroundColor ? "#ffffff" : "#f8f8fb"};
   }
 `;
 
@@ -41,7 +47,8 @@ const Comment = styled.div`
   font-size: 15px;
 
   @media (max-width: 500px) {
-    background-color: ${({ reverse }) => (reverse ? "#f8f8fb" : "#ffffff")};
+    background-color: ${({ reverseBackgroundColor }) =>
+      reverseBackgroundColor ? "#f8f8fb" : "#ffffff"};
   }
 
   #header {

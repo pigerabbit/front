@@ -125,7 +125,7 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
             <ProductCommentCard
               createdAt={comment.createdAt}
               content={comment.content}
-              reverse={!isSeller}
+              reverseBackgroundColor={!isSeller}
             />
           )}
         </>
