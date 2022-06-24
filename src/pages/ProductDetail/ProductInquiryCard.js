@@ -122,7 +122,6 @@ const ProductInquiryCard = ({
                     content={comment.content}
                     isSeller={isSeller}
                     setIsEditingReply={setIsEditingReply}
-                    reverseBackgroundColor={!isSeller}
                   />
                 </div>
               ) : (
