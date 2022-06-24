@@ -76,6 +76,25 @@ async function postImg(endpoint, data) {
   });
 }
 
+async function putImg(endpoint, data) {
+  return axios.put(serverUrl + endpoint, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${sessionStorage.getItem("userToken")}`,
+    },
+  });
+}
+
 // 아래처럼 export한 후, import * as A 방식으로 가져오면,
 // A.get, A.post 로 쓸 수 있음.
-export { get, getNoCache, post, put, patch, del as delete, postImg, serverUrl };
+export {
+  get,
+  getNoCache,
+  post,
+  put,
+  patch,
+  del as delete,
+  postImg,
+  putImg,
+  serverUrl,
+};

@@ -40,12 +40,14 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
 
   const [isNameValid, setIsNameValid] = useState(name);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(
+    phoneNumber.replaceAll("-", "").length === 11
+  );
   const isAddressValid = address?.length > 0;
   const isDetailAddressValid = detailAddress?.length > 0;
   const isNewPasswordValid = newPassword.length >= 8;
   const isConfirmPasswordValid =
     confirmPassword.length >= 8 && newPassword === confirmPassword;
-  const isPhoneNumberValid = phoneNumber.replaceAll("-", "").length === 11;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -146,6 +148,10 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
   }, [currentPassword]);
 
   useEffect(() => {
+    setIsPhoneNumberValid(phoneNumber.replaceAll("-", "").length === 11);
+  }, [phoneNumber]);
+
+  useEffect(() => {
     if (user) {
       setName(user.name);
       setAddress(user.address?.split(") ")[0] + ")");
@@ -235,9 +241,12 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
       </form>
 
       <form
-        onSubmit={handleSubmit({
-          phoneNumber: phoneNumber.replaceAll("-", ""),
-        })}
+        onSubmit={handleSubmit(
+          {
+            phoneNumber: phoneNumber.replaceAll("-", ""),
+          },
+          setIsPhoneNumberValid
+        )}
       >
         <InputContainer>
           <div>전화번호</div>

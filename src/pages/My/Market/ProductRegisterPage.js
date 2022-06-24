@@ -104,8 +104,8 @@ const ProductRegisterPage = () => {
 
   const postImages = async (productId) => {
     try {
-      const ImagesFormData = new FormData();
-      ImagesFormData.append("images", productImage);
+      const imagesFormData = new FormData();
+      imagesFormData.append("images", productImage);
 
       const descriptionImageFormData = new FormData();
       descriptionImageFormData.append("descriptionImg", descriptionImage);
@@ -114,7 +114,7 @@ const ProductRegisterPage = () => {
       detailImageFormData.append("detailImg", detailInfoImage);
 
       const imagesReq = productImage
-        ? Api.postImg(`products/${productId}/images`, ImagesFormData)
+        ? Api.postImg(`products/${productId}/images`, imagesFormData)
         : null;
       const descriptionImgReq = descriptionImage
         ? Api.postImg(
