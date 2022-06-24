@@ -40,7 +40,11 @@ const ReviewCard = ({ review, deleteReview }) => {
           <Title>{review.title}</Title>
           <Date>{getDate(review.createdAt)}</Date>
           {review.postImg && <Image url={review.postImg} />}
-          <Review>{review.content}</Review>
+          <Review>
+            {review.content.split("\n").map((i, key) => (
+              <div key={key}>{i}</div>
+            ))}
+          </Review>
         </Content>
 
         <DeleteButton onClick={handleDeleteBtnClick}>삭제</DeleteButton>
