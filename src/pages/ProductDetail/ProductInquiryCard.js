@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import * as Api from "api";
 
 import ProductReplyForm from "./ProductReplyForm";
@@ -92,8 +92,11 @@ const ProductInquiryCard = ({
   }, []);
 
   useEffect(() => {
-    return () => {
+    const timer = setTimeout(() => {
       setIsTargetPost(false);
+    }, [1000]);
+    return () => {
+      clearTimeout(timer);
     };
   }, [isTargetPost]);
 
@@ -200,6 +203,15 @@ const ProductInquiryCard = ({
 
 export default ProductInquiryCard;
 
+const highlightAnimation = keyframes`
+  0%{
+    background-color: #feeaa1
+  }
+  100% {
+    background-color: #ffffff
+  }
+`;
+
 const Container = styled.div`
   position: relative;
   width: 100%;
@@ -209,6 +221,12 @@ const Container = styled.div`
   padding-bottom: 30px;
   background-color: ${({ open }) => (open ? "#f8f8fB" : "#ffffff")};
   cursor: pointer;
+
+  animation: ${({ className }) =>
+    className === "target" &&
+    css`
+      ${highlightAnimation} 1s linear
+    `};
 
   #replyButton {
     position: absolute;

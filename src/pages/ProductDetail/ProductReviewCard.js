@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import * as Api from "api";
 
 import ProductReplyForm from "./ProductReplyForm";
@@ -91,10 +91,14 @@ const ProductReviewCard = ({
   }, []);
 
   useEffect(() => {
-    return () => {
+    const timer = setTimeout(() => {
       setIsTargetPost(false);
+    }, [1000]);
+    return () => {
+      clearTimeout(timer);
     };
   }, [isTargetPost]);
+
   return (
     <>
       <Container
@@ -195,6 +199,15 @@ const ProductReviewCard = ({
 
 export default ProductReviewCard;
 
+const highlightAnimation = keyframes`
+  0%{
+    background-color: #feeaa1
+  }
+  100% {
+    background-color: #ffffff
+  }
+`;
+
 const Container = styled.div`
   position: relative;
   width: 100%;
@@ -208,6 +221,12 @@ const Container = styled.div`
     image || isReplied || isSeller ? "pointer" : "default"};
   padding-bottom: ${({ open, isReplied }) =>
     open && isReplied ? "30px" : "0px"};
+
+  animation: ${({ className }) =>
+    className === "target" &&
+    css`
+      ${highlightAnimation} 1s linear
+    `};
 
   @media (max-width: 500px) {
     cursor: default;
