@@ -5,6 +5,7 @@ import * as Api from "api";
 import ProductReplyForm from "./ProductReplyForm";
 import ProductReplyEditForm from "./ProductReplyEditForm";
 import ProductReplyCard from "./ProductReplyCard";
+import ConfirmationPopup from "components/ConfirmationPopup";
 
 const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
   const {
@@ -24,6 +25,7 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
   const [showReply, setShowReply] = useState(false);
   const [isReplied, setIsReplied] = useState(commentCount > 0 ? true : false);
   const [isEditingReply, setIsEditingReply] = useState(false);
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const date = createdAt.split("T")[0];
 
@@ -33,7 +35,10 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
 
   const handleDeleteButton = (e) => {
     e.stopPropagation();
+    setIsOpenPopup(true);
   };
+
+  const handleDeleteReview = (e) => {};
 
   const getWriter = async () => {
     try {
@@ -141,6 +146,15 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
             ))}
         </div>
       )}
+      <ConfirmationPopup
+        handleButtonClick={handleDeleteReview}
+        isOpenPopup={isOpenPopup}
+        setIsOpenPopup={setIsOpenPopup}
+        buttonContent={"삭제"}
+      >
+        <span>후기를 정말 삭제하시겠습니까?</span>
+        <span>삭제된 후기는 복구할 수 없습니다.</span>
+      </ConfirmationPopup>
     </Container>
   );
 };
