@@ -14,7 +14,7 @@ const ConfirmationPopup = ({
 
   return (
     <Container isOpenPopup={isOpenPopup}>
-      {children}
+      <MessageContainer>{children}</MessageContainer>
       <ButtonsContainer>
         <Button isCancel={false} onClick={handleButtonClick}>
           {buttonContent}
@@ -38,48 +38,54 @@ const Container = styled.div`
   }}
   transition: bottom 0.3s;
 
-  width: 100%;
+  left: 0px;
+  right: 0px;
   max-width: 770px;
-  height: 60vw;
-  max-height: 320px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px 0;
+  background-color: #ffffff;
+
+  max-height: 250px;
   background-color: white;
   box-shadow: 0px -10px 10px rgba(0, 0, 0, 0.1);
   border-radius: 30px 30px 10px 10px;
 `;
 
-const ButtonsContainer = styled.div`
-  position: absolute;
-  bottom: 125px;
-  @media (max-width: 440px) {
-    bottom: 110px;
-  }
-  width: 100%;
+const MessageContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 30px auto;
+`;
+
+const ButtonsContainer = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 30px auto;
 `;
 
 const Button = styled.div`
-  cursor: pointer;
-  border-radius: 5px;
+  width: 46%;
+  height: 60px;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
-  width: 40%;
-  height: 8vw;
-  font-size: 3vw;
-  @media (min-width: 620px) {
-    width: 250px;
-    height: 50px;
-    font-size: 19px;
-  }
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 0 auto;
 
   color: white;
   background-color: ${({ isCancel }) => {
     if (isCancel) return "#d0d0d0;";
     else return "#d3623b;";
   }};
-
-  & + div {
-    margin-left: 5%;
-  }
 `;
