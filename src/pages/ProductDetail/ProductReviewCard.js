@@ -23,7 +23,6 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
   const [open, setOpen] = useState(false);
   const [showReply, setShowReply] = useState(false);
   const [isReplied, setIsReplied] = useState(commentCount > 0 ? true : false);
-  const [isEditingReview, setIsEditingReview] = useState(false);
   const [isEditingReply, setIsEditingReply] = useState(false);
 
   const date = createdAt.split("T")[0];
@@ -34,7 +33,6 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
 
   const handleEditButton = (e) => {
     e.stopPropagation();
-    setIsEditingReview(true);
   };
 
   const getWriter = async () => {
@@ -82,9 +80,9 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
           <span id="reviewInfo">
             {writer.name} | {date}
           </span>
-          {isMyReview && !isEditingReview && (
+          {isMyReview && (
             <span>
-              {" | "} <EditButton onClick={handleEditButton}>편집</EditButton>
+              {" | "} <EditButton onClick={handleEditButton}>삭제</EditButton>
             </span>
           )}
         </ReviewTopContainer>
