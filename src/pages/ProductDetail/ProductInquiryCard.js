@@ -6,10 +6,11 @@ import ProductReplyForm from "./ProductReplyForm";
 import ProductReplyEditForm from "./ProductReplyEditForm";
 import ProductReplyCard from "./ProductReplyCard";
 
-const ProductInquiryCard = ({ writerId, inquiry, isSeller }) => {
+const ProductInquiryCard = ({ inquiry, isSeller }) => {
   const {
     title,
     content,
+    writer: writerId,
     postImg: image,
     createdAt,
     commentCount,
