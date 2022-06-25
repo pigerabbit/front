@@ -143,6 +143,7 @@ const Container = styled.div`
 `;
 
 const Body = styled.div`
+  background-color: #ffffff;
   padding-bottom: 80px;
 `;
 
