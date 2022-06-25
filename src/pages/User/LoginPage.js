@@ -58,7 +58,7 @@ const Container = styled.div`
 const ContentContainer = styled.div`
   width: 70%;
   max-width: 400px;
-  height: 90vh;
+  height: 80vh;
   padding-top: 10%;
   display: flex;
   flex-direction: column;

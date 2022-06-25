@@ -11,12 +11,18 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
   const navigate = useNavigate();
 
   const getDate = (date) => {
-    if (date)
-      return `${date.slice(0, 4)}.${date.slice(5, 7)}.${date.slice(8, 10)}`;
+    return `${date.slice(0, 4)}.${date.slice(5, 7)}.${date.slice(8, 10)}`;
   };
 
   const handleCardClick = () => {
-    navigate(`/products/${inquire.post.receiver}`);
+    navigate(`/products/${inquire.post.receiver}`, {
+      state: {
+        data: {
+          tab: "cs",
+          postId: inquire.post.postId,
+        },
+      },
+    });
   };
 
   const handleDeleteBtnClick = (e) => {
@@ -54,7 +60,7 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
             <Reply>
               <ReplyTitle>
                 <span>답변</span>
-                <span>{getDate(inquire?.commentList[0].createdAt)}</span>
+                <span>{getDate(inquire?.commentList[0]?.createdAt)}</span>
               </ReplyTitle>
               <ReplyContent>
                 {inquire?.commentList[0].content.split("\n").map((i, key) => (
@@ -64,7 +70,7 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
               <div>
                 ※ 답변 내용은 각 판매사에서 작성되며,
                 <br />
-                소공소공의 서비스/정책과 상이할 수 있습니다.
+                동구라미의 서비스/정책과 상이할 수 있습니다.
               </div>
             </Reply>
           )}
