@@ -47,7 +47,7 @@ const MyPurchaseListPage = () => {
 
   return (
     <MyPageLayout pageName="공구 내역" previousPage={-1}>
-      <Container loading={loading}>
+      <Container loading={loading.toString()}>
         {loading ? (
           <LoadingSpinner />
         ) : (
