@@ -24,7 +24,8 @@ const ProductDetailPage = () => {
   });
 
   const navigate = useNavigate();
-  const location = useLocation();
+  const loc = useLocation();
+
   const { user } = useSelector((state) => state.user);
 
   const productId = useParams().id;
@@ -32,10 +33,28 @@ const ProductDetailPage = () => {
   const fetchProductInfo = (isFetched) => {
     if (isFetched && user) {
       setIsSeller(user.id === seller.userId);
-      setCurrentTab({
-        name: "description",
-        title: "상품설명",
-      });
+      const switchTab = loc.state?.data;
+      if (switchTab) {
+        switch (switchTab.tab) {
+          case "review":
+            setCurrentTab({ name: "review", title: "후기" });
+            break;
+          case "cs":
+            setCurrentTab({ name: "inquiry", title: "문의" });
+            break;
+          default:
+            setCurrentTab({
+              name: "description",
+              title: "상품설명",
+            });
+            break;
+        }
+      } else {
+        setCurrentTab({
+          name: "description",
+          title: "상품설명",
+        });
+      }
     }
   };
 
@@ -59,11 +78,7 @@ const ProductDetailPage = () => {
   };
 
   useEffect(() => {
-    try {
-      getProductDetail();
-    } catch (e) {
-      console.log();
-    }
+    getProductDetail();
   }, [user]);
   return (
     <Container>
