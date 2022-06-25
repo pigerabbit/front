@@ -36,7 +36,7 @@ const ProductReviewCard = ({
 
   const date = createdAt.split("T")[0];
 
-  if (isTargetPost) {
+  if (targetPostId === postId) {
     const targetElement = document.querySelector(".target");
     if (targetElement) {
       targetElement.scrollIntoView();

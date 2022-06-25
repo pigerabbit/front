@@ -40,7 +40,6 @@ const ProductInquiryCard = ({
     const targetElement = document.querySelector(".target");
     if (targetElement) {
       targetElement.scrollIntoView();
-      console.log(targetElement);
     }
   }
 
