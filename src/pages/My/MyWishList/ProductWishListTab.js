@@ -17,7 +17,6 @@ const ProductWishListTab = ({ products }) => {
             price={product.price}
             salePrice={product.salePrice}
             discountRate={product.discountRate}
-            contentPercent={["73%", "68%"]}
           />
         ))}
         {products.length === 0 && (
