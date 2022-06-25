@@ -109,23 +109,21 @@ const ProductInquiryCard = ({
         image={image}
       >
         <Header open={open}>
-          <div id="inquiryTop">
-            <InquiryTitle open={open} image={image}>
-              {title}
-            </InquiryTitle>
-            <InquiryInfo>
-              <ShowReplied isReplied={isReplied}>
-                {isReplied ? "답변완료" : "미답변"}
-              </ShowReplied>{" "}
-              | {writer.name} | {date}
-            </InquiryInfo>
-            {isMyInquiry && (
-              <span>
-                {" | "}{" "}
-                <DeleteButton onClick={handleDeleteButton}>삭제</DeleteButton>
-              </span>
-            )}
-          </div>
+          <InquiryTitle open={open} image={image}>
+            {title}
+          </InquiryTitle>
+          <InquiryInfo>
+            <ShowReplied isReplied={isReplied}>
+              {isReplied ? "답변완료" : "미답변"}
+            </ShowReplied>{" "}
+            | {writer.name} | {date}
+          </InquiryInfo>
+          {isMyInquiry && (
+            <span>
+              {" | "}{" "}
+              <DeleteButton onClick={handleDeleteButton}>삭제</DeleteButton>
+            </span>
+          )}
         </Header>
 
         {open && (
