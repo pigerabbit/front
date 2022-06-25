@@ -100,7 +100,6 @@ const ProductDetailPage = () => {
             product={product}
             user={user}
             targetPostId={targetPostId}
-            setTargetPostId={setTargetPostId}
           />
         )}
         {currentTab.name === "inquiry" && (
@@ -108,7 +107,6 @@ const ProductDetailPage = () => {
             product={product}
             user={user}
             targetPostId={targetPostId}
-            setTargetPostId={setTargetPostId}
           />
         )}
         {showJoinGroup && (
