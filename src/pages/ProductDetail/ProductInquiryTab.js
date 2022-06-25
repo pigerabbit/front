@@ -107,6 +107,7 @@ const ProductInquiryTab = ({
                 key={inquiry.postId}
                 inquiry={inquiry}
                 onDeleteMyInquiry={handleDeleteMyInquiry}
+                isMyInquiry={inquiry.writer === user.id}
                 targetPostId={targetPostId}
                 setTargetPostId={setTargetPostId}
               />
