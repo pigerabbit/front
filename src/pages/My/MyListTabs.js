@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const MyListTabs = ({ tab, setTab, tabNames }) => {
+const MyListTabs = ({ tab, setTab, tabNames, isWishList }) => {
   const navigate = useNavigate();
 
   const handleClick = (tab) => () => {
     setTab(tab);
-    navigate(`/purchaselist?tab=${tab}`, { replace: true });
+    const route = isWishList ? "/wishlist" : "/purchaselist";
+    navigate(`${route}?tab=${tab}`, { replace: true });
   };
 
   return (

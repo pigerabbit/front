@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import MyPageLayout from "../MyPageLayout";
-import MyWishListTabs from "../MyListTabs";
+import MyListTabs from "../MyListTabs";
 import GroupWishListTab from "./GroupWishListTab";
 import ProductWishListTab from "./ProductWishListTab";
 import LoadingSpinner from "components/LoadingSpinner";
@@ -44,15 +44,16 @@ const MyWishListPage = () => {
 
   return (
     <MyPageLayout pageName="찜" previousPage={-1}>
-      <Container loading={loading}>
+      <Container loading={loading.toString()}>
         {loading ? (
           <LoadingSpinner />
         ) : (
           <>
-            <MyWishListTabs
+            <MyListTabs
               tab={tab}
               setTab={setTab}
               tabNames={["공동구매", "판매상품"]}
+              isWishList
             />
             {tab === "tab1" && <GroupWishListTab groups={groups} />}
             {tab === "tab2" && <ProductWishListTab products={products} />}
