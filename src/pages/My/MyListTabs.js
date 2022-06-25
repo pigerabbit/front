@@ -1,16 +1,24 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const MyWishListTabs = ({ tab, setTab, tabNames }) => {
+const MyListTabs = ({ tab, setTab, tabNames }) => {
+  const navigate = useNavigate();
+
+  const handleClick = (tab) => () => {
+    setTab(tab);
+    navigate(`/purchaselist?tab=${tab}`, { replace: true });
+  };
+
   return (
     <TabsContainer>
       <Tab
-        onClick={() => setTab("tab1")}
+        onClick={handleClick("tab1")}
         borderBottom={tab === "tab1" ? "2px solid #ffb564" : "none"}
       >
         <span>{tabNames[0]}</span>
       </Tab>
       <Tab
-        onClick={() => setTab("tab2")}
+        onClick={handleClick("tab2")}
         borderBottom={tab === "tab2" ? "2px solid #ffb564" : "none"}
       >
         <span>{tabNames[1]}</span>
@@ -19,7 +27,7 @@ const MyWishListTabs = ({ tab, setTab, tabNames }) => {
   );
 };
 
-export default MyWishListTabs;
+export default MyListTabs;
 
 const TabsContainer = styled.div`
   position: relative;

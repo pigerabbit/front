@@ -2,27 +2,22 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import MyPageLayout from "../MyPageLayout";
-import MyWishListTabs from "../MyWishListTabs";
+import MyWishListTabs from "../MyListTabs";
 import GroupWishListTab from "./GroupWishListTab";
 import ProductWishListTab from "./ProductWishListTab";
 import LoadingSpinner from "components/LoadingSpinner";
 import * as Api from "api";
+import { useLocation } from "react-router-dom";
 
 const MyWishListPage = () => {
-  const [tab, setTab] = useState("tab1");
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  let tabQuery = searchParams.get("tab");
+
+  const [tab, setTab] = useState(tabQuery || "tab1");
   const [groups, setGroups] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  // const fetchWishGroups = async () => {
-  //   const res = await Api.get("toggle/groups");
-  //   setGroups(res.data);
-  // };
-
-  // const fetchWishProducts = async () => {
-  //   const res = await Api.get("toggle/products");
-  //   setProducts(res.data);
-  // };
 
   const getWishItems = async () => {
     const getWishGroups = Api.get("toggle/groups");

@@ -2,17 +2,21 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-import MyWishListTabs from "../MyWishListTabs";
+import MyListTabs from "../MyListTabs";
 import ParticipatePurchaseListTab from "./ParticipatePurchaseListTab";
 import OpenPurchaseListTab from "./OpenPurchaseListTab";
 import * as Api from "api";
 import MyPageLayout from "../MyPageLayout";
 import LoadingSpinner from "components/LoadingSpinner";
+import { useLocation } from "react-router-dom";
 
 const MyPurchaseListPage = () => {
   const { user } = useSelector((state) => state.user);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  let tabQuery = searchParams.get("tab");
 
-  const [tab, setTab] = useState("tab1");
+  const [tab, setTab] = useState(tabQuery || "tab1");
   const [loading, setLoading] = useState(false);
   const [participatedGroups, setParticipatedGroups] = useState([]);
   const [openedGroups, setOpenedGroups] = useState([]);
@@ -48,7 +52,7 @@ const MyPurchaseListPage = () => {
           <LoadingSpinner />
         ) : (
           <>
-            <MyWishListTabs
+            <MyListTabs
               tab={tab}
               setTab={setTab}
               tabNames={["내가 참여한 공구", "내가 연 공구"]}
