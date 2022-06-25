@@ -39,7 +39,7 @@ const ProductReviewCard = ({
   if (targetPostId === postId) {
     const targetElement = document.querySelector(".target");
     if (targetElement) {
-      targetElement.scrollIntoView();
+      targetElement.scrollIntoView({ block: "center" });
     }
   }
 
