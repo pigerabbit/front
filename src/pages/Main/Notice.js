@@ -5,15 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { confirmNotice } from "redux/userSlice";
 
 import SideBar from "components/SideBar";
-
-const from = {
-  product: "상품 삭제",
-  cs: "상품 문의",
-  review: "상품 후기",
-  group: "공구 알림",
-  groupChat: "댓글 알림",
-  comment: "댓글 알림",
-};
+import NoticeCard from "./NoticeCard";
 
 const Notice = ({ setIsOpenNotice }) => {
   const { user } = useSelector((state) => state.user);
@@ -34,6 +26,7 @@ const Notice = ({ setIsOpenNotice }) => {
   useEffect(() => {
     getNoticeList();
   }, []);
+
   return (
     <SideBar title="알림" setIsOpenSideBar={setIsOpenNotice}>
       <Container noContents={noticeList.length === 0}>
@@ -47,15 +40,7 @@ const Notice = ({ setIsOpenNotice }) => {
           </NoContentContainer>
         )}
         {noticeList.map((notice) => (
-          <NoticeCard key={notice._id}>
-            <Image url={notice.image} />
-            <Text>
-              <span>
-                [{from[notice.from]}] {}
-              </span>
-              <span>{notice.content}</span>
-            </Text>
-          </NoticeCard>
+          <NoticeCard key={notice._id} notice={notice} />
         ))}
       </Container>
     </SideBar>
@@ -84,51 +69,6 @@ const Container = styled.div`
     background: #d9d9d9;
     border-radius: 10px;
     opacity: 0.4;
-  }
-`;
-
-const NoticeCard = styled.div`
-  box-shadow: 0 2px 3px #d9d9d9;
-  background-color: white;
-  box-sizing: border-box;
-  padding: 10px;
-  width: 100%;
-  max-width: 450px;
-  height: 110px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-`;
-
-const Image = styled.div`
-  width: 75px;
-  min-width:75px
-  height: 75px;
-  min-height:75px;
-  margin-right: 15px;
-  border-radius: 50%;
-  background-image: url(${({ url }) => url});
-  background-size: cover;
-  background-position: center;
-`;
-
-const Text = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 60vw;
-  max-width: 315px;
-  height: 80%;
-
-  > span:first-child {
-    font-size: 13px;
-    margin-bottom: 10px;
-  }
-
-  > span:last-child {
-    font-size: 14px;
-    line-height: 20px;
-    color: #ff9b2f;
   }
 `;
 
