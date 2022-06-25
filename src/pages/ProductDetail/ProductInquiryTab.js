@@ -10,7 +10,6 @@ const ProductInquiryTab = ({ product, user }) => {
   const [myInquiries, setMyInquiries] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
   const [showMyInquiries, setShowMyInquiries] = useState(false);
-  const [isInquiryFetched, setIsInquiryFetched] = useState(false);
 
   const isSeller = product.userId === user.id;
 
@@ -23,10 +22,8 @@ const ProductInquiryTab = ({ product, user }) => {
     );
 
     if (remainedInquiries.length !== 0 && remainedMyInquiries.length !== 0) {
-      setIsInquiryFetched(false);
       setInquiries(remainedInquiries);
       setMyInquiries(remainedMyInquiries);
-      setIsInquiryFetched(true);
     }
   };
 
@@ -46,7 +43,11 @@ const ProductInquiryTab = ({ product, user }) => {
   };
 
   useEffect(() => {
+    let isMount = true;
     getInquiries();
+    return () => {
+      isMount = false;
+    };
   }, []);
 
   return (
