@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import * as Api from "api";
 
 import { useNavigate } from "react-router-dom";
 
