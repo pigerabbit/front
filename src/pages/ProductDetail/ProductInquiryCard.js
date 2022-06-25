@@ -6,16 +6,15 @@ import ProductReplyForm from "./ProductReplyForm";
 import ProductReplyEditForm from "./ProductReplyEditForm";
 import ProductReplyCard from "./ProductReplyCard";
 
-const ProductInquiryCard = ({
-  writerId,
-  title,
-  content,
-  image,
-  createdAt,
-  commentCount,
-  postId,
-  isSeller,
-}) => {
+const ProductInquiryCard = ({ writerId, inquiry, isSeller }) => {
+  const {
+    title,
+    content,
+    postImg: image,
+    createdAt,
+    commentCount,
+    postId,
+  } = inquiry;
   const [writer, setWriter] = useState({});
   const [comment, setComment] = useState({});
 

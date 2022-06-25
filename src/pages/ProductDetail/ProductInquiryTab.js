@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import * as Api from "api";
 
 import ProductInquiryCard from "./ProductInquiryCard";
 import ProductInquiryForm from "./ProductInquiryForm";
 
-const ProductInquiryTab = ({ product }) => {
-  const { user } = useSelector((state) => state.user);
-
+const ProductInquiryTab = ({ product, user }) => {
   const [inquiries, setInquiries] = useState([]);
   const [myInquiries, setMyInquiries] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
@@ -71,29 +68,18 @@ const ProductInquiryTab = ({ product }) => {
           )}
         </InquiryTop>
         {!showMyInquiries
-          ? inquiries.map((v) => (
+          ? inquiries.map((inquiry) => (
               <ProductInquiryCard
-                key={v.postId}
-                writerId={v.writer}
-                title={v.title}
-                content={v.content}
-                image={v.postImg}
-                createdAt={v.createdAt}
-                commentCount={v.commentCount}
-                postId={v.postId}
+                key={inquiry.postId}
+                inquiry={inquiry}
                 isSeller={isSeller}
               />
             ))
-          : myInquiries.map((v) => (
+          : myInquiries.map((inquiry) => (
               <ProductInquiryCard
-                key={v.postId}
-                writerId={v.writer}
-                title={v.title}
-                content={v.content}
-                image={v.postImg}
-                createdAt={v.createdAt}
-                commentCount={v.commentCount}
-                postId={v.postId}
+                key={inquiry.postId}
+                inquiry={inquiry}
+                postId={inquiry.postId}
               />
             ))}
       </Inquiry>
