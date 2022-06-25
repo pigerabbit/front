@@ -12,7 +12,8 @@ const ProductInquiryCard = ({
   onDeleteMyInquiry,
   isSeller,
   isMyInquiry,
-  isTargetPost,
+  targetPostId,
+  setTargetPostId,
 }) => {
   const {
     postId,
@@ -35,10 +36,11 @@ const ProductInquiryCard = ({
 
   const date = createdAt.split("T")[0];
 
-  if (isTargetPost) {
+  if (targetPostId === postId) {
     const targetElement = document.querySelector(".target");
     if (targetElement) {
       targetElement.scrollIntoView();
+      setTargetPostId("");
     }
   }
 
@@ -93,7 +95,7 @@ const ProductInquiryCard = ({
   return (
     <>
       <Container
-        className={isTargetPost && "target"}
+        className={targetPostId === postId && "target"}
         onClick={showDetail}
         open={open}
         image={image}

@@ -5,7 +5,12 @@ import * as Api from "api";
 import ProductInquiryCard from "./ProductInquiryCard";
 import ProductInquiryForm from "./ProductInquiryForm";
 
-const ProductInquiryTab = ({ product, user, targetPostId }) => {
+const ProductInquiryTab = ({
+  product,
+  user,
+  targetPostId,
+  setTargetPostId,
+}) => {
   const [inquiries, setInquiries] = useState([]);
   const [myInquiries, setMyInquiries] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
@@ -93,7 +98,8 @@ const ProductInquiryTab = ({ product, user, targetPostId }) => {
                 onDeleteMyInquiry={handleDeleteMyInquiry}
                 isSeller={isSeller}
                 isMyInquiry={inquiry.writer === user.id}
-                isTargetPost={targetPostId === inquiry.postId}
+                targetPostId={targetPostId}
+                setTargetPostId={setTargetPostId}
               />
             ))
           : myInquiries.map((inquiry) => (
@@ -101,8 +107,8 @@ const ProductInquiryTab = ({ product, user, targetPostId }) => {
                 key={inquiry.postId}
                 inquiry={inquiry}
                 onDeleteMyInquiry={handleDeleteMyInquiry}
-                isMyInquiry={inquiry.writer === user.id}
-                isTargetPost={targetPostId === inquiry.postId}
+                targetPostId={targetPostId}
+                setTargetPostId={setTargetPostId}
               />
             ))}
       </Inquiry>

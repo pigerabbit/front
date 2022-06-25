@@ -12,7 +12,8 @@ const ProductReviewCard = ({
   onDeleteMyReview,
   isSeller,
   isMyReview,
-  isTargetPost,
+  targetPostId,
+  setTargetPostId,
 }) => {
   const {
     postId,
@@ -35,10 +36,11 @@ const ProductReviewCard = ({
 
   const date = createdAt.split("T")[0];
 
-  if (isTargetPost) {
+  if (targetPostId === postId) {
     const targetElement = document.querySelector(".target");
     if (targetElement) {
       targetElement.scrollIntoView();
+      setTargetPostId("");
     }
   }
 
@@ -92,7 +94,7 @@ const ProductReviewCard = ({
   return (
     <>
       <Container
-        className={isTargetPost && "target"}
+        className={targetPostId === postId && "target"}
         onClick={showDetail}
         open={open}
         image={image}
