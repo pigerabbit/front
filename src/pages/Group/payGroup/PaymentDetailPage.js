@@ -39,7 +39,7 @@ const PaymentDetailPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제`} goBack={-1} />
+      <GroupHeader headerTitle={`결제 완료`} />
       <Info>
         <Message>
           <span>{subDate(group.updatedAt)}</span>
