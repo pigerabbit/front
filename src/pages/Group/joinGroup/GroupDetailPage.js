@@ -79,7 +79,7 @@ const GroupDetailPage = () => {
       {isFetched && (
         <>
           <DetailHeader headerTitle={group.groupName} />
-          <Body>
+          <Body state={group.state} isSeller={isSeller}>
             <GroupInfoTop group={group} product={product} seller={seller} />
             <CommentsArea
               user={user}
@@ -143,7 +143,9 @@ const Container = styled.div`
 `;
 
 const Body = styled.div`
-  padding-bottom: 80px;
+  background-color: #ffffff;
+  padding-bottom: ${({ state, isSeller }) =>
+    state === 0 && !isSeller ? "80px" : "10px"};
 `;
 
 const ButtonsContainer = styled.div`

@@ -5,8 +5,14 @@ import * as Api from "api";
 import ProductReplyForm from "./ProductReplyForm";
 import ProductReplyEditForm from "./ProductReplyEditForm";
 import ProductReplyCard from "./ProductReplyCard";
+import ConfirmationPopup from "components/ConfirmationPopup";
 
-const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
+const ProductReviewCard = ({
+  review,
+  onDeleteMyReview,
+  isSeller,
+  isMyReview,
+}) => {
   const {
     postId,
     writer: writerId,
@@ -23,8 +29,8 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
   const [open, setOpen] = useState(false);
   const [showReply, setShowReply] = useState(false);
   const [isReplied, setIsReplied] = useState(commentCount > 0 ? true : false);
-  const [isEditingReview, setIsEditingReview] = useState(false);
   const [isEditingReply, setIsEditingReply] = useState(false);
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const date = createdAt.split("T")[0];
 
@@ -32,9 +38,21 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
     setOpen((cur) => !cur);
   };
 
-  const handleEditButton = (e) => {
+  const handleDeleteButton = (e) => {
     e.stopPropagation();
-    setIsEditingReview(true);
+    setIsOpenPopup(true);
+  };
+
+  const handleDeleteReview = async () => {
+    try {
+      const resDeleteReview = await Api.delete(`posts/${postId}`);
+      if (resDeleteReview.data.success) {
+        onDeleteMyReview(postId);
+      }
+      setIsOpenPopup(false);
+    } catch (e) {
+      console.log("후기 삭제 실패");
+    }
   };
 
   const getWriter = async () => {
@@ -64,85 +82,99 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
   }, []);
 
   return (
-    <Container
-      onClick={showDetail}
-      open={open}
-      image={image}
-      isReplied={isReplied}
-      isSeller={isSeller}
-    >
-      <Header mobile={isSeller && open && !showReply && !isReplied}>
-        <WriterImgContainer>
-          <img src={writer.imageLink} alt="사용자 사진" />
-        </WriterImgContainer>
-        <ReviewTopContainer>
-          <ReviewTitle open={open} image={image}>
-            {title}
-          </ReviewTitle>
-          <span id="reviewInfo">
-            {writer.name} | {date}
-          </span>
-          {isMyReview && !isEditingReview && (
-            <span>
-              {" | "} <EditButton onClick={handleEditButton}>편집</EditButton>
+    <>
+      <Container
+        onClick={showDetail}
+        open={open}
+        image={image}
+        isReplied={isReplied}
+        isSeller={isSeller}
+      >
+        <Header mobile={isSeller && open && !showReply && !isReplied}>
+          <WriterImgContainer>
+            <img src={writer.imageLink} alt="사용자 사진" />
+          </WriterImgContainer>
+          <ReviewTopContainer>
+            <ReviewTitle open={open} image={image}>
+              {title}
+            </ReviewTitle>
+            <span id="reviewInfo">
+              {writer.name} | {date}
             </span>
-          )}
-        </ReviewTopContainer>
-      </Header>
-      {isSeller && open && !showReply && !isReplied && (
-        <ReplyButton
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowReply(true);
-          }}
-        >
-          답변하기
-        </ReplyButton>
-      )}
-      <Content open={open} image={image}>
-        {content.split("\n").map((row, key) => (
-          <div key={key}>{row}</div>
-        ))}
-      </Content>
-      {image && <ReviewImg src={image} alt="리뷰 사진" open={open}></ReviewImg>}
+            {isMyReview && (
+              <span>
+                {" | "}{" "}
+                <DeleteButton onClick={handleDeleteButton}>삭제</DeleteButton>
+              </span>
+            )}
+          </ReviewTopContainer>
+        </Header>
+        {isSeller && open && !showReply && !isReplied && (
+          <ReplyButton
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowReply(true);
+            }}
+          >
+            답변하기
+          </ReplyButton>
+        )}
+        <Content open={open} image={image}>
+          {content.split("\n").map((row, key) => (
+            <div key={key}>{row}</div>
+          ))}
+        </Content>
+        {image && (
+          <ReviewImg src={image} alt="리뷰 사진" open={open}></ReviewImg>
+        )}
 
-      {isReplied && !open && <CommentArrow />}
-      {open && (
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          {showReply && !isReplied && (
-            <ProductReplyForm
-              postId={postId}
-              setShowReply={setShowReply}
-              setComment={setComment}
-              setIsReplied={setIsReplied}
-            />
-          )}
-          {isReplied &&
-            (!isEditingReply ? (
-              <div onClick={showDetail}>
-                <ProductReplyCard
-                  createdAt={comment.createdAt}
-                  content={comment.content}
-                  isSeller={isSeller}
-                  setIsEditingReply={setIsEditingReply}
-                  reverseBackgroundColor={!isSeller}
-                />
-              </div>
-            ) : (
-              <ProductReplyEditForm
+        {isReplied && !open && <CommentArrow />}
+        {open && (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            {showReply && !isReplied && (
+              <ProductReplyForm
                 postId={postId}
-                comment={comment}
+                setShowReply={setShowReply}
                 setComment={setComment}
-                setIsEditingReply={setIsEditingReply}
+                setIsReplied={setIsReplied}
               />
-            ))}
-        </div>
-      )}
-    </Container>
+            )}
+            {isReplied &&
+              (!isEditingReply ? (
+                <div onClick={showDetail}>
+                  <ProductReplyCard
+                    createdAt={comment.createdAt}
+                    content={comment.content}
+                    isSeller={isSeller}
+                    setIsEditingReply={setIsEditingReply}
+                    reverseBackgroundColor={!isSeller}
+                  />
+                </div>
+              ) : (
+                <ProductReplyEditForm
+                  postId={postId}
+                  comment={comment}
+                  setComment={setComment}
+                  setIsEditingReply={setIsEditingReply}
+                />
+              ))}
+          </div>
+        )}
+      </Container>
+      <ConfirmationPopup
+        handleButtonClick={handleDeleteReview}
+        isOpenPopup={isOpenPopup}
+        setIsOpenPopup={setIsOpenPopup}
+        buttonContent={"삭제"}
+      >
+        <span>후기를 삭제하시겠습니까?</span>
+        <span>삭제된 후기는 복구할 수 없습니다.</span>
+      </ConfirmationPopup>
+    </>
   );
 };
 
@@ -221,10 +253,10 @@ const ReviewTitle = styled.div`
   }
 `;
 
-const EditButton = styled.button`
+const DeleteButton = styled.button`
   border: none;
   background: none;
-  color: #f79831;
+  color: #d3623b;
   padding: 0;
   font-size: 14px;
 
