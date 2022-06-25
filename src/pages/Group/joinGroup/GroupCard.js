@@ -1,48 +1,65 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useInterval } from "./hooks";
+import { useResultOfIntervalCalculator } from "hooks/useInterval";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-const useResultOfIntervalCalculator = (calculator, delay) => {
-  const [result, setResult] = useState(calculator());
-  useInterval(() => {
-    const newResult = calculator();
-    if (newResult !== result) setResult(newResult);
-  }, delay);
+const groupTypes = { normal: "택배", local: "지역", coupon: "이용권" };
 
-  return result;
+const Button = ({ joined = false, onClick }) => {
+  if (joined === true)
+    return (
+      <StyledButton joined={joined} onClick={onClick}>
+        참여완료
+      </StyledButton>
+    );
+  return (
+    <StyledButton joined={joined} onClick={onClick}>
+      참여하기
+    </StyledButton>
+  );
 };
 
-const groupTypes = { normal: "택배", local: "지역", ticket: "이용권" };
-
 const GroupCard = ({ group, minPurchaseQty }) => {
+  const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
+
   const deadline = group.deadline.replace(" ", "T") + ".000Z";
-  const remain = new Date(
+  const remainingTime = new Date(
     useResultOfIntervalCalculator(() =>
       Math.floor((new Date(deadline) - new Date()) / 1000, 10)
     ) * 1000
   );
-  let [date, hours, minutes, seconds] = [
-    remain.getDate() - 1,
-    remain.getHours() - 18,
-    `${remain.getMinutes() < 10 ? "0" : ""}${remain.getMinutes()}`,
-    `${remain.getSeconds() < 10 ? "0" : ""}${remain.getSeconds()}`,
-  ];
 
+  let [date, hours, minutes, seconds] = [
+    remainingTime.getDate() - 1,
+    remainingTime.getHours() - 18,
+    `${
+      remainingTime.getMinutes() < 10 ? "0" : ""
+    }${remainingTime.getMinutes()}`,
+    `${
+      remainingTime.getSeconds() < 10 ? "0" : ""
+    }${remainingTime.getSeconds()}`,
+  ];
   if (hours < 0 && date > 0) {
     date -= 1;
     hours += 24;
   }
 
-  const remainText =
+  const remainingTimeText =
     date > 0
       ? `${date}일 ${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`
       : `${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`;
+
   const currentPeople = minPurchaseQty - group.remainedPersonnel;
 
-  const aboutToClose =
-    hours + date * 24 < 12 || group.remainedPersonnel / minPurchaseQty < 0.1;
+  const isImminent =
+    hours + date * 24 < 24 || group.remainedPersonnel / minPurchaseQty < 0.1;
+
+  const handleClick = () =>
+    navigate(`/groups/${group.groupId}`, {
+      state: { isImminent },
+    });
 
   return (
     <Container>
@@ -53,16 +70,17 @@ const GroupCard = ({ group, minPurchaseQty }) => {
         <h3>{group.groupName}</h3>
         {group.location && <p>({group.location})</p>}
       </GroupInfo>
-      <JoinButton
-        onClick={() => {
-          navigate(`/groups/${group.groupId}?imminent=${aboutToClose}`);
-        }}
-      >
-        참여하기
-      </JoinButton>
-      <Current aboutToClose={aboutToClose}>
+      <Button
+        joined={
+          group.participants.filter((v) => v.userId === user.id).length > 0
+        }
+        onClick={handleClick}
+      />
+      <Current isImminent={isImminent}>
         {currentPeople} / {minPurchaseQty}
-        {remain.getFullYear() === 1970 && <Remain>{remainText}</Remain>}
+        {remainingTime.getFullYear() === 1970 && (
+          <Remain>{remainingTimeText}</Remain>
+        )}
       </Current>
     </Container>
   );
@@ -92,7 +110,7 @@ const GroupType = styled.div`
         return "#D3613B";
       case "local":
         return "#F5CB47";
-      case "ticket":
+      case "coupon":
         return "#82AF50";
       default:
         return "#d0d0d0";
@@ -149,7 +167,7 @@ const Current = styled.div`
   right: 140px;
   font-size: 25px;
   font-weight: bold;
-  color: ${({ aboutToClose }) => (aboutToClose ? "#ff0000" : "#000000")};
+  color: ${({ isImminent }) => (isImminent ? "#ff0000" : "#000000")};
   margin: 10px 0;
   display: flex;
   flex-direction: column;
@@ -161,19 +179,19 @@ const Current = styled.div`
   }
 `;
 
-const JoinButton = styled.button`
+const StyledButton = styled.button`
   position: absolute;
   right: 15px;
   width: 100px;
   height: 50px;
-  background-color: #f79831;
+  background-color: ${({ joined }) => (joined ? "#d0d0d0" : "#f79831")};
   border-radius: 10px;
   border: none;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   font-weight: bold;
   font-size: 15px;
   color: #ffffff;
-  cursor: pointer;
+  cursor: ${({ joined }) => (joined ? "normal" : "pointer")};
 
   @media (max-width: 500px) {
     width: 78px;

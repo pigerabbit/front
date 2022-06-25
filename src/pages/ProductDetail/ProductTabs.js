@@ -1,28 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProductTabs = ({ currentTab, setCurrentTab }) => {
-  const tabArr = [
-    {
-      index: 0,
-      name: "상품설명",
-    },
-    {
-      index: 1,
-      name: "상세정보",
-    },
-    {
-      index: 2,
-      name: "후기",
-    },
-    {
-      index: 3,
-      name: "문의",
-    },
-  ];
+const tabArr = [
+  {
+    name: "description",
+    title: "상품설명",
+  },
+  {
+    name: "information",
+    title: "상세정보",
+  },
+  {
+    name: "review",
+    title: "후기",
+  },
+  {
+    name: "inquiry",
+    title: "문의",
+  },
+];
 
+const ProductTabs = ({ currentTab, setCurrentTab }) => {
   const handleTab = (e) => {
-    const clickedTab = tabArr.filter((v) => v.name === e.target.innerHTML)[0];
+    const clickedTab = tabArr.filter((v) => v.title === e.target.innerHTML)[0];
     setCurrentTab(clickedTab);
   };
 
@@ -32,12 +32,11 @@ const ProductTabs = ({ currentTab, setCurrentTab }) => {
         {tabArr.map((v, i) => (
           <Tab
             onClick={handleTab}
-            isActive=""
-            index={i}
-            curIndex={currentTab.index}
+            name={v.name}
+            curName={currentTab.name}
             key={i}
           >
-            {v.name}
+            {v.title}
           </Tab>
         ))}
       </TabsContainer>
@@ -67,10 +66,9 @@ const Tab = styled.li`
   cursor: pointer;
 
   background-color: #ffffff;
-  color: ${({ index, curIndex }) =>
-    index === curIndex ? "#f79831" : "#636363"};
-  border-bottom: ${({ index, curIndex }) =>
-    index === curIndex ? "solid #f79831 3px;" : "none"};
+  color: ${({ name, curName }) => (name === curName ? "#f79831" : "#636363")};
+  border-bottom: ${({ name, curName }) =>
+    name === curName ? "solid #f79831 3px;" : "none"};
   font-weight: bold;
   font-size: 15px;
 

@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { formatDate } from "../MyPageModule";
 
 const MyWishListCard = ({
+  id,
   title,
   images,
   price,
@@ -9,22 +11,35 @@ const MyWishListCard = ({
   discountRate,
   leftParticipants,
   deadline,
-  contentPercent,
+  isGroup,
 }) => {
+  const navigate = useNavigate();
+
+  const goToDetailPage = (isGroup, id) => () => {
+    const route = isGroup ? `/groups/${id}` : `/products/${id}`;
+    return navigate(route);
+  };
+
   return (
     <CardContainer>
       <CardWrapper>
-        <CardImage images={images} />
-        <CardContent contentPercent={contentPercent}>
-          <Name>{title}</Name>
-          <Price>{`${price}원`}</Price>
+        <CardImage images={images} onClick={goToDetailPage(isGroup, id)} />
+        <CardContent>
+          <Name onClick={goToDetailPage(isGroup, id)}>{title}</Name>
+          <Price>{`${price.toLocaleString()}원`}</Price>
           <DiscountRate>{`${discountRate}%`}</DiscountRate>
-          <SalePrice>{`${salePrice}원`}</SalePrice>
-          {deadline && <Deadline>{`${formatDate(deadline)}`}</Deadline>}
+          <SalePrice>{`${salePrice.toLocaleString()}원`}</SalePrice>
+          {isGroup && (
+            <GroupInfo>
+              <Deadline>{`${formatDate(deadline)}`}</Deadline>
+              {leftParticipants > 0 ? (
+                <Left>{`${leftParticipants}개 남음`}</Left>
+              ) : (
+                <Left>마감 완료</Left>
+              )}
+            </GroupInfo>
+          )}
         </CardContent>
-        {leftParticipants && (
-          <Leftparticipants>{`${leftParticipants}개 남음`}</Leftparticipants>
-        )}
       </CardWrapper>
     </CardContainer>
   );
@@ -53,6 +68,7 @@ const CardImage = styled.div`
   width: 150px;
   height: 110px;
   border-radius: 10px;
+  cursor: pointer;
   @media only screen and (max-width: 400px) {
     background-size: 100px 100px;
     width: 100px;
@@ -61,15 +77,16 @@ const CardImage = styled.div`
 `;
 
 const CardContent = styled.div`
-  width: ${(props) => props.contentPercent[0]};
+  width: 73%;
   line-height: 20px;
   @media only screen and (max-width: 400px) {
     line-height: 15px;
-    width: ${(props) => props.contentPercent[1]};
+    width: 68%;
   }
 `;
 const Name = styled.p`
   font-size: 18px;
+  cursor: pointer;
   @media only screen and (max-width: 400px) {
     font-size: 15px;
   }
@@ -101,15 +118,18 @@ const SalePrice = styled.span`
   }
 `;
 
-const Leftparticipants = styled.p`
+const GroupInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Left = styled.p`
   font-size: 13px;
   color: #ff6a6a;
   align-self: flex-end;
-  padding: 20px;
   font-weight: bold;
   @media only screen and (max-width: 400px) {
     font-size: 10px;
-    padding: 0 0 20px 0;
   }
 `;
 

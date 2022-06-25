@@ -15,7 +15,20 @@ const ReviewCard = ({ review, deleteReview }) => {
   };
 
   const handleCardClick = () => {
-    navigate(`/products/${review.receiver}`);
+    navigate(`/products/${review.receiver}`, {
+      state: {
+        data: {
+          tab: "review",
+          postId: review.postId,
+        },
+      },
+    });
+  };
+
+  const handleDeleteBtnClick = (e) => {
+    e.stopPropagation();
+
+    setIsOpenPopup(true);
   };
 
   const handleDelete = async () => {
@@ -28,21 +41,21 @@ const ReviewCard = ({ review, deleteReview }) => {
   };
 
   return (
-    <Container>
-      <Content onClick={handleCardClick}>
-        <Title>{review.title}</Title>
-        <Date>{getDate(review.createdAt)}</Date>
-        {review.postImg && <Image url={review.postImg} />}
-        <Review>{review.content}</Review>
-      </Content>
+    <>
+      <Container onClick={handleCardClick}>
+        <Content>
+          <Title>{review.title}</Title>
+          <Date>{getDate(review.createdAt)}</Date>
+          {review.postImg && <Image url={review.postImg} />}
+          <Review>
+            {review.content.split("\n").map((i, key) => (
+              <div key={key}>{i}</div>
+            ))}
+          </Review>
+        </Content>
 
-      <DeleteButton
-        onClick={() => {
-          setIsOpenPopup(true);
-        }}
-      >
-        삭제
-      </DeleteButton>
+        <DeleteButton onClick={handleDeleteBtnClick}>삭제</DeleteButton>
+      </Container>
 
       <ConfirmationPopup
         isOpenPopup={isOpenPopup}
@@ -52,7 +65,7 @@ const ReviewCard = ({ review, deleteReview }) => {
       >
         <ConfirmationContent>후기를 정말 삭제하시겠습니까?</ConfirmationContent>
       </ConfirmationPopup>
-    </Container>
+    </>
   );
 };
 

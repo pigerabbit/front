@@ -8,8 +8,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 
 const SearchInputForm = () => {
-  const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
+
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const handleKeyPress = (key) => {
     if (key === "Enter") {

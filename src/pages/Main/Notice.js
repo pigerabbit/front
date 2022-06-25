@@ -75,6 +75,16 @@ const Container = styled.div`
   align-items: center;
   justify-content: ${({ noContents }) => noContents && "center;"};
   overflow: scroll;
+
+  &::-webkit-scrollbar {
+    background-color: none;
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #d9d9d9;
+    border-radius: 10px;
+    opacity: 0.4;
+  }
 `;
 
 const NoticeCard = styled.div`

@@ -6,9 +6,13 @@ import * as Api from "api";
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
 
-const CommentsArea = ({ group, setJoinedGroup, joinedGroup }) => {
-  const { user } = useSelector((state) => state.user);
-
+const CommentsArea = ({
+  user,
+  group,
+  isSeller,
+  setJoinedGroup,
+  joinedGroup,
+}) => {
   const [comments, setComments] = useState([]);
 
   const getComments = async () => {
@@ -17,7 +21,7 @@ const CommentsArea = ({ group, setJoinedGroup, joinedGroup }) => {
         receiver: group.groupId,
         type: "groupChat",
       });
-      if (res.data) {
+      if (res.data.success) {
         setComments(res.data.payload);
       }
     } catch (e) {
@@ -38,19 +42,21 @@ const CommentsArea = ({ group, setJoinedGroup, joinedGroup }) => {
 
   return (
     <Container>
-      {!joinedGroup && <Blur>댓글 읽기/작성은 공동구매 참여 후 가능</Blur>}
+      {!(joinedGroup || isSeller) && (
+        <Blur>댓글 읽기/작성은 공동구매 참여 후 가능</Blur>
+      )}
       <CommentsContainer>
         <h4>댓글 ({comments.length})</h4>
         <CommentForm setComments={setComments} joinedGroup={joinedGroup} />
         <div id="comments">
           {comments.length > 0 &&
-            comments.map((v) => (
+            comments.map((comment) => (
               <CommentCard
-                key={v.postId}
-                postId={v.postId}
-                content={v.content}
-                writerId={v.writer}
-                createdAt={v.createdAt}
+                key={comment.postId}
+                postId={comment.postId}
+                content={comment.content}
+                writerId={comment.writer}
+                createdAt={comment.createdAt}
                 setComments={setComments}
               />
             ))}

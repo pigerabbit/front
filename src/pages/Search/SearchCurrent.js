@@ -9,28 +9,24 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 const SearchCurrent = () => {
   const navigate = useNavigate();
 
-  const [currentKeyword, setCurrentKeyword] = useState([]);
+  const [keyword, setKeyword] = useState([]);
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getSearchCurrent = async () => {
-    const getSearchWords = Api.get("toggle/searchWords");
-    const getSearchProducts = Api.get("toggle/viewedProducts");
+    const getViewedWords = Api.get("toggle/searchWords");
+    const getViewedProducts = Api.get("toggle/viewedProducts");
 
     try {
       setLoading(true);
 
-      const [currentKeyword, productList] = await Promise.all([
-        getSearchWords,
-        getSearchProducts,
+      const [viewedKeyword, viewedProductList] = await Promise.all([
+        getViewedWords,
+        getViewedProducts,
       ]);
 
-      setCurrentKeyword(currentKeyword.data.reverse());
-      // const filteredProductList = productList.data.filter(
-      //   (arr, index, callback) =>
-      //     index === callback.findIndex((t) => t.id === arr.id)
-      // );
-      setProductList(productList.data);
+      setKeyword(viewedKeyword.data.reverse());
+      setProductList(viewedProductList.data);
 
       setLoading(false);
     } catch (err) {
@@ -38,19 +34,26 @@ const SearchCurrent = () => {
     }
   };
 
-  const deleteKeyword = async (e, keyword) => {
+  const deleteKeyword = (keyword) => async (e) => {
     e.stopPropagation();
     try {
-      const filteredKeywords = await Api.delete(`toggle/searchWord/${keyword}`);
-      setCurrentKeyword(filteredKeywords.data.searchWords.reverse());
+      const encodingKeyword = encodeURIComponent(keyword);
+      const filteredKeywords = await Api.delete(
+        `toggle/searchWord/${encodingKeyword}`
+      );
+      setKeyword(filteredKeywords.data.searchWords.reverse());
     } catch (err) {
       console.log(err);
     }
   };
 
+  const goToProductPage = (k) => () =>
+    navigate(`/products?search=${encodeURIComponent(k)}`);
+
   useEffect(() => {
     getSearchCurrent();
   }, []);
+
   return (
     <Container>
       {!loading && (
@@ -58,20 +61,15 @@ const SearchCurrent = () => {
           <CurrentKeywordContainer>
             <h4>최근 검색어</h4>
             <CurrentKeywordWrapper>
-              {currentKeyword.map((k, idx) => (
-                <Keyword
-                  key={idx}
-                  onClick={() =>
-                    navigate(`/products?search=${encodeURIComponent(k)}`)
-                  }
-                >
+              {keyword.map((k, idx) => (
+                <Keyword key={idx} onClick={goToProductPage(k)}>
                   <span>{k}</span>
-                  <button onClick={(e) => deleteKeyword(e, k)}>
+                  <button onClick={deleteKeyword(k)}>
                     <FontAwesomeIcon icon={faXmark} />
                   </button>
                 </Keyword>
               ))}
-              {currentKeyword.length === 0 && <p>검색 기록이 없습니다.</p>}
+              {keyword.length === 0 && <p>검색 기록이 없습니다.</p>}
             </CurrentKeywordWrapper>
           </CurrentKeywordContainer>
           <CurrentProductContainer>

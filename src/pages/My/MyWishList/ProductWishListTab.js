@@ -11,12 +11,12 @@ const ProductWishListTab = ({ products }) => {
         {products.map((product) => (
           <MyWishListCard
             key={product.id}
+            id={product.id}
             images={product.images}
             title={product.name}
             price={product.price}
             salePrice={product.salePrice}
             discountRate={product.discountRate}
-            contentPercent={["73%", "68%"]}
           />
         ))}
         {products.length === 0 && (

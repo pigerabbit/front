@@ -32,13 +32,14 @@ const PaymentDetailPage = () => {
     return <LoadingSpinner />;
   }
 
-  const { payment, quantity } = group.participants.filter(
-    (p) => p.userId === user.id
-  )[0];
+  const {
+    payment: { paymentMethod },
+    quantity,
+  } = group.participants.filter((p) => p.userId === user.id)[0];
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제`} />
+      <GroupHeader headerTitle={`결제 완료`} />
       <Info>
         <Message>
           <span>{subDate(group.updatedAt)}</span>
@@ -73,7 +74,7 @@ const PaymentDetailPage = () => {
           group.productInfo.minPurchaseQty
         )}
         type={group.groupType}
-        payment={payment}
+        payment={paymentMethod}
       />
     </Container>
   );

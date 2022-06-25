@@ -14,24 +14,37 @@ const ProductReviewTab = ({ product }) => {
   const [isWriting, setIsWriting] = useState(false);
   const [showMyReviews, setShowMyReviews] = useState(false);
   const [writable, setWritable] = useState(false);
+  const [isReviewFetched, setIsReviewFetched] = useState(false);
 
   const isSeller = product.userId === user.id;
 
-  const checkBuying = async () => {
+  const checkBuyingRecord = async () => {
     try {
-      const check = await Api.get(`groups/productId/${product.id}`);
-      const myBuying = check.data.payload
-        .filter((v) => v.state === 5)
-        .map((v) => v.participants)
-        .reduce((prev, cur) => [...prev, ...cur])
-        .filter((v) => (v) => v.userId === user.id);
+      const resGroups = await Api.get(`groups/productId/${product.id}`);
+      const joinedGroups = resGroups.data.payload
+        .filter(
+          (group) =>
+            group.state === 5 ||
+            (group.state === 1 && group.groupType === "coupon")
+        )
+        .map((group) => group.participants)
+        .reduce((addedParticipants, participants) => [
+          ...addedParticipants,
+          ...participants,
+        ])
+        .filter((participant) => participant.userId === user.id);
 
-      if (myBuying.length > 0 && myBuying.length > myReviews.length)
-        setWritable(true);
-      else setWritable(false);
+      return joinedGroups;
     } catch (e) {
       console.log("구매 기록 get 실패");
     }
+  };
+
+  const checkWritable = async () => {
+    const joinedGroups = await checkBuyingRecord();
+    if (joinedGroups.length > 0 && joinedGroups.length > myReviews.length)
+      setWritable(true);
+    else setWritable(false);
   };
 
   const getReviews = async () => {
@@ -40,24 +53,21 @@ const ProductReviewTab = ({ product }) => {
         receiver: product.id,
         type: "review",
       });
-      setReviews(res.data.payload.filter((v) => v.type === "review"));
+      const productReviews = res.data.payload;
+      setReviews(productReviews);
       setMyReviews(
-        res.data.payload.filter(
-          (v) => v.type === "review" && v.writer === user.id
-        )
+        productReviews.filter((review) => review.writer === user.id)
       );
-      console.log(myReviews);
+      setIsReviewFetched(true);
+      return true;
     } catch (e) {
-      console.log(e);
+      console.log("후기 get 실패");
     }
   };
 
-  // 구매 이력이 있고, 후기를 쓴 적이 없으면 후기 작성하기 버튼 보여주기
-  // myReviews 길이가 0이면 보여주지 않음.
-
   useEffect(() => {
     getReviews();
-    checkBuying();
+    if (isReviewFetched) checkWritable();
   }, []);
 
   return (
@@ -98,29 +108,19 @@ const ProductReviewTab = ({ product }) => {
           )}
         </ReviewTop>
         {!showMyReviews
-          ? reviews.map((v, i) => (
+          ? reviews.map((review) => (
               <ProductReviewCard
-                key={v.postId}
-                postId={v.postId}
-                writerId={v.writer}
-                title={v.title}
-                content={v.content}
-                image={v.postImg}
-                createdAt={v.createdAt}
-                commentCount={v.commentCount}
+                key={review.postId}
+                review={review}
                 isSeller={isSeller}
+                isMyReview={review.writer === user.id}
               />
             ))
-          : myReviews.map((v, i) => (
+          : myReviews.map((review) => (
               <ProductReviewCard
-                key={v.postId}
-                postId={v.postId}
-                writerId={v.writer}
-                title={v.title}
-                content={v.content}
-                image={v.postImg}
-                createdAt={v.createdAt}
-                commentCount={v.commentCount}
+                key={review.postId}
+                review={review}
+                isMyReview={review.writer === user.id}
               />
             ))}
       </Review>

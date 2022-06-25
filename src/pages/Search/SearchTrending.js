@@ -8,13 +8,18 @@ const SearchTrending = () => {
 
   const [trendingKeyword, setTrendingKeyword] = useState([]);
 
-  const fetchKeywords = async () => {
-    const res = await Api.get("topics");
-    setTrendingKeyword(res.data.payload);
+  const getTrendingKeywords = async () => {
+    try {
+      const res = await Api.get("topics");
+      setTrendingKeyword(res.data.payload);
+    } catch (err) {
+      //에러 처리
+      console.log(err);
+    }
   };
 
   useEffect(() => {
-    fetchKeywords();
+    getTrendingKeywords();
   }, []);
 
   return (

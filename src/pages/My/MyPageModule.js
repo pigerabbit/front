@@ -1,4 +1,4 @@
-export const groupType = {
+export const groupTypes = {
   normal: "택배공구",
   local: "지역공구",
   coupon: "이용권공구",
@@ -8,8 +8,6 @@ export const groupState = {
   0: ["진행중"],
   1: ["모집성공"],
   "-1": ["기간마감", "모집실패"],
-  // "-2": ["사용완료"],
-  // 2: ["모집성공", "미사용"],
   "-3": ["기간마감", "기간만료"],
   4: ["모집성공", "배송중"],
   "-4": ["모집성공", "배송 대기중"],
@@ -19,7 +17,7 @@ export const groupState = {
   "-7": ["공구취소", "상품 삭제됨"],
 };
 
-export const returnBgColor = (state) => {
+export const returnBgColor = (state) => () => {
   //진행중
   if (state === 0) {
     return "#00c75a";
@@ -38,7 +36,7 @@ export const returnBgColor = (state) => {
   }
 };
 
-export const returnFontColor = (state) => {
+export const returnFontColor = (state) => () => {
   if ([-1, -3].includes(state)) {
     return "#505050";
   } else {
@@ -60,3 +58,12 @@ export const formatParticipateDate = (date) => {
 
   return formatDate;
 };
+
+export const options = [
+  "전체보기",
+  "진행중",
+  "모집성공",
+  "기간마감",
+  "공구취소",
+  "사용완료",
+];

@@ -39,28 +39,17 @@ const JoinGroupPaymentPage = () => {
     try {
       const res = await Api.put(`groups/${group.groupId}/participate/in`, {
         quantity: count,
+        paymentMethod: payment,
       });
       if (res.data.success) {
         const { groupId } = res.data.payload;
-        postPayment(groupId);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const postPayment = async (groupId) => {
-    try {
-      const groupData = await Api.put(`groups/${groupId}/payment`, {
-        payment: payment,
-      });
-      if (groupData.data.success) {
         navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {
       console.log(err);
     }
   };
+
   const nameValid = name.length > 0;
   const contactValid = contact.length > 0;
   const addressValid = address.length > 0;
@@ -78,7 +67,7 @@ const JoinGroupPaymentPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제`} />
+      <GroupHeader headerTitle={`주문/결제`} goBack={-1} />
       <AddressInfo
         name={name}
         contact={contact}
@@ -101,11 +90,7 @@ const JoinGroupPaymentPage = () => {
         type={group.groupType}
       />
       <PaymentInfo setPayment={setPayment} payment={payment} />
-      <OrderButton
-        disabled={!isValid}
-        valid={isValid}
-        onClick={() => joinGroup()}
-      >
+      <OrderButton disabled={!isValid} valid={isValid} onClick={joinGroup}>
         {group.productInfo.salePrice * count + shippingPrice}원 주문하기
       </OrderButton>
     </Container>

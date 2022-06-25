@@ -10,7 +10,7 @@ const MyPageLayout = ({ children, pageName, previousPage, noTabBar }) => {
   const navigate = useNavigate();
 
   const handlePreviousBtnClick = () => {
-    navigate(previousPage);
+    navigate(previousPage, { replace: true });
   };
 
   return (

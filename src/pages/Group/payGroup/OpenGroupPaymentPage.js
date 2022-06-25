@@ -22,7 +22,7 @@ const OpenGroupPaymentPage = () => {
   const [name, setName] = useState(user?.name || "");
   const [contact, setContact] = useState(user?.phoneNumber || "");
   const [address, setAddress] = useState(
-    type !== "normal" ? location : user?.address || ""
+    type !== "normal" ? location.trim() : user?.address || ""
   );
 
   useEffect(() => {
@@ -46,22 +46,10 @@ const OpenGroupPaymentPage = () => {
         groupName,
         deadline,
         quantity: count,
+        paymentMethod: payment,
       });
       if (res.data.success) {
         const { groupId } = res.data.payload;
-        postPayment(groupId);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const postPayment = async (groupId) => {
-    try {
-      const group = await Api.put(`groups/${groupId}/payment`, {
-        payment: payment,
-      });
-      if (group.data.success) {
         navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {
@@ -86,7 +74,10 @@ const OpenGroupPaymentPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제(${headerTitle[type]})`} />
+      <GroupHeader
+        headerTitle={`주문/결제(${headerTitle[type]})`}
+        goBack={-1}
+      />
       <AddressInfo
         name={name}
         contact={contact}
