@@ -3,20 +3,13 @@ import styled, { keyframes } from "styled-components";
 import MyPurchaseListCard from "./MyPurchaseListCard";
 import SelectBox from "components/SeletBox";
 import * as Api from "api";
-
-const options = [
-  "전체보기",
-  "진행중",
-  "모집성공",
-  "기간마감",
-  "공구취소",
-  "사용완료",
-];
+import { options } from "../MyPageModule";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const OpenPurchaseListTab = ({ openedData, userId }) => {
   const [option, setOption] = useState("전체보기");
   const [totalData, setTotalData] = useState(openedData);
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
   const [cancelDataId, setCancelDataId] = useState("");
@@ -71,7 +64,11 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
       );
       setFilteredData(canceled);
     }
-  }, [option, totalData]);
+  }, [openedData, option, totalData]);
+
+  if (!filteredData) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Container>

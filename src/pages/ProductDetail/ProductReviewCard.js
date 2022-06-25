@@ -3,7 +3,8 @@ import styled from "styled-components";
 import * as Api from "api";
 
 import ProductReplyForm from "./ProductReplyForm";
-import ProductCommentCard from "./ProductCommentCard";
+import ProductReplyEditForm from "./ProductReplyEditForm";
+import ProductReplyCard from "./ProductReplyCard";
 
 const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
   const {
@@ -22,10 +23,10 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
   const [open, setOpen] = useState(false);
   const [showReply, setShowReply] = useState(false);
   const [isReplied, setIsReplied] = useState(commentCount > 0 ? true : false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingReview, setIsEditingReview] = useState(false);
+  const [isEditingReply, setIsEditingReply] = useState(false);
 
   const date = createdAt.split("T")[0];
-  console.log(isMyReview);
 
   const showDetail = (e) => {
     setOpen((cur) => !cur);
@@ -33,7 +34,7 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
 
   const handleEditButton = (e) => {
     e.stopPropagation();
-    setIsEditing(true);
+    setIsEditingReview(true);
   };
 
   const getWriter = async () => {
@@ -81,7 +82,7 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
           <span id="reviewInfo">
             {writer.name} | {date}
           </span>
-          {isMyReview && !isEditing && (
+          {isMyReview && !isEditingReview && (
             <span>
               {" | "} <EditButton onClick={handleEditButton}>편집</EditButton>
             </span>
@@ -89,46 +90,57 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
         </ReviewTopContainer>
       </Header>
       {isSeller && open && !showReply && !isReplied && (
-        <button
-          id="replyButton"
+        <ReplyButton
           onClick={(e) => {
             e.stopPropagation();
             setShowReply(true);
           }}
         >
           답변하기
-        </button>
+        </ReplyButton>
       )}
       <Content open={open} image={image}>
-        {content}
+        {content.split("\n").map((row, key) => (
+          <div key={key}>{row}</div>
+        ))}
       </Content>
       {image && <ReviewImg src={image} alt="리뷰 사진" open={open}></ReviewImg>}
 
       {isReplied && !open && <CommentArrow />}
       {open && (
-        <>
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           {showReply && !isReplied && (
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              <ProductReplyForm
-                postId={postId}
-                setShowReply={setShowReply}
-                setComment={setComment}
-                setIsReplied={setIsReplied}
-              />
-            </div>
-          )}
-          {isReplied && (
-            <ProductCommentCard
-              createdAt={comment.createdAt}
-              content={comment.content}
-              reverseBackgroundColor={!isSeller}
+            <ProductReplyForm
+              postId={postId}
+              setShowReply={setShowReply}
+              setComment={setComment}
+              setIsReplied={setIsReplied}
             />
           )}
-        </>
+          {isReplied &&
+            (!isEditingReply ? (
+              <div onClick={showDetail}>
+                <ProductReplyCard
+                  createdAt={comment.createdAt}
+                  content={comment.content}
+                  isSeller={isSeller}
+                  setIsEditingReply={setIsEditingReply}
+                  reverseBackgroundColor={!isSeller}
+                />
+              </div>
+            ) : (
+              <ProductReplyEditForm
+                postId={postId}
+                comment={comment}
+                setComment={setComment}
+                setIsEditingReply={setIsEditingReply}
+              />
+            ))}
+        </div>
       )}
     </Container>
   );
@@ -154,19 +166,6 @@ const Container = styled.div`
     cursor: default;
     background-color: ${({ open, isSeller }) =>
       open && isSeller ? "#f8f8fB" : "#ffffff"};
-  }
-
-  #replyButton {
-    position: absolute;
-    right: 20px;
-    width: 70px;
-    height: 30px;
-    color: #ffffff;
-    border: none;
-    background-color: #ababab;
-    @media (max-width: 500px) {
-      top: 20px;
-    }
   }
 `;
 
@@ -232,6 +231,19 @@ const EditButton = styled.button`
   &:hover {
     cursor: pointer;
     font-weight: bold;
+  }
+`;
+
+const ReplyButton = styled.button`
+  position: absolute;
+  right: 20px;
+  width: 70px;
+  height: 30px;
+  color: #ffffff;
+  border: none;
+  background-color: #ababab;
+  @media (max-width: 500px) {
+    top: 20px;
   }
 `;
 

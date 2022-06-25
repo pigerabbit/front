@@ -6,9 +6,13 @@ import * as Api from "api";
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
 
-const CommentsArea = ({ group, setJoinedGroup, joinedGroup }) => {
-  const { user } = useSelector((state) => state.user);
-
+const CommentsArea = ({
+  user,
+  group,
+  isSeller,
+  setJoinedGroup,
+  joinedGroup,
+}) => {
   const [comments, setComments] = useState([]);
 
   const getComments = async () => {
@@ -38,7 +42,9 @@ const CommentsArea = ({ group, setJoinedGroup, joinedGroup }) => {
 
   return (
     <Container>
-      {!joinedGroup && <Blur>댓글 읽기/작성은 공동구매 참여 후 가능</Blur>}
+      {!(joinedGroup || isSeller) && (
+        <Blur>댓글 읽기/작성은 공동구매 참여 후 가능</Blur>
+      )}
       <CommentsContainer>
         <h4>댓글 ({comments.length})</h4>
         <CommentForm setComments={setComments} joinedGroup={joinedGroup} />

@@ -12,8 +12,11 @@ const GroupHeader = ({ headerTitle, goBack }) => {
 
   return (
     <Header>
-      <GoBack onClick={handlePreviousBtnClick} />
-      <Title>{headerTitle}</Title>
+      <GoBack
+        onClick={handlePreviousBtnClick}
+        nonDisplay={headerTitle === "결제 완료"}
+      />
+      <Title nonDisplay={headerTitle === "결제 완료"}>{headerTitle}</Title>
       <ButtonTopContainer>
         <div
           id="home"
@@ -58,7 +61,7 @@ const Header = styled.header`
 const GoBack = styled.i`
   border: solid black;
   border-width: 0 1.5px 1.5px 0;
-  display: inline-block;
+  display: ${(props) => (props.nonDisplay ? "none" : "inline-block")};
   padding: 5px;
   margin: 20px 0 0 20px;
   transform: rotate(135deg);
@@ -68,7 +71,7 @@ const GoBack = styled.i`
 
 const Title = styled.p`
   display: inline-block;
-  margin-left: 23%;
+  margin-left: ${(props) => (props.nonDisplay ? "26%" : "23%")};
   font-size: 25px;
   font-weight: bold;
   width: 350px;

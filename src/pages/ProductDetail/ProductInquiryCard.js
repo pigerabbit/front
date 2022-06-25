@@ -3,7 +3,8 @@ import styled from "styled-components";
 import * as Api from "api";
 
 import ProductReplyForm from "./ProductReplyForm";
-import ProductCommentCard from "./ProductCommentCard";
+import ProductReplyEditForm from "./ProductReplyEditForm";
+import ProductReplyCard from "./ProductReplyCard";
 
 const ProductInquiryCard = ({
   writerId,
@@ -21,6 +22,9 @@ const ProductInquiryCard = ({
   const [open, setOpen] = useState(false);
   const [showReply, setShowReply] = useState(false);
   const [isReplied, setIsReplied] = useState(commentCount > 0 ? true : false);
+  const [isEditingInquiry, setIsEditingInquiry] = useState(false);
+  const [isEditingReply, setIsEditingReply] = useState(false);
+
   const date = createdAt.split("T")[0];
 
   const showDetail = (e) => {
@@ -84,7 +88,11 @@ const ProductInquiryCard = ({
                 답변하기
               </button>
             )}
-            <Content isReplied={isReplied}>{content}</Content>
+            <Content isReplied={isReplied}>
+              {content.split("\n").map((row, key) => (
+                <div key={key}>{row}</div>
+              ))}
+            </Content>
           </div>
         )}
 
@@ -93,28 +101,37 @@ const ProductInquiryCard = ({
         )}
 
         {open && (
-          <div>
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             {showReply && !isReplied && (
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                <ProductReplyForm
-                  id="replyForm"
-                  postId={postId}
-                  setShowReply={setShowReply}
-                  setComment={setComment}
-                  setIsReplied={setIsReplied}
-                />
-              </div>
-            )}
-            {isReplied && (
-              <ProductCommentCard
-                createdAt={comment.createdAt}
-                content={comment.content}
+              <ProductReplyForm
+                postId={postId}
+                setShowReply={setShowReply}
+                setComment={setComment}
+                setIsReplied={setIsReplied}
               />
             )}
+            {isReplied &&
+              (!isEditingReply ? (
+                <div onClick={showDetail}>
+                  <ProductReplyCard
+                    createdAt={comment.createdAt}
+                    content={comment.content}
+                    isSeller={isSeller}
+                    setIsEditingReply={setIsEditingReply}
+                  />
+                </div>
+              ) : (
+                <ProductReplyEditForm
+                  postId={postId}
+                  comment={comment}
+                  setComment={setComment}
+                  setIsEditingReply={setIsEditingReply}
+                />
+              ))}
           </div>
         )}
       </Container>

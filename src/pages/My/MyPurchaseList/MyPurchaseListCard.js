@@ -38,19 +38,19 @@ const MyPurchaseListCard = ({
     });
   };
 
-  const goToPaymentPage = (groupId) => (e) => {
+  const moveToPaymentPage = (groupId) => (e) => {
     e.stopPropagation();
     navigate(`/group/payment/${groupId}`);
   };
 
-  const goToGroupPage = (groupId) => () => navigate(`/groups/${groupId}`);
+  const moveToGroupPage = (groupId) => () => navigate(`/groups/${groupId}`);
 
   return (
     <CardContainer>
       {!isOpenTab && <p>{formatParticipateDate(myInfo[0].participantDate)}</p>}
       <CardWrapper>
         <CardImageWrapper>
-          <CardImage images={images} onClick={goToGroupPage(groupId)} />
+          <CardImage images={images} onClick={moveToGroupPage(groupId)} />
           {groupState[state].length > 1 && (
             <StateMessage>
               <p>{groupState[state][1]}</p>
@@ -59,14 +59,13 @@ const MyPurchaseListCard = ({
         </CardImageWrapper>
         <CardContent>
           <Title>
-            <p onClick={goToGroupPage(groupId)}>
+            <p onClick={moveToGroupPage(groupId)}>
               <strong>{`[${groupTypes[groupType]}] `}</strong>
               {groupName}
             </p>
 
-            <span onClick={goToPaymentPage(groupId)}>결제 페이지</span>
+            <span onClick={moveToPaymentPage(groupId)}>결제 페이지</span>
           </Title>
-
           <State
             bgColor={returnBgColor(state)}
             fontColor={returnFontColor(state)}

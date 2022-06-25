@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import * as Api from "api";
 
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
@@ -14,6 +15,7 @@ import BuyingProductWindow from "./BuyingProductWindow";
 import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
 const GroupDetailPage = () => {
+  const { user } = useSelector((state) => state.user);
   const showConfirmationIcon = useShowComfirmationIcon();
 
   const [group, setGroup] = useState({});
@@ -21,8 +23,8 @@ const GroupDetailPage = () => {
   const [seller, setSeller] = useState({});
   const [wish, setWish] = useState(false);
   const [joinedGroup, setJoinedGroup] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
   const [isFetched, setIsFetched] = useState(false);
-
   const [showBuyingProduct, setShowBuyingProduct] = useState(false);
 
   const groupId = useParams().id;
@@ -49,6 +51,7 @@ const GroupDetailPage = () => {
       const res = await Api.get(`groups/groupId/${groupId}`);
       setGroup(res.data.payload[0]);
       setProduct(res.data.payload[0].productInfo);
+      setIsSeller(user.id === res.data.payload[0].productInfo.userId);
 
       const resWish = await Api.get("toggle/groups");
       setWish(
@@ -61,7 +64,6 @@ const GroupDetailPage = () => {
         `users/${res.data.payload[0].productInfo.userId}`
       );
       setSeller(resUser.data.payload);
-
       setIsFetched(true);
     } catch (e) {
       console.log("group 못 가져옴");
@@ -70,7 +72,7 @@ const GroupDetailPage = () => {
 
   useEffect(() => {
     getGroupDetail();
-  }, []);
+  }, [user]);
 
   return (
     <Container>
@@ -80,7 +82,9 @@ const GroupDetailPage = () => {
           <Body>
             <GroupInfoTop group={group} product={product} seller={seller} />
             <CommentsArea
+              user={user}
               group={group}
+              isSeller={isSeller}
               setJoinedGroup={setJoinedGroup}
               joinedGroup={joinedGroup}
             />
@@ -97,7 +101,7 @@ const GroupDetailPage = () => {
             </div>
           )}
 
-          <ButtonsContainer>
+          <ButtonsContainer state={group.state} isSeller={isSeller}>
             <LeftButton wish={wish} onClick={handleWish}>
               <span>
                 {wish ? (
@@ -149,7 +153,8 @@ const ButtonsContainer = styled.div`
   right: 0px;
   max-width: 770px;
   width: 100%;
-  display: flex;
+  display: ${({ state, isSeller }) =>
+    state === 0 && !isSeller ? "flex" : "none"};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
