@@ -31,7 +31,7 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
     setOpen((cur) => !cur);
   };
 
-  const handleEditButton = (e) => {
+  const handleDeleteButton = (e) => {
     e.stopPropagation();
   };
 
@@ -82,7 +82,8 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
           </span>
           {isMyReview && (
             <span>
-              {" | "} <EditButton onClick={handleEditButton}>삭제</EditButton>
+              {" | "}{" "}
+              <DeleteButton onClick={handleDeleteButton}>삭제</DeleteButton>
             </span>
           )}
         </ReviewTopContainer>
@@ -219,10 +220,10 @@ const ReviewTitle = styled.div`
   }
 `;
 
-const EditButton = styled.button`
+const DeleteButton = styled.button`
   border: none;
   background: none;
-  color: #f79831;
+  color: #d3623b;
   padding: 0;
   font-size: 14px;
 
