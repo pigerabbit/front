@@ -15,7 +15,14 @@ const ReviewCard = ({ review, deleteReview }) => {
   };
 
   const handleCardClick = () => {
-    navigate(`/products/${review.receiver}`);
+    navigate(`/products/${review.receiver}`, {
+      state: {
+        data: {
+          tab: "review",
+          postId: review.postId,
+        },
+      },
+    });
   };
 
   const handleDeleteBtnClick = (e) => {
