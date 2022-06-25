@@ -5,31 +5,55 @@ import * as Api from "api";
 import ProductReplyForm from "./ProductReplyForm";
 import ProductReplyEditForm from "./ProductReplyEditForm";
 import ProductReplyCard from "./ProductReplyCard";
+import ConfirmationPopup from "components/ConfirmationPopup";
 
-const ProductInquiryCard = ({ inquiry, isSeller }) => {
+const ProductInquiryCard = ({
+  inquiry,
+  onDeleteMyInquiry,
+  isSeller,
+  isMyInquiry,
+}) => {
   const {
+    postId,
+    writer: writerId,
     title,
     content,
-    writer: writerId,
     postImg: image,
     createdAt,
     commentCount,
-    postId,
   } = inquiry;
+
   const [writer, setWriter] = useState({});
   const [comment, setComment] = useState({});
 
   const [open, setOpen] = useState(false);
   const [showReply, setShowReply] = useState(false);
   const [isReplied, setIsReplied] = useState(commentCount > 0 ? true : false);
-  const [isEditingInquiry, setIsEditingInquiry] = useState(false);
   const [isEditingReply, setIsEditingReply] = useState(false);
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const date = createdAt.split("T")[0];
 
   const showDetail = (e) => {
     if (e.target.id.includes("reply")) return;
     setOpen((cur) => !cur);
+  };
+
+  const handleDeleteButton = (e) => {
+    e.stopPropagation();
+    setIsOpenPopup(true);
+  };
+
+  const handleDeleteInquiry = async () => {
+    try {
+      const resDeleteInquiry = await Api.delete(`posts/${postId}`);
+      if (resDeleteInquiry.data.success) {
+        onDeleteMyInquiry(postId);
+      }
+      setIsOpenPopup(false);
+    } catch (e) {
+      console.log("문의 삭제 실패");
+    }
   };
 
   const getWriter = async () => {
@@ -72,6 +96,12 @@ const ProductInquiryCard = ({ inquiry, isSeller }) => {
               </ShowReplied>{" "}
               | {writer.name} | {date}
             </InquiryInfo>
+            {isMyInquiry && (
+              <span>
+                {" | "}{" "}
+                <DeleteButton onClick={handleDeleteButton}>삭제</DeleteButton>
+              </span>
+            )}
           </div>
         </Header>
 
@@ -135,6 +165,15 @@ const ProductInquiryCard = ({ inquiry, isSeller }) => {
           </div>
         )}
       </Container>
+      <ConfirmationPopup
+        handleButtonClick={handleDeleteInquiry}
+        isOpenPopup={isOpenPopup}
+        setIsOpenPopup={setIsOpenPopup}
+        buttonContent={"삭제"}
+      >
+        <span>문의를 삭제하시겠습니까?</span>
+        <span>삭제된 문의는 복구할 수 없습니다.</span>
+      </ConfirmationPopup>
     </>
   );
 };
@@ -168,6 +207,10 @@ const Header = styled.div`
   padding-bottom: ${({ open }) => (!open ? "0px" : "20px")};
   margin: 0 20px 0 20px;
   border-bottom: ${({ open }) => (!open ? "none" : "1px solid #636363")};
+
+  span {
+    font-size: 14px;
+  }
 `;
 
 const InquiryTitle = styled.div`
@@ -180,10 +223,23 @@ const InquiryTitle = styled.div`
   }
 `;
 
-const InquiryInfo = styled.div`
+const InquiryInfo = styled.span`
   display: inline-block;
   font-size: 14px;
   margin-top: 15px;
+`;
+
+const DeleteButton = styled.button`
+  border: none;
+  background: none;
+  color: #d3623b;
+  padding: 0;
+  font-size: 14px;
+
+  &:hover {
+    cursor: pointer;
+    font-weight: bold;
+  }
 `;
 
 const ShowReplied = styled.p`
