@@ -51,7 +51,7 @@ const ProductInquiryCard = ({
 
   const handleDeleteButton = (e) => {
     e.stopPropagation();
-    setIsOpenPopup(true);
+    setIsOpenPopup((cur) => !cur);
   };
 
   const handleDeleteInquiry = async () => {

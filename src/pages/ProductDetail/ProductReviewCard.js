@@ -50,7 +50,7 @@ const ProductReviewCard = ({
 
   const handleDeleteButton = (e) => {
     e.stopPropagation();
-    setIsOpenPopup(true);
+    setIsOpenPopup((cur) => !cur);
   };
 
   const handleDeleteReview = async () => {
