@@ -30,7 +30,7 @@ const ProductDetailPage = () => {
   const productId = useParams().id;
 
   const fetchProductInfo = (isFetched) => {
-    if (isFetched) {
+    if (isFetched && user) {
       setIsSeller(user.id === seller.userId);
       setCurrentTab({
         name: "description",
@@ -78,9 +78,11 @@ const ProductDetailPage = () => {
         {currentTab.name === "information" && (
           <ProductInformationTab product={product} />
         )}
-        {currentTab.name === "review" && <ProductReviewTab product={product} />}
+        {currentTab.name === "review" && (
+          <ProductReviewTab product={product} user={user} />
+        )}
         {currentTab.name === "inquiry" && (
-          <ProductInquiryTab product={product} />
+          <ProductInquiryTab product={product} user={user} />
         )}
         {showJoinGroup && (
           <JoinGroupWindow

@@ -7,7 +7,12 @@ import ProductReplyEditForm from "./ProductReplyEditForm";
 import ProductReplyCard from "./ProductReplyCard";
 import ConfirmationPopup from "components/ConfirmationPopup";
 
-const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
+const ProductReviewCard = ({
+  review,
+  onDeleteMyReview,
+  isSeller,
+  isMyReview,
+}) => {
   const {
     postId,
     writer: writerId,
@@ -38,7 +43,17 @@ const ProductReviewCard = ({ review, isSeller, isMyReview }) => {
     setIsOpenPopup(true);
   };
 
-  const handleDeleteReview = (e) => {};
+  const handleDeleteReview = async () => {
+    try {
+      const resDeleteReview = await Api.delete(`posts/${postId}`);
+      if (resDeleteReview.data.success) {
+        onDeleteMyReview(postId);
+      }
+      setIsOpenPopup(false);
+    } catch (e) {
+      console.log("후기 삭제 실패");
+    }
+  };
 
   const getWriter = async () => {
     try {

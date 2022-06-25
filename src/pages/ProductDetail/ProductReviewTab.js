@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import * as Api from "api";
 
 import ProductReviewCard from "./ProductReviewCard";
 import ProductReviewForm from "./ProductReviewForm";
 
-const ProductReviewTab = ({ product }) => {
-  const { user } = useSelector((state) => state.user);
-
+const ProductReviewTab = ({ product, user }) => {
   const [reviews, setReviews] = useState([]);
   const [myReviews, setMyReviews] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
@@ -47,6 +44,22 @@ const ProductReviewTab = ({ product }) => {
     else setWritable(false);
   };
 
+  const handleDeleteMyReview = (postId) => {
+    const remainedReviews = reviews.filter(
+      (review) => review.postId !== postId
+    );
+    const remainedMyReviews = myReviews.filter(
+      (myReview) => myReview.postId !== postId
+    );
+
+    if (remainedReviews.length !== 0 && remainedMyReviews.length !== 0) {
+      setIsReviewFetched(false);
+      setReviews(remainedReviews);
+      setMyReviews(remainedMyReviews);
+      setIsReviewFetched(true);
+    }
+  };
+
   const getReviews = async () => {
     try {
       const res = await Api.get(`posts`, "", {
@@ -59,7 +72,6 @@ const ProductReviewTab = ({ product }) => {
         productReviews.filter((review) => review.writer === user.id)
       );
       setIsReviewFetched(true);
-      return true;
     } catch (e) {
       console.log("후기 get 실패");
     }
@@ -67,8 +79,11 @@ const ProductReviewTab = ({ product }) => {
 
   useEffect(() => {
     getReviews();
-    if (isReviewFetched) checkWritable();
   }, []);
+
+  useEffect(() => {
+    checkWritable();
+  }, [isReviewFetched]);
 
   return (
     <Container>
@@ -91,39 +106,43 @@ const ProductReviewTab = ({ product }) => {
             setMyReviews={setMyReviews}
           />
         ))}
-      <Review>
-        <ReviewTop>
-          <div id="reviewCount">
-            후기 {showMyReviews ? myReviews.length : reviews.length}건
-          </div>
-          {myReviews.length > 0 && (
-            <MyReviewButton
-              onClick={() => {
-                setShowMyReviews((cur) => !cur);
-              }}
-              showMyReviews={showMyReviews}
-            >
-              내 후기
-            </MyReviewButton>
-          )}
-        </ReviewTop>
-        {!showMyReviews
-          ? reviews.map((review) => (
-              <ProductReviewCard
-                key={review.postId}
-                review={review}
-                isSeller={isSeller}
-                isMyReview={review.writer === user.id}
-              />
-            ))
-          : myReviews.map((review) => (
-              <ProductReviewCard
-                key={review.postId}
-                review={review}
-                isMyReview={review.writer === user.id}
-              />
-            ))}
-      </Review>
+      {isReviewFetched && (
+        <Review>
+          <ReviewTop>
+            <div id="reviewCount">
+              후기 {showMyReviews ? myReviews.length : reviews.length}건
+            </div>
+            {myReviews.length > 0 && (
+              <MyReviewButton
+                onClick={() => {
+                  setShowMyReviews((cur) => !cur);
+                }}
+                showMyReviews={showMyReviews}
+              >
+                내 후기
+              </MyReviewButton>
+            )}
+          </ReviewTop>
+          {!showMyReviews
+            ? reviews.map((review) => (
+                <ProductReviewCard
+                  key={review.postId}
+                  review={review}
+                  onDeleteMyReview={handleDeleteMyReview}
+                  isSeller={isSeller}
+                  isMyReview={review.writer === user.id}
+                />
+              ))
+            : myReviews.map((review) => (
+                <ProductReviewCard
+                  key={review.postId}
+                  review={review}
+                  onDeleteMyReview={handleDeleteMyReview}
+                  isMyReview={review.writer === user.id}
+                />
+              ))}
+        </Review>
+      )}
     </Container>
   );
 };
