@@ -5,7 +5,7 @@ import * as Api from "api";
 import ProductReviewCard from "./ProductReviewCard";
 import ProductReviewForm from "./ProductReviewForm";
 
-const ProductReviewTab = ({ product, user, targetPostId, setTargetPostId }) => {
+const ProductReviewTab = ({ product, user, targetPostId }) => {
   const [reviews, setReviews] = useState([]);
   const [myReviews, setMyReviews] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
@@ -132,7 +132,6 @@ const ProductReviewTab = ({ product, user, targetPostId, setTargetPostId }) => {
                   isSeller={isSeller}
                   isMyReview={review.writer === user.id}
                   targetPostId={targetPostId}
-                  setTargetPostId={setTargetPostId}
                 />
               ))
             : myReviews.map((review) => (
@@ -142,7 +141,6 @@ const ProductReviewTab = ({ product, user, targetPostId, setTargetPostId }) => {
                   onDeleteMyReview={handleDeleteMyReview}
                   isMyReview={review.writer === user.id}
                   targetPostId={targetPostId}
-                  setTargetPostId={setTargetPostId}
                 />
               ))}
         </Review>

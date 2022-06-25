@@ -13,7 +13,6 @@ const ProductReviewCard = ({
   isSeller,
   isMyReview,
   targetPostId,
-  setTargetPostId,
 }) => {
   const {
     postId,
@@ -33,14 +32,14 @@ const ProductReviewCard = ({
   const [isReplied, setIsReplied] = useState(commentCount > 0 ? true : false);
   const [isEditingReply, setIsEditingReply] = useState(false);
   const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [isTargetPost, setIsTargetPost] = useState(targetPostId === postId);
 
   const date = createdAt.split("T")[0];
 
-  if (targetPostId === postId) {
+  if (isTargetPost) {
     const targetElement = document.querySelector(".target");
     if (targetElement) {
       targetElement.scrollIntoView();
-      setTargetPostId("");
     }
   }
 
@@ -91,10 +90,14 @@ const ProductReviewCard = ({
     if (commentCount > 0) getComment();
   }, []);
 
+  useEffect(() => {
+    setIsTargetPost(false);
+  }, [isTargetPost]);
+
   return (
     <>
       <Container
-        className={targetPostId === postId && "target"}
+        className={isTargetPost && "target"}
         onClick={showDetail}
         open={open}
         image={image}

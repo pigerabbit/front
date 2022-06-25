@@ -13,7 +13,6 @@ const ProductInquiryCard = ({
   isSeller,
   isMyInquiry,
   targetPostId,
-  setTargetPostId,
 }) => {
   const {
     postId,
@@ -33,6 +32,7 @@ const ProductInquiryCard = ({
   const [isReplied, setIsReplied] = useState(commentCount > 0 ? true : false);
   const [isEditingReply, setIsEditingReply] = useState(false);
   const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [isTargetPost, setIsTargetPost] = useState(targetPostId === postId);
 
   const date = createdAt.split("T")[0];
 
@@ -40,7 +40,7 @@ const ProductInquiryCard = ({
     const targetElement = document.querySelector(".target");
     if (targetElement) {
       targetElement.scrollIntoView();
-      setTargetPostId("");
+      console.log(targetElement);
     }
   }
 
@@ -92,10 +92,14 @@ const ProductInquiryCard = ({
     if (commentCount > 0) getComments();
   }, []);
 
+  useEffect(() => {
+    setIsTargetPost(false);
+  }, [isTargetPost]);
+
   return (
     <>
       <Container
-        className={targetPostId === postId && "target"}
+        className={isTargetPost && "target"}
         onClick={showDetail}
         open={open}
         image={image}
