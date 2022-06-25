@@ -92,7 +92,9 @@ const ProductInquiryCard = ({
   }, []);
 
   useEffect(() => {
-    setIsTargetPost(false);
+    return () => {
+      setIsTargetPost(false);
+    };
   }, [isTargetPost]);
 
   return (
