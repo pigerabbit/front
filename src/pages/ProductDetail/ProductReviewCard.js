@@ -12,6 +12,7 @@ const ProductReviewCard = ({
   onDeleteMyReview,
   isSeller,
   isMyReview,
+  isTargetPost,
 }) => {
   const {
     postId,
@@ -33,6 +34,13 @@ const ProductReviewCard = ({
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const date = createdAt.split("T")[0];
+
+  if (isTargetPost) {
+    const targetElement = document.querySelector(".target");
+    if (targetElement) {
+      targetElement.scrollIntoView();
+    }
+  }
 
   const showDetail = (e) => {
     setOpen((cur) => !cur);
@@ -84,6 +92,7 @@ const ProductReviewCard = ({
   return (
     <>
       <Container
+        className={isTargetPost && "target"}
         onClick={showDetail}
         open={open}
         image={image}

@@ -22,6 +22,7 @@ const ProductDetailPage = () => {
     name: "beforeFetch",
     title: "fetch전",
   });
+  const [targetPostId, setTargetPostId] = useState("");
 
   const navigate = useNavigate();
   const loc = useLocation();
@@ -35,6 +36,7 @@ const ProductDetailPage = () => {
       setIsSeller(user.id === seller.userId);
       const switchTab = loc.state?.data;
       if (switchTab) {
+        if (switchTab.postId) setTargetPostId(switchTab.postId);
         switch (switchTab.tab) {
           case "review":
             setCurrentTab({ name: "review", title: "후기" });
@@ -94,10 +96,18 @@ const ProductDetailPage = () => {
           <ProductInformationTab product={product} />
         )}
         {currentTab.name === "review" && (
-          <ProductReviewTab product={product} user={user} />
+          <ProductReviewTab
+            product={product}
+            user={user}
+            targetPostId={targetPostId}
+          />
         )}
         {currentTab.name === "inquiry" && (
-          <ProductInquiryTab product={product} user={user} />
+          <ProductInquiryTab
+            product={product}
+            user={user}
+            targetPostId={targetPostId}
+          />
         )}
         {showJoinGroup && (
           <JoinGroupWindow

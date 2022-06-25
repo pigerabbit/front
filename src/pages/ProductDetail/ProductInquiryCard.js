@@ -12,6 +12,7 @@ const ProductInquiryCard = ({
   onDeleteMyInquiry,
   isSeller,
   isMyInquiry,
+  isTargetPost,
 }) => {
   const {
     postId,
@@ -33,6 +34,13 @@ const ProductInquiryCard = ({
   const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const date = createdAt.split("T")[0];
+
+  if (isTargetPost) {
+    const targetElement = document.querySelector(".target");
+    if (targetElement) {
+      targetElement.scrollIntoView();
+    }
+  }
 
   const showDetail = (e) => {
     if (e.target.id.includes("reply")) return;
@@ -84,7 +92,12 @@ const ProductInquiryCard = ({
 
   return (
     <>
-      <Container onClick={showDetail} open={open} image={image}>
+      <Container
+        className={isTargetPost && "target"}
+        onClick={showDetail}
+        open={open}
+        image={image}
+      >
         <Header open={open}>
           <div id="inquiryTop">
             <InquiryTitle open={open} image={image}>
