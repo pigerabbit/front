@@ -7,9 +7,11 @@ import * as Api from "api";
 import UserInput from "./UserInput";
 import UserButton from "./UserButton";
 import validateEmail from "utils/validateEmail";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const FindePwModal = ({ setIsFindPwModalOpen }) => {
   const [success, setSucces] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [emailErrMessage, setEmailErrMessage] = useState("");
@@ -38,13 +40,13 @@ const FindePwModal = ({ setIsFindPwModalOpen }) => {
 
     const bodyData = { phoneNumber: phoneNumber.replaceAll("-", "") };
 
+    setLoading(true);
     try {
-      //   const res = await Api.post(
-      //     `users/email/${email}/resetPassword`,
-      //     bodyData
-      //   );
+      await Api.post(`users/email/${email}/resetPassword`, bodyData);
       setSucces(true);
+      setLoading(false);
     } catch (e) {
+      setLoading(false);
       if (e.response.data === "해당 메일로 가입된 사용자가 없습니다.")
         setEmailErrMessage(e.response.data);
       else if (e.response.data === "전화번호가 일치하지 않습니다.")
@@ -77,35 +79,41 @@ const FindePwModal = ({ setIsFindPwModalOpen }) => {
           </SuccessContainer>
         ) : (
           <Form>
-            <InputsContainer>
-              <UserInput
-                title="이메일"
-                type="text"
-                value={email}
-                setValue={setEmail}
-                isValueValid={isEmailValid}
-                errMessage={emailErrMessage}
-                placeholder="비밀번호를 찾고자 하는 이메일을 입력해 주세요."
-              />
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <>
+                <InputsContainer>
+                  <UserInput
+                    title="이메일"
+                    type="text"
+                    value={email}
+                    setValue={setEmail}
+                    isValueValid={isEmailValid}
+                    errMessage={emailErrMessage}
+                    placeholder="비밀번호를 찾고자 하는 이메일을 입력해 주세요."
+                  />
 
-              <UserInput
-                title="전화번호"
-                type="text"
-                value={phoneNumber}
-                setValue={handlePhoneNumberChange}
-                isValueValid={isPhoneNumberValid}
-                errMessage={phoneNumberErrMessage}
-                placeholder="회원가입시 입력한 전화번호를 입력해 주세요."
-              />
-            </InputsContainer>
+                  <UserInput
+                    title="전화번호"
+                    type="text"
+                    value={phoneNumber}
+                    setValue={handlePhoneNumberChange}
+                    isValueValid={isPhoneNumberValid}
+                    errMessage={phoneNumberErrMessage}
+                    placeholder="회원가입시 입력한 전화번호를 입력해 주세요."
+                  />
+                </InputsContainer>
 
-            <UserButton
-              handleClick={handleFindPwButtonClick}
-              valid={isFormValid}
-              width={"long"}
-            >
-              이메일로 임시 비밀번호 발급
-            </UserButton>
+                <UserButton
+                  handleClick={handleFindPwButtonClick}
+                  valid={isFormValid}
+                  width={"long"}
+                >
+                  이메일로 임시 비밀번호 발급
+                </UserButton>
+              </>
+            )}
           </Form>
         )}
       </Container>
