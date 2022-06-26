@@ -1,23 +1,29 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSelector } from "react-redux";
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector } from 'react-redux';
 
 const ConfirmationIcon = () => {
-  const { show, backgroundColor, color, icon, text } = useSelector(
-    (state) => state.confirmationIcon
-  );
+  const { show, backgroundColor, color, icon, text } = useSelector((state) => {
+    return state.confirmationIcon;
+  });
 
-  if (show)
-    return (
-      <Container show={show}>
-        <Circle backgroundColor={backgroundColor} color={color}>
-          <FontAwesomeIcon icon={icon} />
-          <span>{text}</span>
-        </Circle>
-      </Container>
-    );
-  else return null;
+  if (!show) {
+    return null;
+  }
+
+  return (
+    <Container data-testid='confirmation-container' show={show}>
+      <Circle
+        data-testid='confirmation-circle'
+        backgroundColor={backgroundColor}
+        color={color}
+      >
+        <FontAwesomeIcon data-testid='confirmation-icon' icon={icon} />
+        <span data-testid='confirmation-text'>{text}</span>
+      </Circle>
+    </Container>
+  );
 };
 
 export default ConfirmationIcon;
