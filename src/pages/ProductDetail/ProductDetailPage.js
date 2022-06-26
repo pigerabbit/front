@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import * as Api from "api";
 
-import { faUser, faHome } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import DetailHeader from "components/DetailHeader";
 import ProductTabs from "./ProductTabs";
 import ProductDescriptionTab from "./ProductDescriptionTab";
 import ProductInformationTab from "./ProductInformationTab";
@@ -18,82 +17,97 @@ const ProductDetailPage = () => {
   const [seller, setSeller] = useState({});
 
   const [showJoinGroup, setShowJoinGroup] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
   const [currentTab, setCurrentTab] = useState({
-    index: -1,
-    name: "fetch전",
+    name: "beforeFetch",
+    title: "fetch전",
   });
+  const [targetPostId, setTargetPostId] = useState("");
 
   const navigate = useNavigate();
+  const loc = useLocation();
+
+  const { user } = useSelector((state) => state.user);
 
   const productId = useParams().id;
+
+  const fetchProductInfo = (isFetched) => {
+    if (isFetched && user) {
+      setIsSeller(user.id === seller.userId);
+      const switchTab = loc.state?.data;
+      if (switchTab) {
+        if (switchTab.postId) setTargetPostId(switchTab.postId);
+        switch (switchTab.tab) {
+          case "review":
+            setCurrentTab({ name: "review", title: "후기" });
+            break;
+          case "cs":
+            setCurrentTab({ name: "inquiry", title: "문의" });
+            break;
+          default:
+            setCurrentTab({
+              name: "description",
+              title: "상품설명",
+            });
+            break;
+        }
+      } else {
+        setCurrentTab({
+          name: "description",
+          title: "상품설명",
+        });
+      }
+    }
+  };
+
+  const getSellerDetail = ({ userId, userInfo }) => {
+    setSeller({ userId, ...userInfo });
+  };
 
   const getProductDetail = async () => {
     try {
       const res = await Api.get(`products/${productId}`);
-      const resUser = await Api.get(`users/${res.data.payload.userId}`);
-      setProduct(res.data.payload);
-      setSeller(resUser.data.payload);
-      setCurrentTab({
-        index: 0,
-        name: "상품설명",
-      });
+      const productInfo = res.data.payload;
+      if (res.data.success) {
+        setProduct(productInfo);
+        getSellerDetail(productInfo);
+
+        fetchProductInfo(res.data.success);
+      }
     } catch (e) {
       console.log("product 못 가져옴");
     }
   };
 
   useEffect(() => {
-    try {
-      getProductDetail();
-    } catch (e) {
-      console.log();
-    }
-  }, []);
+    getProductDetail();
+  }, [user]);
   return (
     <Container>
-      <Header>
-        <Top>
-          <GoBack onClick={() => navigate(-1)} />
-          <ProductTitle>{product.name}</ProductTitle>
-          <ButtonTopContainer>
-            <div
-              id="home"
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faHome}
-                style={{ fontSize: "20px", color: "#f79831" }}
-              />
-            </div>
-            <div
-              id="user"
-              onClick={() => {
-                navigate("/mypage");
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faUser}
-                style={{ fontSize: "20px", color: "#f79831" }}
-              />
-            </div>
-          </ButtonTopContainer>
-        </Top>
+      <DetailHeader headerTitle={product.name} />
+      <Tabs>
         <ProductTabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
-      </Header>
-      <Body>
-        {currentTab.index === 0 && (
+      </Tabs>
+      <Body isSeller={isSeller}>
+        {currentTab.name === "description" && (
           <ProductDescriptionTab product={product} seller={seller} />
         )}
-        {currentTab.index === 1 && (
-          <ProductInformationTab product={product} seller={seller} />
+        {currentTab.name === "information" && (
+          <ProductInformationTab product={product} />
         )}
-        {currentTab.index === 2 && (
-          <ProductReviewTab product={product} seller={seller} />
+        {currentTab.name === "review" && (
+          <ProductReviewTab
+            product={product}
+            user={user}
+            targetPostId={targetPostId}
+          />
         )}
-        {currentTab.index === 3 && (
-          <ProductInquiryTab product={product} seller={seller} />
+        {currentTab.name === "inquiry" && (
+          <ProductInquiryTab
+            product={product}
+            user={user}
+            targetPostId={targetPostId}
+          />
         )}
         {showJoinGroup && (
           <JoinGroupWindow
@@ -103,7 +117,7 @@ const ProductDetailPage = () => {
           />
         )}
       </Body>
-      <ButtonsContainer>
+      <ButtonsContainer isSeller={isSeller}>
         <LeftButton
           position="left"
           onClick={() => {
@@ -135,67 +149,21 @@ const Container = styled.div`
   background-color: #ffffff;
 `;
 
-const Header = styled.header`
+const Tabs = styled.header`
   position: fixed;
   width: 100%;
   min-width: 360px;
   max-width: 770px;
   top: 0;
   z-index: 5;
+  top: 50px;
   background-color: #ffffff;
 `;
 
 const Body = styled.div`
-  padding: 100px 0 75px 0;
-`;
-
-const Top = styled.div`
-  width: 100%;
   background-color: #ffffff;
-  height: 50px;
-`;
-
-const GoBack = styled.i`
-  border: solid black;
-  border-width: 0 1.5px 1.5px 0;
-  display: inline-block;
-  padding: 5px;
-  margin: 20px 0 0 20px;
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
-  cursor: pointer;
-`;
-
-const ButtonTopContainer = styled.div`
-  width: 60px;
-  position: absolute;
-  top: 18px;
-  right: 20px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  #home,
-  #user {
-    cursor: pointer;
-  }
-`;
-
-const ProductTitle = styled.p`
-  margin-left: 10px;
-  display: inline-block;
-  width: 400px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  vertical-align: middle;
-
-  @media (max-width: 500px) {
-    width: 270px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+  padding: ${({ isSeller }) =>
+    !isSeller ? "100px 0 75px 0" : "100px 0 10px 0"};
 `;
 
 const ButtonsContainer = styled.div`
@@ -205,7 +173,7 @@ const ButtonsContainer = styled.div`
   right: 0px;
   max-width: 770px;
   width: 100%;
-  display: flex;
+  display: ${({ isSeller }) => (!isSeller ? "flex" : "none")};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;

@@ -25,7 +25,7 @@ const SelectGroupPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle="공구 열기" />
+      <GroupHeader headerTitle="공구 열기" goBack={-1} />
       <PleaseNoteContainer>
         <p>
           공구를 열기 전 <span>공구 주의사항</span>을 읽어주시길 바랍니다.
@@ -38,7 +38,7 @@ const SelectGroupPage = () => {
             type="checkbox"
             name="confirm"
             checked={isChecked}
-            onClick={() => handleClick()}
+            onChange={handleClick}
           />
           <span>확인했습니다</span>
         </ConfirmButton>

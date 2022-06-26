@@ -14,14 +14,20 @@ const BuyingProductWindow = ({
 
   const [quantity, setQuantity] = useState(1);
 
+  const clickCancel = () => setShowBuyingProduct(false);
+
+  const clickBuying = () => {
+    navigate("/group/join/pay", {
+      state: {
+        data: { group, count: quantity },
+      },
+    });
+  };
+
   return (
     <CardContainer>
       <div id="cancel">
-        <Cancel
-          onClick={() => {
-            setShowBuyingProduct(false);
-          }}
-        />
+        <Cancel onClick={clickCancel} />
       </div>
       <div id="quantity">
         <SetQuantityButtons
@@ -36,17 +42,7 @@ const BuyingProductWindow = ({
         </ShowQuantity>
         <Total>합계 {(quantity * salePrice).toLocaleString()}원</Total>
       </div>
-      <Button
-        onClick={() => {
-          navigate("/group/join/pay", {
-            state: {
-              data: { group, count: quantity },
-            },
-          });
-        }}
-      >
-        구매하기
-      </Button>
+      <Button onClick={clickBuying}>구매하기</Button>
     </CardContainer>
   );
 };

@@ -10,7 +10,7 @@ import Category from "components/Category";
 import TabBar from "components/TabBar";
 import InfiniteScroll from "./InfiniteScroll";
 import LoadingSpinner from "components/LoadingSpinner";
-import useDidMountEffect from "hooks/useDidMountEffect";
+import useUpdateEffect from "hooks/useUpdateEffect";
 
 const options = [
   { eng: "groups", kor: "추천순" },
@@ -21,7 +21,7 @@ const options = [
 
 const ProductsPage = () => {
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
-  const [option, setOption] = useState(options[0]);
+  const [currentOption, setCurrentOption] = useState(options[0]);
   const [products, setProducts] = useState([]);
   const [totalProductsNum, setTotalProductsNum] = useState(1);
   const [page, setPage] = useState(1);
@@ -46,7 +46,7 @@ const ProductsPage = () => {
           page,
           perPage: 6,
           category,
-          option: option.eng,
+          option: currentOption.eng,
         });
 
         setProducts((cur) => [...cur, ...res.data.payload.resultList]);
@@ -56,8 +56,8 @@ const ProductsPage = () => {
         const res = await Api.get("products/search", "", {
           page: page,
           perPage: 6,
-          search: search,
-          option: option,
+          search: encodeURIComponent(search),
+          option: currentOption.eng,
         });
 
         setProducts((cur) => [...cur, ...res.data.payload.resultList]);
@@ -71,7 +71,7 @@ const ProductsPage = () => {
     setLoading(false);
   };
 
-  useDidMountEffect(() => {
+  useUpdateEffect(() => {
     setProducts([]);
     setTotalPage(1);
     setPage(0);
@@ -95,9 +95,9 @@ const ProductsPage = () => {
           {options.map((option) => (
             <Option
               key={option.eng}
-              selected={option === option.eng}
+              selected={currentOption.eng === option.eng}
               onClick={() => {
-                setOption(option);
+                setCurrentOption(option);
                 setPage(0);
                 setProducts([]);
               }}
@@ -163,8 +163,7 @@ const Container = styled.div`
 
 const ProductsInfo = styled.div`
   width: 84%;
-  margin: 25px 8%;
-  margin-left: 8%;
+  margin: 25px 0;
   display: flex;
   align-items: center;
   font-size: 12px;

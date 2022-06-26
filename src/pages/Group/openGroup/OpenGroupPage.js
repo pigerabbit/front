@@ -15,7 +15,7 @@ const OpenGroupPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={headerTitle[type]} />
+      <GroupHeader headerTitle={headerTitle[type]} goBack={-1} />
       <Content>
         {product && (
           <>

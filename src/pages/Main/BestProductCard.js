@@ -23,25 +23,22 @@ const BestProductCard = ({ product, index }) => {
 
   const showConfirmationIcon = useShowComfirmationIcon();
 
-  const handleToggle = async () => {
-    if (!wish) {
-      showConfirmationIcon({
-        backgroundColor: "#FF6A6A;",
-        color: "white",
-        icon: fullHeart,
-        text: "찜!",
-      });
-    } else {
-      showConfirmationIcon({
-        backgroundColor: "#ABABAB;",
-        color: "white",
-        icon: fullHeart,
-        text: "찜 취소",
-      });
-    }
+  const handleToggle = async (e) => {
+    e.stopPropagation();
+
+    showConfirmationIcon({
+      backgroundColor: wish ? "#ABABAB;" : "#FF6A6A;",
+      color: "white",
+      icon: fullHeart,
+      text: wish ? "찜 취소" : "찜!",
+    });
 
     await Api.put(`toggle/product/${product._id}`);
     setWish((cur) => !cur);
+  };
+
+  const handleCardClick = () => {
+    navigate(`/products/${product.id}`);
   };
 
   const handleResize = () => {
@@ -61,19 +58,10 @@ const BestProductCard = ({ product, index }) => {
   }, []);
 
   return (
-    <Container wish={wish}>
+    <Container wish={wish} onClick={handleCardClick}>
       <span>{index + 1}</span>
-      <Image
-        url={product.images}
-        onClick={() => {
-          navigate(`/products/${product.id}`);
-        }}
-      />
-      <Information
-        onClick={() => {
-          navigate(`/products/${product.id}`);
-        }}
-      >
+      <Image url={product.images} />
+      <Information>
         <Title>
           <span>[{product.userInfo.business[0].businessName}]</span>
           <span>

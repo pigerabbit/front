@@ -46,7 +46,7 @@ const MarketPage = () => {
   };
 
   const handleRegisterBtnClick = () => {
-    navigate("/register/product");
+    navigate("/register/product", { replace: true });
   };
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const MarketPage = () => {
       pageName={
         (user?.id === id && user?.business[0]?.businessName) || marketName || ""
       }
-      previousPage="/mypage"
+      previousPage={-1}
     >
       <Container>
         {user?.id === id && (

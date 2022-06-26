@@ -7,6 +7,7 @@ import usePreventScroll from "hooks/usePreventScroll";
 
 const SideBar = ({ children, title, setIsOpenSideBar }) => {
   const [show, setShow] = useState(true);
+  const [top, setTop] = useState(window.scrollY);
 
   const handleCancelClick = () => {
     setShow(false);
@@ -18,7 +19,7 @@ const SideBar = ({ children, title, setIsOpenSideBar }) => {
   usePreventScroll();
 
   return (
-    <Container show={show}>
+    <Container show={show} top={top}>
       <TitleBar>
         <div></div>
         <span>{title}</span>
@@ -53,12 +54,13 @@ const sidebarUnshow = keyframes`
 
 const Container = styled.div`
   position: absolute;
-  top: 0;
+  top: ${({ top }) => top + "px;"}
+  left: 0;
   width: 100%;
+  max-width: 770px;
   height: 100vh;
   background-color: #f6f6f6;
   z-index: 12;
-  animation: ${sidebarShow} 0.5s;
   animation: ${({ show }) => (show ? sidebarShow : sidebarUnshow)} 0.5s;
 `;
 

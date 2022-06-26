@@ -1,40 +1,45 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import * as Api from "api";
 
-import {
-  faUser,
-  faHome,
-  faHeart as fullHeart,
-} from "@fortawesome/free-solid-svg-icons";
+import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import DetailHeader from "components/DetailHeader";
 import GroupInfoTop from "./GroupInfoTop";
 import CommentsArea from "./CommentsArea";
 import BuyingProductWindow from "./BuyingProductWindow";
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
 const GroupDetailPage = () => {
+  const { user } = useSelector((state) => state.user);
+  const showConfirmationIcon = useShowComfirmationIcon();
+
   const [group, setGroup] = useState({});
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
   const [wish, setWish] = useState(false);
   const [joinedGroup, setJoinedGroup] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
   const [isFetched, setIsFetched] = useState(false);
-
   const [showBuyingProduct, setShowBuyingProduct] = useState(false);
-
-  const navigate = useNavigate();
 
   const groupId = useParams().id;
 
-  const handleToggle = async (e) => {
-    e.preventDefault();
-
+  const handleWish = async () => {
     try {
-      const res = await Api.put(`toggle/group/${group._id}`);
-      console.log(res.data);
+      await Api.put(`toggle/group/${group._id}`);
+
+      showConfirmationIcon({
+        icon: fullHeart,
+        color: "#fff",
+        backgroundColor: `${wish ? "#ababab" : "#ff6a6a"}`,
+        text: `${wish ? "찜 취소" : "찜"}`,
+      });
+
       setWish((cur) => !cur);
     } catch (e) {
       console.log("공구 찜하기 실패");
@@ -46,6 +51,7 @@ const GroupDetailPage = () => {
       const res = await Api.get(`groups/groupId/${groupId}`);
       setGroup(res.data.payload[0]);
       setProduct(res.data.payload[0].productInfo);
+      setIsSeller(user.id === res.data.payload[0].productInfo.userId);
 
       const resWish = await Api.get("toggle/groups");
       setWish(
@@ -58,7 +64,6 @@ const GroupDetailPage = () => {
         `users/${res.data.payload[0].productInfo.userId}`
       );
       setSeller(resUser.data.payload);
-
       setIsFetched(true);
     } catch (e) {
       console.log("group 못 가져옴");
@@ -67,46 +72,19 @@ const GroupDetailPage = () => {
 
   useEffect(() => {
     getGroupDetail();
-  }, []);
+  }, [user]);
 
   return (
     <Container>
-      <Header>
-        <Top>
-          <GoBack onClick={() => navigate(-1)} />
-          <ProductTitle>{product.name}</ProductTitle>
-          <ButtonTopContainer>
-            <div
-              id="home"
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faHome}
-                style={{ fontSize: "20px", color: "#f79831" }}
-              />
-            </div>
-            <div
-              id="user"
-              onClick={() => {
-                navigate("/mypage");
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faUser}
-                style={{ fontSize: "20px", color: "#f79831" }}
-              />
-            </div>
-          </ButtonTopContainer>
-        </Top>
-      </Header>
       {isFetched && (
         <>
-          <Body>
+          <DetailHeader headerTitle={group.groupName} />
+          <Body state={group.state} isSeller={isSeller}>
             <GroupInfoTop group={group} product={product} seller={seller} />
             <CommentsArea
+              user={user}
               group={group}
+              isSeller={isSeller}
               setJoinedGroup={setJoinedGroup}
               joinedGroup={joinedGroup}
             />
@@ -123,15 +101,15 @@ const GroupDetailPage = () => {
             </div>
           )}
 
-          <ButtonsContainer>
-            <LeftButton wish={wish} onClick={handleToggle}>
-              <p>
+          <ButtonsContainer state={group.state} isSeller={isSeller}>
+            <LeftButton wish={wish} onClick={handleWish}>
+              <span>
                 {wish ? (
                   <FontAwesomeIcon icon={fullHeart} size="1x" />
                 ) : (
                   <FontAwesomeIcon icon={Heart} size="1x" />
                 )}
-              </p>
+              </span>
               {!wish ? "찜 하기" : "찜 취소하기"}
             </LeftButton>
             {joinedGroup ? (
@@ -164,67 +142,10 @@ const Container = styled.div`
   }
 `;
 
-const Header = styled.header`
-  position: fixed;
-  width: 100%;
-  min-width: 360px;
-  max-width: 770px;
-  top: 0;
-  z-index: 5;
-  background-color: #ffffff;
-`;
-
 const Body = styled.div`
-  padding-bottom: 80px;
-`;
-
-const Top = styled.div`
-  width: 100%;
   background-color: #ffffff;
-  height: 50px;
-`;
-
-const GoBack = styled.i`
-  border: solid black;
-  border-width: 0 1.5px 1.5px 0;
-  display: inline-block;
-  padding: 5px;
-  margin: 20px 0 0 20px;
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
-  cursor: pointer;
-`;
-
-const ButtonTopContainer = styled.div`
-  width: 60px;
-  position: absolute;
-  top: 18px;
-  right: 20px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  #home,
-  #user {
-    cursor: pointer;
-  }
-`;
-
-const ProductTitle = styled.p`
-  margin-left: 10px;
-  display: inline-block;
-  width: 400px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  vertical-align: middle;
-
-  @media (max-width: 500px) {
-    width: 270px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+  padding-bottom: ${({ state, isSeller }) =>
+    state === 0 && !isSeller ? "80px" : "10px"};
 `;
 
 const ButtonsContainer = styled.div`
@@ -234,7 +155,8 @@ const ButtonsContainer = styled.div`
   right: 0px;
   max-width: 770px;
   width: 100%;
-  display: flex;
+  display: ${({ state, isSeller }) =>
+    state === 0 && !isSeller ? "flex" : "none"};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -259,7 +181,7 @@ const LeftButton = styled.div`
   color: #f79831;
   border: 2px solid #f79831;
 
-  > p {
+  > span {
     margin-right: 5px;
   }
 

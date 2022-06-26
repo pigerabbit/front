@@ -8,13 +8,13 @@ import CouponFailPage from "./CouponFailPage";
 const CheckResultPage = () => {
   const location = useLocation();
   const isSuccess = location.state.success;
-  const payment = location.state.payment;
+  const group = location.state.group;
   const quantity = location.state.quantity;
 
   return (
     <Container>
       {isSuccess ? (
-        <CouponSuccessPage payment={payment} quantity={quantity} />
+        <CouponSuccessPage group={group} quantity={quantity} />
       ) : (
         <CouponFailPage />
       )}

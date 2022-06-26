@@ -17,7 +17,11 @@ const ProductInfoCard = ({ title, content, img }) => {
 
       {open && (
         <Content open={open}>
-          <div>{content}</div>
+          <div>
+            {content.split("\n").map((row, key) => (
+              <div key={key}>{row}</div>
+            ))}
+          </div>
           {img && (
             <InfoImg id="infoImg" src={img} alt="상세정보 사진"></InfoImg>
           )}

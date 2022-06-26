@@ -22,7 +22,7 @@ const OpenGroupPaymentPage = () => {
   const [name, setName] = useState(user?.name || "");
   const [contact, setContact] = useState(user?.phoneNumber || "");
   const [address, setAddress] = useState(
-    type !== "normal" ? location : user?.address || ""
+    type !== "normal" ? location.trim() : user?.address || ""
   );
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const OpenGroupPaymentPage = () => {
         setAddress(user.address);
       }
     }
-  }, [user]);
+  }, [user, type]);
 
   const postOpenGroup = async () => {
     try {
@@ -46,39 +46,16 @@ const OpenGroupPaymentPage = () => {
         groupName,
         deadline,
         quantity: count,
+        paymentMethod: payment,
       });
       if (res.data.success) {
-        const groupId = res.data.payload.groupId;
-        postPaymentType(groupId);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const postPaymentType = async (groupId) => {
-    try {
-      const res = await Api.put(`groups/${groupId}/payment`, {
-        payment: payment,
-      });
-      if (res.data.success) {
-        // if(res.data.payload.groupType==='coupon'){
-        //   postCouponPayment(groupId)
-        // }
+        const { groupId } = res.data.payload;
         navigate(`/group/payment/${groupId}`);
       }
     } catch (err) {
       console.log(err);
     }
   };
-
-  // const postCouponPayment=async()=>{
-  //   try{
-  //     const res=await Api.post('payments',{})
-  //   }catch(err){
-  //     console.log(err)
-  //   }
-  // }
 
   const nameValid = name?.length > 0;
   const contactValid = contact.length > 0;
@@ -97,7 +74,10 @@ const OpenGroupPaymentPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제(${headerTitle[type]})`} />
+      <GroupHeader
+        headerTitle={`주문/결제(${headerTitle[type]})`}
+        goBack={-1}
+      />
       <AddressInfo
         name={name}
         contact={contact}

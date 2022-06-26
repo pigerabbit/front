@@ -52,7 +52,7 @@ const ProductRegisterPage = () => {
       ? ""
       : state?.shippingFeeCon?.toLocaleString() || ""
   );
-  const [useBy, setUseBy] = useState(state?.dueDate || "");
+  const [useBy, setUseBy] = useState(state?.term || "");
   const [detailInfo, setDetailInfo] = useState(state?.detail || "");
   const [detailInfoImage, setDetailInfoImage] = useState("");
   const [DetailInfoPreviewImg, setDetailInfoPreviewImg] = useState(
@@ -102,6 +102,38 @@ const ProductRegisterPage = () => {
     };
   };
 
+  const postImages = async (productId) => {
+    try {
+      const imagesFormData = new FormData();
+      imagesFormData.append("images", productImage);
+
+      const descriptionImageFormData = new FormData();
+      descriptionImageFormData.append("descriptionImg", descriptionImage);
+
+      const detailImageFormData = new FormData();
+      detailImageFormData.append("detailImg", detailInfoImage);
+
+      const imagesReq = productImage
+        ? Api.postImg(`products/${productId}/images`, imagesFormData)
+        : null;
+      const descriptionImgReq = descriptionImage
+        ? Api.postImg(
+            `products/${productId}/descriptionImg`,
+            descriptionImageFormData
+          )
+        : null;
+      const detailImgReq = detailInfoImage
+        ? Api.postImg(`products/${productId}/detailImg`, detailImageFormData)
+        : null;
+
+      await Promise.all([imagesReq, descriptionImgReq, detailImgReq]);
+
+      navigate(`/markets/${user.id}`, { replace: true });
+    } catch (e) {
+      // 에러처리
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -119,7 +151,7 @@ const ProductRegisterPage = () => {
       maxPurchaseQty: Number(maxPurchaseQty),
       shippingFee: Number(shippingFee.replaceAll(",", "")),
       shippingFeeCon: Number(shippingFeeCon.replaceAll(",", "")),
-      dueDate: useBy,
+      term: useBy,
       detail: detailInfo,
       shippingInfo,
     };
@@ -134,35 +166,7 @@ const ProductRegisterPage = () => {
         await Api.put(`products/${productId}`, bodyData);
       }
 
-      try {
-        const ImagesFormData = new FormData();
-        ImagesFormData.append("images", productImage);
-
-        const descriptionImageFormData = new FormData();
-        descriptionImageFormData.append("descriptionImg", descriptionImage);
-
-        const detailImageFormData = new FormData();
-        detailImageFormData.append("detailImg", detailInfoImage);
-
-        const imagesReq = productImage
-          ? Api.postImg(`products/${productId}/images`, ImagesFormData)
-          : null;
-        const descriptionImgReq = descriptionImage
-          ? Api.postImg(
-              `products/${productId}/descriptionImg`,
-              descriptionImageFormData
-            )
-          : null;
-        const detailImgReq = detailInfoImage
-          ? Api.postImg(`products/${productId}/detailImg`, detailImageFormData)
-          : null;
-
-        await Promise.all([imagesReq, descriptionImgReq, detailImgReq]);
-
-        navigate(`/markets/${user.id}`, { replace: true });
-      } catch (e) {
-        // 에러처리
-      }
+      postImages(productId);
     } catch (error) {
       // 에러처리
     }
@@ -172,6 +176,7 @@ const ProductRegisterPage = () => {
     <MyPageLayout
       pageName={!state ? "판매 등록" : "판매 편집"}
       previousPage={`/markets/${user.id}`}
+      noTabBar={true}
     >
       {isOpenCategoryPopup && (
         <CategoryPopup
@@ -406,8 +411,6 @@ const ProductRegisterPage = () => {
           등록하기
         </SubmitButtom>
       </form>
-
-      <Section />
     </MyPageLayout>
   );
 };
@@ -494,7 +497,7 @@ const SubmitButtom = styled.button`
   ${({ disabled }) => !disabled && "cursor: pointer;"};
   box-sizing: border-box;
   width: 40%;
-  margin: 3% 30% 8% 30%;
+  margin: 3% 30% 3% 30%;
   padding: 3%;
   border: none;
   border-radius: 5px;

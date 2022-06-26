@@ -36,6 +36,9 @@ const Container = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 80px;
+  @media (min-width: 450px) {
+    height: 90px;
+  }
   padding: 0 30px;
   background-color: #ffb564;
   border-radius: 0px 0px 30px 30px;
@@ -61,8 +64,4 @@ const SearchButton = styled.div`
   justify-content: space-between;
   color: #cccccc;
   font-size: 12px;
-`;
-
-const AlarmButton = styled.div`
-  cursor: pointer;
 `;

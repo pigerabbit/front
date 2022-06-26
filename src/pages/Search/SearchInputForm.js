@@ -8,12 +8,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 
 const SearchInputForm = () => {
-  const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
+
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const handleKeyPress = (key) => {
     if (key === "Enter") {
-      navigate(`/products?search=${searchKeyword}`);
+      navigate(`/products?search=${encodeURIComponent(searchKeyword)}`);
     }
   };
 
@@ -32,7 +33,9 @@ const SearchInputForm = () => {
         onKeyPress={(e) => handleKeyPress(e.key)}
       />
       <ButtonWrapper
-        onClick={() => navigate(`/products?search=${searchKeyword}`)}
+        onClick={() =>
+          navigate(`/products?search=${encodeURIComponent(searchKeyword)}`)
+        }
       >
         <FontAwesomeIcon
           icon={faMagnifyingGlass}

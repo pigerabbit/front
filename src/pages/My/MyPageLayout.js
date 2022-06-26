@@ -6,11 +6,11 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import TabBar from "components/TabBar";
 
-const MyPageLayout = ({ children, pageName, previousPage }) => {
+const MyPageLayout = ({ children, pageName, previousPage, noTabBar }) => {
   const navigate = useNavigate();
 
   const handlePreviousBtnClick = () => {
-    navigate(previousPage);
+    navigate(previousPage, { replace: true });
   };
 
   return (
@@ -30,7 +30,7 @@ const MyPageLayout = ({ children, pageName, previousPage }) => {
 
       {children}
 
-      <TabBar />
+      {!noTabBar && <TabBar />}
     </Container>
   );
 };
@@ -44,6 +44,7 @@ const Container = styled.div`
   min-width: 360px;
   min-height: 100vh;
   background-color: #f6f6f6;
+  overflow: hidden;
 `;
 
 const TopBar = styled.div`

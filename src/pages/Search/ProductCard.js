@@ -18,32 +18,25 @@ const ProductCard = ({ product }) => {
     navigate(`/products/${product.id}`);
   };
 
-  const handleToggle = async () => {
-    if (!wish) {
-      showConfirmationIcon({
-        backgroundColor: "#FF6A6A;",
-        color: "white",
-        icon: fullHeart,
-        text: "찜!",
-      });
-    } else {
-      showConfirmationIcon({
-        backgroundColor: "#ABABAB;",
-        color: "white",
-        icon: fullHeart,
-        text: "찜 취소",
-      });
-    }
+  const handleToggle = async (e) => {
+    e.stopPropagation();
+
+    showConfirmationIcon({
+      backgroundColor: wish ? "#ABABAB;" : "#FF6A6A;",
+      color: "white",
+      icon: fullHeart,
+      text: wish ? "찜 취소" : "찜!",
+    });
 
     await Api.put(`toggle/product/${product._id}`);
     setWish((cur) => !cur);
   };
 
   return (
-    <Container wish={wish}>
-      <Image className="image" url={product.images} onClick={handleCardClick} />
+    <Container wish={wish} onClick={handleCardClick}>
+      <Image className="image" url={product.images} />
 
-      <Information onClick={handleCardClick}>
+      <Information>
         <Title>
           <span>[{product?.userInfo?.business[0].businessName}]</span>
           <span>
@@ -70,14 +63,25 @@ const ProductCard = ({ product }) => {
 export default ProductCard;
 
 const Container = styled.div`
-  padding: 8px;
-  cursor: pointer;
   position: relative;
+  width: 100%;
+  height: 0;
+  padding: 4%;
+  padding-bottom: 150%;
+  cursor: pointer;
+  box-sizing: border-box;
   border-radius: 5px;
 
   &:hover .image {
-    box-shadow: 0 0 8px #b7b7b7;
-    background-size: 103%;
+    width: 94%;
+    height: 62%;
+    margin-top: -1%;
+    margin-left: -1%;
+    box-shadow: 0 0 8px #e0e0e0;
+  }
+
+  &:active {
+    background-color: #fafafa;
   }
 
   > svg {
@@ -92,23 +96,19 @@ const Container = styled.div`
 `;
 
 const Image = styled.div`
-  width: 100%;
-  height: 42vw;
-  @media (min-width: 600px) {
-    height: 28vw;
-  }
-  @media (min-width: 770px) {
-    height: 215px;
-  }
+  position: absolute;
+  width: 92%;
+  height: 60%;
+
   border-radius: 5px;
   background-image: url(${({ url }) => url});
-  background-size: 100%;
+  background-size: cover;
   background-position: center;
   transition: all 0.4s;
 `;
 
 const Information = styled.div`
-  margin-top: 10px;
+  margin-top: 110%;
 `;
 
 const Title = styled.div`

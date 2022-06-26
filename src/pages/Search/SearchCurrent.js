@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SearchProductCard from "./SearchProductCard";
 import * as Api from "api";
@@ -6,26 +7,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const SearchCurrent = () => {
-  const [currentKeyword, setCurrentKeyword] = useState([]);
+  const navigate = useNavigate();
+
+  const [keyword, setKeyword] = useState([]);
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getSearchCurrent = async () => {
-    const getSearchWords = Api.get("toggle/searchWords");
-    const getSearchProducts = Api.get("toggle/viewedProducts");
+    const getViewedWords = Api.get("toggle/searchWords");
+    const getViewedProducts = Api.get("toggle/viewedProducts");
 
     try {
       setLoading(true);
 
-      const [currentKeyword, productList] = await Promise.all([
-        getSearchWords,
-        getSearchProducts,
+      const [viewedKeyword, viewedProductList] = await Promise.all([
+        getViewedWords,
+        getViewedProducts,
       ]);
 
-      setCurrentKeyword(currentKeyword.data.reverse());
-      setProductList(
-        [...new Set(productList.data.map(JSON.stringify))].map(JSON.parse)
-      );
+      setKeyword(viewedKeyword.data.reverse());
+      setProductList(viewedProductList.data);
 
       setLoading(false);
     } catch (err) {
@@ -33,18 +34,26 @@ const SearchCurrent = () => {
     }
   };
 
-  const deleteKeyword = async (keyword) => {
+  const deleteKeyword = (keyword) => async (e) => {
+    e.stopPropagation();
     try {
-      const filteredKeywords = await Api.delete(`toggle/searchWord/${keyword}`);
-      setCurrentKeyword(filteredKeywords.data.searchWords.reverse());
+      const encodingKeyword = encodeURIComponent(keyword);
+      const filteredKeywords = await Api.delete(
+        `toggle/searchWord/${encodingKeyword}`
+      );
+      setKeyword(filteredKeywords.data.searchWords.reverse());
     } catch (err) {
       console.log(err);
     }
   };
 
+  const goToProductPage = (k) => () =>
+    navigate(`/products?search=${encodeURIComponent(k)}`);
+
   useEffect(() => {
     getSearchCurrent();
   }, []);
+
   return (
     <Container>
       {!loading && (
@@ -52,15 +61,15 @@ const SearchCurrent = () => {
           <CurrentKeywordContainer>
             <h4>최근 검색어</h4>
             <CurrentKeywordWrapper>
-              {currentKeyword.map((k, idx) => (
-                <Keyword key={idx}>
+              {keyword.map((k, idx) => (
+                <Keyword key={idx} onClick={goToProductPage(k)}>
                   <span>{k}</span>
-                  <button onClick={() => deleteKeyword(k)}>
+                  <button onClick={deleteKeyword(k)}>
                     <FontAwesomeIcon icon={faXmark} />
                   </button>
                 </Keyword>
               ))}
-              {currentKeyword.length === 0 && <p>검색 기록이 없습니다.</p>}
+              {keyword.length === 0 && <p>검색 기록이 없습니다.</p>}
             </CurrentKeywordWrapper>
           </CurrentKeywordContainer>
           <CurrentProductContainer>
@@ -140,6 +149,7 @@ const Keyword = styled.div`
   background: #ffe9d1;
   border: none;
   box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
   > span {
     color: #ff8500;
     font-weight: 500;

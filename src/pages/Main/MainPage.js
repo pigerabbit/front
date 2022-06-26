@@ -19,11 +19,10 @@ const tabs = {
 
 const MainPage = () => {
   const [isOpenSideBar, setIsOpenSideBar] = useState(false);
-
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   let tab = searchParams.get("tab");
-  if (!tab) tab = "home";
+  if (!tabs[tab]) tab = "home";
 
   return (
     <Container>

@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import * as Api from "api";
 
-import GroupHeader from "../GroupHeader";
 import { states, subDate, CalShippingFee } from "../GroupModule";
+import GroupHeader from "../GroupHeader";
 import AddressInfo from "./AddressInfo";
 import ProductInfo from "./ProductInfo";
 import PriceInfo from "./PriceInfo";
-import * as Api from "api";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const PaymentDetailPage = () => {
   const params = useParams();
@@ -16,28 +17,29 @@ const PaymentDetailPage = () => {
 
   const { user } = useSelector((state) => state.user);
 
-  const [group, setGroup] = useState(null);
+  const [group, setGroup] = useState([]);
 
-  const fetchGroup = async () => {
+  const getGroup = async () => {
     const res = await Api.get(`groups/groupId/${id}`);
     setGroup(res.data.payload[0]);
   };
 
   useEffect(() => {
-    fetchGroup();
+    getGroup();
   }, []);
 
-  if (group === null) {
-    return "loading...";
+  if (group.length === 0) {
+    return <LoadingSpinner />;
   }
 
-  const { payment, quantity } = group.participants.filter(
-    (p) => p.userId === user.id
-  )[0];
+  const {
+    payment: { paymentMethod },
+    quantity,
+  } = group.participants.filter((p) => p.userId === user.id)[0];
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제`} />
+      <GroupHeader headerTitle={`결제 완료`} />
       <Info>
         <Message>
           <span>{subDate(group.updatedAt)}</span>
@@ -72,7 +74,7 @@ const PaymentDetailPage = () => {
           group.productInfo.minPurchaseQty
         )}
         type={group.groupType}
-        payment={payment}
+        payment={paymentMethod}
       />
     </Container>
   );

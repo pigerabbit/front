@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import {
-  groupType,
+  groupTypes,
   groupState,
   returnBgColor,
   returnFontColor,
@@ -20,6 +20,10 @@ const MyPurchaseListCard = ({
 }) => {
   const navigate = useNavigate();
   const myInfo = group.participants.filter((p) => p.userId === userId);
+  const { groupId, state, groupType, groupName, remainedPersonnel, deadline } =
+    group;
+  const { productId, images, salePrice } = group.productInfo;
+  const isVoucherRemained = myInfo[0].payment.voucher !== 0;
 
   const handleClick = () => {
     setIsOpenPopUpCard(true);
@@ -34,74 +38,93 @@ const MyPurchaseListCard = ({
     });
   };
 
+  const moveToPaymentPage = (groupId) => (e) => {
+    e.stopPropagation();
+    navigate(`/group/payment/${groupId}`);
+  };
+
+  const moveToGroupPage = (groupId) => () => navigate(`/groups/${groupId}`);
+
   return (
     <CardContainer>
       {!isOpenTab && <p>{formatParticipateDate(myInfo[0].participantDate)}</p>}
       <CardWrapper>
         <CardImageWrapper>
-          <CardImage images={group.productInfo.images} />
-          {groupState[group.state].length > 1 && (
+          <CardImage images={images} onClick={moveToGroupPage(groupId)} />
+          {groupState[state].length > 1 && (
             <StateMessage>
-              <p>{groupState[group.state][1]}</p>
+              <p>{groupState[state][1]}</p>
             </StateMessage>
           )}
         </CardImageWrapper>
         <CardContent>
           <Title>
-            <strong>{`[${groupType[group.groupType]}] `}</strong>
-            {group.groupName}
+            <p onClick={moveToGroupPage(groupId)}>
+              <strong>{`[${groupTypes[groupType]}] `}</strong>
+              {groupName}
+            </p>
+
+            <span onClick={moveToPaymentPage(groupId)}>결제 페이지</span>
           </Title>
           <State
-            bgColor={() => returnBgColor(group.state)}
-            fontColor={() => returnFontColor(group.state)}
+            bgColor={returnBgColor(state)}
+            fontColor={returnFontColor(state)}
           >
-            {groupState[group.state][0]}
+            {!isVoucherRemained ? "사용완료" : groupState[group.state][0]}
           </State>
-          {group.state === 0 && (
-            <span>{`${group.remainedPersonnel}개 남음`}</span>
-          )}
+          {group.state === 0 && <span>{`${remainedPersonnel}개 남음`}</span>}
           {isOpenTab ? (
-            <Message>{formatDate(group.deadline)}</Message>
+            <Message>{formatDate(deadline)}</Message>
           ) : (
             <Message>{`${myInfo[0].quantity}개 ${(
-              myInfo[0].quantity * group.productInfo.salePrice
+              myInfo[0].quantity * salePrice
             ).toLocaleString()}원`}</Message>
           )}
         </CardContent>
       </CardWrapper>
       {group.state === 0 && (
-        <CardButton bgColor="#A0A0A0" onClick={() => handleClick()}>
+        <CardButton onClick={handleClick} bgColor="#A0A0A0" cursor="pointer">
           {isOpenTab ? "공구 중지" : "참여 취소"}
         </CardButton>
       )}
-      {group.state === 1 && group.groupType === "coupon" && (
-        <CardButton bgColor="#ff9b2f" onClick={moveToQRCode}>
+      {state === 1 && groupType === "coupon" && (
+        <CardButton
+          onClick={moveToQRCode}
+          disabled={!isVoucherRemained}
+          bgColor={!isVoucherRemained ? "#A0A0A0" : "#ff9b2f"}
+          cursor={!isVoucherRemained ? "auto" : "pointer"}
+        >
           QR 코드
         </CardButton>
       )}
-      {group.state === 5 && myInfo[0].review === true && (
-        <CardButton bgColor="#A0A0A0">후기 완료</CardButton>
+      {state === 5 && myInfo[0].review === true && (
+        <CardButton bgColor="#A0A0A0" cursor="auto">
+          후기 완료
+        </CardButton>
       )}
-      {group.state === 5 && myInfo[0].review === false && (
+      {state === 5 && myInfo[0].review === false && (
         <CardButton
+          onClick={() => navigate(`products/${productId}`)}
           bgColor="#FFB564"
-          onClick={() => navigate(`products/${group.productInfo.productId}`)}
+          cursor="pointer"
         >
           후기 작성
         </CardButton>
       )}
       {isOpenTab && group.state === -1 && (
         <CardButton
-          onClick={() => handleDeleteGroup(group.groupId)}
+          onClick={() => handleDeleteGroup(groupId)}
           bgColor="#A0A0A0"
+          cursor="pointer"
         >
           공구 삭제
         </CardButton>
       )}
-      {(group.state == -6 || group.state == -7) && (
+      {(state === -6 || state === -7) && (
         <CardButton
           onClick={() => handleRemoveGroupFromMyList(group.groupId)}
           bgColor="#A0A0A0"
+          cursor="pointer"
         >
           공구 삭제
         </CardButton>
@@ -135,7 +158,7 @@ const CardImageWrapper = styled.div`
   position: relative;
   width: 150px;
   height: 110px;
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 600px) {
     width: 100px;
     height: 100px;
   }
@@ -148,6 +171,7 @@ const CardImage = styled.div`
   border-radius: 10px;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 `;
 
 const StateMessage = styled.div`
@@ -180,8 +204,28 @@ const CardContent = styled.div`
   }
 `;
 
-const Title = styled.p`
+const Title = styled.div`
   line-height: 20px;
+  padding: 1% 0;
+  > p {
+    display: inline-block;
+    cursor: pointer;
+  }
+  > span {
+    margin-left: 1%;
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffa849;
+    cursor: pointer;
+    &:hover {
+      color: #ffd3a4;
+    }
+  }
+  @media only screen and (max-width: 400px) {
+    > span {
+      display: block;
+    }
+  }
 `;
 
 const State = styled.div`
@@ -213,7 +257,7 @@ const CardButton = styled.button`
   padding: 8px 10px;
   border: none;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
+  cursor: ${(props) => props.cursor};
   @media only screen and (max-width: 400px) {
     bottom: 35px;
   }

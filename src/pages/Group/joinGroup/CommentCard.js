@@ -14,16 +14,16 @@ const CommentCard = ({ postId, content, writerId, createdAt, setComments }) => {
   const date = createdAt.split("T")[0];
   const isEditable = user.id === writerId;
 
-  const handleClick = async (e) => {
-    e.preventDefault();
+  const clickDelete = async () => {
     try {
-      const res = await Api.delete(`posts/${postId}`);
-      console.log(res.data);
+      await Api.delete(`posts/${postId}`);
       setComments((cur) => cur.filter((v) => v.postId !== postId));
     } catch (e) {
       console.log("댓글 삭제 실패");
     }
   };
+
+  const clickEdit = () => setIsEditing(true);
 
   const getWriter = async () => {
     try {
@@ -52,8 +52,8 @@ const CommentCard = ({ postId, content, writerId, createdAt, setComments }) => {
 
             {isEditable && (
               <ButtonContainer>
-                <Button onClick={() => setIsEditing(true)}>편집</Button>
-                <Button func="delete" onClick={handleClick}>
+                <Button onClick={clickEdit}>편집</Button>
+                <Button func="delete" onClick={clickDelete}>
                   삭제
                 </Button>
               </ButtonContainer>
@@ -87,7 +87,7 @@ const CommentContainer = styled.div`
   padding: 12px 5px;
   border-bottom: 1px solid #d0d0d0;
 
-  #Content {
+  #content {
     font-size: 15px;
   }
 `;

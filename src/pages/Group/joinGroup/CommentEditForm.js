@@ -6,6 +6,8 @@ import * as Api from "api";
 const CommentEditForm = ({ postId, content, setComments, setIsEditing }) => {
   const [comment, setComment] = useState(content);
 
+  const handleChange = (e) => setComment(e.target.value);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -33,7 +35,7 @@ const CommentEditForm = ({ postId, content, setComments, setIsEditing }) => {
             placeholder="댓글을 입력해주세요."
             name="comment"
             value={comment}
-            onChange={(e) => setComment(e.target.value)}
+            onChange={handleChange}
             required
           />
           <button id="submit">확인</button>

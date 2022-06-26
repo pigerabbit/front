@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useInterval } from "./hooks";
+import { useResultOfIntervalCalculator } from "hooks/useInterval";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-
-const useResultOfIntervalCalculator = (calculator, delay) => {
-  const [result, setResult] = useState(calculator());
-  useInterval(() => {
-    const newResult = calculator();
-    if (newResult !== result) setResult(newResult);
-  }, delay);
-
-  return result;
-};
 
 const groupTypes = { normal: "택배", local: "지역", coupon: "이용권" };
 
@@ -35,35 +25,41 @@ const GroupCard = ({ group, minPurchaseQty }) => {
   const navigate = useNavigate();
 
   const deadline = group.deadline.replace(" ", "T") + ".000Z";
-  const remain = new Date(
+  const remainingTime = new Date(
     useResultOfIntervalCalculator(() =>
       Math.floor((new Date(deadline) - new Date()) / 1000, 10)
     ) * 1000
   );
-  let [date, hours, minutes, seconds] = [
-    remain.getDate() - 1,
-    remain.getHours() - 18,
-    `${remain.getMinutes() < 10 ? "0" : ""}${remain.getMinutes()}`,
-    `${remain.getSeconds() < 10 ? "0" : ""}${remain.getSeconds()}`,
-  ];
 
+  let [date, hours, minutes, seconds] = [
+    remainingTime.getDate() - 1,
+    remainingTime.getHours() - 18,
+    `${
+      remainingTime.getMinutes() < 10 ? "0" : ""
+    }${remainingTime.getMinutes()}`,
+    `${
+      remainingTime.getSeconds() < 10 ? "0" : ""
+    }${remainingTime.getSeconds()}`,
+  ];
   if (hours < 0 && date > 0) {
     date -= 1;
     hours += 24;
   }
 
-  const remainText =
+  const remainingTimeText =
     date > 0
       ? `${date}일 ${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`
       : `${hours < 10 ? "0" : ""}${hours}:${minutes}:${seconds}`;
+
   const currentPeople = minPurchaseQty - group.remainedPersonnel;
 
-  const aboutToClose =
-    hours + date * 24 < 12 || group.remainedPersonnel / minPurchaseQty < 0.1;
+  const isImminent =
+    hours + date * 24 < 24 || group.remainedPersonnel / minPurchaseQty < 0.1;
 
-  const handleClick = () => {
-    navigate(`/groups/${group.groupId}?imminent=${aboutToClose}`);
-  };
+  const handleClick = () =>
+    navigate(`/groups/${group.groupId}`, {
+      state: { isImminent },
+    });
 
   return (
     <Container>
@@ -80,9 +76,11 @@ const GroupCard = ({ group, minPurchaseQty }) => {
         }
         onClick={handleClick}
       />
-      <Current aboutToClose={aboutToClose}>
+      <Current isImminent={isImminent}>
         {currentPeople} / {minPurchaseQty}
-        {remain.getFullYear() === 1970 && <Remain>{remainText}</Remain>}
+        {remainingTime.getFullYear() === 1970 && (
+          <Remain>{remainingTimeText}</Remain>
+        )}
       </Current>
     </Container>
   );
@@ -169,7 +167,7 @@ const Current = styled.div`
   right: 140px;
   font-size: 25px;
   font-weight: bold;
-  color: ${({ aboutToClose }) => (aboutToClose ? "#ff0000" : "#000000")};
+  color: ${({ isImminent }) => (isImminent ? "#ff0000" : "#000000")};
   margin: 10px 0;
   display: flex;
   flex-direction: column;

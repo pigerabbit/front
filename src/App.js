@@ -25,9 +25,9 @@ import PaymentDetailPage from "pages/Group/payGroup/PaymentDetailPage";
 import MyWishListPage from "pages/My/MyWishList/MyWishListPage";
 import MyPurchaseListPage from "pages/My/MyPurchaseList/MyPurchaseListPage";
 import SearchPage from "./pages/Search/SearchPage";
-import QRCodePage from "./components/QRCodePage";
-import BridgePage from "./components/BridgePage";
-import CheckResultPage from "./components/CheckResultPage";
+import QRCodePage from "./pages/Coupon/QRCodePage";
+import BridgePage from "./pages/Coupon/BridgePage";
+import CheckResultPage from "./pages/Coupon/CheckResultPage";
 import ConfirmationIcon from "components/ConfirmationIcon";
 
 import ScrollToTop from "components/ScrollToTop";

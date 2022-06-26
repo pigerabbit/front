@@ -1,30 +1,36 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SelectBox from "../../../components/SeletBox";
+
+import SelectBox from "components/SeletBox";
+import Counter from "components/Counter";
 import { options } from "../GroupModule";
+import DaumPost from "components/DaumPostCode";
 
 const OpenGroupDetailInfo = ({ product, type }) => {
   const navigate = useNavigate();
 
   const [count, setCount] = useState(0);
   const [groupName, setGroupName] = useState("");
-  const [location, setLocation] = useState("");
+  const [address, setAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState("");
+  const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
   const [hour, setHour] = useState(12);
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleDaumPostOpen = () => setIsDaumPostOpen(true);
+
   const groupNameValid = groupName.length > 0;
-  const locationValid = location.length > 0;
+  const locationValid = address.length > 0 && detailAddress.length > 0;
   const isValid =
     type === "coupon" ? groupNameValid : groupNameValid && locationValid;
 
   useEffect(() => {
     if (product && type === "coupon") {
-      setLocation(product.userInfo.business[0].businessLocation);
+      setAddress(product.userInfo.business[0].businessLocation);
     }
-  }, [product]);
+  }, [product, type]);
+
   return (
     <>
       <DetailInfoContainer>
@@ -40,34 +46,43 @@ const OpenGroupDetailInfo = ({ product, type }) => {
           </Line>
           <Line>
             <h3>참여 개수</h3>
-            <CounterWrapper>
-              <Counter>
-                <button
-                  disabled={count <= 0}
-                  onClick={() => setCount((prev) => prev - 1)}
-                >
-                  <FontAwesomeIcon icon={faMinus} />
-                </button>
-                <span>{count}</span>
-                <button
-                  disabled={count >= product.minPurchaseQty}
-                  onClick={() => setCount((prev) => prev + 1)}
-                >
-                  <FontAwesomeIcon icon={faPlus} />
-                </button>
-              </Counter>
-              <span>{`최대 ${product.minPurchaseQty}개 가능`}</span>
-            </CounterWrapper>
+            <Counter
+              count={count}
+              setCount={setCount}
+              minPurchaseQty={product.minPurchaseQty}
+            />
           </Line>
           {type !== "coupon" && (
             <Line>
               <h3>공구 주소</h3>
-              <input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "354px",
+                }}
+              >
+                <input
+                  type="text"
+                  value={address}
+                  onChange={setAddress}
+                  onClick={handleDaumPostOpen}
+                />
+                <input
+                  type="text"
+                  placeholder="상세 주소를 입력해주세요."
+                  value={detailAddress}
+                  onChange={(e) => setDetailAddress(e.target.value)}
+                  style={{ marginTop: "20px" }}
+                />
+              </div>
             </Line>
+          )}
+          {isDaumPostOpen && (
+            <DaumPost
+              setAddress={setAddress}
+              setIsDaumPostOpen={setIsDaumPostOpen}
+            />
           )}
           <Line>
             <h3>공구 기간</h3>
@@ -76,8 +91,9 @@ const OpenGroupDetailInfo = ({ product, type }) => {
                 setIsOpen={setIsOpen}
                 isOpen={isOpen}
                 options={options}
-                setHour={setHour}
-                hour={hour}
+                setValue={setHour}
+                value={hour}
+                isHour
               />
             </SelectBoxContainer>
           </Line>
@@ -90,7 +106,14 @@ const OpenGroupDetailInfo = ({ product, type }) => {
           onClick={() =>
             navigate("/group/open/pay", {
               state: {
-                data: { product, type, groupName, location, count, hour },
+                data: {
+                  product,
+                  type,
+                  groupName,
+                  location: `${address} ${detailAddress}`,
+                  count,
+                  hour,
+                },
               },
             })
           }
@@ -135,10 +158,10 @@ const Line = styled.div`
     display: inline-block;
     font-size: 16px;
   }
-  > input {
-    width: 350px;
+  input {
+    width: 353px;
   }
-  > input[type="text"] {
+  input[type="text"] {
     border: none;
     border-bottom: 2px solid #f79831;
   }
@@ -150,33 +173,9 @@ const Line = styled.div`
     > p {
       font-size: 13px;
     }
-  }
-`;
-
-const CounterWrapper = styled.div`
-  display: inline-block;
-  width: 358px;
-  > span {
-    margin-left: 10px;
-    font-size: 13px;
-    color: #6c6c6c;
-  }
-`;
-
-const Counter = styled.div`
-  display: inline-block;
-  border: 1px solid #c4c4c4;
-  border-radius: 5px;
-  width: 80px;
-  text-align: center;
-  box-sizing: border-box;
-  padding: 1%;
-  > button {
-    border: none;
-    background: transparent;
-    margin: 0 3%;
-    cursor: pointer;
-    color: #767676;
+    input {
+      width: 100%;
+    }
   }
 `;
 

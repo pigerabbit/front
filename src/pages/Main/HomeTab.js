@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setHomeTabGroupsTitle,
+  setRecommendation,
+  setNearby,
+} from "redux/groupsSlice";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,18 +14,19 @@ import {
 import * as Api from "api";
 
 import SliderCard from "./SliderCard";
-import CardsContainer from "./CardsContainer";
+import PaginationCardsContainer from "./PaginationCardsContainer";
 import LoadingSpinner from "components/LoadingSpinner";
 
 const HomeTab = () => {
-  const [recommendationGroups, setRecommendationGroups] = useState([]);
-  const [nearbyGroups, setNearbyGroups] = useState([]);
+  const { homeTabGroupsTitle, recommendationGroups, nearbyGroups } =
+    useSelector((state) => state.groups);
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
   const [transition, setTransition] = useState(true);
   const [loading, setLoading] = useState(false);
   const lastPage = recommendationGroups.length;
-  const nearbyTitle = "근처에 있는 공동구매에요!";
+
+  const dispatch = useDispatch();
 
   const handleChevronClick = (leftClick) => {
     return () => {
@@ -45,13 +52,19 @@ const HomeTab = () => {
     try {
       setLoading(true);
 
-      const [recommendationGroups, nearbyGroups] = await Promise.all([
+      const [recommendationGroupsRes, nearbyGroupsRes] = await Promise.all([
         getRecommendationGroups,
         getNearbyGroups,
       ]);
 
-      setRecommendationGroups(recommendationGroups.data.payload);
-      setNearbyGroups(nearbyGroups.data.payload);
+      if (nearbyGroupsRes.data.data) {
+        dispatch(setHomeTabGroupsTitle("근처에 있는 공동구매에요!"));
+      } else {
+        dispatch(setHomeTabGroupsTitle("추천드리는 택배공구에요!"));
+      }
+
+      dispatch(setRecommendation(recommendationGroupsRes.data.payload));
+      dispatch(setNearby(nearbyGroupsRes.data.payload));
 
       setLoading(false);
     } catch (e) {
@@ -60,7 +73,8 @@ const HomeTab = () => {
   };
 
   useEffect(() => {
-    getGroupsData();
+    if (recommendationGroups.length === 0 || nearbyGroups.length === 0)
+      getGroupsData();
   }, []);
 
   return (
@@ -108,8 +122,8 @@ const HomeTab = () => {
             </Pagination>
           </InterestGroups>
 
-          <CardsContainer
-            title={nearbyTitle}
+          <PaginationCardsContainer
+            title={homeTabGroupsTitle}
             groupPurchaseList={nearbyGroups}
           />
         </>
@@ -122,7 +136,7 @@ export default HomeTab;
 
 const Container = styled.div`
   min-height: 70%;
-  margin-bottom: 150px;
+  margin-bottom: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;

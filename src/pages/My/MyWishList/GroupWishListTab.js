@@ -11,6 +11,7 @@ const GroupWishListTab = ({ groups }) => {
         {groups.map((group) => (
           <MyWishListCard
             key={group.groupId}
+            id={group.groupId}
             title={group.groupName}
             images={group.productInfo.images}
             price={group.productInfo.price}
@@ -18,7 +19,7 @@ const GroupWishListTab = ({ groups }) => {
             discountRate={group.productInfo.discountRate}
             leftParticipants={group.remainedPersonnel}
             deadline={group.deadline}
-            contentPercent={["55%", "55%"]}
+            isGroup
           />
         ))}
         {groups.length === 0 && (
