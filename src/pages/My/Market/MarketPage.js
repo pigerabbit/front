@@ -9,6 +9,7 @@ import * as Api from "api";
 import MyPageLayout from "../MyPageLayout";
 import ProductCard from "./ProductCard";
 import ConfirmationPopup from "../ConfirmationPopup";
+import NotFoundPage from "components/NotFoundPage";
 
 const MarketPage = () => {
   const { user } = useSelector((state) => state.user);
@@ -17,15 +18,20 @@ const MarketPage = () => {
   const [products, setProducts] = useState([]);
   const [marketName, setMarketName] = useState("");
   const [currentProduct, setCurrentProduct] = useState("");
+  const [notFound, setNotFound] = useState(false);
 
   const navigate = useNavigate();
 
   const getProductData = async () => {
-    const res = await Api.get("markets", id);
-    setProducts(res.data.payload.resultList);
-    setMarketName(
-      res.data.payload.resultList[0]?.userInfo.business[0]?.businessName || ""
-    );
+    try {
+      const res = await Api.get("markets", id);
+      setProducts(res.data.payload.resultList);
+      setMarketName(
+        res.data.payload.resultList[0]?.userInfo.business[0]?.businessName || ""
+      );
+    } catch (error) {
+      setNotFound(true);
+    }
   };
 
   const handleDeleteProduct = () => {
@@ -52,6 +58,8 @@ const MarketPage = () => {
   useEffect(() => {
     getProductData();
   }, []);
+
+  if (notFound) return <NotFoundPage text="찾을 수 없는 판매처입니다." />;
 
   return (
     <MyPageLayout

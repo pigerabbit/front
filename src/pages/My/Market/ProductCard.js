@@ -76,7 +76,7 @@ const ProductCard = ({ product, setCurrentProduct, setIsOpenPopup }) => {
           </Price>
         </Information>
 
-        {user.id === id && (
+        {user?.id === id && (
           <>
             <FontAwesomeIcon
               icon={faEllipsisVertical}
@@ -89,7 +89,7 @@ const ProductCard = ({ product, setCurrentProduct, setIsOpenPopup }) => {
         )}
       </Content>
 
-      {user.id === id && (
+      {user?.id === id && (
         <UpdateController isControllerOpen={isControllerOpen}>
           <ControllerButton onClick={handleEditingClick}>편집</ControllerButton>
           <ControllerButton onClick={handleDeleteClick}>
