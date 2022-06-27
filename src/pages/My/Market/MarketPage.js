@@ -9,7 +9,7 @@ import * as Api from "api";
 import MyPageLayout from "../MyPageLayout";
 import ProductCard from "./ProductCard";
 import ConfirmationPopup from "../ConfirmationPopup";
-import NotFoundPage from "pages/NotFoundPage";
+import NotFoundPage from "components/NotFoundPage";
 
 const MarketPage = () => {
   const { user } = useSelector((state) => state.user);
