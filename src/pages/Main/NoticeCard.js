@@ -9,7 +9,6 @@ const from = {
   review: "상품 후기",
   group: "공구 알림",
   groupChat: "댓글 알림",
-  comment: "답변 알림",
 };
 
 const NoticeCard = ({ notice }) => {
