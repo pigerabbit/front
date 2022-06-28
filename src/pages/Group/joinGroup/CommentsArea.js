@@ -53,6 +53,7 @@ const CommentsArea = ({
             comments.map((comment) => (
               <CommentCard
                 key={comment.postId}
+                user={user}
                 postId={comment.postId}
                 content={comment.content}
                 writerId={comment.writer}
