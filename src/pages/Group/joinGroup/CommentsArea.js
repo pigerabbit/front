@@ -38,7 +38,7 @@ const CommentsArea = ({
       setJoinedGroup(
         group.participants.filter((v) => v.userId === user.id).length > 0
       );
-  }, [user]);
+  }, []);
 
   return (
     <Container>
