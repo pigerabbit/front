@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
 import * as Api from "api";
 
-const CommentForm = ({ setComments, joinedGroup }) => {
+const CommentForm = ({ groupId, setComments, joinedGroup }) => {
   const [comment, setComment] = useState("");
-
-  const groupId = useParams().id;
 
   const handleChange = (e) => setComment(e.target.value);
 
