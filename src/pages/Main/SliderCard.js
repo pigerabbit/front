@@ -22,15 +22,25 @@ const SliderCard = ({ group }) => {
   const handleToggle = async (event) => {
     event.stopPropagation();
 
-    showConfirmationIcon({
-      backgroundColor: wish ? "#ABABAB;" : "#FF6A6A;",
-      color: "white",
-      icon: fullHeart,
-      text: wish ? "찜 취소" : "찜!",
-    });
+    try {
+      await Api.put(`toggle/group/${group._id}`);
 
-    await Api.put(`toggle/group/${group._id}`);
-    setWish((cur) => !cur);
+      showConfirmationIcon({
+        backgroundColor: wish ? "#ABABAB;" : "#FF6A6A;",
+        color: "white",
+        icon: fullHeart,
+        text: wish ? "찜 취소" : "찜!",
+      });
+
+      setWish((cur) => !cur);
+    } catch (error) {
+      showConfirmationIcon({
+        backgroundColor: "#ABABAB;",
+        color: "white",
+        icon: fullHeart,
+        text: "찜 실패",
+      });
+    }
   };
 
   return (
