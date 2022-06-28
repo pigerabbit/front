@@ -52,7 +52,7 @@ const TabBar = () => {
             width={80}
             color={"#FFB564"}
             bottom={15}
-            onClick={handleTabClick("/")}
+            onClick={handleTabClick("/?tab=home")}
           >
             <FontAwesomeIcon icon={faHouseChimney} size="2x" />
             <span>동구라미</span>
