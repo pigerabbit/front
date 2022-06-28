@@ -1,32 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setHomeTabGroupsTitle,
-  setRecommendation,
-  setNearby,
-} from "redux/groupsSlice";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-import * as Api from "api";
 
 import SliderCard from "./SliderCard";
 import PaginationCardsContainer from "./PaginationCardsContainer";
 import LoadingSpinner from "components/LoadingSpinner";
 
-const HomeTab = () => {
-  const { homeTabGroupsTitle, recommendationGroups, nearbyGroups } =
-    useSelector((state) => state.groups);
+const HomeTab = ({
+  loading,
+  recommendationGroups,
+  nearbyGroups,
+  homeTabGroupsTitle,
+}) => {
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
   const [transition, setTransition] = useState(true);
-  const [loading, setLoading] = useState(false);
   const lastPage = recommendationGroups.length;
-
-  const dispatch = useDispatch();
 
   const handleChevronClick = (leftClick) => {
     return () => {
@@ -44,38 +37,6 @@ const HomeTab = () => {
       }
     };
   };
-
-  const getGroupsData = async () => {
-    const getRecommendationGroups = Api.get("recommendations/group");
-    const getNearbyGroups = Api.get("groups/sort/locations");
-
-    try {
-      setLoading(true);
-
-      const [recommendationGroupsRes, nearbyGroupsRes] = await Promise.all([
-        getRecommendationGroups,
-        getNearbyGroups,
-      ]);
-
-      if (nearbyGroupsRes.data.data) {
-        dispatch(setHomeTabGroupsTitle("근처에 있는 공동구매에요!"));
-      } else {
-        dispatch(setHomeTabGroupsTitle("추천드리는 택배공구에요!"));
-      }
-
-      dispatch(setRecommendation(recommendationGroupsRes.data.payload));
-      dispatch(setNearby(nearbyGroupsRes.data.payload));
-
-      setLoading(false);
-    } catch (e) {
-      // 에러처리
-    }
-  };
-
-  useEffect(() => {
-    if (recommendationGroups.length === 0 || nearbyGroups.length === 0)
-      getGroupsData();
-  }, []);
 
   return (
     <Container>

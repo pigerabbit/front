@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
 
 const tabs = [
@@ -8,23 +7,10 @@ const tabs = [
   { query: "deadline", title: "마감임박" },
 ];
 
-const Tabs = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const tabQuery = searchParams.get("tab");
-  const [tab] = tabs.filter((tab) => tab.query === tabQuery);
-  const [currentTab, setCurrentTab] = useState(!tab ? tabs[0] : tab);
-
-  const handleTabClick = (tab) => {
-    return () => {
-      setCurrentTab(tab);
-    };
+const Tabs = ({ currentTab, setCurrentTab }) => {
+  const handleTabClick = (tab) => () => {
+    setCurrentTab(tab);
   };
-
-  useEffect(() => {
-    navigate(`?tab=${currentTab.query}`);
-  }, [currentTab]);
 
   return (
     <TabsContainer>
