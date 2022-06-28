@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart as fullHeart,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
@@ -22,15 +25,25 @@ const SliderCard = ({ group }) => {
   const handleToggle = async (event) => {
     event.stopPropagation();
 
-    showConfirmationIcon({
-      backgroundColor: wish ? "#ABABAB;" : "#FF6A6A;",
-      color: "white",
-      icon: fullHeart,
-      text: wish ? "찜 취소" : "찜!",
-    });
+    try {
+      await Api.put(`toggle/group/${group._id}`);
 
-    await Api.put(`toggle/group/${group._id}`);
-    setWish((cur) => !cur);
+      showConfirmationIcon({
+        backgroundColor: wish ? "#ABABAB;" : "#FF6A6A;",
+        color: "white",
+        icon: fullHeart,
+        text: wish ? "찜 취소" : "찜!",
+      });
+
+      setWish((cur) => !cur);
+    } catch (error) {
+      showConfirmationIcon({
+        backgroundColor: "#ABABAB;",
+        color: "white",
+        icon: faXmark,
+        text: "찜 실패",
+      });
+    }
   };
 
   return (

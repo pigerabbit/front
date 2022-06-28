@@ -31,7 +31,7 @@ const TabBar = () => {
 
   return (
     <>
-      {isOpenNotice && <Notice setIsOpenNotice={setIsOpenNotice} />}
+      {isOpenNotice && <Notice user={user} setIsOpenNotice={setIsOpenNotice} />}
 
       <Cricle shadow={true} width={110} color={"white"} bottom={0} />
       <Container>
@@ -52,7 +52,7 @@ const TabBar = () => {
             width={80}
             color={"#FFB564"}
             bottom={15}
-            onClick={handleTabClick("/")}
+            onClick={handleTabClick("/?tab=home")}
           >
             <FontAwesomeIcon icon={faHouseChimney} size="2x" />
             <span>동구라미</span>
