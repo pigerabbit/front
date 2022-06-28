@@ -1,35 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setBest } from "redux/productsSlice";
+import React from "react";
 import styled from "styled-components";
-import * as Api from "api";
 
 import BestProductCard from "./BestProductCard";
 import LoadingSpinner from "components/LoadingSpinner";
 
-const BestTab = () => {
-  const { bestProducts } = useSelector((state) => state.products);
-  const [loading, setLoading] = useState(false);
-
-  const dispatch = useDispatch();
-
-  const getProductData = async () => {
-    try {
-      setLoading(true);
-
-      const res = await Api.get("products/main/top");
-      dispatch(setBest(res.data.payload));
-
-      setLoading(false);
-    } catch (e) {
-      // 에러처리
-    }
-  };
-
-  useEffect(() => {
-    if (bestProducts.length === 0) getProductData();
-  }, []);
-
+const BestTab = ({ loading, bestProducts }) => {
   return (
     <Container>
       {loading ? (
