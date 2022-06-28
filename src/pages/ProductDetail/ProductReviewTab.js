@@ -33,15 +33,19 @@ const ProductReviewTab = ({ product, user, targetPostId }) => {
 
       return joinedGroups;
     } catch (e) {
-      console.log("구매 기록 get 실패");
+      return null;
     }
   };
 
   const checkWritable = async () => {
-    const joinedGroups = await checkBuyingRecord();
-    if (joinedGroups.length > 0 && joinedGroups.length > myReviews.length)
-      setWritable(true);
-    else setWritable(false);
+    try {
+      const joinedGroups = await checkBuyingRecord();
+      if (joinedGroups.length > 0 && joinedGroups.length > myReviews.length)
+        setWritable(true);
+      else setWritable(false);
+    } catch (e) {
+      setWritable(false);
+    }
   };
 
   const handleDeleteMyReview = (postId) => {
