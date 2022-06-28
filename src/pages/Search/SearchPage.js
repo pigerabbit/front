@@ -11,6 +11,7 @@ import SearchCurrent from "./SearchCurrent";
 import SearchInputForm from "./SearchInputForm";
 import SearchTrending from "./SearchTrending";
 import SearchGroupCard from "./SearchGroupCard";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const Button = ({ isTrending, setIsTrending }) => {
   const icon = isTrending ? faChevronRight : faChevronLeft;
@@ -28,42 +29,67 @@ const Button = ({ isTrending, setIsTrending }) => {
 const SearchPage = () => {
   const [isTrending, setIsTrending] = useState(true);
   const [deadlineGroup, setDeadlineGroup] = useState([]);
+  const [trendingKeywords, setTrendingKeywords] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const getImminentGroups = async () => {
-    const res = await Api.get("groups/sort/remainedTime");
-    const deadlineGroups = res.data.payload;
-    if (deadlineGroups.length !== 0) {
-      const randomNum = Math.floor(Math.random() * deadlineGroups.length);
-      setDeadlineGroup(deadlineGroups[randomNum]);
+  const getSearchData = async () => {
+    const getDeadlineGroups = Api.get("groups/sort/remainedTime");
+    const getTrendingKeywords = Api.get("topics");
+
+    try {
+      setLoading(true);
+
+      const [deadlineGroups, trendingKeywords] = await Promise.all([
+        getDeadlineGroups,
+        getTrendingKeywords,
+      ]);
+
+      if (deadlineGroups.data.payload.length !== 0) {
+        const randomNum = Math.floor(Math.random() * deadlineGroups.length);
+        setDeadlineGroup(deadlineGroups[randomNum]);
+      }
+
+      setTrendingKeywords(trendingKeywords.data.payload);
+      setLoading(false);
+    } catch (err) {
+      //에러 처리
+      console.log(err);
     }
   };
+
   useEffect(() => {
-    getImminentGroups();
+    getSearchData();
   }, []);
 
   return (
     <Container>
-      <SearchInputForm />
-      <SearchContentContainer>
-        <SliderContainer isTrendingPage={isTrending}>
-          <SearchTrending />
-          <SearchCurrent />
-        </SliderContainer>
-      </SearchContentContainer>
-      <Button isTrending={isTrending} setIsTrending={setIsTrending} />
-      <DeadLineContainer isEmpty={!deadlineGroup}>
-        {deadlineGroup.length !== 0 && (
-          <>
-            <h3>마감 임박</h3>
-            <SearchGroupCard group={deadlineGroup} />
-          </>
-        )}
-        {!deadlineGroup && (
-          <NoDeadlineGroupContainer>
-            <h3> 마감 임박 공동구매 상품이 없습니다</h3>
-          </NoDeadlineGroupContainer>
-        )}
-      </DeadLineContainer>
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <SearchInputForm />
+          <SearchContentContainer>
+            <SliderContainer isTrendingPage={isTrending}>
+              <SearchTrending trendingKeywords={trendingKeywords} />
+              <SearchCurrent />
+            </SliderContainer>
+          </SearchContentContainer>
+          <Button isTrending={isTrending} setIsTrending={setIsTrending} />
+          <DeadLineContainer isEmpty={!deadlineGroup}>
+            {deadlineGroup.length !== 0 && (
+              <>
+                <h3>마감 임박</h3>
+                <SearchGroupCard group={deadlineGroup} />
+              </>
+            )}
+            {!deadlineGroup && (
+              <NoDeadlineGroupContainer>
+                <h3> 마감 임박 공동구매 상품이 없습니다</h3>
+              </NoDeadlineGroupContainer>
+            )}
+          </DeadLineContainer>
+        </>
+      )}
     </Container>
   );
 };

@@ -1,31 +1,13 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import * as Api from "api";
 
-const SearchTrending = () => {
+const SearchTrending = ({ trendingKeywords }) => {
   const navigate = useNavigate();
-
-  const [trendingKeyword, setTrendingKeyword] = useState([]);
-
-  const getTrendingKeywords = async () => {
-    try {
-      const res = await Api.get("topics");
-      setTrendingKeyword(res.data.payload);
-    } catch (err) {
-      //에러 처리
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getTrendingKeywords();
-  }, []);
 
   return (
     <Container>
       <h4>인기검색어</h4>
-      {trendingKeyword.map((keyword, idx) => (
+      {trendingKeywords.map((keyword, idx) => (
         <KeywordWrapper
           key={idx}
           onClick={() =>
@@ -36,7 +18,7 @@ const SearchTrending = () => {
           <span>{keyword}</span>
         </KeywordWrapper>
       ))}
-      {trendingKeyword.length === 0 && (
+      {trendingKeywords.length === 0 && (
         <NoKeywordsContainer>
           <h3>최근 1시간 동안 검색된 키워드가 없습니다</h3>
         </NoKeywordsContainer>
