@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { confirmNotice } from "redux/userSlice";
 
 import SideBar from "components/SideBar";
 import NoticeCard from "./NoticeCard";
 
-const Notice = ({ setIsOpenNotice }) => {
-  const { user } = useSelector((state) => state.user);
+const Notice = ({ user, setIsOpenNotice }) => {
   const [noticeList, setNoticeList] = useState([]);
 
   const dispatch = useDispatch();
