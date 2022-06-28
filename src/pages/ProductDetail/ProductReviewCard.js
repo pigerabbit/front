@@ -211,7 +211,7 @@ const highlightAnimation = keyframes`
 const Container = styled.div`
   position: relative;
   width: 100%;
-  margin: 2px auto;
+  margin: 0 auto;
   min-height: 130px;
   vertical-align: middle;
   border-bottom: 1px solid #d0d0d0;

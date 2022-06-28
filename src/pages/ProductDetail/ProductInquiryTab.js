@@ -5,13 +5,11 @@ import * as Api from "api";
 import ProductInquiryCard from "./ProductInquiryCard";
 import ProductInquiryForm from "./ProductInquiryForm";
 
-const ProductInquiryTab = ({ product, user, targetPostId }) => {
+const ProductInquiryTab = ({ product, user, targetPostId, isSeller }) => {
   const [inquiries, setInquiries] = useState([]);
   const [myInquiries, setMyInquiries] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
   const [showMyInquiries, setShowMyInquiries] = useState(false);
-
-  const isSeller = product.userId === user.id;
 
   const handleDeleteMyInquiry = (postId) => {
     const remainedInquiries = inquiries.filter(

@@ -2,8 +2,8 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-import CouponSuccessPage from "./CouponSuccessPage";
-import CouponFailPage from "./CouponFailPage";
+import CouponSucceededPage from "./CouponSucceededPage";
+import CouponFailedPage from "./CouponFailedPage";
 
 const CheckResultPage = () => {
   const location = useLocation();
@@ -14,9 +14,9 @@ const CheckResultPage = () => {
   return (
     <Container>
       {isSuccess ? (
-        <CouponSuccessPage group={group} quantity={quantity} />
+        <CouponSucceededPage group={group} quantity={quantity} />
       ) : (
-        <CouponFailPage />
+        <CouponFailedPage />
       )}
     </Container>
   );

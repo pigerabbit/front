@@ -38,7 +38,7 @@ const CommentsArea = ({
       setJoinedGroup(
         group.participants.filter((v) => v.userId === user.id).length > 0
       );
-  }, [user]);
+  }, []);
 
   return (
     <Container>
@@ -47,12 +47,17 @@ const CommentsArea = ({
       )}
       <CommentsContainer>
         <h4>댓글 ({comments.length})</h4>
-        <CommentForm setComments={setComments} joinedGroup={joinedGroup} />
+        <CommentForm
+          groupId={group.groupId}
+          setComments={setComments}
+          joinedGroup={joinedGroup}
+        />
         <div id="comments">
           {comments.length > 0 &&
             comments.map((comment) => (
               <CommentCard
                 key={comment.postId}
+                user={user}
                 postId={comment.postId}
                 content={comment.content}
                 writerId={comment.writer}

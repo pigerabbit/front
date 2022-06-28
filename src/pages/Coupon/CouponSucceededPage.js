@@ -5,7 +5,7 @@ import * as Api from "api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
-const CouponSuccessPage = ({ group, quantity }) => {
+const CouponSucceededPage = ({ group, quantity }) => {
   const [businessName, setBusinessName] = useState("");
 
   const product = group.productInfo;
@@ -47,7 +47,7 @@ const CouponSuccessPage = ({ group, quantity }) => {
   );
 };
 
-export default CouponSuccessPage;
+export default CouponSucceededPage;
 
 const popupAnimation = keyframes`
   0% {

@@ -13,6 +13,8 @@ import ProductInquiryTab from "./ProductInquiryTab";
 import JoinGroupWindow from "pages/Group/joinGroup/JoinGroupWindow";
 
 const ProductDetailPage = () => {
+  const { user } = useSelector((state) => state.user);
+
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
 
@@ -27,13 +29,10 @@ const ProductDetailPage = () => {
   const navigate = useNavigate();
   const loc = useLocation();
 
-  const { user } = useSelector((state) => state.user);
-
   const productId = useParams().id;
 
   const fetchProductInfo = (isFetched) => {
-    if (isFetched && user) {
-      setIsSeller(user.id === seller.userId);
+    if (isFetched) {
       const switchTab = loc.state?.data;
       if (switchTab) {
         if (switchTab.postId) setTargetPostId(switchTab.postId);
@@ -62,6 +61,7 @@ const ProductDetailPage = () => {
 
   const getSellerDetail = ({ userId, userInfo }) => {
     setSeller({ userId, ...userInfo });
+    setIsSeller(user.id === userId);
   };
 
   const getProductDetail = async () => {
@@ -75,13 +75,14 @@ const ProductDetailPage = () => {
         fetchProductInfo(res.data.success);
       }
     } catch (e) {
-      console.log("product 못 가져옴");
+      setProduct({});
     }
   };
 
   useEffect(() => {
     getProductDetail();
   }, [user]);
+
   return (
     <Container>
       <DetailHeader headerTitle={product.name} />
@@ -100,6 +101,7 @@ const ProductDetailPage = () => {
             product={product}
             user={user}
             targetPostId={targetPostId}
+            isSeller={isSeller}
           />
         )}
         {currentTab.name === "inquiry" && (
@@ -107,6 +109,7 @@ const ProductDetailPage = () => {
             product={product}
             user={user}
             targetPostId={targetPostId}
+            isSeller={isSeller}
           />
         )}
         {showJoinGroup && (

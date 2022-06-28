@@ -5,15 +5,13 @@ import * as Api from "api";
 import ProductReviewCard from "./ProductReviewCard";
 import ProductReviewForm from "./ProductReviewForm";
 
-const ProductReviewTab = ({ product, user, targetPostId }) => {
+const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
   const [reviews, setReviews] = useState([]);
   const [myReviews, setMyReviews] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
   const [showMyReviews, setShowMyReviews] = useState(false);
   const [writable, setWritable] = useState(false);
   const [isReviewFetched, setIsReviewFetched] = useState(false);
-
-  const isSeller = product.userId === user.id;
 
   const checkBuyingRecord = async () => {
     try {
@@ -33,15 +31,19 @@ const ProductReviewTab = ({ product, user, targetPostId }) => {
 
       return joinedGroups;
     } catch (e) {
-      console.log("구매 기록 get 실패");
+      return null;
     }
   };
 
   const checkWritable = async () => {
-    const joinedGroups = await checkBuyingRecord();
-    if (joinedGroups.length > 0 && joinedGroups.length > myReviews.length)
-      setWritable(true);
-    else setWritable(false);
+    try {
+      const joinedGroups = await checkBuyingRecord();
+      if (joinedGroups.length > 0 && joinedGroups.length > myReviews.length)
+        setWritable(true);
+      else setWritable(false);
+    } catch (e) {
+      setWritable(false);
+    }
   };
 
   const handleDeleteMyReview = (postId) => {

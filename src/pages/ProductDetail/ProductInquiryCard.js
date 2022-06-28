@@ -44,7 +44,6 @@ const ProductInquiryCard = ({
   }
 
   const showDetail = (e) => {
-    if (e.target.id.includes("reply")) return;
     setOpen((cur) => !cur);
   };
 
@@ -213,7 +212,7 @@ const highlightAnimation = keyframes`
 const Container = styled.div`
   position: relative;
   width: 100%;
-  margin: 2px 0;
+  margin: 0;
   border-bottom: 1px solid #d0d0d0;
   padding-top: 30px;
   padding-bottom: 30px;
