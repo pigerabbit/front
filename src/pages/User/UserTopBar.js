@@ -40,7 +40,7 @@ const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 1px 4px -1px #ababab;
+  box-shadow: 0 1px 2px -1px #ababab;
   color: #939393;
   font-size: 4.5vw;
   @media (min-width: 500px) {

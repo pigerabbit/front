@@ -167,11 +167,13 @@ const RegisterPage = () => {
 export default RegisterPage;
 
 const Container = styled.div`
+  box-sizing: border-box;
   position: relative;
   width: 100%;
   max-width: 770px;
   min-width: 360px;
-  min-height: 750px;
+  min-height: 100vh;
+  padding-bottom: 5%;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -182,4 +184,5 @@ const InputListContainter = styled.form`
   width: 70%;
   max-width: 400px;
   margin-top: 10%;
+  margin-bottom: 5%;
 `;
