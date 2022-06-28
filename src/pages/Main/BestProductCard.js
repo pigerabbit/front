@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart as fullHeart,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
@@ -41,7 +44,7 @@ const BestProductCard = ({ product, index }) => {
       showConfirmationIcon({
         backgroundColor: "#ABABAB;",
         color: "white",
-        icon: fullHeart,
+        icon: faXmark,
         text: "찜 실패",
       });
     }

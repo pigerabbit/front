@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart as fullHeart,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 import { useNavigate } from "react-router-dom";
@@ -40,7 +43,7 @@ const GroupPurchaseCard = ({ group }) => {
       showConfirmationIcon({
         backgroundColor: "#ABABAB;",
         color: "white",
-        icon: fullHeart,
+        icon: faXmark,
         text: "찜 실패",
       });
     }
