@@ -75,7 +75,7 @@ const ProductDetailPage = () => {
         fetchProductInfo(res.data.success);
       }
     } catch (e) {
-      console.log("product 못 가져옴");
+      setProduct({});
     }
   };
 
