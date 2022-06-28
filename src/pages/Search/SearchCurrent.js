@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SearchProductCard from "./SearchProductCard";
@@ -6,33 +6,10 @@ import * as Api from "api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const SearchCurrent = () => {
+const SearchCurrent = ({ viewedKeyword, viewedProductList }) => {
   const navigate = useNavigate();
 
-  const [keyword, setKeyword] = useState([]);
-  const [productList, setProductList] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const getSearchCurrent = async () => {
-    const getViewedWords = Api.get("toggle/searchWords");
-    const getViewedProducts = Api.get("toggle/viewedProducts");
-
-    try {
-      setLoading(true);
-
-      const [viewedKeyword, viewedProductList] = await Promise.all([
-        getViewedWords,
-        getViewedProducts,
-      ]);
-
-      setKeyword(viewedKeyword.data.reverse());
-      setProductList(viewedProductList.data);
-
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const [keyword, setKeyword] = useState(viewedKeyword);
 
   const deleteKeyword = (keyword) => async (e) => {
     e.stopPropagation();
@@ -50,38 +27,30 @@ const SearchCurrent = () => {
   const goToProductPage = (k) => () =>
     navigate(`/products?search=${encodeURIComponent(k)}`);
 
-  useEffect(() => {
-    getSearchCurrent();
-  }, []);
-
   return (
     <Container>
-      {!loading && (
-        <>
-          <CurrentKeywordContainer>
-            <h4>최근 검색어</h4>
-            <CurrentKeywordWrapper>
-              {keyword.map((k, idx) => (
-                <Keyword key={idx} onClick={goToProductPage(k)}>
-                  <span>{k}</span>
-                  <button onClick={deleteKeyword(k)}>
-                    <FontAwesomeIcon icon={faXmark} />
-                  </button>
-                </Keyword>
-              ))}
-              {keyword.length === 0 && <p>검색 기록이 없습니다.</p>}
-            </CurrentKeywordWrapper>
-          </CurrentKeywordContainer>
-          <CurrentProductContainer>
-            <h4>최근 본 판매상품</h4>
-            <CurrentProductWrapper>
-              {productList.map((product) => (
-                <SearchProductCard key={product.id} product={product} />
-              ))}
-            </CurrentProductWrapper>
-          </CurrentProductContainer>
-        </>
-      )}
+      <CurrentKeywordContainer>
+        <h4>최근 검색어</h4>
+        <CurrentKeywordWrapper>
+          {keyword.map((k, idx) => (
+            <Keyword key={idx} onClick={goToProductPage(k)}>
+              <span>{k}</span>
+              <button onClick={deleteKeyword(k)}>
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+            </Keyword>
+          ))}
+          {keyword.length === 0 && <p>검색 기록이 없습니다.</p>}
+        </CurrentKeywordWrapper>
+      </CurrentKeywordContainer>
+      <CurrentProductContainer>
+        <h4>최근 본 판매상품</h4>
+        <CurrentProductWrapper>
+          {viewedProductList.map((product) => (
+            <SearchProductCard key={product.id} product={product} />
+          ))}
+        </CurrentProductWrapper>
+      </CurrentProductContainer>
     </Container>
   );
 };

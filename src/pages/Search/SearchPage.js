@@ -30,26 +30,41 @@ const SearchPage = () => {
   const [isTrending, setIsTrending] = useState(true);
   const [deadlineGroup, setDeadlineGroup] = useState([]);
   const [trendingKeywords, setTrendingKeywords] = useState([]);
+  const [viewedKeyword, setViewedKeyword] = useState([]);
+  const [viewedProductList, setViewedProductList] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getSearchData = async () => {
     const getDeadlineGroups = Api.get("groups/sort/remainedTime");
     const getTrendingKeywords = Api.get("topics");
+    const getViewedWords = Api.get("toggle/searchWords");
+    const getViewedProducts = Api.get("toggle/viewedProducts");
 
     try {
       setLoading(true);
 
-      const [deadlineGroups, trendingKeywords] = await Promise.all([
+      const [
+        deadlineGroupsRes,
+        trendingKeywords,
+        viewedKeyword,
+        viewedProductList,
+      ] = await Promise.all([
         getDeadlineGroups,
         getTrendingKeywords,
+        getViewedWords,
+        getViewedProducts,
       ]);
 
-      if (deadlineGroups.data.payload.length !== 0) {
+      const deadlineGroups = deadlineGroupsRes.data.payload;
+      if (deadlineGroups.length !== 0) {
         const randomNum = Math.floor(Math.random() * deadlineGroups.length);
         setDeadlineGroup(deadlineGroups[randomNum]);
       }
 
       setTrendingKeywords(trendingKeywords.data.payload);
+      setViewedKeyword(viewedKeyword.data.reverse());
+      setViewedProductList(viewedProductList.data);
+
       setLoading(false);
     } catch (err) {
       //에러 처리
@@ -71,7 +86,10 @@ const SearchPage = () => {
           <SearchContentContainer>
             <SliderContainer isTrendingPage={isTrending}>
               <SearchTrending trendingKeywords={trendingKeywords} />
-              <SearchCurrent />
+              <SearchCurrent
+                viewedKeyword={viewedKeyword}
+                viewedProductList={viewedProductList}
+              />
             </SliderContainer>
           </SearchContentContainer>
           <Button isTrending={isTrending} setIsTrending={setIsTrending} />
