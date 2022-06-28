@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, update } from "redux/userSlice";
-import { init as groupsInit } from "redux/groupsSlice";
-import { init as productsInit } from "redux/productsSlice";
 import styled from "styled-components";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import * as Api from "api";
@@ -67,8 +65,6 @@ const MyPage = () => {
       await Api.delete("users", user.id, { password });
       sessionStorage.removeItem("userToken");
       dispatch(logout());
-      dispatch(groupsInit());
-      dispatch(productsInit());
       navigate("/login");
     } catch (e) {
       setPassword("");

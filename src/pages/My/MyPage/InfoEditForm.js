@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, update } from "redux/userSlice";
-import { init as groupsInit } from "redux/groupsSlice";
-import { init as productsInit } from "redux/productsSlice";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -56,8 +54,6 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
   const handleClickLogout = () => {
     sessionStorage.removeItem("userToken");
     dispatch(logout());
-    dispatch(groupsInit());
-    dispatch(productsInit());
     navigate("/login");
   };
 
