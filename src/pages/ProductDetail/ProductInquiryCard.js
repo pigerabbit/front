@@ -44,7 +44,6 @@ const ProductInquiryCard = ({
   }
 
   const showDetail = (e) => {
-    if (e.target.id.includes("reply")) return;
     setOpen((cur) => !cur);
   };
 
