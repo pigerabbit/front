@@ -110,16 +110,21 @@ const Info = styled.div`
 `;
 
 const Message = styled.div`
-  width: 80%;
+  width: 70%;
   > h3 {
     margin-left: 3%;
     display: inline;
     color: #f79831;
   }
+  @media only screen and (max-width: 450px) {
+    > h3 {
+      font-size: 15px;
+    }
+  }
 `;
 
 const State = styled.div`
-  width: 20%;
+  width: 30%;
   text-align: right;
   > span {
     padding: 5% 20%;
