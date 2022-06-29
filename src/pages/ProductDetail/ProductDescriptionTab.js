@@ -228,6 +228,7 @@ const DescriptionContainer = styled.div`
   border-top: 1px solid #d0d0d0;
 
   img {
+    margin-top: 15px;
     width: 100%;
     height: auto;
   }
