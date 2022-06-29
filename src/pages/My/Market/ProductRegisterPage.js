@@ -70,7 +70,8 @@ const ProductRegisterPage = () => {
   const descriptionValid =
     description.length > 0 || descriptionImage || descriptionPreviewImg;
   const minPurchaseQtyValid = Number(minPurchaseQty) > 0;
-  const maxPurchaseQtyValid = Number(maxPurchaseQty) > Number(minPurchaseQty);
+  const maxPurchaseQtyValid =
+    minPurchaseQtyValid && Number(maxPurchaseQty) >= Number(minPurchaseQty);
   const shippingFeeValid = shippingFee.length > 0;
   const shippingFeeConValid = shippingFeeCon.length > 0;
   const useByValid = Number(useBy) > 0;
