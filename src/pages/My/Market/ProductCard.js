@@ -229,7 +229,7 @@ const GroupsButton = styled.button`
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 13%;
+  width: 15%;
   max-width: 80px;
   margin-bottom: 0.5%;
   border: none;
