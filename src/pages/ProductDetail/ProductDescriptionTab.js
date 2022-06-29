@@ -147,7 +147,10 @@ const ImgContainer = styled.div`
 
   #productImg {
     width: auto;
-    height: 360px;
+    max-width: 100%;
+    min-height: 330px;
+    max-height: 360px;
+    object-fit: cover;
   }
 `;
 

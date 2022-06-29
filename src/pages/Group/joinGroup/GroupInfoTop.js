@@ -14,7 +14,8 @@ const ProductDetailTop = ({ group, product, seller }) => {
   const isImminent = location.state
     ? location.state.isImminent
     : dateHoursDifference < 24 ||
-      group.remainedPersonnel / product.minPurchaseQty < 0.1;
+      group.remainedPersonnel / product.minPurchaseQty < 0.1 ||
+      group.remainedPersonnel <= 3;
 
   const {
     name,
@@ -121,7 +122,10 @@ const ImgContainer = styled.div`
 
   #productImg {
     width: auto;
-    height: 360px;
+    max-width: 100%;
+    min-height: 330px;
+    max-height: 360px;
+    object-fit: cover;
   }
 `;
 
