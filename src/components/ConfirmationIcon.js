@@ -53,10 +53,8 @@ const Container = styled.div`
 `;
 
 const Circle = styled.div`
-  width: 15vw;
-  max-width: 115px;
-  height: 15vw;
-  max-height: 115px;
+  width: 115px;
+  height: 115px;
   border-radius: 50%;
   background-color: ${({ backgroundColor }) => backgroundColor};
   color: ${({ color }) => color};
@@ -69,17 +67,11 @@ const Circle = styled.div`
   align-items: center;
 
   > svg {
-    font-size: 6vw;
-    @media (min-width: 770px) {
-      font-size: 47px;
-    }
+    font-size: 45px;
   }
 
   > span {
     margin-top: 5px;
-    font-size: 2vw;
-    @media (min-width: 770px) {
-      font-size: 15.5px;
-    }
+    font-size: 16px;
   }
 `;

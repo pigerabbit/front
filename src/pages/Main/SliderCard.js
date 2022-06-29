@@ -104,7 +104,7 @@ const Image = styled.div`
   max-height: 200px;
   border-radius: 5px;
   background-image: url(${({ url }) => url});
-  background-size: 100%;
+  background-size: cover;
   background-position: center;
 `;
 
