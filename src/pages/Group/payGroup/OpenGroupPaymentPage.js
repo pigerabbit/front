@@ -20,7 +20,13 @@ const OpenGroupPaymentPage = () => {
 
   const [payment, setPayment] = useState("결제 수단 선택되지 않음");
   const [name, setName] = useState(user?.name || "");
-  const [contact, setContact] = useState(user?.phoneNumber || "");
+  const [contact, setContact] = useState(
+    user?.phoneNumber?.slice(0, 3) +
+      "-" +
+      user?.phoneNumber?.slice(3, 7) +
+      "-" +
+      user?.phoneNumber?.slice(7, 11) || ""
+  );
   const [address, setAddress] = useState(
     type !== "normal" ? location.trim() : user?.address || ""
   );
@@ -28,7 +34,13 @@ const OpenGroupPaymentPage = () => {
   useEffect(() => {
     if (user) {
       setName(user.name);
-      setContact(user.phoneNumber);
+      setContact(
+        user.phoneNumber?.slice(0, 3) +
+          "-" +
+          user.phoneNumber?.slice(3, 7) +
+          "-" +
+          user.phoneNumber?.slice(7, 11)
+      );
       if (type === "normal") {
         setAddress(user.address);
       }
@@ -72,6 +84,7 @@ const OpenGroupPaymentPage = () => {
     product.minPurchaseQty
   );
 
+  console.log(contact);
   return (
     <Container>
       <GroupHeader

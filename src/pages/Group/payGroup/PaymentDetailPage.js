@@ -51,7 +51,13 @@ const PaymentDetailPage = () => {
       </Info>
       <AddressInfo
         name={user?.name}
-        contact={user?.phoneNumber}
+        contact={
+          user?.phoneNumber?.slice(0, 3) +
+          "-" +
+          user?.phoneNumber?.slice(3, 7) +
+          "-" +
+          user?.phoneNumber?.slice(7, 11)
+        }
         address={group.groupType !== "normal" ? group.location : user?.address}
         type={group.groupType}
         isComplete="true"

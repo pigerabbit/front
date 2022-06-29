@@ -35,6 +35,9 @@ const CounterContainer = styled.div`
     font-size: 13px;
     color: #6c6c6c;
   }
+  @media (max-width: 500px) {
+    width: auto;
+  }
 `;
 
 const CounterWrapper = styled.div`
@@ -44,7 +47,7 @@ const CounterWrapper = styled.div`
   width: 90px;
   text-align: center;
   box-sizing: border-box;
-  padding: 1%;
+  padding: 1% 0;
   > button {
     border: none;
     background: transparent;
