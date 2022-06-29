@@ -8,7 +8,7 @@ const DetailHeader = ({ headerTitle }) => {
   return (
     <Header>
       <GoBack onClick={() => navigate(-1)} />
-      <Title>{headerTitle}</Title>
+      {headerTitle && <Title>{headerTitle}</Title>}
       <ButtonTopContainer>
         <div
           id="home"
