@@ -8,6 +8,8 @@ const ProductInfoCard = ({ title, content, img }) => {
     setOpen((cur) => !cur);
   };
 
+  if (!content) return null;
+
   return (
     <Container onClick={showCard}>
       <Title open={open}>
