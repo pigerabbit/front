@@ -31,21 +31,21 @@ const ConfirmationUsagePage = ({ setConfirmation }) => {
             아니요
           </Button>
         </ButtonContainer>
-        <WarningContainer>
-          <h3>주의사항</h3>
-          <div>
-            <span>
-              1. 본 이용권의 사용을 승인하기 위해서는 "네" 버튼을 눌러주시기
-              바랍니다.
-            </span>
-            <span>
-              2. 사용자 부주의에 의해 이용권이 사용되었을 경우, 이에 대한 책임은
-              사용자에게 있습니다.
-            </span>
-            <span>3. 위 사유에 대해서는 이용권의 환불이 불가능합니다.</span>
-          </div>
-        </WarningContainer>
       </ConfirmationContainer>
+      <WarningContainer>
+        <h3>주의사항</h3>
+        <div>
+          <span>
+            1. 본 이용권의 사용을 승인하기 위해서는 "네" 버튼을 눌러주시기
+            바랍니다.
+          </span>
+          <span>
+            2. 사용자 부주의에 의해 이용권이 사용되었을 경우, 이에 대한 책임은
+            사용자에게 있습니다.
+          </span>
+          <span>3. 위 사유에 대해서는 이용권의 환불이 불가능합니다.</span>
+        </div>
+      </WarningContainer>
     </Container>
   );
 };
@@ -64,10 +64,12 @@ const Container = styled.div`
 `;
 
 const ConfirmationContainer = styled.div`
+  z-index: 10;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #ffffff;
 
   #roundIcon {
     width: 210px;
@@ -84,10 +86,22 @@ const ConfirmationContainer = styled.div`
       height: 160px;
       color: #ffffff;
     }
+
+    @media (max-width: 400px) {
+      width: 150px;
+      height: 150px;
+      > svg {
+        width: 100px;
+        height: 100px;
+      }
+    }
   }
 
   > h1 {
     margin-bottom: 15px;
+    @media (max-width: 400px) {
+      font-size: 25px;
+    }
   }
 `;
 
@@ -96,6 +110,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 80%;
+  padding-bottom: 30px;
 `;
 
 const Button = styled.button`
