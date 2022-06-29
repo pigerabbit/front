@@ -21,7 +21,10 @@ const ProductInfoCard = ({ title, content, img }) => {
         <Content open={open}>
           <div>
             {content.split("\n").map((row, key) => (
-              <div key={key}>{row}</div>
+              <div key={key}>
+                {row}
+                <br />
+              </div>
             ))}
           </div>
           {img && (

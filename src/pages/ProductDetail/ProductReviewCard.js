@@ -140,7 +140,10 @@ const ProductReviewCard = ({
         )}
         <Content open={open} image={image}>
           {content.split("\n").map((row, key) => (
-            <div key={key}>{row}</div>
+            <div key={key}>
+              {row}
+              <br />
+            </div>
           ))}
         </Content>
         {image && (

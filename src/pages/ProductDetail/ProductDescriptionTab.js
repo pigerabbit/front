@@ -108,7 +108,10 @@ const ProductDescriptionTab = ({ product, seller }) => {
         {description && (
           <div>
             {description.split("\n").map((row, key) => (
-              <div key={key}>{row}</div>
+              <div key={key}>
+                {row}
+                <br />
+              </div>
             ))}
           </div>
         )}
@@ -148,8 +151,7 @@ const ImgContainer = styled.div`
   #productImg {
     width: auto;
     max-width: 100%;
-    min-height: 330px;
-    max-height: 360px;
+    height: 360px;
     object-fit: cover;
   }
 `;

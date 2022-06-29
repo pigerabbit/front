@@ -123,8 +123,7 @@ const ImgContainer = styled.div`
   #productImg {
     width: auto;
     max-width: 100%;
-    min-height: 330px;
-    max-height: 360px;
+    height: 360px;
     object-fit: cover;
   }
 `;
