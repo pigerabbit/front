@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import QRCode from "qrcode.react";
 import * as Api from "api";
 
-import GroupHeader from "pages/Group/GroupHeader";
+import DetailHeader from "components/DetailHeader";
 import SetQuantityButtons from "components/SetQuantityButtons";
 
 const QRCodePage = () => {
@@ -49,7 +49,7 @@ const QRCodePage = () => {
 
   return (
     <Container>
-      <GroupHeader />
+      <DetailHeader />
       <QRInfo>
         <p id="title">이용권 사용을 위한 QR코드입니다.</p>
         <p id="inform">
