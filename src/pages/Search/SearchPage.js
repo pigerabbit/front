@@ -100,7 +100,7 @@ const SearchPage = () => {
                 <SearchGroupCard group={deadlineGroup} />
               </>
             )}
-            {!deadlineGroup && (
+            {deadlineGroup.length === 0 && (
               <NoDeadlineGroupContainer>
                 <h3> 마감 임박 공동구매 상품이 없습니다</h3>
               </NoDeadlineGroupContainer>
