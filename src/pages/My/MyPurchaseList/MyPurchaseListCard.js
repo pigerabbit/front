@@ -158,7 +158,7 @@ const CardImageWrapper = styled.div`
   position: relative;
   width: 150px;
   height: 110px;
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 450px) {
     width: 100px;
     height: 100px;
   }
@@ -199,7 +199,7 @@ const CardContent = styled.div`
   > span {
     font-size: 14px;
   }
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 450px) {
     width: 68%;
   }
 `;
