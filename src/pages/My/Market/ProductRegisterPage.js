@@ -79,7 +79,7 @@ const ProductRegisterPage = () => {
     detailInfo.length > 0 || detailInfoImage || DetailInfoPreviewImg;
   const shippingInfoValid = shippingInfo.length > 0;
 
-  const formValid =
+  let formValid =
     productNameValid &&
     productImageValid &&
     categoryValid &&
@@ -137,6 +137,7 @@ const ProductRegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    formValid = false;
 
     const bodyData = {
       productType: productType === "parcel" ? "post" : "coupon",
