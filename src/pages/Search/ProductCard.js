@@ -78,9 +78,8 @@ export default ProductCard;
 const Container = styled.div`
   position: relative;
   width: 100%;
-  height: 0;
+  height: 100%;
   padding: 4%;
-  padding-bottom: 150%;
   cursor: pointer;
   box-sizing: border-box;
   border-radius: 5px;
@@ -99,8 +98,8 @@ const Container = styled.div`
 
   > svg {
     position: absolute;
-    right: 5px;
-    bottom: 5px;
+    right: 8px;
+    bottom: 10px;
     color: ${({ wish }) => {
       if (wish) return "#FF6A6A;";
       else return "#9c9c9c;";
@@ -121,11 +120,14 @@ const Image = styled.div`
 `;
 
 const Information = styled.div`
-  margin-top: 110%;
+  margin-top: 112%;
+  height: 33%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const Title = styled.div`
-  margin-bottom: 10px;
   line-height: 3.5vw;
   font-size: 3vw;
 

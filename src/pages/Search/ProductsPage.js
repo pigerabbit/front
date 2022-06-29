@@ -109,11 +109,9 @@ const ProductsPage = () => {
       </ProductsInfo>
 
       <ProductsCardContainer>
-        <>
-          {products.map((product) => (
-            <ProductCard product={product} key={product.id} />
-          ))}
-        </>
+        {products.map((product) => (
+          <ProductCard product={product} key={product.id} />
+        ))}
       </ProductsCardContainer>
 
       {loading && <LoadingSpinner />}
@@ -202,6 +200,13 @@ const ProductsCardContainer = styled.div`
   }
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 66vw;
+  @media (min-width: 600px) {
+    grid-auto-rows: 43vw;
+  }
+  @media (min-width: 770px) {
+    grid-auto-rows: 335px;
+  }
   grid-gap: 15px;
   @media (min-width: 600px) {
     grid-template-columns: repeat(3, 1fr);
