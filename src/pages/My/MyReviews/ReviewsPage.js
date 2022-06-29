@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import * as Api from "api";
 
 import MyPageLayout from "../MyPageLayout";
 import ReviewCard from "./ReviewCard";
-import { useSelector } from "react-redux";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const ReviewsPage = () => {
   const { user } = useSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(true);
   const [reviews, setReviews] = useState([]);
 
   const deleteReview = (id) => {
@@ -24,6 +26,7 @@ const ReviewsPage = () => {
       try {
         const res = await Api.get("posts", `${user.id}/review`);
         setReviews(res.data.payload);
+        setIsLoading(false);
       } catch (e) {
         // 에러처리
       }
@@ -36,32 +39,46 @@ const ReviewsPage = () => {
 
   return (
     <MyPageLayout pageName={"나의 후기"} previousPage="/mypage">
-      <Container>
-        <TotalNumber>총 {reviews.length}건</TotalNumber>
+      {isLoading ? (
+        <LoadingContainer>
+          <LoadingSpinner />
+        </LoadingContainer>
+      ) : (
+        <Container>
+          <TotalNumber>총 {reviews.length}건</TotalNumber>
 
-        {reviews.map((review) => (
-          <ReviewCard
-            review={review}
-            deleteReview={deleteReview}
-            key={review.postId}
-          />
-        ))}
-
-        {reviews.length === 0 && (
-          <NoReviewContainer>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/noContent.svg`}
-              alt="no nearby"
+          {reviews.map((review) => (
+            <ReviewCard
+              review={review}
+              deleteReview={deleteReview}
+              key={review.postId}
             />
-            작성된 후기가 없습니다.
-          </NoReviewContainer>
-        )}
-      </Container>
+          ))}
+
+          {reviews.length === 0 && (
+            <NoReviewContainer>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/noContent.svg`}
+                alt="no nearby"
+              />
+              작성된 후기가 없습니다.
+            </NoReviewContainer>
+          )}
+        </Container>
+      )}
     </MyPageLayout>
   );
 };
 
 export default ReviewsPage;
+
+const LoadingContainer = styled.div`
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Container = styled.div`
   padding-bottom: 80px;
