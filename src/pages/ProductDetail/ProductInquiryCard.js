@@ -140,7 +140,10 @@ const ProductInquiryCard = ({
             )}
             <Content isReplied={isReplied}>
               {content.split("\n").map((row, key) => (
-                <div key={key}>{row}</div>
+                <div key={key}>
+                  {row}
+                  <br />
+                </div>
               ))}
             </Content>
           </div>

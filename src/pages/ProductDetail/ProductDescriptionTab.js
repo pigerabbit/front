@@ -108,7 +108,10 @@ const ProductDescriptionTab = ({ product, seller }) => {
         {description && (
           <div>
             {description.split("\n").map((row, key) => (
-              <div key={key}>{row}</div>
+              <div key={key}>
+                {row}
+                <br />
+              </div>
             ))}
           </div>
         )}
