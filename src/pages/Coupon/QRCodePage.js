@@ -125,6 +125,7 @@ const QRInfo = styled.div`
   #inform {
     font-size: 16px;
     color: #636363;
+    word-break: keep-all;
   }
 `;
 
