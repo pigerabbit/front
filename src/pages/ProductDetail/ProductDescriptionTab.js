@@ -105,17 +105,7 @@ const ProductDescriptionTab = ({ product, seller }) => {
         </p>
       </InfoContainer>
       <DescriptionContainer>
-        {description && (
-          <div>
-            {/* {description.split("\n").map((row, key) => (
-              <div key={key}>
-                {row}
-                <br />
-              </div>
-            ))} */}
-            {description}
-          </div>
-        )}
+        {description && <div>{description}</div>}
         {descriptionImg && (
           <img
             id="descriptionImg"
@@ -227,6 +217,7 @@ const DescriptionContainer = styled.div`
   align-items: start;
   justify-content: center;
   border-top: 1px solid #d0d0d0;
+  white-space: pre-wrap;
 
   img {
     margin-top: 15px;

@@ -138,14 +138,7 @@ const ProductInquiryCard = ({
                 답변하기
               </button>
             )}
-            <Content isReplied={isReplied}>
-              {content.split("\n").map((row, key) => (
-                <div key={key}>
-                  {row}
-                  <br />
-                </div>
-              ))}
-            </Content>
+            <Content isReplied={isReplied}>{content}</Content>
           </div>
         )}
 
@@ -291,6 +284,7 @@ const Content = styled.div`
   margin: ${({ isReplied }) => (isReplied ? "20px" : "20px 90px 20px 20px")};
   margin-top: 20px;
   font-size: 15px;
+  white-space: pre-wrap;
 `;
 
 const InquiryImg = styled.img`
