@@ -19,7 +19,7 @@ const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
       const joinedGroups = resGroups.data.payload
         .filter(
           (group) =>
-            group.state === 5 ||
+            group.state === 1 ||
             (group.state === 1 && group.groupType === "coupon")
         )
         .map((group) => group.participants)

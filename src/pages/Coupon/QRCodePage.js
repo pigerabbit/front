@@ -18,7 +18,7 @@ const QRCodePage = () => {
   const [maxQuantity, setMaxQuantity] = useState(1);
   const [quantity, setQuantity] = useState(1);
 
-  const checkurl = `http://localhost:3000/check?group=${groupObjId}&user=${user.id}&quantity=${quantity}`;
+  const checkurl = `http://hackathon01.elicecoding.com/check?group=${groupObjId}&user=${user.id}&quantity=${quantity}`;
 
   const handleClick = () => {
     try {

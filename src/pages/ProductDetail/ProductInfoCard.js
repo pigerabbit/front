@@ -19,14 +19,7 @@ const ProductInfoCard = ({ title, content, img }) => {
 
       {open && (
         <Content open={open}>
-          <div>
-            {content.split("\n").map((row, key) => (
-              <div key={key}>
-                {row}
-                <br />
-              </div>
-            ))}
-          </div>
+          <div>{content}</div>
           {img && (
             <InfoImg id="infoImg" src={img} alt="상세정보 사진"></InfoImg>
           )}
@@ -58,6 +51,7 @@ const Title = styled.div`
 const Content = styled.div`
   margin: 30px;
   font-size: 15px;
+  white-space: pre-wrap;
 `;
 
 const OpenArrow = styled.i`
