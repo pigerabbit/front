@@ -126,8 +126,8 @@ const GroupType = styled.div`
   color: #ffffff;
 
   @media (max-width: 500px) {
-    width: 22px;
-    height: 22px;
+    width: 27px;
+    height: 27px;
     font-size: 10px;
   }
 `;
