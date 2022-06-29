@@ -34,7 +34,7 @@ const QRCodePage = () => {
     try {
       const res = await Api.get(`payments/${groupObjId}/${user.id}`);
       const availableMaxQuantity = res.data.payload.voucher;
-      if (availableMaxQuantity === 0) {
+      if (availableMaxQuantity <= 0) {
         navigate("/check/result", { state: { success: false } });
       }
       setMaxQuantity(availableMaxQuantity);
@@ -45,7 +45,7 @@ const QRCodePage = () => {
 
   useEffect(() => {
     getMaxQuantity();
-  }, []);
+  }, [user]);
 
   return (
     <Container>
