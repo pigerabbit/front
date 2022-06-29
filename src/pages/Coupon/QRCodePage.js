@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 import QRCode from "qrcode.react";
 import * as Api from "api";
 
@@ -9,7 +9,7 @@ import DetailHeader from "components/DetailHeader";
 import SetQuantityButtons from "components/SetQuantityButtons";
 
 const QRCodePage = () => {
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user, shallowEqual);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,7 +44,9 @@ const QRCodePage = () => {
   };
 
   useEffect(() => {
-    getMaxQuantity();
+    if (user) {
+      getMaxQuantity();
+    }
   }, [user]);
 
   return (
