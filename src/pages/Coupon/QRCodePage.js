@@ -39,7 +39,7 @@ const QRCodePage = () => {
       }
       setMaxQuantity(availableMaxQuantity);
     } catch (e) {
-      console.log("구매 가능 최대 수량 get 실패");
+      navigate("/check/result", { state: { success: false } });
     }
   };
 
