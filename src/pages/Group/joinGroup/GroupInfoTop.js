@@ -14,7 +14,8 @@ const ProductDetailTop = ({ group, product, seller }) => {
   const isImminent = location.state
     ? location.state.isImminent
     : dateHoursDifference < 24 ||
-      group.remainedPersonnel / product.minPurchaseQty < 0.1;
+      group.remainedPersonnel / product.minPurchaseQty < 0.1 ||
+      group.remainedPersonnel <= 3;
 
   const {
     name,
