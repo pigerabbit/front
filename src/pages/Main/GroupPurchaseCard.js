@@ -73,7 +73,9 @@ const GroupPurchaseCard = ({ group }) => {
       <Information>
         <CardTitle>
           <span>
-            {group.groupType === "local" ? group.location : "택배공구"}
+            {group.groupType === "local"
+              ? group.location.split(")")[0] + ")"
+              : "택배공구"}
           </span>
           <span>
             {group.groupName.slice(0, numTitle)}
