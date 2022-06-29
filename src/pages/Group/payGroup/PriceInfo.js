@@ -49,6 +49,7 @@ const Container = styled.div`
   background: #fff;
   margin-top: 10px;
   padding: 3%;
+  box-shadow: 0 3px 3px -3px #c7c7c7;
   @media (max-width: 500px) {
     > h3 {
       font-size: 15px;
