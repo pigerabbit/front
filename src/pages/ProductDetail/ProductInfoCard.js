@@ -76,6 +76,7 @@ const OpenArrow = styled.i`
 `;
 
 const InfoImg = styled.img`
+  margin-top: 15px;
   width: 100%;
   height: auto;
 `;
