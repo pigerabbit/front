@@ -11,6 +11,7 @@ import SearchCurrent from "./SearchCurrent";
 import SearchInputForm from "./SearchInputForm";
 import SearchTrending from "./SearchTrending";
 import SearchGroupCard from "./SearchGroupCard";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const Button = ({ isTrending, setIsTrending }) => {
   const icon = isTrending ? faChevronRight : faChevronLeft;
@@ -28,42 +29,87 @@ const Button = ({ isTrending, setIsTrending }) => {
 const SearchPage = () => {
   const [isTrending, setIsTrending] = useState(true);
   const [deadlineGroup, setDeadlineGroup] = useState([]);
+  const [trendingKeywords, setTrendingKeywords] = useState([]);
+  const [viewedKeyword, setViewedKeyword] = useState([]);
+  const [viewedProductList, setViewedProductList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const getImminentGroups = async () => {
-    const res = await Api.get("groups/sort/remainedTime");
-    const deadlineGroups = res.data.payload;
-    if (deadlineGroups.length !== 0) {
-      const randomNum = Math.floor(Math.random() * deadlineGroups.length);
-      setDeadlineGroup(deadlineGroups[randomNum]);
+  const getSearchData = async () => {
+    const getDeadlineGroups = Api.get("groups/sort/remainedTime");
+    const getTrendingKeywords = Api.get("topics");
+    const getViewedWords = Api.get("toggle/searchWords");
+    const getViewedProducts = Api.get("toggle/viewedProducts");
+
+    try {
+      setLoading(true);
+
+      const [
+        deadlineGroupsRes,
+        trendingKeywords,
+        viewedKeyword,
+        viewedProductList,
+      ] = await Promise.all([
+        getDeadlineGroups,
+        getTrendingKeywords,
+        getViewedWords,
+        getViewedProducts,
+      ]);
+
+      const deadlineGroups = deadlineGroupsRes.data.payload;
+      if (deadlineGroups.length !== 0) {
+        const randomNum = Math.floor(Math.random() * deadlineGroups.length);
+        setDeadlineGroup(deadlineGroups[randomNum]);
+      }
+
+      setTrendingKeywords(trendingKeywords.data.payload);
+      setViewedKeyword(viewedKeyword.data.reverse());
+      setViewedProductList(viewedProductList.data);
+
+      setLoading(false);
+    } catch (err) {
+      //에러 처리
+      console.log(err);
     }
   };
+
   useEffect(() => {
-    getImminentGroups();
+    getSearchData();
   }, []);
 
   return (
     <Container>
       <SearchInputForm />
-      <SearchContentContainer>
-        <SliderContainer isTrendingPage={isTrending}>
-          <SearchTrending />
-          <SearchCurrent />
-        </SliderContainer>
-      </SearchContentContainer>
-      <Button isTrending={isTrending} setIsTrending={setIsTrending} />
-      <DeadLineContainer isEmpty={!deadlineGroup}>
-        {deadlineGroup.length !== 0 && (
-          <>
-            <h3>마감 임박</h3>
-            <SearchGroupCard group={deadlineGroup} />
-          </>
-        )}
-        {!deadlineGroup && (
-          <NoDeadlineGroupContainer>
-            <h3> 마감 임박 공동구매 상품이 없습니다</h3>
-          </NoDeadlineGroupContainer>
-        )}
-      </DeadLineContainer>
+      {loading ? (
+        <LoadingSpinnerContainer>
+          <LoadingSpinner />
+        </LoadingSpinnerContainer>
+      ) : (
+        <>
+          <SearchContentContainer>
+            <SliderContainer isTrendingPage={isTrending}>
+              <SearchTrending trendingKeywords={trendingKeywords} />
+              <SearchCurrent
+                viewedKeyword={viewedKeyword}
+                viewedProductList={viewedProductList}
+              />
+            </SliderContainer>
+          </SearchContentContainer>
+          <Button isTrending={isTrending} setIsTrending={setIsTrending} />
+          <DeadLineContainer isEmpty={!deadlineGroup}>
+            {deadlineGroup.length !== 0 && (
+              <>
+                <h3>마감 임박</h3>
+                <SearchGroupCard group={deadlineGroup} />
+              </>
+            )}
+            {deadlineGroup.length === 0 && (
+              <NoDeadlineGroupContainer>
+                <h3> 마감 임박 공동구매 상품이 없습니다</h3>
+              </NoDeadlineGroupContainer>
+            )}
+          </DeadLineContainer>
+        </>
+      )}
     </Container>
   );
 };
@@ -81,6 +127,14 @@ const Container = styled.div`
     background: none;
   }
   overflow: hidden;
+`;
+
+const LoadingSpinnerContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const SearchContentContainer = styled.div`

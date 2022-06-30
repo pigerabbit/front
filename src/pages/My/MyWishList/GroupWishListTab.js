@@ -11,6 +11,7 @@ const GroupWishListTab = ({ groups }) => {
         {groups.map((group) => (
           <MyWishListCard
             key={group.groupId}
+            id={group.groupId}
             title={group.groupName}
             images={group.productInfo.images}
             price={group.productInfo.price}
@@ -18,7 +19,7 @@ const GroupWishListTab = ({ groups }) => {
             discountRate={group.productInfo.discountRate}
             leftParticipants={group.remainedPersonnel}
             deadline={group.deadline}
-            contentPercent={["55%", "55%"]}
+            isGroup
           />
         ))}
         {groups.length === 0 && (
@@ -42,12 +43,7 @@ const Container = styled.div`
   max-width: 770px;
   min-width: 360px;
   height: 100%;
-  margin-top: 10px;
-  overflow-y: scroll;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  margin-top: 30px;
 `;
 
 const Count = styled.p`

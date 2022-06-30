@@ -9,6 +9,7 @@ import * as Api from "api";
 import MyPageLayout from "../MyPageLayout";
 import ProductCard from "./ProductCard";
 import ConfirmationPopup from "../ConfirmationPopup";
+import NotFoundPage from "components/NotFoundPage";
 import LoadingSpinner from "components/LoadingSpinner";
 
 const MarketPage = () => {
@@ -19,6 +20,7 @@ const MarketPage = () => {
   const [products, setProducts] = useState([]);
   const [marketName, setMarketName] = useState("");
   const [currentProduct, setCurrentProduct] = useState("");
+  const [notFound, setNotFound] = useState(false);
 
   const navigate = useNavigate();
 
@@ -29,9 +31,10 @@ const MarketPage = () => {
       setMarketName(
         res.data.payload.resultList[0]?.userInfo.business[0]?.businessName || ""
       );
+
       setIsLoading(false);
     } catch (error) {
-      // 에러처리
+      setNotFound(true);
     }
   };
 
@@ -59,6 +62,8 @@ const MarketPage = () => {
   useEffect(() => {
     getProductData();
   }, []);
+
+  if (notFound) return <NotFoundPage text="찾을 수 없는 판매처입니다." />;
 
   return (
     <MyPageLayout

@@ -4,7 +4,7 @@ import styled, { keyframes } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBan } from "@fortawesome/free-solid-svg-icons";
 
-const CouponSuccessPage = () => {
+const CouponFailedPage = () => {
   return (
     <Container>
       <Result>
@@ -18,7 +18,7 @@ const CouponSuccessPage = () => {
   );
 };
 
-export default CouponSuccessPage;
+export default CouponFailedPage;
 
 const popup = keyframes`
   0% {

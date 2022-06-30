@@ -82,7 +82,7 @@ const ProductsPage = () => {
   }, [page]);
 
   return (
-    <Container noProduct={products?.length === 0}>
+    <Container>
       <ProductsTopBar
         search={search}
         category={category}
@@ -109,11 +109,9 @@ const ProductsPage = () => {
       </ProductsInfo>
 
       <ProductsCardContainer>
-        <>
-          {products.map((product) => (
-            <ProductCard product={product} key={product.id} />
-          ))}
-        </>
+        {products.map((product) => (
+          <ProductCard product={product} key={product.id} />
+        ))}
       </ProductsCardContainer>
 
       {loading && <LoadingSpinner />}
@@ -148,7 +146,6 @@ const ProductsPage = () => {
 export default ProductsPage;
 
 const Container = styled.div`
-  padding-bottom: ${({ noProduct }) => (noProduct ? "0;" : "110px;")}
   position: relative;
   width: 100%;
   max-width: 770px;
@@ -197,11 +194,16 @@ const Option = styled.div`
 
 const ProductsCardContainer = styled.div`
   width: 84%;
-  @media (min-width: 600px) {
-    margin-top: 50px;
-  }
+  padding-bottom: 110px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 66vw;
+  @media (min-width: 600px) {
+    grid-auto-rows: 43vw;
+  }
+  @media (min-width: 770px) {
+    grid-auto-rows: 335px;
+  }
   grid-gap: 15px;
   @media (min-width: 600px) {
     grid-template-columns: repeat(3, 1fr);

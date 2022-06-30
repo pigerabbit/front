@@ -7,12 +7,15 @@ const SelectGroupPopUpCard = ({ setIsOpen, setIsChecked }) => {
     setIsChecked(true);
     setIsOpen(false);
   };
+
+  const handleClosePopUpCard = () => setIsOpen(false);
+
   return (
     <Container>
       <CardContainer>
         <FontAwesomeIcon
           icon={faAngleDown}
-          onClick={() => setIsOpen(false)}
+          onClick={handleClosePopUpCard}
           style={{ fontSize: "40px" }}
         />
         <h3>공구 주의사항</h3>
@@ -26,9 +29,7 @@ const SelectGroupPopUpCard = ({ setIsOpen, setIsChecked }) => {
           4. 공구 기준에 도달하지 못할 경우, 공구가 진행되지 않습니다. 원하실
           경우 추가 공구를 여실 수 있습니다.
         </p>
-        <ConfirmButton onClick={() => handleClick()}>
-          동의 후 계속하기
-        </ConfirmButton>
+        <ConfirmButton onClick={handleClick}>동의 후 계속하기</ConfirmButton>
       </CardContainer>
     </Container>
   );

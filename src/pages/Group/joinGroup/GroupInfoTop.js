@@ -2,11 +2,20 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
+import { states } from "pages/Group/GroupModule";
+
 const ProductDetailTop = ({ group, product, seller }) => {
   const navigate = useNavigate();
-
   const location = useLocation();
-  const { isImminent } = location.state || false;
+
+  const dateHoursDifference = Math.floor(
+    (new Date(group.deadline) - new Date()) / (3600 * 1000)
+  );
+  const isImminent = location.state
+    ? location.state.isImminent
+    : dateHoursDifference < 24 ||
+      group.remainedPersonnel / product.minPurchaseQty < 0.1 ||
+      group.remainedPersonnel <= 3;
 
   const {
     name,
@@ -52,10 +61,21 @@ const ProductDetailTop = ({ group, product, seller }) => {
         <p id="groupName">{group.groupName}</p>
         <span>
           <p>~ {group.deadline}</p>
-          <Deadline>
-            {isImminent === true && <p id="imminent">"마감 임박"</p>}
-            <p id="remain">{group.remainedPersonnel}개</p> 남음
-          </Deadline>
+          <GroupState>
+            {group.state === 0 ? (
+              <>
+                {isImminent === true && <p id="imminent">"마감 임박"</p>}
+                <p id="remain">{group.remainedPersonnel}개</p> 남음
+              </>
+            ) : (
+              <EndedState
+                color={states[group.state][2]}
+                bgColor={states[group.state][1]}
+              >
+                {states[group.state][0]}
+              </EndedState>
+            )}
+          </GroupState>
         </span>
         <PriceInfo>
           <DiscountRate>{discountRateStr}%</DiscountRate>
@@ -102,7 +122,9 @@ const ImgContainer = styled.div`
 
   #productImg {
     width: auto;
+    max-width: 100%;
     height: 360px;
+    object-fit: cover;
   }
 `;
 
@@ -161,7 +183,7 @@ const InfoContainer = styled.div`
   }
 `;
 
-const Deadline = styled.div`
+const GroupState = styled.div`
   display: flex;
   flex-direction: row;
   align-items: baseline;
@@ -190,6 +212,13 @@ const Deadline = styled.div`
   @media (max-width: 500px) {
     font-size: 18px;
   }
+`;
+
+const EndedState = styled.div`
+  font-weight: bold;
+  padding: 5px;
+  color: ${({ color }) => color};
+  background-color: ${({ bgColor }) => bgColor};
 `;
 
 const PriceInfo = styled.div`

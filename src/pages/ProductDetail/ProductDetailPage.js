@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import * as Api from "api";
 
 import DetailHeader from "components/DetailHeader";
@@ -12,30 +13,55 @@ import ProductInquiryTab from "./ProductInquiryTab";
 import JoinGroupWindow from "pages/Group/joinGroup/JoinGroupWindow";
 
 const ProductDetailPage = () => {
+  const { user } = useSelector((state) => state.user);
+
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
 
   const [showJoinGroup, setShowJoinGroup] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
   const [currentTab, setCurrentTab] = useState({
     name: "beforeFetch",
     title: "fetch전",
   });
+  const [targetPostId, setTargetPostId] = useState("");
 
   const navigate = useNavigate();
+  const loc = useLocation();
 
   const productId = useParams().id;
 
   const fetchProductInfo = (isFetched) => {
     if (isFetched) {
-      setCurrentTab({
-        name: "description",
-        title: "상품설명",
-      });
+      const switchTab = loc.state?.data;
+      if (switchTab) {
+        if (switchTab.postId) setTargetPostId(switchTab.postId);
+        switch (switchTab.tab) {
+          case "review":
+            setCurrentTab({ name: "review", title: "후기" });
+            break;
+          case "cs":
+            setCurrentTab({ name: "inquiry", title: "문의" });
+            break;
+          default:
+            setCurrentTab({
+              name: "description",
+              title: "상품설명",
+            });
+            break;
+        }
+      } else {
+        setCurrentTab({
+          name: "description",
+          title: "상품설명",
+        });
+      }
     }
   };
 
   const getSellerDetail = ({ userId, userInfo }) => {
     setSeller({ userId, ...userInfo });
+    setIsSeller(user.id === userId);
   };
 
   const getProductDetail = async () => {
@@ -49,33 +75,42 @@ const ProductDetailPage = () => {
         fetchProductInfo(res.data.success);
       }
     } catch (e) {
-      console.log("product 못 가져옴");
+      setProduct({});
     }
   };
 
   useEffect(() => {
-    try {
-      getProductDetail();
-    } catch (e) {
-      console.log();
-    }
-  }, []);
+    getProductDetail();
+  }, [user]);
+
   return (
     <Container>
       <DetailHeader headerTitle={product.name} />
       <Tabs>
         <ProductTabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
       </Tabs>
-      <Body>
+      <Body isSeller={isSeller}>
         {currentTab.name === "description" && (
           <ProductDescriptionTab product={product} seller={seller} />
         )}
         {currentTab.name === "information" && (
           <ProductInformationTab product={product} />
         )}
-        {currentTab.name === "review" && <ProductReviewTab product={product} />}
+        {currentTab.name === "review" && (
+          <ProductReviewTab
+            product={product}
+            user={user}
+            targetPostId={targetPostId}
+            isSeller={isSeller}
+          />
+        )}
         {currentTab.name === "inquiry" && (
-          <ProductInquiryTab product={product} />
+          <ProductInquiryTab
+            product={product}
+            user={user}
+            targetPostId={targetPostId}
+            isSeller={isSeller}
+          />
         )}
         {showJoinGroup && (
           <JoinGroupWindow
@@ -85,7 +120,7 @@ const ProductDetailPage = () => {
           />
         )}
       </Body>
-      <ButtonsContainer>
+      <ButtonsContainer isSeller={isSeller}>
         <LeftButton
           position="left"
           onClick={() => {
@@ -129,7 +164,9 @@ const Tabs = styled.header`
 `;
 
 const Body = styled.div`
-  padding: 100px 0 75px 0;
+  background-color: #ffffff;
+  padding: ${({ isSeller }) =>
+    !isSeller ? "100px 0 75px 0" : "100px 0 10px 0"};
 `;
 
 const ButtonsContainer = styled.div`
@@ -139,7 +176,7 @@ const ButtonsContainer = styled.div`
   right: 0px;
   max-width: 770px;
   width: 100%;
-  display: flex;
+  display: ${({ isSeller }) => (!isSeller ? "flex" : "none")};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;

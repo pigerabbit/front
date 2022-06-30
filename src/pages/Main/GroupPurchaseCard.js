@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart as fullHeart,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 import { useNavigate } from "react-router-dom";
@@ -9,15 +12,17 @@ import { useNavigate } from "react-router-dom";
 import getDeadline from "utils/getDeadline";
 import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
-const numTitleInit =
-  (window.innerWidth >= 700 && 15) ||
-  (window.innerWidth >= 550 && 32) ||
-  (window.innerWidth >= 450 && 25) ||
-  16;
+const titleLengthInit =
+  (window.innerWidth >= 700 && 35) ||
+  (window.innerWidth >= 600 && 30) ||
+  (window.innerWidth >= 550 && 25) ||
+  (window.innerWidth >= 500 && 20) ||
+  (window.innerWidth >= 450 && 15) ||
+  14;
 
 const GroupPurchaseCard = ({ group }) => {
   const [wish, setWish] = useState(group?.toggle === 0 ? false : true);
-  const [numTitle, setNumTitle] = useState(numTitleInit);
+  const [titleLength, setTitleLength] = useState(titleLengthInit);
 
   const navigate = useNavigate();
   const showConfirmationIcon = useShowComfirmationIcon();
@@ -25,24 +30,25 @@ const GroupPurchaseCard = ({ group }) => {
   const handleToggle = async (e) => {
     e.stopPropagation();
 
-    if (!wish) {
+    try {
+      await Api.put(`toggle/group/${group._id}`);
+
       showConfirmationIcon({
-        backgroundColor: "#FF6A6A;",
+        backgroundColor: wish ? "#ABABAB;" : "#FF6A6A;",
         color: "white",
         icon: fullHeart,
-        text: "찜!",
+        text: wish ? "찜 취소" : "찜!",
       });
-    } else {
+
+      setWish((cur) => !cur);
+    } catch (error) {
       showConfirmationIcon({
         backgroundColor: "#ABABAB;",
         color: "white",
-        icon: fullHeart,
-        text: "찜 취소",
+        icon: faXmark,
+        text: "찜 실패",
       });
     }
-
-    await Api.put(`toggle/group/${group._id}`);
-    setWish((cur) => !cur);
   };
 
   const handleCardClick = () => {
@@ -50,10 +56,12 @@ const GroupPurchaseCard = ({ group }) => {
   };
 
   const handleResize = () => {
-    if (window.innerWidth >= 700) setNumTitle(15);
-    else if (window.innerWidth >= 550) setNumTitle(32);
-    else if (window.innerWidth >= 450) setNumTitle(25);
-    else setNumTitle(16);
+    if (window.innerWidth >= 700) setTitleLength(35);
+    else if (window.innerWidth >= 600) setTitleLength(30);
+    else if (window.innerWidth >= 550) setTitleLength(25);
+    else if (window.innerWidth >= 500) setTitleLength(20);
+    else if (window.innerWidth >= 450) setTitleLength(15);
+    else setTitleLength(14);
   };
 
   useEffect(() => {
@@ -69,11 +77,15 @@ const GroupPurchaseCard = ({ group }) => {
       <Information>
         <CardTitle>
           <span>
-            {group.groupType === "local" ? group.location : "택배공구"}
+            {group?.groupType === "local" &&
+              "[지역공구] " + group.location.split(")")[0] + ")"}
+            {group?.groupType === "coupon" &&
+              "[이용권공구] " + group.location.split(")")[0] + ")"}
+            {group?.groupType === "normal" && "택배공구"}
           </span>
           <span>
-            {group.groupName.slice(0, numTitle)}
-            {group.groupName.length > numTitle && ".."}
+            {group.groupName.slice(0, titleLength)}
+            {group.groupName.length > titleLength && ".."}
           </span>
         </CardTitle>
         <Price>

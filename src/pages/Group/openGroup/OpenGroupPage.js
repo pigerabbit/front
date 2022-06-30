@@ -4,10 +4,14 @@ import GroupHeader from "../GroupHeader";
 import OpenGroupBasicInfo from "./OpenGroupBasicInfo";
 import OpenGroupDetailInfo from "./OpenGroupDetailInfo";
 import { headerTitle } from "../GroupModule";
+import { useState } from "react";
+import HourPopup from "./HourPopup";
 
 const OpenGroupPage = () => {
-  const location = useLocation();
+  const [hour, setHour] = useState("");
+  const [isHourPopup, setIsHourPopup] = useState(false);
 
+  const location = useLocation();
   const query = new URLSearchParams(location.search);
   const type = query.get("type");
 
@@ -15,15 +19,22 @@ const OpenGroupPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={headerTitle[type]} />
-      <Content>
-        {product && (
-          <>
-            <OpenGroupBasicInfo product={product} type={type} />
-            <OpenGroupDetailInfo product={product} type={type} />
-          </>
-        )}
-      </Content>
+      <GroupHeader headerTitle={headerTitle[type]} goBack={-1} />
+      {isHourPopup && (
+        <HourPopup setIsHourPopup={setIsHourPopup} setHour={setHour} />
+      )}
+      {product && (
+        <>
+          <OpenGroupBasicInfo product={product} type={type} />
+          <OpenGroupDetailInfo
+            product={product}
+            type={type}
+            hour={hour}
+            setHour={setHour}
+            setIsHourPopup={setIsHourPopup}
+          />
+        </>
+      )}
     </Container>
   );
 };
@@ -36,16 +47,6 @@ const Container = styled.div`
   max-width: 770px;
   min-width: 360px;
   min-height: 100vh;
-  background-color: #ffffff;
-  display: flex;
-  justify-content: center;
+  background-color: #f6f6f6;
   overflow: hidden;
-`;
-
-const Content = styled.div`
-  margin-top: 70px;
-  width: 100%;
-  height: 100%;
-  padding: 3%;
-  box-sizing: border-box;
 `;

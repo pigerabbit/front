@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart as fullHeart,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
@@ -22,24 +25,25 @@ const SliderCard = ({ group }) => {
   const handleToggle = async (event) => {
     event.stopPropagation();
 
-    if (!wish) {
+    try {
+      await Api.put(`toggle/group/${group._id}`);
+
       showConfirmationIcon({
-        backgroundColor: "#FF6A6A;",
+        backgroundColor: wish ? "#ABABAB;" : "#FF6A6A;",
         color: "white",
         icon: fullHeart,
-        text: "찜!",
+        text: wish ? "찜 취소" : "찜!",
       });
-    } else {
+
+      setWish((cur) => !cur);
+    } catch (error) {
       showConfirmationIcon({
         backgroundColor: "#ABABAB;",
         color: "white",
-        icon: fullHeart,
-        text: "찜 취소",
+        icon: faXmark,
+        text: "찜 실패",
       });
     }
-
-    await Api.put(`toggle/group/${group._id}`);
-    setWish((cur) => !cur);
   };
 
   return (
@@ -48,7 +52,11 @@ const SliderCard = ({ group }) => {
       <Information>
         <CardTitle>
           <span>
-            {group?.groupType === "local" ? group?.location : "택배공구"}
+            {group?.groupType === "local" &&
+              "[지역공구] " + group.location.split(")")[0] + ")"}
+            {group?.groupType === "coupon" &&
+              "[이용권공구] " + group.location.split(")")[0] + ")"}
+            {group?.groupType === "normal" && "택배공구"}
           </span>
           <span>{group?.groupName}</span>
         </CardTitle>
@@ -100,7 +108,7 @@ const Image = styled.div`
   max-height: 200px;
   border-radius: 5px;
   background-image: url(${({ url }) => url});
-  background-size: 100%;
+  background-size: cover;
   background-position: center;
 `;
 

@@ -23,7 +23,7 @@ const GroupListPage = () => {
   };
 
   useEffect(() => {
-    if (!location.state?.isSeller) navigate("/");
+    if (!location.state?.isSeller) navigate(-1);
 
     getGroupsData();
   }, [productId]);

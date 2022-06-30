@@ -12,6 +12,7 @@ const PaginationCardsContainer = ({ title, groupPurchaseList }) => {
   const last = groupPurchaseList.length;
   const totalPage = Math.ceil(last / 4);
   const emptyNum = 4 - (last % 4);
+  const showEmptyCard = page === totalPage && emptyNum !== 4;
 
   const handleButtonClick = () => {
     if (page === totalPage) {
@@ -34,9 +35,9 @@ const PaginationCardsContainer = ({ title, groupPurchaseList }) => {
           <GroupPurchaseCard key={group.groupId} group={group} />
         ))}
 
-        {emptyNum > 0 && emptyNum !== 4 && <EmptyCard />}
-        {emptyNum > 1 && emptyNum !== 4 && <EmptyCard />}
-        {emptyNum > 2 && emptyNum !== 4 && <EmptyCard />}
+        {emptyNum > 0 && showEmptyCard && <EmptyCard />}
+        {emptyNum > 1 && showEmptyCard && <EmptyCard />}
+        {emptyNum > 2 && showEmptyCard && <EmptyCard />}
       </CardsContainer>
 
       <NextButton onClick={handleButtonClick}>
@@ -70,11 +71,8 @@ const CardsContainer = styled.div`
   width: 100%;
 
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   grid-gap: 20px;
-  @media (max-width: 700px) {
-    grid-template-columns: repeat(1, 1fr);
-  }
 `;
 
 const EmptyCard = styled.div`

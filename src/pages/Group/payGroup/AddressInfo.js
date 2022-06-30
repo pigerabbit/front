@@ -1,15 +1,6 @@
 import styled, { css } from "styled-components";
 
-const AddressInfo = ({
-  name,
-  contact,
-  address,
-  setName,
-  setContact,
-  setAddress,
-  type,
-  isComplete,
-}) => {
+const AddressInfo = ({ name, contact, address, type, isComplete }) => {
   return (
     <Container isComplete={isComplete}>
       <h3>{type === "coupon" ? "이용권 정보" : "배송지 정보"}</h3>
@@ -19,11 +10,7 @@ const AddressInfo = ({
           {isComplete ? (
             <p>{name}</p>
           ) : (
-            <InfoInput
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <InfoInput type="text" value={name} disabled />
           )}
         </Info>
         <Info>
@@ -31,11 +18,7 @@ const AddressInfo = ({
           {isComplete ? (
             <p>{contact}</p>
           ) : (
-            <InfoInput
-              type="text"
-              value={contact}
-              onChange={(e) => setContact(e.target.value)}
-            />
+            <InfoInput type="text" value={contact} disabled />
           )}
         </Info>
         <Info>
@@ -43,13 +26,7 @@ const AddressInfo = ({
           {isComplete ? (
             <p>{address}</p>
           ) : (
-            <InfoInput
-              type="text"
-              value={address}
-              isLocal={type === "local"}
-              onChange={(e) => setAddress(e.target.value)}
-              disabled={type === "local"}
-            />
+            <InfoInput type="text" value={address} disabled />
           )}
         </Info>
       </Content>
@@ -67,6 +44,7 @@ const Container = styled.div`
   background: #fff;
   margin-top: 70px;
   padding: 3%;
+  box-shadow: 0 3px 3px -3px #c7c7c7;
   ${(props) =>
     props.isComplete &&
     css`
@@ -103,11 +81,6 @@ const InfoInput = styled.input`
   border: 1px solid #e6e6e6;
   background: #fbfbfb;
   padding: 5px;
-  ${(props) =>
-    props.isLocal &&
-    css`
-      color: "#939393";
-    `}
   @media (max-width: 500px) {
     font-size: 13px;
   }

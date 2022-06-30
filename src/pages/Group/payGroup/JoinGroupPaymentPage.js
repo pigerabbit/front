@@ -20,7 +20,13 @@ const JoinGroupPaymentPage = () => {
 
   const [payment, setPayment] = useState("결제 수단 선택되지 않음");
   const [name, setName] = useState(user?.name || "");
-  const [contact, setContact] = useState(user?.phoneNumber || "");
+  const [contact, setContact] = useState(
+    user?.phoneNumber?.slice(0, 3) +
+      "-" +
+      user?.phoneNumber?.slice(3, 7) +
+      "-" +
+      user?.phoneNumber?.slice(7, 11) || ""
+  );
   const [address, setAddress] = useState(
     group.type !== "normal" ? group.location : user?.address || ""
   );
@@ -28,7 +34,13 @@ const JoinGroupPaymentPage = () => {
   useEffect(() => {
     if (user) {
       setName(user.name);
-      setContact(user.phoneNumber);
+      setContact(
+        user.phoneNumber?.slice(0, 3) +
+          "-" +
+          user.phoneNumber?.slice(3, 7) +
+          "-" +
+          user.phoneNumber?.slice(7, 11)
+      );
       if (group.groupType === "normal") {
         setAddress(user.address);
       }
@@ -39,7 +51,7 @@ const JoinGroupPaymentPage = () => {
     try {
       const res = await Api.put(`groups/${group.groupId}/participate/in`, {
         quantity: count,
-        paymentMehod: payment,
+        paymentMethod: payment,
       });
       if (res.data.success) {
         const { groupId } = res.data.payload;
@@ -67,7 +79,7 @@ const JoinGroupPaymentPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제`} />
+      <GroupHeader headerTitle={`주문/결제`} goBack={-1} />
       <AddressInfo
         name={name}
         contact={contact}
@@ -91,7 +103,10 @@ const JoinGroupPaymentPage = () => {
       />
       <PaymentInfo setPayment={setPayment} payment={payment} />
       <OrderButton disabled={!isValid} valid={isValid} onClick={joinGroup}>
-        {group.productInfo.salePrice * count + shippingPrice}원 주문하기
+        {`${(
+          group.productInfo.salePrice * count +
+          shippingPrice
+        ).toLocaleString()}원 주문하기`}
       </OrderButton>
     </Container>
   );

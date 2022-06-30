@@ -39,7 +39,7 @@ const PaymentDetailPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제`} />
+      <GroupHeader headerTitle={`결제 완료`} />
       <Info>
         <Message>
           <span>{subDate(group.updatedAt)}</span>
@@ -51,7 +51,13 @@ const PaymentDetailPage = () => {
       </Info>
       <AddressInfo
         name={user?.name}
-        contact={user?.phoneNumber}
+        contact={
+          user?.phoneNumber?.slice(0, 3) +
+          "-" +
+          user?.phoneNumber?.slice(3, 7) +
+          "-" +
+          user?.phoneNumber?.slice(7, 11)
+        }
         address={group.groupType !== "normal" ? group.location : user?.address}
         type={group.groupType}
         isComplete="true"
@@ -104,16 +110,21 @@ const Info = styled.div`
 `;
 
 const Message = styled.div`
-  width: 80%;
+  width: 70%;
   > h3 {
     margin-left: 3%;
     display: inline;
     color: #f79831;
   }
+  @media only screen and (max-width: 450px) {
+    > h3 {
+      font-size: 15px;
+    }
+  }
 `;
 
 const State = styled.div`
-  width: 20%;
+  width: 30%;
   text-align: right;
   > span {
     padding: 5% 20%;

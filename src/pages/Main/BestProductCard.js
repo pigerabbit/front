@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart as fullHeart,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
@@ -26,24 +29,25 @@ const BestProductCard = ({ product, index }) => {
   const handleToggle = async (e) => {
     e.stopPropagation();
 
-    if (!wish) {
+    try {
+      await Api.put(`toggle/product/${product._id}`);
+
       showConfirmationIcon({
-        backgroundColor: "#FF6A6A;",
+        backgroundColor: wish ? "#ABABAB;" : "#FF6A6A;",
         color: "white",
         icon: fullHeart,
-        text: "찜!",
+        text: wish ? "찜 취소" : "찜!",
       });
-    } else {
+
+      setWish((cur) => !cur);
+    } catch (error) {
       showConfirmationIcon({
         backgroundColor: "#ABABAB;",
         color: "white",
-        icon: fullHeart,
-        text: "찜 취소",
+        icon: faXmark,
+        text: "찜 실패",
       });
     }
-
-    await Api.put(`toggle/product/${product._id}`);
-    setWish((cur) => !cur);
   };
 
   const handleCardClick = () => {

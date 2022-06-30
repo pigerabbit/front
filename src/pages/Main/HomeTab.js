@@ -1,35 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setHomeTabGroupsTitle,
-  setRecommendation,
-  setNearby,
-} from "redux/groupsSlice";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-import * as Api from "api";
 
 import SliderCard from "./SliderCard";
 import PaginationCardsContainer from "./PaginationCardsContainer";
 import LoadingSpinner from "components/LoadingSpinner";
 
-const HomeTab = () => {
-  const { homeTabGroupsTitle, recommendationGroups, nearbyGroups } =
-    useSelector((state) => state.groups);
+const HomeTab = ({
+  loading,
+  recommendationGroups,
+  nearbyGroups,
+  homeTabGroupsTitle,
+}) => {
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
   const [transition, setTransition] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [isDisabledButton, setIsDisabledButton] = useState(false);
   const lastPage = recommendationGroups.length;
-
-  const dispatch = useDispatch();
 
   const handleChevronClick = (leftClick) => {
     return () => {
+      setIsDisabledButton(true);
+
       setTransition(true);
       setCardPosition((cur) => (leftClick ? cur - 1 : cur + 1));
 
@@ -38,44 +34,14 @@ const HomeTab = () => {
         setTimeout(() => {
           setTransition(false);
           setCardPosition(leftClick ? lastPage : 1);
+          setIsDisabledButton(false);
         }, [400]);
       } else {
         setPage((cur) => (leftClick ? cur - 1 : cur + 1));
+        setIsDisabledButton(false);
       }
     };
   };
-
-  const getGroupsData = async () => {
-    const getRecommendationGroups = Api.get("recommendations/group");
-    const getNearbyGroups = Api.get("groups/sort/locations");
-
-    try {
-      setLoading(true);
-
-      const [recommendationGroupsRes, nearbyGroupsRes] = await Promise.all([
-        getRecommendationGroups,
-        getNearbyGroups,
-      ]);
-
-      if (nearbyGroupsRes.data.data) {
-        dispatch(setHomeTabGroupsTitle("근처에 있는 공동구매에요!"));
-      } else {
-        dispatch(setHomeTabGroupsTitle("추천드리는 택배공구에요!"));
-      }
-
-      dispatch(setRecommendation(recommendationGroupsRes.data.payload));
-      dispatch(setNearby(nearbyGroupsRes.data.payload));
-
-      setLoading(false);
-    } catch (e) {
-      // 에러처리
-    }
-  };
-
-  useEffect(() => {
-    if (recommendationGroups.length === 0 || nearbyGroups.length === 0)
-      getGroupsData();
-  }, []);
 
   return (
     <Container>
@@ -108,17 +74,23 @@ const HomeTab = () => {
             </SliderContainer>
 
             <Pagination>
-              <FontAwesomeIcon
-                icon={faChevronLeft}
+              <ChevronButton
+                disabled={isDisabledButton}
                 onClick={handleChevronClick(true)}
-              />
+              >
+                <FontAwesomeIcon icon={faChevronLeft} />
+              </ChevronButton>
+
               <div>
                 <span>{page}</span> / {lastPage}
               </div>
-              <FontAwesomeIcon
-                icon={faChevronRight}
+
+              <ChevronButton
+                disabled={isDisabledButton}
                 onClick={handleChevronClick(false)}
-              />
+              >
+                <FontAwesomeIcon icon={faChevronRight} />
+              </ChevronButton>
             </Pagination>
           </InterestGroups>
 
@@ -201,13 +173,14 @@ const Pagination = styled.div`
   > div {
     display: flex;
     justify-content: center;
-    width: 12vw;
+    width: 14vw;
     margin: 0 2vw;
+    transform: translateY(3px);
     @media (min-width: 500px) {
-      width: 60px;
+      width: 70px;
       margin: 2px 14px;
+      transform: translateY(1px);
     }
-    margin-top: 0.4vw;
 
     > span {
       color: black;
@@ -216,6 +189,20 @@ const Pagination = styled.div`
         margin-right: 5px;
       }
     }
+  }
+
+  > svg {
+    cursor: pointer;
+  }
+`;
+
+const ChevronButton = styled.button`
+  border: none;
+  background-color: #fff;
+  font-size: 4vw;
+  color: #a4a4a4;
+  @media (min-width: 500px) {
+    font-size: 20px;
   }
 
   > svg {

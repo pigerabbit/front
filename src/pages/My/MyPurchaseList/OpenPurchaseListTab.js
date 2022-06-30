@@ -3,20 +3,13 @@ import styled, { keyframes } from "styled-components";
 import MyPurchaseListCard from "./MyPurchaseListCard";
 import SelectBox from "components/SeletBox";
 import * as Api from "api";
-
-const options = [
-  "전체보기",
-  "진행중",
-  "모집성공",
-  "기간마감",
-  "공구취소",
-  "사용완료",
-];
+import { options } from "../MyPageModule";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const OpenPurchaseListTab = ({ openedData, userId }) => {
   const [option, setOption] = useState("전체보기");
   const [totalData, setTotalData] = useState(openedData);
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
   const [cancelDataId, setCancelDataId] = useState("");
@@ -71,14 +64,18 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
       );
       setFilteredData(canceled);
     }
-  }, [option, totalData]);
+  }, [openedData, option, totalData]);
+
+  if (!filteredData) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Container>
-      <InfoWrapper>
-        <p>
-          총 <strong>{filteredData.length}</strong>개
-        </p>
+      <Count>
+        총 <strong>{filteredData.length}</strong>개
+      </Count>
+      <SelectBoxWrapper>
         <SelectBox
           setIsOpen={setIsOpen}
           isOpen={isOpen}
@@ -86,31 +83,34 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
           setValue={setOption}
           value={option}
         />
-      </InfoWrapper>
-      <PurchaseListWrapper>
-        {filteredData.length !== 0 &&
-          filteredData.map((group) => (
-            <MyPurchaseListCard
-              key={group.groupId}
-              userId={userId}
-              group={group}
-              isOpenTab={true}
-              setIsOpenPopUpCard={setIsOpenPopUpCard}
-              setCancelDataId={setCancelDataId}
-              handleRemoveGroupFromMyList={handleRemoveGroupFromMyList}
-              handleDeleteGroup={handleDeleteGroup}
-            />
-          ))}
-        {filteredData.length === 0 && (
-          <NoPurchaseListContainer>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/noProduct.svg`}
-              alt="no openedPurchaseList"
-            />
-            공구 내역이 없습니다.
-          </NoPurchaseListContainer>
-        )}
-      </PurchaseListWrapper>
+      </SelectBoxWrapper>
+
+      <PurchaseListContainer>
+        <PurchaseListWrapper>
+          {filteredData.length !== 0 &&
+            filteredData.map((group) => (
+              <MyPurchaseListCard
+                key={group.groupId}
+                userId={userId}
+                group={group}
+                isOpenTab={true}
+                setIsOpenPopUpCard={setIsOpenPopUpCard}
+                setCancelDataId={setCancelDataId}
+                handleRemoveGroupFromMyList={handleRemoveGroupFromMyList}
+                handleDeleteGroup={handleDeleteGroup}
+              />
+            ))}
+        </PurchaseListWrapper>
+      </PurchaseListContainer>
+      {filteredData.length === 0 && (
+        <NoPurchaseListContainer>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/noProduct.svg`}
+            alt="no openedPurchaseList"
+          />
+          공구 내역이 없습니다.
+        </NoPurchaseListContainer>
+      )}
       {isOpenPopUpCard && (
         <PopUpCard>
           <h3>공동구매를 정말 중지하시겠습니까?</h3>
@@ -144,7 +144,26 @@ const Container = styled.div`
   max-width: 770px;
   min-width: 360px;
   height: 100%;
-  margin-top: 10px;
+  margin-top: 150px;
+`;
+
+const Count = styled.div`
+  position: absolute;
+  top: 80px;
+  left: 20px;
+`;
+
+const SelectBoxWrapper = styled.div`
+  position: absolute;
+  top: 70px;
+  right: 10px;
+`;
+
+const PurchaseListContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 120px;
   overflow-y: scroll;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
@@ -152,18 +171,9 @@ const Container = styled.div`
   }
 `;
 
-const InfoWrapper = styled.div`
-  display: flex;
-  position: relative;
-  justify-content: space-between;
-  margin: 0 2%;
-  > p {
-    padding: 10px 0;
-  }
-`;
-
 const PurchaseListWrapper = styled.div`
-  width: 100%;
+  position: relative;
+  padding-bottom: 300px;
 `;
 
 const PopUpCard = styled.div`

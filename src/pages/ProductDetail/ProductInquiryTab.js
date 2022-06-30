@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import * as Api from "api";
 
 import ProductInquiryCard from "./ProductInquiryCard";
 import ProductInquiryForm from "./ProductInquiryForm";
 
-const ProductInquiryTab = ({ product }) => {
-  const { user } = useSelector((state) => state.user);
-
+const ProductInquiryTab = ({ product, user, targetPostId, isSeller }) => {
   const [inquiries, setInquiries] = useState([]);
   const [myInquiries, setMyInquiries] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
   const [showMyInquiries, setShowMyInquiries] = useState(false);
 
-  const isSeller = product.userId === user.id;
+  const handleDeleteMyInquiry = (postId) => {
+    const remainedInquiries = inquiries.filter(
+      (inquiry) => inquiry.postId !== postId
+    );
+    const remainedMyInquiries = myInquiries.filter(
+      (myInquiry) => myInquiry.postId !== postId
+    );
+
+    if (remainedInquiries.length !== 0 && remainedMyInquiries.length !== 0) {
+      setInquiries(remainedInquiries);
+      setMyInquiries(remainedMyInquiries);
+    }
+  };
 
   const getInquiries = async () => {
     try {
@@ -32,7 +41,11 @@ const ProductInquiryTab = ({ product }) => {
   };
 
   useEffect(() => {
+    let isMount = true;
     getInquiries();
+    return () => {
+      isMount = false;
+    };
   }, []);
 
   return (
@@ -71,29 +84,23 @@ const ProductInquiryTab = ({ product }) => {
           )}
         </InquiryTop>
         {!showMyInquiries
-          ? inquiries.map((v) => (
+          ? inquiries.map((inquiry) => (
               <ProductInquiryCard
-                key={v.postId}
-                writerId={v.writer}
-                title={v.title}
-                content={v.content}
-                image={v.postImg}
-                createdAt={v.createdAt}
-                commentCount={v.commentCount}
-                postId={v.postId}
+                key={inquiry.postId}
+                inquiry={inquiry}
+                onDeleteMyInquiry={handleDeleteMyInquiry}
                 isSeller={isSeller}
+                isMyInquiry={inquiry.writer === user.id}
+                targetPostId={targetPostId}
               />
             ))
-          : myInquiries.map((v) => (
+          : myInquiries.map((inquiry) => (
               <ProductInquiryCard
-                key={v.postId}
-                writerId={v.writer}
-                title={v.title}
-                content={v.content}
-                image={v.postImg}
-                createdAt={v.createdAt}
-                commentCount={v.commentCount}
-                postId={v.postId}
+                key={inquiry.postId}
+                inquiry={inquiry}
+                onDeleteMyInquiry={handleDeleteMyInquiry}
+                isMyInquiry={inquiry.writer === user.id}
+                targetPostId={targetPostId}
               />
             ))}
       </Inquiry>

@@ -11,12 +11,12 @@ const ProductWishListTab = ({ products }) => {
         {products.map((product) => (
           <MyWishListCard
             key={product.id}
+            id={product.id}
             images={product.images}
             title={product.name}
             price={product.price}
             salePrice={product.salePrice}
             discountRate={product.discountRate}
-            contentPercent={["73%", "68%"]}
           />
         ))}
         {products.length === 0 && (
@@ -40,12 +40,7 @@ const Container = styled.div`
   max-width: 770px;
   min-width: 360px;
   height: 100%;
-  margin-top: 10px;
-  overflow-y: scroll;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  margin-top: 30px;
 `;
 
 const Count = styled.p`

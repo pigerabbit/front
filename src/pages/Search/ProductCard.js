@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart as fullHeart,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { faHeart as Heart } from "@fortawesome/free-regular-svg-icons";
 import * as Api from "api";
 
@@ -21,24 +24,25 @@ const ProductCard = ({ product }) => {
   const handleToggle = async (e) => {
     e.stopPropagation();
 
-    if (!wish) {
+    try {
+      await Api.put(`toggle/product/${product._id}`);
+
       showConfirmationIcon({
-        backgroundColor: "#FF6A6A;",
+        backgroundColor: wish ? "#ABABAB;" : "#FF6A6A;",
         color: "white",
         icon: fullHeart,
-        text: "찜!",
+        text: wish ? "찜 취소" : "찜!",
       });
-    } else {
+
+      setWish((cur) => !cur);
+    } catch (error) {
       showConfirmationIcon({
         backgroundColor: "#ABABAB;",
         color: "white",
-        icon: fullHeart,
-        text: "찜 취소",
+        icon: faXmark,
+        text: "찜 실패",
       });
     }
-
-    await Api.put(`toggle/product/${product._id}`);
-    setWish((cur) => !cur);
   };
 
   return (
@@ -74,9 +78,8 @@ export default ProductCard;
 const Container = styled.div`
   position: relative;
   width: 100%;
-  height: 0;
+  height: 100%;
   padding: 4%;
-  padding-bottom: 150%;
   cursor: pointer;
   box-sizing: border-box;
   border-radius: 5px;
@@ -95,8 +98,8 @@ const Container = styled.div`
 
   > svg {
     position: absolute;
-    right: 5px;
-    bottom: 5px;
+    right: 8px;
+    bottom: 10px;
     color: ${({ wish }) => {
       if (wish) return "#FF6A6A;";
       else return "#9c9c9c;";
@@ -117,11 +120,14 @@ const Image = styled.div`
 `;
 
 const Information = styled.div`
-  margin-top: 110%;
+  margin-top: 112%;
+  height: 33%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const Title = styled.div`
-  margin-bottom: 10px;
   line-height: 3.5vw;
   font-size: 3vw;
 

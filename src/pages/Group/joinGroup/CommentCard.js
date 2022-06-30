@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import * as Api from "api";
 
 import CommentEditForm from "./CommentEditForm";
 
-const CommentCard = ({ postId, content, writerId, createdAt, setComments }) => {
-  const { user } = useSelector((state) => state.user);
-
+const CommentCard = ({
+  postId,
+  user,
+  content,
+  writerId,
+  createdAt,
+  setComments,
+}) => {
   const [writer, setWriter] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 

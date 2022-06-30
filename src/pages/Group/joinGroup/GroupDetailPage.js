@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import * as Api from "api";
 
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
@@ -11,15 +12,19 @@ import DetailHeader from "components/DetailHeader";
 import GroupInfoTop from "./GroupInfoTop";
 import CommentsArea from "./CommentsArea";
 import BuyingProductWindow from "./BuyingProductWindow";
+import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
 const GroupDetailPage = () => {
+  const { user } = useSelector((state) => state.user);
+  const showConfirmationIcon = useShowComfirmationIcon();
+
   const [group, setGroup] = useState({});
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
   const [wish, setWish] = useState(false);
   const [joinedGroup, setJoinedGroup] = useState(false);
+  const [isSeller, setIsSeller] = useState(false);
   const [isFetched, setIsFetched] = useState(false);
-
   const [showBuyingProduct, setShowBuyingProduct] = useState(false);
 
   const groupId = useParams().id;
@@ -27,6 +32,14 @@ const GroupDetailPage = () => {
   const handleWish = async () => {
     try {
       await Api.put(`toggle/group/${group._id}`);
+
+      showConfirmationIcon({
+        icon: fullHeart,
+        color: "#fff",
+        backgroundColor: wish ? "#ababab" : "#ff6a6a",
+        text: wish ? "찜 취소" : "찜",
+      });
+
       setWish((cur) => !cur);
     } catch (e) {
       console.log("공구 찜하기 실패");
@@ -38,6 +51,7 @@ const GroupDetailPage = () => {
       const res = await Api.get(`groups/groupId/${groupId}`);
       setGroup(res.data.payload[0]);
       setProduct(res.data.payload[0].productInfo);
+      setIsSeller(user.id === res.data.payload[0].productInfo.userId);
 
       const resWish = await Api.get("toggle/groups");
       setWish(
@@ -50,7 +64,6 @@ const GroupDetailPage = () => {
         `users/${res.data.payload[0].productInfo.userId}`
       );
       setSeller(resUser.data.payload);
-
       setIsFetched(true);
     } catch (e) {
       console.log("group 못 가져옴");
@@ -59,17 +72,19 @@ const GroupDetailPage = () => {
 
   useEffect(() => {
     getGroupDetail();
-  }, []);
+  }, [user]);
 
   return (
     <Container>
       {isFetched && (
         <>
           <DetailHeader headerTitle={group.groupName} />
-          <Body>
+          <Body state={group.state} isSeller={isSeller}>
             <GroupInfoTop group={group} product={product} seller={seller} />
             <CommentsArea
+              user={user}
               group={group}
+              isSeller={isSeller}
               setJoinedGroup={setJoinedGroup}
               joinedGroup={joinedGroup}
             />
@@ -86,15 +101,15 @@ const GroupDetailPage = () => {
             </div>
           )}
 
-          <ButtonsContainer>
+          <ButtonsContainer state={group.state} isSeller={isSeller}>
             <LeftButton wish={wish} onClick={handleWish}>
-              <p>
+              <span>
                 {wish ? (
                   <FontAwesomeIcon icon={fullHeart} size="1x" />
                 ) : (
                   <FontAwesomeIcon icon={Heart} size="1x" />
                 )}
-              </p>
+              </span>
               {!wish ? "찜 하기" : "찜 취소하기"}
             </LeftButton>
             {joinedGroup ? (
@@ -128,7 +143,9 @@ const Container = styled.div`
 `;
 
 const Body = styled.div`
-  padding-bottom: 80px;
+  background-color: #ffffff;
+  padding-bottom: ${({ state, isSeller }) =>
+    state === 0 && !isSeller ? "80px" : "10px"};
 `;
 
 const ButtonsContainer = styled.div`
@@ -138,7 +155,8 @@ const ButtonsContainer = styled.div`
   right: 0px;
   max-width: 770px;
   width: 100%;
-  display: flex;
+  display: ${({ state, isSeller }) =>
+    state === 0 && !isSeller ? "flex" : "none"};
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -163,7 +181,7 @@ const LeftButton = styled.div`
   color: #f79831;
   border: 2px solid #f79831;
 
-  > p {
+  > span {
     margin-right: 5px;
   }
 

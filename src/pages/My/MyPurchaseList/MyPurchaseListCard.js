@@ -22,8 +22,13 @@ const MyPurchaseListCard = ({
   const myInfo = group.participants.filter((p) => p.userId === userId);
   const { groupId, state, groupType, groupName, remainedPersonnel, deadline } =
     group;
-  const { productId, images, salePrice } = group.productInfo;
+  const { id: productId, images, salePrice } = group.productInfo;
   const isVoucherRemained = myInfo[0].payment.voucher !== 0;
+  const isReviewWritable =
+    (groupType !== "coupon" ||
+      (groupType === "coupon" && !isVoucherRemained)) &&
+    (state === 1 || state === 5) &&
+    !myInfo[0].review;
 
   const handleClick = () => {
     setIsOpenPopUpCard(true);
@@ -38,12 +43,19 @@ const MyPurchaseListCard = ({
     });
   };
 
+  const moveToPaymentPage = (groupId) => (e) => {
+    e.stopPropagation();
+    navigate(`/group/payment/${groupId}`);
+  };
+
+  const moveToGroupPage = (groupId) => () => navigate(`/groups/${groupId}`);
+
   return (
     <CardContainer>
       {!isOpenTab && <p>{formatParticipateDate(myInfo[0].participantDate)}</p>}
       <CardWrapper>
         <CardImageWrapper>
-          <CardImage images={images} />
+          <CardImage images={images} onClick={moveToGroupPage(groupId)} />
           {groupState[state].length > 1 && (
             <StateMessage>
               <p>{groupState[state][1]}</p>
@@ -52,11 +64,12 @@ const MyPurchaseListCard = ({
         </CardImageWrapper>
         <CardContent>
           <Title>
-            <strong>{`[${groupTypes[groupType]}] `}</strong>
-            {groupName}
-            <span onClick={() => navigate(`/group/payment/${group.groupId}`)}>
-              결제 페이지
-            </span>
+            <p onClick={moveToGroupPage(groupId)}>
+              <strong>{`[${groupTypes[groupType]}] `}</strong>
+              {groupName}
+            </p>
+
+            <span onClick={moveToPaymentPage(groupId)}>결제 페이지</span>
           </Title>
           <State
             bgColor={returnBgColor(state)}
@@ -79,24 +92,32 @@ const MyPurchaseListCard = ({
           {isOpenTab ? "공구 중지" : "참여 취소"}
         </CardButton>
       )}
-      {state === 1 && groupType === "coupon" && (
+      {(state === 1 || state === 5) && groupType === "coupon" && (
         <CardButton
           onClick={moveToQRCode}
           disabled={!isVoucherRemained}
-          bgColor={!isVoucherRemained ? "#A0A0A0" : "#ff9b2f"}
+          bgColor={!isVoucherRemained ? "#A0A0A0" : "#f79831"}
           cursor={!isVoucherRemained ? "auto" : "pointer"}
         >
           QR 코드
         </CardButton>
       )}
-      {state === 5 && myInfo[0].review === true && (
+      {!isReviewWritable && !isVoucherRemained && (
         <CardButton bgColor="#A0A0A0" cursor="auto">
           후기 완료
         </CardButton>
       )}
-      {state === 5 && myInfo[0].review === false && (
+      {isReviewWritable && (
         <CardButton
-          onClick={() => navigate(`products/${productId}`)}
+          onClick={() =>
+            navigate(`/products/${productId}`, {
+              state: {
+                data: {
+                  tab: "review",
+                },
+              },
+            })
+          }
           bgColor="#FFB564"
           cursor="pointer"
         >
@@ -150,7 +171,7 @@ const CardImageWrapper = styled.div`
   position: relative;
   width: 150px;
   height: 110px;
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 450px) {
     width: 100px;
     height: 100px;
   }
@@ -163,6 +184,7 @@ const CardImage = styled.div`
   border-radius: 10px;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 `;
 
 const StateMessage = styled.div`
@@ -190,14 +212,18 @@ const CardContent = styled.div`
   > span {
     font-size: 14px;
   }
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 450px) {
     width: 68%;
   }
 `;
 
-const Title = styled.p`
+const Title = styled.div`
   line-height: 20px;
   padding: 1% 0;
+  > p {
+    display: inline-block;
+    cursor: pointer;
+  }
   > span {
     margin-left: 1%;
     font-size: 13px;
@@ -206,6 +232,11 @@ const Title = styled.p`
     cursor: pointer;
     &:hover {
       color: #ffd3a4;
+    }
+  }
+  @media only screen and (max-width: 400px) {
+    > span {
+      display: block;
     }
   }
 `;

@@ -36,7 +36,7 @@ const ProductsTopBar = ({ search, category, setIsOpenSideBar }) => {
   const navigate = useNavigate();
 
   const handlePreviousBtnClick = () => {
-    navigate("/");
+    navigate(-1, { replace: true });
   };
 
   const handleCategoryBtnClick = () => {

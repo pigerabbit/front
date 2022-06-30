@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import QRCode from "qrcode.react";
 import * as Api from "api";
 
-import GroupHeader from "pages/Group/GroupHeader";
+import DetailHeader from "components/DetailHeader";
 import SetQuantityButtons from "components/SetQuantityButtons";
 
 const QRCodePage = () => {
@@ -18,7 +18,7 @@ const QRCodePage = () => {
   const [maxQuantity, setMaxQuantity] = useState(1);
   const [quantity, setQuantity] = useState(1);
 
-  const checkurl = `http://localhost:3000/check?group=${groupObjId}&user=${user.id}&quantity=${quantity}`;
+  const checkurl = `http://hackathon01.elicecoding.com/check?group=${groupObjId}&user=${user.id}&quantity=${quantity}`;
 
   const handleClick = () => {
     try {
@@ -34,22 +34,24 @@ const QRCodePage = () => {
     try {
       const res = await Api.get(`payments/${groupObjId}/${user.id}`);
       const availableMaxQuantity = res.data.payload.voucher;
-      if (availableMaxQuantity === 0) {
+      if (availableMaxQuantity <= 0) {
         navigate("/check/result", { state: { success: false } });
       }
       setMaxQuantity(availableMaxQuantity);
     } catch (e) {
-      console.log("구매 가능 최대 수량 get 실패");
+      navigate("/check/result", { state: { success: false } });
     }
   };
 
   useEffect(() => {
-    getMaxQuantity();
-  }, []);
+    if (user) {
+      getMaxQuantity();
+    }
+  }, [user]);
 
   return (
     <Container>
-      <GroupHeader />
+      <DetailHeader />
       <QRInfo>
         <p id="title">이용권 사용을 위한 QR코드입니다.</p>
         <p id="inform">
@@ -125,6 +127,7 @@ const QRInfo = styled.div`
   #inform {
     font-size: 16px;
     color: #636363;
+    word-break: keep-all;
   }
 `;
 

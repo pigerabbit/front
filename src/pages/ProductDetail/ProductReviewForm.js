@@ -32,7 +32,6 @@ const ProductReviewForm = ({
         try {
           const formData = new FormData();
           formData.append("postImg", reviewImg);
-          for (const keyValue of formData) console.log(keyValue[1]); // ["img", File] File은 객체
 
           const resImg = await Api.postImg(
             `posts/${newReview.postId}/img`,
@@ -61,8 +60,6 @@ const ProductReviewForm = ({
     setReviewImg(img);
     encodeFileToBase64(img, setPreviewImg);
   };
-
-  useEffect(() => {}, []);
 
   return (
     <Container>

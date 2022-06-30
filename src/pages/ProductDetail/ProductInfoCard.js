@@ -8,6 +8,8 @@ const ProductInfoCard = ({ title, content, img }) => {
     setOpen((cur) => !cur);
   };
 
+  if (!content) return null;
+
   return (
     <Container onClick={showCard}>
       <Title open={open}>
@@ -49,6 +51,7 @@ const Title = styled.div`
 const Content = styled.div`
   margin: 30px;
   font-size: 15px;
+  white-space: pre-wrap;
 `;
 
 const OpenArrow = styled.i`
@@ -67,6 +70,7 @@ const OpenArrow = styled.i`
 `;
 
 const InfoImg = styled.img`
+  margin-top: 15px;
   width: 100%;
   height: auto;
 `;
