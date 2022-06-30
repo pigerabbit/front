@@ -105,7 +105,7 @@ const MyPurchaseListCard = ({
       {state === 5 && myInfo[0].review === false && (
         <CardButton
           onClick={() =>
-            navigate(`products/${productId}`, {
+            navigate(`/products/${productId}`, {
               state: {
                 data: {
                   tab: "review",
