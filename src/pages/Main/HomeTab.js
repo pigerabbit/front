@@ -173,13 +173,14 @@ const Pagination = styled.div`
   > div {
     display: flex;
     justify-content: center;
-    width: 12vw;
+    width: 14vw;
     margin: 0 2vw;
+    transform: translateY(3px);
     @media (min-width: 500px) {
-      width: 60px;
+      width: 70px;
       margin: 2px 14px;
+      transform: translateY(1px);
     }
-    margin-top: 0.4vw;
 
     > span {
       color: black;
