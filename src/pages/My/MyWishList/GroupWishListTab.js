@@ -7,31 +7,33 @@ const GroupWishListTab = ({ groups }) => {
       <Count>
         총 <strong>{groups.length}</strong>개
       </Count>
-      <GroupWishListWrapper>
-        {groups.map((group) => (
-          <MyWishListCard
-            key={group.groupId}
-            id={group.groupId}
-            title={group.groupName}
-            images={group.productInfo.images}
-            price={group.productInfo.price}
-            salePrice={group.productInfo.salePrice}
-            discountRate={group.productInfo.discountRate}
-            leftParticipants={group.remainedPersonnel}
-            deadline={group.deadline}
-            isGroup
-          />
-        ))}
-        {groups.length === 0 && (
-          <NoWishListContainer>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/noWishList.svg`}
-              alt="no wishlist"
+      <GroupWishListContainer>
+        <GroupWishListWrapper>
+          {groups.map((group) => (
+            <MyWishListCard
+              key={group.groupId}
+              id={group.groupId}
+              title={group.groupName}
+              images={group.productInfo.images}
+              price={group.productInfo.price}
+              salePrice={group.productInfo.salePrice}
+              discountRate={group.productInfo.discountRate}
+              leftParticipants={group.remainedPersonnel}
+              deadline={group.deadline}
+              isGroup
             />
-            찜 내역이 없습니다.
-          </NoWishListContainer>
-        )}
-      </GroupWishListWrapper>
+          ))}
+        </GroupWishListWrapper>
+      </GroupWishListContainer>
+      {groups.length === 0 && (
+        <NoWishListContainer>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/noWishList.svg`}
+            alt="no wishlist"
+          />
+          찜 내역이 없습니다.
+        </NoWishListContainer>
+      )}
     </Container>
   );
 };
@@ -50,8 +52,21 @@ const Count = styled.p`
   margin: 2%;
 `;
 
-const GroupWishListWrapper = styled.div`
+const GroupWishListContainer = styled.div`
   width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 60px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const GroupWishListWrapper = styled.div`
+  position: relative;
+  padding-bottom: 300px;
 `;
 
 const NoWishListContainer = styled.div`

@@ -7,28 +7,30 @@ const ProductWishListTab = ({ products }) => {
       <Count>
         총 <strong>{products.length}</strong>개
       </Count>
-      <ProductWishListWrapper>
-        {products.map((product) => (
-          <MyWishListCard
-            key={product.id}
-            id={product.id}
-            images={product.images}
-            title={product.name}
-            price={product.price}
-            salePrice={product.salePrice}
-            discountRate={product.discountRate}
-          />
-        ))}
-        {products.length === 0 && (
-          <NoWishListContainer>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/noWishList.svg`}
-              alt="no wishlist"
+      <ProductWishListContainer>
+        <ProductWishListWrapper>
+          {products.map((product) => (
+            <MyWishListCard
+              key={product.id}
+              id={product.id}
+              images={product.images}
+              title={product.name}
+              price={product.price}
+              salePrice={product.salePrice}
+              discountRate={product.discountRate}
             />
-            찜 내역이 없습니다.
-          </NoWishListContainer>
-        )}
-      </ProductWishListWrapper>
+          ))}
+        </ProductWishListWrapper>
+      </ProductWishListContainer>
+      {products.length === 0 && (
+        <NoWishListContainer>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/noWishList.svg`}
+            alt="no wishlist"
+          />
+          찜 내역이 없습니다.
+        </NoWishListContainer>
+      )}
     </Container>
   );
 };
@@ -47,8 +49,21 @@ const Count = styled.p`
   margin: 2%;
 `;
 
-const ProductWishListWrapper = styled.div`
+const ProductWishListContainer = styled.div`
   width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 60px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const ProductWishListWrapper = styled.div`
+  position: relative;
+  padding-bottom: 300px;
 `;
 
 const NoWishListContainer = styled.div`
