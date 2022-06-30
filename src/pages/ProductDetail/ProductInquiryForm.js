@@ -87,7 +87,7 @@ const ProductInquiryForm = ({
             required
           />
           <div id="inquiryImage">
-            <label for="chooseFile" id="buttonForFile">
+            <label htmlFor="chooseFile" id="buttonForFile">
               사진 첨부하기
             </label>
             <input
