@@ -196,6 +196,14 @@ const Pagination = styled.div`
 `;
 
 const ChevronButton = styled.button`
+  border: none;
+  background-color: #fff;
+  font-size: 4vw;
+  color: #a4a4a4;
+  @media (min-width: 500px) {
+    font-size: 20px;
+  }
+
   > svg {
     cursor: pointer;
   }
