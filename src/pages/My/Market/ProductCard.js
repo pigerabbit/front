@@ -90,7 +90,10 @@ const ProductCard = ({ product, setCurrentProduct, setIsOpenPopup }) => {
       </Content>
 
       {user?.id === id && (
-        <UpdateController isControllerOpen={isControllerOpen}>
+        <UpdateController
+          isControllerOpen={isControllerOpen}
+          onClick={(e) => e.stopPropagation()}
+        >
           <ControllerButton onClick={handleEditingClick}>편집</ControllerButton>
           <ControllerButton onClick={handleDeleteClick}>
             판매 삭제
