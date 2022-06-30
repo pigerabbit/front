@@ -9,11 +9,8 @@ import * as Api from "api";
 import MyPageLayout from "../MyPageLayout";
 import ProductCard from "./ProductCard";
 import ConfirmationPopup from "../ConfirmationPopup";
-<<<<<<< HEAD
 import NotFoundPage from "components/NotFoundPage";
-=======
 import LoadingSpinner from "components/LoadingSpinner";
->>>>>>> user
 
 const MarketPage = () => {
   const { user } = useSelector((state) => state.user);
@@ -34,6 +31,8 @@ const MarketPage = () => {
       setMarketName(
         res.data.payload.resultList[0]?.userInfo.business[0]?.businessName || ""
       );
+
+      setIsLoading(false);
     } catch (error) {
       setNotFound(true);
     }
