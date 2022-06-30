@@ -163,24 +163,6 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Guide = styled.div`
-  position: absolute;
-  top: -160px;
-  width: 100%;
-  max-width: 400px;
-  height: 160px;
-  padding: 15px;
-  box-sizing: border-box;
-  background-color: #fff;
-  box-shadow: 0 0 8px #e9e9e9;
-  border-radius: 10px;
-  font-size: 2.45vw;
-  @media (min-width: 580px) {
-    font-size: 14px;
-  }
-  line-height: 1.2;
-`;
-
 const Form = styled.form`
   width: 100%;
   height: 90vh;
@@ -196,6 +178,24 @@ const InputListContainter = styled.div`
   width: 70%;
   max-width: 400px;
   margin-bottom: 10%;
+`;
+
+const Guide = styled.div`
+  position: absolute;
+  top: -160px;
+  width: 100%;
+  max-width: 400px;
+  height: 160px;
+  padding: 15px;
+  box-sizing: border-box;
+  background-color: #fff;
+  box-shadow: 0 0 8px #e9e9e9;
+  border-radius: 10px;
+  font-size: 2.45vw;
+  @media (min-width: 580px) {
+    font-size: 13.5px;
+  }
+  line-height: 1.2;
 `;
 
 const ButtonsContainer = styled.div`
