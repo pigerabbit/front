@@ -30,6 +30,8 @@ const MyPurchaseListCard = ({
     (state === 1 || state === 5) &&
     !myInfo[0].review;
 
+  console.log(myInfo[0].review);
+
   const handleClick = () => {
     setIsOpenPopUpCard(true);
     setCancelDataId(group.groupId);
@@ -102,7 +104,7 @@ const MyPurchaseListCard = ({
           QR 코드
         </CardButton>
       )}
-      {!isReviewWritable && !isVoucherRemained && (
+      {myInfo[0].review && (
         <CardButton bgColor="#A0A0A0" cursor="auto">
           후기 완료
         </CardButton>
@@ -114,6 +116,7 @@ const MyPurchaseListCard = ({
               state: {
                 data: {
                   tab: "review",
+                  groupId,
                 },
               },
             })
