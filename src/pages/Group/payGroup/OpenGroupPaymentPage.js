@@ -84,7 +84,6 @@ const OpenGroupPaymentPage = () => {
     product.minPurchaseQty
   );
 
-  console.log(contact);
   return (
     <Container>
       <GroupHeader
