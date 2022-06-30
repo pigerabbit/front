@@ -103,6 +103,14 @@ const ProductRegisterPage = () => {
     };
   };
 
+  const setNum = (setValue) => {
+    return (value) => {
+      if (typeof Number(value) !== "number") return;
+
+      setValue(Number(value));
+    };
+  };
+
   const postImages = async (productId) => {
     try {
       const imagesFormData = new FormData();
@@ -300,9 +308,9 @@ const ProductRegisterPage = () => {
 
           <ProductInput
             title="공동구매 성립 수량"
-            type="number"
+            type="text"
             value={minPurchaseQty}
-            setValue={setMinPurchaseQty}
+            setValue={setNum(setMinPurchaseQty)}
             valueValid={minPurchaseQtyValid}
             width={25}
             check={true}
@@ -311,9 +319,9 @@ const ProductRegisterPage = () => {
 
           <ProductInput
             title="총 판매 수량"
-            type="number"
+            type="text"
             value={maxPurchaseQty}
-            setValue={setMaxPurchaseQty}
+            setValue={setNum(setMaxPurchaseQty)}
             valueValid={maxPurchaseQtyValid}
             width={25}
             check={true}

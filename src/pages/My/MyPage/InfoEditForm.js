@@ -387,7 +387,7 @@ const SubmitButton = styled.button`
   width: 24%;
   height: 7vw;
   max-height: 35px;
-  background-color: #ababab;
+  background-color: ${({ disabled }) => (disabled ? "#e5e5e5;" : "#ababab;")}
   color: white;
   display: flex;
   justify-content: center;
@@ -396,6 +396,7 @@ const SubmitButton = styled.button`
   @media (min-width: 500px) {
     font-size: 14px;
   }
+  transition: all 0.4s;
 `;
 
 const OutButtons = styled.div`

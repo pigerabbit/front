@@ -50,11 +50,7 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
 
           <Title>{inquire?.post.title}</Title>
           <Date>{getDate(inquire?.post.createdAt)}</Date>
-          <Inquire reply={inquire?.post.reply}>
-            {inquire?.post.content.split("\n").map((i, key) => (
-              <div key={key}>{i}</div>
-            ))}
-          </Inquire>
+          <Inquire reply={inquire?.post.reply}>{inquire?.post.content}</Inquire>
 
           {inquire?.post.reply && (
             <Reply>
@@ -62,11 +58,7 @@ const InquireCard = ({ inquire, deleteAnInquire }) => {
                 <span>답변</span>
                 <span>{getDate(inquire?.commentList[0]?.createdAt)}</span>
               </ReplyTitle>
-              <ReplyContent>
-                {inquire?.commentList[0].content.split("\n").map((i, key) => (
-                  <div key={key}>{i}</div>
-                ))}
-              </ReplyContent>
+              <ReplyContent>{inquire?.commentList[0].content}</ReplyContent>
               <div>
                 ※ 답변 내용은 각 판매사에서 작성되며,
                 <br />
@@ -160,6 +152,7 @@ const Date = styled.div`
 `;
 
 const Inquire = styled.div`
+  white-space: pre-wrap;
   font-size: 2.8vw;
   line-height: 3.8vw;
   margin-bottom: ${({ reply }) => (reply ? "15px;" : "0px;")};
@@ -230,4 +223,5 @@ const ReplyTitle = styled.div`
 
 const ReplyContent = styled.div`
   margin-bottom: 10px;
+  white-space: pre-wrap;
 `;
