@@ -122,10 +122,12 @@ const EmailLoginPage = () => {
 export default EmailLoginPage;
 
 const Container = styled.div`
+  border: 2px solid blue;
   position: relative;
   width: 100%;
   max-width: 770px;
   min-width: 360px;
+  height: 100vh;
   min-height: 700px;
   background-color: white;
   display: flex;
@@ -134,8 +136,10 @@ const Container = styled.div`
 `;
 
 const Form = styled.form`
+  border: 2px solid red;
   width: 100%;
   height: 90vh;
+  min-height: 600px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -145,7 +149,6 @@ const Form = styled.form`
 const InputListContainter = styled.div`
   width: 70%;
   max-width: 400px;
-  margin-top: -15%;
   margin-bottom: 10%;
 `;
 

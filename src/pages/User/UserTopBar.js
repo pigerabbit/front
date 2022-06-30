@@ -36,6 +36,7 @@ const TopBar = styled.div`
   background-color: white;
   width: 100%;
   height: 10vh;
+  min-height: 80px;
   max-height: 90px;
   display: flex;
   justify-content: space-between;
