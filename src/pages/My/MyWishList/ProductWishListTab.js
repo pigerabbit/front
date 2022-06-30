@@ -40,7 +40,7 @@ const Container = styled.div`
   max-width: 770px;
   min-width: 360px;
   height: 100%;
-  margin-top: 10px;
+  margin-top: 30px;
 `;
 
 const Count = styled.p`
