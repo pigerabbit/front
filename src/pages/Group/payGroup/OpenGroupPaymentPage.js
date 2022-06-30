@@ -27,9 +27,7 @@ const OpenGroupPaymentPage = () => {
       "-" +
       user?.phoneNumber?.slice(7, 11) || ""
   );
-  const [address, setAddress] = useState(
-    type !== "normal" ? location.trim() : user?.address || ""
-  );
+  const [address, setAddress] = useState(location.trim() || "");
 
   useEffect(() => {
     if (user) {
@@ -41,9 +39,6 @@ const OpenGroupPaymentPage = () => {
           "-" +
           user.phoneNumber?.slice(7, 11)
       );
-      if (type === "normal") {
-        setAddress(user.address);
-      }
     }
   }, [user, type]);
 
