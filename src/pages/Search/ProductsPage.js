@@ -82,7 +82,7 @@ const ProductsPage = () => {
   }, [page]);
 
   return (
-    <Container noProduct={products?.length === 0}>
+    <Container>
       <ProductsTopBar
         search={search}
         category={category}
@@ -146,7 +146,6 @@ const ProductsPage = () => {
 export default ProductsPage;
 
 const Container = styled.div`
-  padding-bottom: ${({ noProduct }) => (noProduct ? "0;" : "110px;")}
   position: relative;
   width: 100%;
   max-width: 770px;
@@ -195,9 +194,7 @@ const Option = styled.div`
 
 const ProductsCardContainer = styled.div`
   width: 84%;
-  @media (min-width: 600px) {
-    margin-top: 50px;
-  }
+  padding-bottom: 110px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: 66vw;
