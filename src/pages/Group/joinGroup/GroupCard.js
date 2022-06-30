@@ -54,7 +54,9 @@ const GroupCard = ({ group, minPurchaseQty }) => {
   const currentPeople = minPurchaseQty - group.remainedPersonnel;
 
   const isImminent =
-    hours + date * 24 < 24 || group.remainedPersonnel / minPurchaseQty < 0.1;
+    hours + date * 24 < 24 ||
+    group.remainedPersonnel / minPurchaseQty < 0.1 ||
+    group.remainedPersonnel <= 3;
 
   const handleClick = () =>
     navigate(`/groups/${group.groupId}`, {
@@ -124,8 +126,8 @@ const GroupType = styled.div`
   color: #ffffff;
 
   @media (max-width: 500px) {
-    width: 22px;
-    height: 22px;
+    width: 27px;
+    height: 27px;
     font-size: 10px;
   }
 `;

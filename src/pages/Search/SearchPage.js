@@ -78,11 +78,13 @@ const SearchPage = () => {
 
   return (
     <Container>
+      <SearchInputForm />
       {loading ? (
-        <LoadingSpinner />
+        <LoadingSpinnerContainer>
+          <LoadingSpinner />
+        </LoadingSpinnerContainer>
       ) : (
         <>
-          <SearchInputForm />
           <SearchContentContainer>
             <SliderContainer isTrendingPage={isTrending}>
               <SearchTrending trendingKeywords={trendingKeywords} />
@@ -125,6 +127,14 @@ const Container = styled.div`
     background: none;
   }
   overflow: hidden;
+`;
+
+const LoadingSpinnerContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const SearchContentContainer = styled.div`

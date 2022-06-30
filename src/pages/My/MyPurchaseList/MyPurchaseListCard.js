@@ -22,7 +22,7 @@ const MyPurchaseListCard = ({
   const myInfo = group.participants.filter((p) => p.userId === userId);
   const { groupId, state, groupType, groupName, remainedPersonnel, deadline } =
     group;
-  const { productId, images, salePrice } = group.productInfo;
+  const { id: productId, images, salePrice } = group.productInfo;
   const isVoucherRemained = myInfo[0].payment.voucher !== 0;
 
   const handleClick = () => {
@@ -104,7 +104,15 @@ const MyPurchaseListCard = ({
       )}
       {state === 5 && myInfo[0].review === false && (
         <CardButton
-          onClick={() => navigate(`products/${productId}`)}
+          onClick={() =>
+            navigate(`products/${productId}`, {
+              state: {
+                data: {
+                  tab: "review",
+                },
+              },
+            })
+          }
           bgColor="#FFB564"
           cursor="pointer"
         >
@@ -158,7 +166,7 @@ const CardImageWrapper = styled.div`
   position: relative;
   width: 150px;
   height: 110px;
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 450px) {
     width: 100px;
     height: 100px;
   }
@@ -199,7 +207,7 @@ const CardContent = styled.div`
   > span {
     font-size: 14px;
   }
-  @media only screen and (max-width: 400px) {
+  @media only screen and (max-width: 450px) {
     width: 68%;
   }
 `;

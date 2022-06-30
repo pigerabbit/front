@@ -105,13 +105,7 @@ const ProductDescriptionTab = ({ product, seller }) => {
         </p>
       </InfoContainer>
       <DescriptionContainer>
-        {description && (
-          <div>
-            {description.split("\n").map((row, key) => (
-              <div key={key}>{row}</div>
-            ))}
-          </div>
-        )}
+        {description && <div>{description}</div>}
         {descriptionImg && (
           <img
             id="descriptionImg"
@@ -133,6 +127,8 @@ const Container = styled.div`
   background-color: #ffffff;
 
   padding: 7px 0;
+
+  overflow: auto;
 `;
 
 const ImgContainer = styled.div`
@@ -147,7 +143,9 @@ const ImgContainer = styled.div`
 
   #productImg {
     width: auto;
+    max-width: 100%;
     height: 360px;
+    object-fit: cover;
   }
 `;
 
@@ -221,8 +219,10 @@ const DescriptionContainer = styled.div`
   align-items: start;
   justify-content: center;
   border-top: 1px solid #d0d0d0;
+  white-space: pre-wrap;
 
   img {
+    margin-top: 15px;
     width: 100%;
     height: auto;
   }

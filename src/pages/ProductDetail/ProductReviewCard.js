@@ -139,9 +139,7 @@ const ProductReviewCard = ({
           </ReplyButton>
         )}
         <Content open={open} image={image}>
-          {content.split("\n").map((row, key) => (
-            <div key={key}>{row}</div>
-          ))}
+          {content}
         </Content>
         {image && (
           <ReviewImg src={image} alt="리뷰 사진" open={open}></ReviewImg>
@@ -221,6 +219,7 @@ const Container = styled.div`
     image || isReplied || isSeller ? "pointer" : "default"};
   padding-bottom: ${({ open, isReplied }) =>
     open && isReplied ? "30px" : "0px"};
+  white-space: pre-wrap;
 
   animation: ${({ className }) =>
     className === "target" &&
