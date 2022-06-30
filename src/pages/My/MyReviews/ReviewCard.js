@@ -47,11 +47,7 @@ const ReviewCard = ({ review, deleteReview }) => {
           <Title>{review.title}</Title>
           <Date>{getDate(review.createdAt)}</Date>
           {review.postImg && <Image url={review.postImg} />}
-          <Review>
-            {review.content.split("\n").map((i, key) => (
-              <div key={key}>{i}</div>
-            ))}
-          </Review>
+          <Review>{review.content}</Review>
         </Content>
 
         <DeleteButton onClick={handleDeleteBtnClick}>삭제</DeleteButton>
@@ -124,6 +120,7 @@ const Date = styled.div`
 `;
 
 const Review = styled.div`
+  white-space: pre-wrap;
   font-size: 2.8vw;
   line-height: 3.8vw;
   @media (min-width: 620px) {

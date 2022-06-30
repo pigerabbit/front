@@ -127,6 +127,8 @@ const Container = styled.div`
   background-color: #ffffff;
 
   padding: 7px 0;
+
+  overflow: auto;
 `;
 
 const ImgContainer = styled.div`

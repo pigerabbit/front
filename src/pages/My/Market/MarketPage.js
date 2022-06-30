@@ -10,11 +10,13 @@ import MyPageLayout from "../MyPageLayout";
 import ProductCard from "./ProductCard";
 import ConfirmationPopup from "../ConfirmationPopup";
 import NotFoundPage from "components/NotFoundPage";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const MarketPage = () => {
   const { user } = useSelector((state) => state.user);
   const { id } = useParams();
   const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [marketName, setMarketName] = useState("");
   const [currentProduct, setCurrentProduct] = useState("");
@@ -29,6 +31,8 @@ const MarketPage = () => {
       setMarketName(
         res.data.payload.resultList[0]?.userInfo.business[0]?.businessName || ""
       );
+
+      setIsLoading(false);
     } catch (error) {
       setNotFound(true);
     }
@@ -68,36 +72,42 @@ const MarketPage = () => {
       }
       previousPage={-1}
     >
-      <Container>
-        {user?.id === id && (
-          <ProductRegisterButton onClick={handleRegisterBtnClick}>
-            <FontAwesomeIcon icon={faCirclePlus} />
-            판매 등록하기
-          </ProductRegisterButton>
-        )}
+      {isLoading ? (
+        <LoadingContainer>
+          <LoadingSpinner />
+        </LoadingContainer>
+      ) : (
+        <Container>
+          {user?.id === id && (
+            <ProductRegisterButton onClick={handleRegisterBtnClick}>
+              <FontAwesomeIcon icon={faCirclePlus} />
+              판매 등록하기
+            </ProductRegisterButton>
+          )}
 
-        {products.length > 0 && (
-          <TotalNumber>총 {products.length}개</TotalNumber>
-        )}
+          {products.length > 0 && (
+            <TotalNumber>총 {products.length}개</TotalNumber>
+          )}
 
-        {products.map((product) => (
-          <ProductCard
-            product={product}
-            setCurrentProduct={setCurrentProduct}
-            setIsOpenPopup={setIsOpenPopup}
-            key={product.id}
-          ></ProductCard>
-        ))}
-      </Container>
+          {products.map((product) => (
+            <ProductCard
+              product={product}
+              setCurrentProduct={setCurrentProduct}
+              setIsOpenPopup={setIsOpenPopup}
+              key={product.id}
+            ></ProductCard>
+          ))}
 
-      {products.length === 0 && (
-        <NoContentContainer>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/noSale.svg`}
-            alt="no nearby"
-          />
-          등록된 판매가 없습니다.
-        </NoContentContainer>
+          {products.length === 0 && (
+            <NoContentContainer>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/noSale.svg`}
+                alt="no nearby"
+              />
+              등록된 판매가 없습니다.
+            </NoContentContainer>
+          )}
+        </Container>
       )}
 
       <ConfirmationPopup
@@ -117,13 +127,23 @@ const MarketPage = () => {
 
 export default MarketPage;
 
+const LoadingContainer = styled.div`
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Container = styled.div`
+  position: relative;
   box-sizing: border-box;
-  padding-bottom: 80px;
-  @media (max-width: 440px) {
-    padding-bottom: 70px;
-  }
   width: 100%;
+  min-height: 80vh;
+  padding: 10px 0;
+  margin-bottom: 70px;
+  @media (max-width: 440px) {
+    margin-bottom: 60px;
+  }
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -132,8 +152,8 @@ const Container = styled.div`
 const ProductRegisterButton = styled.div`
   position: relative;
   cursor: pointer;
-  margin-top: 10px;
   width: 30%;
+  min-width: 180px;
   background-color: #ffb564;
   color: white;
   border-radius: 50px;
@@ -142,8 +162,12 @@ const ProductRegisterButton = styled.div`
   align-items: center;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
 
-  font-size: 2.5vw;
-  padding: 2.5vw;
+  font-size: 15px;
+  padding: 14px;
+  @media (min-width: 610px) {
+    font-size: 2.5vw;
+    padding: 2.5vw;
+  }
   @media (min-width: 770px) {
     font-size: 20px;
     padding: 20px;
@@ -151,8 +175,12 @@ const ProductRegisterButton = styled.div`
 
   > svg {
     position: absolute;
-    font-size: 4vw;
-    left: 2vw;
+    font-size: 22px;
+    left: 12px;
+    @media (min-width: 610px) {
+      font-size: 4vw;
+      left: 2vw;
+    }
     @media (min-width: 770px) {
       font-size: 32px;
       left: 15px;
@@ -185,17 +213,22 @@ const ConfirmationContent = styled.div`
 `;
 
 const NoContentContainer = styled.div`
-  margin-top: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 3vw;
+  font-size: 16px;
   @media (min-width: 650px) {
     font-size: 20px;
   }
 
   > img {
-    width: 50%;
+    width: 100%;
     margin-bottom: 5%;
   }
 `;
