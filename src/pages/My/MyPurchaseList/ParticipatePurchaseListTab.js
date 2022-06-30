@@ -146,7 +146,7 @@ const PurchaseListContainer = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 120px;
+  top: 105px;
   overflow-y: scroll;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
