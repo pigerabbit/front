@@ -37,7 +37,9 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   const fetchData = async () => {
-    const getRecommendationGroups = Api.get("recommendations/group");
+    const getRecommendationGroups = Api.get(
+      "recommendations/group?perPage=10&page=1"
+    );
     const getNearbyGroups = Api.get("groups/sort/locations");
     const getbestProducts = Api.get("products/main/top");
     const getPersonNearGroups = Api.get("groups/sort/remainedPersonnel");
