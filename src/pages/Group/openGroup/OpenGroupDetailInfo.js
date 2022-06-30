@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-// import SelectBox from "components/SeletBox";
-// import { options } from "../GroupModule";
 import DaumPost from "components/DaumPostCode";
 import GroupInput from "./GroupInput";
 
@@ -21,8 +19,6 @@ const OpenGroupDetailInfo = ({
   const [address, setAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
   const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
-  //const [hour, setHour] = useState(0);
-  //const [isOpen, setIsOpen] = useState(false);
 
   const handleDaumPostOpen = () => setIsDaumPostOpen(true);
 
@@ -31,7 +27,7 @@ const OpenGroupDetailInfo = ({
   const countValid = count > 0;
   const hourValid = hour !== "";
   const isValid =
-    type === "coupon"
+    type !== "local"
       ? groupNameValid && countValid && hourValid
       : groupNameValid && locationValid && countValid && hourValid;
 
@@ -63,7 +59,7 @@ const OpenGroupDetailInfo = ({
           minPurchaseQty={product.minPurchaseQty}
           check={true}
         />
-        {type !== "coupon" && (
+        {type === "local" && (
           <>
             <GroupInput
               title="공구 주소"
