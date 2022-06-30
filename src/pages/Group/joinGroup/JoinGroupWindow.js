@@ -26,12 +26,13 @@ const JoinGroupWindow = ({ productId, setShowJoinGroup, minPurchaseQty }) => {
   return (
     <Container>
       <CardContainer>
-        <div id="cancel">
-          <Cancel
-            onClick={() => {
-              setShowJoinGroup(false);
-            }}
-          />
+        <div
+          id="cancel"
+          onClick={() => {
+            setShowJoinGroup(false);
+          }}
+        >
+          <Cancel />
         </div>
         <h3>공구 참여하기</h3>
         {groups.length > 0 ? (
@@ -101,6 +102,12 @@ const CardContainer = styled.div`
       font-size: 15px;
       padding: 8px 25px;
     }
+  }
+
+  #cancel {
+    padding: 3px;
+
+    cursor: pointer;
   }
 `;
 
