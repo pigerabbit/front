@@ -11,7 +11,18 @@ const ProductInquiryTab = ({ product, user, targetPostId, isSeller }) => {
   const [isWriting, setIsWriting] = useState(false);
   const [showMyInquiries, setShowMyInquiries] = useState(false);
 
+  const findInquiry = (postId) => {
+    const inquiry = inquiries.find((inquiry) => inquiry.postId === postId);
+    return inquiry;
+  };
+
+  const hasInquiry = (postId) => {
+    return Boolean(findInquiry(postId));
+  };
+
   const handleDeleteMyInquiry = (postId) => {
+    if (!hasInquiry(postId)) return;
+
     const remainedInquiries = inquiries.filter(
       (inquiry) => inquiry.postId !== postId
     );
@@ -19,10 +30,8 @@ const ProductInquiryTab = ({ product, user, targetPostId, isSeller }) => {
       (myInquiry) => myInquiry.postId !== postId
     );
 
-    if (remainedInquiries.length !== 0 && remainedMyInquiries.length !== 0) {
-      setInquiries(remainedInquiries);
-      setMyInquiries(remainedMyInquiries);
-    }
+    setInquiries(remainedInquiries);
+    setMyInquiries(remainedMyInquiries);
   };
 
   const getInquiries = async () => {
