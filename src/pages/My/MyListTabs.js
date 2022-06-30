@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const MyListTabs = ({ tab, setTab, tabNames, isWishList }) => {
   const navigate = useNavigate();
@@ -11,7 +11,10 @@ const MyListTabs = ({ tab, setTab, tabNames, isWishList }) => {
   };
 
   return (
-    <TabsContainer isWishListTab1={isWishList && tab === "tab1"}>
+    <TabsContainer
+      isTab1={tab === "tab1"}
+      isWishListTab1={isWishList && tab === "tab1"}
+    >
       <Tab
         onClick={handleClick("tab1")}
         borderBottom={tab === "tab1" ? "2px solid #ffb564" : "none"}
@@ -32,10 +35,15 @@ export default MyListTabs;
 
 const TabsContainer = styled.div`
   position: relative;
-  margin-top: ${(props) => (props.isWishListTab1 ? "6px" : "30px")};
+  margin-top: ${(props) => (props.isTab1 ? "36px" : "75px")};
   width: 100%;
   display: flex;
   justify-content: space-evenly;
+  ${(props) =>
+    props.isWishListTab1 &&
+    css`
+      margin-top: 6px;
+    `}
 `;
 
 const Tab = styled.div`
