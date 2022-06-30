@@ -20,6 +20,7 @@ const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
         .filter(
           (group) =>
             group.state === 1 ||
+            group.state === 5 ||
             (group.state === 1 && group.groupType === "coupon")
         )
         .map((group) => group.participants)
@@ -47,6 +48,8 @@ const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
   };
 
   const handleDeleteMyReview = (postId) => {
+    setIsReviewFetched(false);
+
     const remainedReviews = reviews.filter(
       (review) => review.postId !== postId
     );
@@ -55,7 +58,6 @@ const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
     );
 
     if (remainedReviews.length !== 0 && remainedMyReviews.length !== 0) {
-      setIsReviewFetched(false);
       setReviews(remainedReviews);
       setMyReviews(remainedMyReviews);
       setIsReviewFetched(true);
