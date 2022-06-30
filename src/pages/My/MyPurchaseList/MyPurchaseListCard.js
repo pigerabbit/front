@@ -24,6 +24,12 @@ const MyPurchaseListCard = ({
     group;
   const { id: productId, images, salePrice } = group.productInfo;
   const isVoucherRemained = myInfo[0].payment.voucher !== 0;
+  const isReviewWritable =
+    (groupType !== "coupon" ||
+      (groupType === "coupon" && !isVoucherRemained)) &&
+    (state === 1 || state === 5) &&
+    !myInfo[0].review;
+  console.log(myInfo[0]);
 
   const handleClick = () => {
     setIsOpenPopUpCard(true);
@@ -87,25 +93,25 @@ const MyPurchaseListCard = ({
           {isOpenTab ? "공구 중지" : "참여 취소"}
         </CardButton>
       )}
-      {state === 1 && groupType === "coupon" && (
+      {(state === 1 || state === 5) && groupType === "coupon" && (
         <CardButton
           onClick={moveToQRCode}
           disabled={!isVoucherRemained}
-          bgColor={!isVoucherRemained ? "#A0A0A0" : "#ff9b2f"}
+          bgColor={!isVoucherRemained ? "#A0A0A0" : "#f79831"}
           cursor={!isVoucherRemained ? "auto" : "pointer"}
         >
           QR 코드
         </CardButton>
       )}
-      {state === 5 && myInfo[0].review === true && (
+      {!isReviewWritable && !isVoucherRemained && (
         <CardButton bgColor="#A0A0A0" cursor="auto">
           후기 완료
         </CardButton>
       )}
-      {state === 5 && myInfo[0].review === false && (
+      {isReviewWritable && (
         <CardButton
           onClick={() =>
-            navigate(`products/${productId}`, {
+            navigate(`/products/${productId}`, {
               state: {
                 data: {
                   tab: "review",
