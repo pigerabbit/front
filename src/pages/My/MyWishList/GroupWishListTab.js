@@ -42,13 +42,8 @@ const Container = styled.div`
   width: 100%;
   max-width: 770px;
   min-width: 360px;
-  height: 100%;
+  height: 100vh;
   margin-top: 10px;
-  overflow-y: scroll;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const Count = styled.p`
