@@ -19,10 +19,13 @@ const HomeTab = ({
   const [page, setPage] = useState(1);
   const [cardPosition, setCardPosition] = useState(1);
   const [transition, setTransition] = useState(true);
+  const [isDisabledButton, setIsDisabledButton] = useState(false);
   const lastPage = recommendationGroups.length;
 
   const handleChevronClick = (leftClick) => {
     return () => {
+      setIsDisabledButton(true);
+
       setTransition(true);
       setCardPosition((cur) => (leftClick ? cur - 1 : cur + 1));
 
@@ -31,9 +34,11 @@ const HomeTab = ({
         setTimeout(() => {
           setTransition(false);
           setCardPosition(leftClick ? lastPage : 1);
+          setIsDisabledButton(false);
         }, [400]);
       } else {
         setPage((cur) => (leftClick ? cur - 1 : cur + 1));
+        setIsDisabledButton(false);
       }
     };
   };
@@ -69,17 +74,23 @@ const HomeTab = ({
             </SliderContainer>
 
             <Pagination>
-              <FontAwesomeIcon
-                icon={faChevronLeft}
+              <ChevronButton
+                disabled={isDisabledButton}
                 onClick={handleChevronClick(true)}
-              />
+              >
+                <FontAwesomeIcon icon={faChevronLeft} />
+              </ChevronButton>
+
               <div>
                 <span>{page}</span> / {lastPage}
               </div>
-              <FontAwesomeIcon
-                icon={faChevronRight}
+
+              <ChevronButton
+                disabled={isDisabledButton}
                 onClick={handleChevronClick(false)}
-              />
+              >
+                <FontAwesomeIcon icon={faChevronRight} />
+              </ChevronButton>
             </Pagination>
           </InterestGroups>
 
@@ -179,6 +190,12 @@ const Pagination = styled.div`
     }
   }
 
+  > svg {
+    cursor: pointer;
+  }
+`;
+
+const ChevronButton = styled.button`
   > svg {
     cursor: pointer;
   }
