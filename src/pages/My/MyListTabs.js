@@ -11,7 +11,7 @@ const MyListTabs = ({ tab, setTab, tabNames, isWishList }) => {
   };
 
   return (
-    <TabsContainer>
+    <TabsContainer isWishListTab1={isWishList && tab === "tab1"}>
       <Tab
         onClick={handleClick("tab1")}
         borderBottom={tab === "tab1" ? "2px solid #ffb564" : "none"}
@@ -32,7 +32,7 @@ export default MyListTabs;
 
 const TabsContainer = styled.div`
   position: relative;
-  margin-top: 30px;
+  margin-top: ${(props) => (props.isWishListTab1 ? "6px" : "30px")};
   width: 100%;
   display: flex;
   justify-content: space-evenly;
