@@ -100,7 +100,7 @@ const Container = styled.div`
   align-items: center;
   margin: 0 auto;
 
-  padding: 15px 0 15px 15px;
+  padding: 15px 0 15px 10px;
 `;
 
 const GroupType = styled.div`
@@ -125,7 +125,7 @@ const GroupType = styled.div`
   border-radius: 50%;
   color: #ffffff;
 
-  @media (max-width: 500px) {
+  @media (max-width: 510px) {
     width: 27px;
     height: 27px;
     font-size: 10px;
@@ -142,7 +142,8 @@ const GroupInfo = styled.div`
     text-align: left;
     margin-top: 10px;
     margin-bottom: 5px;
-    @media (max-width: 500px) {
+    word-break: keep-all;
+    @media (max-width: 510px) {
       font-size: 16px;
     }
   }
@@ -151,14 +152,16 @@ const GroupInfo = styled.div`
     color: #636363;
     text-align: left;
     margin-bottom: 10px;
-    @media (max-width: 500px) {
+    max-width: 410px;
+    word-break: keep-all;
+    @media (max-width: 510px) {
       font-size: 13px;
     }
   }
 
   padding-right: 212px;
   padding-left: 65px;
-  @media (max-width: 500px) {
+  @media (max-width: 510px) {
     padding-right: 170px;
     padding-left: 33px;
   }
@@ -166,8 +169,8 @@ const GroupInfo = styled.div`
 
 const Current = styled.div`
   position: absolute;
-  right: 140px;
-  font-size: 25px;
+  right: 115px;
+  font-size: 23px;
   font-weight: bold;
   color: ${({ isImminent }) => (isImminent ? "#ff0000" : "#000000")};
   margin: 10px 0;
@@ -175,16 +178,16 @@ const Current = styled.div`
   flex-direction: column;
   align-items: center;
 
-  @media (max-width: 500px) {
+  @media (max-width: 510px) {
     font-size: 20px;
-    right: 105px;
+    right: 100px;
   }
 `;
 
 const StyledButton = styled.button`
   position: absolute;
-  right: 15px;
-  width: 100px;
+  right: 10px;
+  width: 90px;
   height: 50px;
   background-color: ${({ joined }) => (joined ? "#d0d0d0" : "#f79831")};
   border-radius: 10px;
@@ -195,7 +198,7 @@ const StyledButton = styled.button`
   color: #ffffff;
   cursor: ${({ joined }) => (joined ? "normal" : "pointer")};
 
-  @media (max-width: 500px) {
+  @media (max-width: 510px) {
     width: 78px;
     height: 45px;
   }
@@ -209,9 +212,9 @@ const Remain = styled.div`
   margin-top: 5px;
   font-weight: bold;
   text-align: left;
-  font-size: 18px;
+  font-size: 16px;
 
-  @media (max-width: 500px) {
-    font-size: 13px;
+  @media (max-width: 510px) {
+    font-size: 12px;
   }
 `;

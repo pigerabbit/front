@@ -52,7 +52,11 @@ const SliderCard = ({ group }) => {
       <Information>
         <CardTitle>
           <span>
-            {group?.groupType === "local" ? group?.location : "택배공구"}
+            {group?.groupType === "local" &&
+              "[지역공구] " + group.location.split(")")[0] + ")"}
+            {group?.groupType === "coupon" &&
+              "[이용권공구] " + group.location.split(")")[0] + ")"}
+            {group?.groupType === "normal" && "택배공구"}
           </span>
           <span>{group?.groupName}</span>
         </CardTitle>
