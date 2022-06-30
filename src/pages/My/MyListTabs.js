@@ -32,9 +32,8 @@ export default MyListTabs;
 
 const TabsContainer = styled.div`
   position: relative;
-  margin-top: 5px;
+  margin-top: 30px;
   width: 100%;
-  height: 50px;
   display: flex;
   justify-content: space-evenly;
 `;
@@ -42,7 +41,7 @@ const TabsContainer = styled.div`
 const Tab = styled.div`
   cursor: pointer;
   width: 48%;
-  height: 100%;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
