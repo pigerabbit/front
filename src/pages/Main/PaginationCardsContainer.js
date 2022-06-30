@@ -71,11 +71,8 @@ const CardsContainer = styled.div`
   width: 100%;
 
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   grid-gap: 20px;
-  @media (max-width: 700px) {
-    grid-template-columns: repeat(1, 1fr);
-  }
 `;
 
 const EmptyCard = styled.div`
