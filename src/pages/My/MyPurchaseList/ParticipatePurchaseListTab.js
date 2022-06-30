@@ -17,7 +17,7 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
   const handleCancelGroupClick = async () => {
     try {
       await Api.put(`groups/${cancelDataId}/participate/out`);
-      const data = filteredData.filter((data) => data.groupId === cancelDataId);
+      const data = filteredData.filter((data) => data.groupId !== cancelDataId);
       setFilteredData(data);
       setIsOpenPopUpCard(false);
     } catch (err) {
@@ -58,10 +58,10 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
 
   return (
     <Container>
-      <InfoWrapper>
-        <p>
-          총 <strong>{filteredData.length}</strong>개
-        </p>
+      <Count>
+        총 <strong>{filteredData.length}</strong>개
+      </Count>
+      <SelectBoxWrapper>
         <SelectBox
           setIsOpen={setIsOpen}
           isOpen={isOpen}
@@ -69,29 +69,31 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
           setValue={setOption}
           value={option}
         />
-      </InfoWrapper>
-      <PurchaseListWrapper>
-        {filteredData.length !== 0 &&
-          filteredData.map((group) => (
-            <MyPurchaseListCard
-              key={group.groupId}
-              userId={userId}
-              group={group}
-              isOpenTab={false}
-              setIsOpenPopUpCard={setIsOpenPopUpCard}
-              setCancelDataId={setCancelDataId}
-            />
-          ))}
-        {filteredData.length === 0 && (
-          <NoPurchaseListContainer>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/noProduct.svg`}
-              alt="no openedPurchaseList"
-            />
-            공구 내역이 없습니다.
-          </NoPurchaseListContainer>
-        )}
-      </PurchaseListWrapper>
+      </SelectBoxWrapper>
+      <PurchaseListContainer>
+        <PurchaseListWrapper>
+          {filteredData.length !== 0 &&
+            filteredData.map((group) => (
+              <MyPurchaseListCard
+                key={group.groupId}
+                userId={userId}
+                group={group}
+                isOpenTab={false}
+                setIsOpenPopUpCard={setIsOpenPopUpCard}
+                setCancelDataId={setCancelDataId}
+              />
+            ))}
+        </PurchaseListWrapper>
+      </PurchaseListContainer>
+      {filteredData.length === 0 && (
+        <NoPurchaseListContainer>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/noProduct.svg`}
+            alt="no openedPurchaseList"
+          />
+          공구 내역이 없습니다.
+        </NoPurchaseListContainer>
+      )}
       {isOpenPopUpCard && (
         <PopUpCard>
           <h3>공동구매 참여를 정말 취소하시겠습니까?</h3>
@@ -125,21 +127,36 @@ const Container = styled.div`
   max-width: 770px;
   min-width: 360px;
   height: 100%;
-  margin-top: 10px;
+  margin-top: 105px;
 `;
 
-const InfoWrapper = styled.div`
-  display: flex;
-  position: relative;
-  justify-content: space-between;
-  margin: 0 2%;
-  > p {
-    padding: 10px 0;
+const Count = styled.div`
+  position: absolute;
+  top: 80px;
+  left: 20px;
+`;
+
+const SelectBoxWrapper = styled.div`
+  position: absolute;
+  top: 70px;
+  right: 10px;
+`;
+
+const PurchaseListContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 120px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
 const PurchaseListWrapper = styled.div`
-  width: 100%;
+  position: relative;
+  padding-bottom: 300px;
 `;
 
 const PopUpCard = styled.div`
