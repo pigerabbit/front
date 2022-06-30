@@ -29,7 +29,6 @@ const MyPurchaseListCard = ({
       (groupType === "coupon" && !isVoucherRemained)) &&
     (state === 1 || state === 5) &&
     !myInfo[0].review;
-  console.log(myInfo[0]);
 
   const handleClick = () => {
     setIsOpenPopUpCard(true);
