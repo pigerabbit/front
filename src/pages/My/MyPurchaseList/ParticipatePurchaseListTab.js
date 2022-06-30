@@ -14,6 +14,16 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
   const [cancelDataId, setCancelDataId] = useState("");
 
+  const handleRemoveGroupFromMyList = async (groupId) => {
+    try {
+      await Api.put(`groups/${groupId}/participate/out`);
+      const data = filteredData.filter((data) => data.groupId !== groupId);
+      setFilteredData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleCancelGroupClick = async () => {
     try {
       await Api.put(`groups/${cancelDataId}/participate/out`);
@@ -81,6 +91,7 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
                 isOpenTab={false}
                 setIsOpenPopUpCard={setIsOpenPopUpCard}
                 setCancelDataId={setCancelDataId}
+                handleRemoveGroupFromMyList={handleRemoveGroupFromMyList}
               />
             ))}
         </PurchaseListWrapper>

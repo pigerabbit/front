@@ -136,7 +136,7 @@ const MyPurchaseListCard = ({
       )}
       {(state === -6 || state === -7) && (
         <CardButton
-          onClick={() => handleRemoveGroupFromMyList(group.groupId)}
+          onClick={() => handleRemoveGroupFromMyList(groupId)}
           bgColor="#A0A0A0"
           cursor="pointer"
         >
