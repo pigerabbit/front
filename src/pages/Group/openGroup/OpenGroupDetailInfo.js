@@ -112,7 +112,7 @@ const OpenGroupDetailInfo = ({
                   groupName,
                   location: `${address} ${detailAddress}`,
                   count,
-                  hour,
+                  hour: Number(hour.slice(0, 2)),
                 },
               },
             })

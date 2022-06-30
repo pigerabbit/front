@@ -6,7 +6,7 @@ const HourPopup = ({ setIsHourPopup, setHour }) => {
   usePreventScroll();
 
   const handleHourClick = (option) => () => {
-    setHour(option);
+    setHour(`${option}시간`);
     setIsHourPopup(false);
   };
 
