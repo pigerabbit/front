@@ -7,6 +7,7 @@ import * as Api from "api";
 
 import DetailHeader from "components/DetailHeader";
 import SetQuantityButtons from "components/SetQuantityButtons";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const QRCodePage = () => {
   const { user } = useSelector((state) => state.user);
@@ -15,10 +16,12 @@ const QRCodePage = () => {
   const location = useLocation();
   const { groupObjId } = location.state.data;
 
+  const [checkUrl, setCheckUrl] = useState(
+    "http://hackathon01.elicecoding.com/check"
+  );
   const [maxQuantity, setMaxQuantity] = useState(1);
   const [quantity, setQuantity] = useState(1);
-
-  const checkurl = `http://hackathon01.elicecoding.com/check?group=${groupObjId}&user=${user.id}&quantity=${quantity}`;
+  const [loading, setLoading] = useState(false);
 
   const handleClick = () => {
     try {
@@ -38,49 +41,60 @@ const QRCodePage = () => {
         navigate("/check/result", { state: { success: false } });
       }
       setMaxQuantity(availableMaxQuantity);
+      setLoading(false);
     } catch (e) {
       navigate("/check/result", { state: { success: false } });
     }
   };
 
   useEffect(() => {
+    setLoading(true);
     if (user) {
       getMaxQuantity();
+      setCheckUrl(
+        `http://hackathon01.elicecoding.com/check?group=${groupObjId}&user=${user.id}&quantity=${quantity}`
+      );
     }
   }, [user]);
 
   return (
     <Container>
-      <DetailHeader />
-      <QRInfo>
-        <p id="title">이용권 사용을 위한 QR코드입니다.</p>
-        <p id="inform">
-          하단에 있는 상품 수량을 선택한 후, 이용권을 사용하실 구매처 사장님께
-          보여주세요!
-          <br />본 이용권은 정해진 기간 내에만 사용할 수 있으며, 기간 만료 시
-          포인트로 환불될 수 있음을 알려드립니다.
-        </p>
-      </QRInfo>
-      <QRContainer>
-        <QRCode
-          value={checkurl}
-          level={"H"}
-          id="qr"
-          size={250}
-          onClick={handleClick}
-        />
-      </QRContainer>
-      <QRBottom>
-        <h4>사용할 상품 수량</h4>
-        <div id="quantity">
-          <SetQuantityButtons
-            quantity={quantity}
-            setQuantity={setQuantity}
-            maxQuantity={maxQuantity}
-          />
-          (남는 수량 {maxQuantity - quantity}개 / 최대 {maxQuantity}개)
-        </div>
-      </QRBottom>
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <DetailHeader />
+          <QRInfo>
+            <p id="title">이용권 사용을 위한 QR코드입니다.</p>
+            <p id="inform">
+              하단에 있는 상품 수량을 선택한 후, 이용권을 사용하실 구매처
+              사장님께 보여주세요!
+              <br />본 이용권은 정해진 기간 내에만 사용할 수 있으며, 기간 만료
+              시 포인트로 환불될 수 있음을 알려드립니다.
+            </p>
+          </QRInfo>
+          <QRContainer>
+            <QRCode
+              value={checkUrl}
+              level={"H"}
+              id="qr"
+              size={250}
+              onClick={handleClick}
+            />
+          </QRContainer>
+          <QRBottom>
+            <h4>사용할 상품 수량</h4>
+            <div id="quantity">
+              <SetQuantityButtons
+                quantity={quantity}
+                setQuantity={setQuantity}
+                maxQuantity={maxQuantity}
+              />
+              (남는 수량 {maxQuantity - quantity}개 / 최대 {maxQuantity}개)
+            </div>
+          </QRBottom>
+        </>
+      )}
     </Container>
   );
 };
