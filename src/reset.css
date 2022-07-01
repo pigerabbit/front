@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'KoPubDotumMedium';
+   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/KoPubDotumMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html,
 body,
 div,
@@ -82,6 +89,7 @@ video {
   margin: 0;
   padding: 0;
   vertical-align: baseline;
+  font-family: 'KoPubDotumMedium', sans-serif;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -113,4 +121,8 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+button,
+input {
+  font-family: "KoPubDotumMedium", sans-serif !important;
 }
