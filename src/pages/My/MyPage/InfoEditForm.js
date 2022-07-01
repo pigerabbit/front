@@ -16,7 +16,7 @@ import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
 const InfoEditForm = ({ setIsOpenPopup }) => {
   const { user } = useSelector((state) => state.user);
-  const [name, setName] = useState(user?.name || "");
+  const [name, setName] = useState(user?.name.split("_")[0] || "");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -149,7 +149,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
 
   useEffect(() => {
     if (user) {
-      setName(user.name);
+      setName(user.name.split("_")[0]);
       setAddress(user.address?.split(") ")[0] + ")");
       setDetailAddress(user.address?.split(") ")[1]);
       setPhoneNumber(
@@ -182,59 +182,61 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
         </SubmitButton>
       </form>
 
-      <form
-        onSubmit={handleSubmit(
-          { currentPassword, newPassword },
-          setIsPasswordValid,
-          true
-        )}
-      >
-        <InputContainer>
-          <div>현재 비밀번호</div>
-          <input
-            type="password"
-            value={currentPassword}
-            autoComplete="off"
-            onChange={handleInputChange(setCurrentPassword)}
-          />
-          <CheckIcon valid={isPasswordValid}>
-            <FontAwesomeIcon icon={faCircleCheck} />
-          </CheckIcon>
-        </InputContainer>
-        <InputContainer>
-          <div>신규 비밀번호</div>
-          <input
-            type="password"
-            placeholder="8자 이상의 비밀번호를 입력해주세요."
-            autoComplete="off"
-            value={newPassword}
-            onChange={handleInputChange(setNewPassword)}
-          />
-          <CheckIcon valid={isNewPasswordValid}>
-            <FontAwesomeIcon icon={faCircleCheck} />
-          </CheckIcon>
-        </InputContainer>
-        <InputContainer>
-          <div>비밀번호 확인</div>
-          <input
-            type="password"
-            value={confirmPassword}
-            autoComplete="off"
-            onChange={handleInputChange(setConfirmPassword)}
-          />
-          <CheckIcon valid={isConfirmPasswordValid}>
-            <FontAwesomeIcon icon={faCircleCheck} />
-          </CheckIcon>
-        </InputContainer>
-        <SubmitButton
-          type="submit"
-          disabled={
-            !(isPasswordValid && isNewPasswordValid && isConfirmPasswordValid)
-          }
+      {user?.type !== "oauth" && (
+        <form
+          onSubmit={handleSubmit(
+            { currentPassword, newPassword },
+            setIsPasswordValid,
+            true
+          )}
         >
-          비밀번호 변경
-        </SubmitButton>
-      </form>
+          <InputContainer>
+            <div>현재 비밀번호</div>
+            <input
+              type="password"
+              value={currentPassword}
+              autoComplete="off"
+              onChange={handleInputChange(setCurrentPassword)}
+            />
+            <CheckIcon valid={isPasswordValid}>
+              <FontAwesomeIcon icon={faCircleCheck} />
+            </CheckIcon>
+          </InputContainer>
+          <InputContainer>
+            <div>신규 비밀번호</div>
+            <input
+              type="password"
+              placeholder="8자 이상의 비밀번호를 입력해주세요."
+              autoComplete="off"
+              value={newPassword}
+              onChange={handleInputChange(setNewPassword)}
+            />
+            <CheckIcon valid={isNewPasswordValid}>
+              <FontAwesomeIcon icon={faCircleCheck} />
+            </CheckIcon>
+          </InputContainer>
+          <InputContainer>
+            <div>비밀번호 확인</div>
+            <input
+              type="password"
+              value={confirmPassword}
+              autoComplete="off"
+              onChange={handleInputChange(setConfirmPassword)}
+            />
+            <CheckIcon valid={isConfirmPasswordValid}>
+              <FontAwesomeIcon icon={faCircleCheck} />
+            </CheckIcon>
+          </InputContainer>
+          <SubmitButton
+            type="submit"
+            disabled={
+              !(isPasswordValid && isNewPasswordValid && isConfirmPasswordValid)
+            }
+          >
+            비밀번호 변경
+          </SubmitButton>
+        </form>
+      )}
 
       <form
         onSubmit={handleSubmit(

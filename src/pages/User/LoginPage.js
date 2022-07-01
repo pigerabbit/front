@@ -5,6 +5,8 @@ import styled from "styled-components";
 import UserTopBar from "./UserTopBar";
 
 const LoginPage = () => {
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIEMT_ID}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
+
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
@@ -26,11 +28,12 @@ const LoginPage = () => {
         />
         <Title>동구라미</Title>
 
-        <SocialButtonContainer>
-          <SocialButton></SocialButton>
-          <SocialButton></SocialButton>
-          <SocialButton></SocialButton>
-        </SocialButtonContainer>
+        <KakaoButton href={KAKAO_AUTH_URL}>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/kakao_login.png`}
+            alt="카카오 로그인"
+          />
+        </KakaoButton>
 
         <MoveButton onClick={handleLoginClick}>이메일로 로그인</MoveButton>
 
@@ -78,22 +81,14 @@ const Title = styled.div`
   }
 `;
 
-const SocialButtonContainer = styled.div`
+const KakaoButton = styled.a`
+  cursor: pointer;
+  width: 100%;
   margin-top: 10%;
-  width: 70%;
-  height: 12.2vw;
-  @media (min-width: 570px) {
-    height: 70px;
-  }
-  display: flex;
-  justify-content: space-between;
-`;
 
-const SocialButton = styled.div`
-  background-color: #ffe9d1;
-  width: 25%;
-  height: 100%;
-  border-radius: 50%;
+  > img {
+    width: 100%;
+  }
 `;
 
 const MoveButton = styled.div`
@@ -101,7 +96,7 @@ const MoveButton = styled.div`
   border: 1px solid #a1a1a1;
   border-radius: 5px;
   width: 100%;
-  height: 8%;
+  height: 7%;
   margin-top: 10%;
   display: flex;
   flex-direction: column;
