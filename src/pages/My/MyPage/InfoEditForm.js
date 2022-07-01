@@ -182,7 +182,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
         </SubmitButton>
       </form>
 
-      {user.type !== "oauth" && (
+      {user?.type !== "oauth" && (
         <form
           onSubmit={handleSubmit(
             { currentPassword, newPassword },

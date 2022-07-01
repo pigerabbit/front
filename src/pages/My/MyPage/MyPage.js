@@ -95,7 +95,7 @@ const MyPage = () => {
             {user?.seller && `${user?.business[0].businessName}, `}
             {user?.name.split("_")[0]}
           </div>
-          {user.type !== "oauth" && <div className="email">{user?.email}</div>}
+          {user?.type !== "oauth" && <div className="email">{user?.email}</div>}
         </Profile>
       </Section>
 
