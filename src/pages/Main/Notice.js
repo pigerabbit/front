@@ -6,17 +6,23 @@ import { confirmNotice } from "redux/userSlice";
 
 import SideBar from "components/SideBar";
 import NoticeCard from "./NoticeCard";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const Notice = ({ user, setIsOpenNotice }) => {
   const [noticeList, setNoticeList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
 
   const getNoticeList = async () => {
     try {
+      setIsLoading(true);
+
       const res = await Api.get("users", `${user.id}/alert`);
       setNoticeList(res.data.payload || []);
       dispatch(confirmNotice());
+
+      setIsLoading(false);
     } catch (e) {
       // 에러처리
     }
@@ -25,6 +31,16 @@ const Notice = ({ user, setIsOpenNotice }) => {
   useEffect(() => {
     getNoticeList();
   }, []);
+
+  if (isLoading) {
+    return (
+      <SideBar title="알림" setIsOpenSideBar={setIsOpenNotice}>
+        <Container noContents={true}>
+          <LoadingSpinner />
+        </Container>
+      </SideBar>
+    );
+  }
 
   return (
     <SideBar title="알림" setIsOpenSideBar={setIsOpenNotice}>
