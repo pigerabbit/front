@@ -4,6 +4,7 @@ import * as Api from "api";
 
 import ProductReviewCard from "./ProductReviewCard";
 import ProductReviewForm from "./ProductReviewForm";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const ProductReviewTab = ({
   product,
@@ -16,8 +17,9 @@ const ProductReviewTab = ({
   const [myReviews, setMyReviews] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
   const [showMyReviews, setShowMyReviews] = useState(false);
-  const [isReviewFetched, setIsReviewFetched] = useState(false);
-  const [writable, setWritable] = useState(Boolean(targetGroupId));
+  const [writable, setWritable] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   const findReview = (postId) => {
     const review = reviews.find((review) => review.postId === postId);
@@ -42,6 +44,16 @@ const ProductReviewTab = ({
     setMyReviews(remainedMyReviews);
   };
 
+  const checkWritable = (targetGroupId, myReviews) => {
+    const writtenReview = myReviews.find(
+      (myReview) => myReview.groupId === targetGroupId
+    );
+    if (Boolean(writtenReview)) setWritable(false);
+    else setWritable(true);
+
+    setLoading(false);
+  };
+
   const getReviews = async () => {
     try {
       const res = await Api.get(`posts`, "", {
@@ -53,80 +65,88 @@ const ProductReviewTab = ({
       setMyReviews(
         productReviews.filter((review) => review.writer === user.id)
       );
-      setIsReviewFetched(true);
+      return productReviews.filter((review) => review.writer === user.id);
     } catch (e) {
       console.log("후기 get 실패");
     }
   };
 
   useEffect(() => {
-    setIsReviewFetched(false);
-    getReviews();
-    if (targetGroupId) setWritable(true);
+    setLoading(true);
+    getReviews().then((myReviews) => {
+      if (targetGroupId) checkWritable(targetGroupId, myReviews);
+      else setLoading(false);
+    });
   }, []);
 
   return (
     <Container>
-      {!isSeller &&
-        writable &&
-        (!isWriting ? (
-          <WriteButton
-            onClick={() => {
-              setIsWriting((cur) => !cur);
-            }}
-          >
-            후기 작성하기
-          </WriteButton>
-        ) : (
-          <ProductReviewForm
-            productId={product.id}
-            setIsWriting={setIsWriting}
-            setReviews={setReviews}
-            setMyReviews={setMyReviews}
-            targetGroupId={targetGroupId}
-            setWritable={setWritable}
-          />
-        ))}
-      {isReviewFetched && (
-        <Review>
-          <ReviewTop>
-            <div id="reviewCount">
-              후기 {showMyReviews ? myReviews.length : reviews.length}건
-            </div>
-            {myReviews.length > 0 && (
-              <MyReviewButton
+      {loading ? (
+        <div id="loader">
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <>
+          {!isSeller &&
+            writable &&
+            (!isWriting ? (
+              <WriteButton
                 onClick={() => {
-                  setShowMyReviews((cur) => !cur);
+                  setIsWriting((cur) => !cur);
                 }}
-                showMyReviews={showMyReviews}
               >
-                내 후기
-              </MyReviewButton>
-            )}
-          </ReviewTop>
-          {!showMyReviews
-            ? reviews.map((review) => (
-                <ProductReviewCard
-                  key={review.postId}
-                  review={review}
-                  onDeleteMyReview={handleDeleteMyReview}
-                  isSeller={isSeller}
-                  isMyReview={review.writer === user.id}
-                  targetPostId={targetPostId}
-                  targetGroupId={targetGroupId}
-                />
-              ))
-            : myReviews.map((review) => (
-                <ProductReviewCard
-                  key={review.postId}
-                  review={review}
-                  onDeleteMyReview={handleDeleteMyReview}
-                  isMyReview={review.writer === user.id}
-                  targetPostId={targetPostId}
-                  targetGroupId={targetGroupId}
-                />
-              ))}
-        </Review>
+                후기 작성하기
+              </WriteButton>
+            ) : (
+              <ProductReviewForm
+                productId={product.id}
+                setIsWriting={setIsWriting}
+                setReviews={setReviews}
+                setMyReviews={setMyReviews}
+                targetGroupId={targetGroupId}
+                setWritable={setWritable}
+              />
+            ))}
+          <Review>
+            <ReviewTop>
+              <div id="reviewCount">
+                후기 {showMyReviews ? myReviews.length : reviews.length}건
+              </div>
+              {myReviews.length > 0 && (
+                <MyReviewButton
+                  onClick={() => {
+                    setShowMyReviews((cur) => !cur);
+                  }}
+                  showMyReviews={showMyReviews}
+                >
+                  내 후기
+                </MyReviewButton>
+              )}
+            </ReviewTop>
+            {!showMyReviews
+              ? reviews.map((review) => (
+                  <ProductReviewCard
+                    key={review.postId}
+                    review={review}
+                    onDeleteMyReview={handleDeleteMyReview}
+                    isSeller={isSeller}
+                    isMyReview={review.writer === user.id}
+                    targetPostId={targetPostId}
+                    targetGroupId={targetGroupId}
+                  />
+                ))
+              : myReviews.map((review) => (
+                  <ProductReviewCard
+                    key={review.postId}
+                    review={review}
+                    onDeleteMyReview={handleDeleteMyReview}
+                    isMyReview={review.writer === user.id}
+                    targetPostId={targetPostId}
+                    targetGroupId={targetGroupId}
+                  />
+                ))}
+          </Review>
+        </>
       )}
     </Container>
   );
@@ -140,6 +160,15 @@ const Container = styled.div`
   max-width: 770px;
   background-color: #ffffff;
   padding: 7px 0;
+
+  #loader {
+    width: 100%;
+    position: absolute;
+    top: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const WriteButton = styled.div`
