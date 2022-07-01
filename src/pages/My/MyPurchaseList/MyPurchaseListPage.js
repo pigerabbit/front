@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-import MyListTabs from "../MyListTabs";
+import MyPurchaseListTabs from "./MyPurchaseListTabs";
 import ParticipatePurchaseListTab from "./ParticipatePurchaseListTab";
+import CanceledListTab from "./CanceledListTab";
 import OpenPurchaseListTab from "./OpenPurchaseListTab";
 import * as Api from "api";
 import MyPageLayout from "../MyPageLayout";
@@ -20,6 +21,7 @@ const MyPurchaseListPage = () => {
   const [loading, setLoading] = useState(false);
   const [participatedGroups, setParticipatedGroups] = useState([]);
   const [openedGroups, setOpenedGroups] = useState([]);
+  const [canceledData, setCancelData] = useState([]);
 
   const getGroupData = async () => {
     const getOpenedGroups = Api.get("groups/manager/true");
@@ -32,8 +34,23 @@ const MyPurchaseListPage = () => {
         getParticipatedGroups,
       ]);
 
-      setParticipatedGroups(participatedGroups.data.payload);
-      setOpenedGroups(openedGroups.data.payload);
+      const filteredOpenedGroups = openedGroups.data.payload.filter(
+        (group) => !(group.state === -6 || group.state === -7)
+      );
+      const filteredParticipatedGroups = participatedGroups.data.payload.filter(
+        (group) => !(group.state === -6 || group.state === -7)
+      );
+
+      const canceledOpenedGroups = openedGroups.data.payload.filter(
+        (group) => group.state === -6 || group.state === -7
+      );
+      const canceledParticipatedGroups = participatedGroups.data.payload.filter(
+        (group) => group.state === -6 || group.state === -7
+      );
+
+      setOpenedGroups(filteredOpenedGroups);
+      setParticipatedGroups(filteredParticipatedGroups);
+      setCancelData([...canceledOpenedGroups, ...canceledParticipatedGroups]);
 
       setLoading(false);
     } catch (err) {
@@ -52,10 +69,10 @@ const MyPurchaseListPage = () => {
           <LoadingSpinner />
         ) : (
           <>
-            <MyListTabs
+            <MyPurchaseListTabs
               tab={tab}
               setTab={setTab}
-              tabNames={["내가 참여한 공구", "내가 연 공구"]}
+              tabNames={["내가 참여한 공구", "내가 연 공구", "취소된 공구"]}
             />
             {tab === "tab1" && (
               <ParticipatePurchaseListTab
@@ -66,6 +83,13 @@ const MyPurchaseListPage = () => {
             {tab === "tab2" && (
               <OpenPurchaseListTab
                 openedData={openedGroups}
+                userId={user?.id}
+              />
+            )}
+            {tab === "tab3" && (
+              <CanceledListTab
+                canceledData={canceledData}
+                setCanceledData={setCancelData}
                 userId={user?.id}
               />
             )}

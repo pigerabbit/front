@@ -54,11 +54,6 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
         [-1, -3].includes(group.state)
       );
       setFilteredData(stopped);
-    } else if (option === "공구취소") {
-      const canceled = totalData.filter((group) =>
-        [-7, -6].includes(group.state)
-      );
-      setFilteredData(canceled);
     }
   }, [participatedData, option, totalData]);
 
