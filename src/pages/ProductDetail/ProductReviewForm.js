@@ -16,9 +16,11 @@ const ProductReviewForm = ({
   const [reviewText, setReviewText] = useState("");
   const [reviewImg, setReviewImg] = useState({});
   const [previewImg, setPreviewImg] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsClicked(true);
 
     try {
       const res = await Api.post("posts", {
@@ -115,7 +117,7 @@ const ProductReviewForm = ({
           >
             취소
           </Button>
-          <Button type="submit" id="submit">
+          <Button type="submit" id="submit" disabled={isClicked}>
             확인
           </Button>
         </ButtonContainer>
