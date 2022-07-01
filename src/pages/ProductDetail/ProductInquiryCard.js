@@ -119,7 +119,7 @@ const ProductInquiryCard = ({
           </InquiryInfo>
           {isMyInquiry && (
             <span>
-              {" | "}{" "}
+              {" | "}
               <DeleteButton onClick={handleDeleteButton}>삭제</DeleteButton>
             </span>
           )}

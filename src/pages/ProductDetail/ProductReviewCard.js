@@ -122,7 +122,7 @@ const ProductReviewCard = ({
             </span>
             {isMyReview && (
               <span>
-                {" | "}{" "}
+                {" | "}
                 <DeleteButton onClick={handleDeleteButton}>삭제</DeleteButton>
               </span>
             )}
