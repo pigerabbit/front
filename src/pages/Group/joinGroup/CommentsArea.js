@@ -35,9 +35,6 @@ const CommentsArea = ({
 
   useEffect(() => {
     getComments();
-  }, []);
-
-  useEffect(() => {
     if (user && Object.keys(group).length > 0)
       setJoinedGroup(
         group.participants.filter((v) => v.userId === user.id).length > 0
