@@ -132,7 +132,6 @@ const RegisterPage = () => {
           title="주소"
           type="text"
           value={address}
-          setValue={setAddress}
           isValueValid={isAddressValid}
           handleClick={handleAddressInputClick}
         />
