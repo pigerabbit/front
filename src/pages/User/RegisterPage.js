@@ -39,6 +39,12 @@ const RegisterPage = () => {
 
   const navigate = useNavigate();
 
+  const handleNameChange = (value) => {
+    if (value[value.length - 1] === "_") return;
+
+    setName(value);
+  };
+
   const handlePhoneNumberChange = (value) => {
     if (value.length > 13) return;
 
@@ -112,7 +118,7 @@ const RegisterPage = () => {
           title="이름(닉네임)"
           type="text"
           value={name}
-          setValue={setName}
+          setValue={handleNameChange}
           isValueValid={isNameValid}
           setIsValueValid={setIsNameValid}
           confirmButton={true}
