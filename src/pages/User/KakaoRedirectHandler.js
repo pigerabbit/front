@@ -1,10 +1,13 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { login } from "../../redux/userSlice";
 import { useLocation, useNavigate } from "react-router-dom";
-import * as Api from "../../api";
 
 const KakaoRedirectHandler = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const token = params.get("token");
+  sessionStorage.setItem("userToken", token);
+  navigate("/");
+
   return <div>redirect page</div>;
 };
 
