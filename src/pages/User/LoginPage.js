@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import UserTopBar from "./UserTopBar";
-const KAKAO_AUTH_URL =
-  "https://kauth.kakao.com/oauth/authorize?client_id=1151db674b1e7bb224e211714cc6d764&redirect_uri=http://localhost:5000/login/kakao&response_type=code";
 
 const LoginPage = () => {
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_CLIEMT_ID}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
+
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
