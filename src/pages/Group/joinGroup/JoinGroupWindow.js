@@ -134,6 +134,7 @@ const CardContainer = styled.div`
     right: 0px;
     padding: 15px;
     cursor: pointer;
+    color: #636363;
   }
 
   #spinner {

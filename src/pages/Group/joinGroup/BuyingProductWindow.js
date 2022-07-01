@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import SetQuantityButtons from "components/SetQuantityButtons";
 
@@ -14,7 +16,9 @@ const BuyingProductWindow = ({
 
   const [quantity, setQuantity] = useState(1);
 
-  const clickCancel = () => setShowBuyingProduct(false);
+  const clickCancel = () => {
+    setShowBuyingProduct(false);
+  };
 
   const clickBuying = () => {
     navigate("/group/join/pay", {
@@ -26,8 +30,8 @@ const BuyingProductWindow = ({
 
   return (
     <CardContainer>
-      <div id="cancel">
-        <Cancel onClick={clickCancel} />
+      <div id="cancel" onClick={clickCancel}>
+        <FontAwesomeIcon icon={faXmark} size="2x" />
       </div>
       <div id="quantity">
         <SetQuantityButtons
@@ -74,7 +78,7 @@ const CardContainer = styled.div`
 
   #quantity {
     width: 90%;
-    margin: 0 auto;
+    margin: 50px auto 30px auto;
   }
 
   #result {
@@ -84,29 +88,13 @@ const CardContainer = styled.div`
     align-items: center;
     justify-content: space-between;
   }
-`;
 
-const Cancel = styled.div`
-  width: 50px;
-  height: 50px;
-  opacity: 0.8;
-  cursor: pointer;
-
-  :before,
-  :after {
+  #cancel {
     position: absolute;
-    right: 30px;
-    top: 15px;
-    content: " ";
-    height: 30px;
-    width: 2px;
-    background-color: #000;
-  }
-  :before {
-    transform: rotate(45deg);
-  }
-  :after {
-    transform: rotate(-45deg);
+    right: 0px;
+    padding: 15px;
+    cursor: pointer;
+    color: #636363;
   }
 `;
 
