@@ -149,7 +149,7 @@ const InfoEditForm = ({ setIsOpenPopup }) => {
 
   useEffect(() => {
     if (user) {
-      setName(user.name);
+      setName(user.name.split("_")[0]);
       setAddress(user.address?.split(") ")[0] + ")");
       setDetailAddress(user.address?.split(") ")[1]);
       setPhoneNumber(
