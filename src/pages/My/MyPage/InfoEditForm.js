@@ -16,7 +16,7 @@ import useShowComfirmationIcon from "hooks/useShowConfirmationIcon";
 
 const InfoEditForm = ({ setIsOpenPopup }) => {
   const { user } = useSelector((state) => state.user);
-  const [name, setName] = useState(user?.name || "");
+  const [name, setName] = useState(user?.name.split("_")[0] || "");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
