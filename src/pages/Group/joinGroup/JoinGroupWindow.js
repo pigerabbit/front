@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Api from "api";
 
 import GroupCard from "./GroupCard";
+import LoadingSpinner from "components/LoadingSpinner";
 
 const JoinGroupWindow = ({ productId, setShowJoinGroup, minPurchaseQty }) => {
   const [groups, setGroups] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const handleClose = () => {
+    setShowJoinGroup(false);
+  };
 
   const getGroups = async () => {
     try {
@@ -15,24 +23,40 @@ const JoinGroupWindow = ({ productId, setShowJoinGroup, minPurchaseQty }) => {
           (group) => new Date(group.deadline) > new Date()
         )
       );
+      setLoading(false);
     } catch (e) {
       console.log("공동구매 목록 get 실패");
     }
   };
 
   useEffect(() => {
+    setLoading(true);
     getGroups();
   }, []);
+
+  if (loading)
+    return (
+      <Container>
+        <CardContainer>
+          <div id="cancel" onClick={handleClose}>
+            <FontAwesomeIcon icon={faXmark} size="2x" />
+          </div>
+          <div id="spinner">
+            <LoadingSpinner />
+          </div>
+        </CardContainer>
+      </Container>
+    );
+
   return (
-    <Container>
-      <CardContainer>
-        <div
-          id="cancel"
-          onClick={() => {
-            setShowJoinGroup(false);
-          }}
-        >
-          <Cancel />
+    <Container onClick={handleClose}>
+      <CardContainer
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <div id="cancel" onClick={handleClose}>
+          <FontAwesomeIcon icon={faXmark} size="2x" />
         </div>
         <h3>공구 참여하기</h3>
         {groups.length > 0 ? (
@@ -69,6 +93,7 @@ const Container = styled.div`
   min-height: 100vh;
   top: 0;
   margin: 0 auto;
+  justify-content: center;
   z-index: 10;
   background-color: rgba(10, 10, 10, 0.5);
 `;
@@ -88,10 +113,10 @@ const CardContainer = styled.div`
   text-align: center;
   > h3 {
     font-size: 25px;
-    margin-bottom: 30px;
+    margin: 50px 0 30px 0;
     @media (max-width: 500px) {
-      font-size: 20px;
-      margin-bottom: 20px;
+      font-size: 23px;
+      margin: 50px 0 20px 0;
     }
   }
   > p {
@@ -105,33 +130,18 @@ const CardContainer = styled.div`
   }
 
   #cancel {
-    padding: 3px;
-
+    position: absolute;
+    right: 0px;
+    padding: 15px;
     cursor: pointer;
   }
-`;
 
-const Cancel = styled.div`
-  width: 50px;
-  height: 50px;
-  opacity: 0.8;
-  cursor: pointer;
-
-  :before,
-  :after {
-    position: absolute;
-    right: 30px;
-    top: 15px;
-    content: " ";
-    height: 30px;
-    width: 2px;
-    background-color: #000;
-  }
-  :before {
-    transform: rotate(45deg);
-  }
-  :after {
-    transform: rotate(-45deg);
+  #spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
   }
 `;
 
