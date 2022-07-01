@@ -25,6 +25,7 @@ const ProductDetailPage = () => {
     title: "fetch전",
   });
   const [targetPostId, setTargetPostId] = useState("");
+  const [targetGroupId, setTargetGroupId] = useState("");
 
   const navigate = useNavigate();
   const loc = useLocation();
@@ -36,6 +37,7 @@ const ProductDetailPage = () => {
       const switchTab = loc.state?.data;
       if (switchTab) {
         if (switchTab.postId) setTargetPostId(switchTab.postId);
+        if (switchTab.groupId) setTargetGroupId(switchTab.groupId);
         switch (switchTab.tab) {
           case "review":
             setCurrentTab({ name: "review", title: "후기" });
@@ -101,6 +103,7 @@ const ProductDetailPage = () => {
             product={product}
             user={user}
             targetPostId={targetPostId}
+            targetGroupId={targetGroupId}
             isSeller={isSeller}
           />
         )}
