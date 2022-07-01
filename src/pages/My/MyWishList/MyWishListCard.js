@@ -67,6 +67,7 @@ const CardImage = styled.div`
   background-size: 150px 110px;
   width: 150px;
   height: 110px;
+  margin-right: 10px;
   border-radius: 10px;
   cursor: pointer;
   @media only screen and (max-width: 400px) {

@@ -177,6 +177,7 @@ const CardImageWrapper = styled.div`
   position: relative;
   width: 150px;
   height: 110px;
+  margin-right: 10px;
   @media only screen and (max-width: 450px) {
     width: 100px;
     height: 100px;
