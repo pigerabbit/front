@@ -4,51 +4,34 @@ import * as Api from "api";
 
 import ProductReviewCard from "./ProductReviewCard";
 import ProductReviewForm from "./ProductReviewForm";
+import LoadingSpinner from "components/LoadingSpinner";
 
-const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
+const ProductReviewTab = ({
+  product,
+  user,
+  targetPostId,
+  isSeller,
+  targetGroupId,
+}) => {
   const [reviews, setReviews] = useState([]);
   const [myReviews, setMyReviews] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
   const [showMyReviews, setShowMyReviews] = useState(false);
   const [writable, setWritable] = useState(false);
-  const [isReviewFetched, setIsReviewFetched] = useState(false);
 
-  const checkBuyingRecord = async () => {
-    try {
-      const resGroups = await Api.get(`groups/productId/${product.id}`);
-      const joinedGroups = resGroups.data.payload
-        .filter(
-          (group) =>
-            group.state === 1 ||
-            group.state === 5 ||
-            (group.state === 1 && group.groupType === "coupon")
-        )
-        .map((group) => group.participants)
-        .reduce((addedParticipants, participants) => [
-          ...addedParticipants,
-          ...participants,
-        ])
-        .filter((participant) => participant.userId === user.id);
+  const [loading, setLoading] = useState(false);
 
-      return joinedGroups;
-    } catch (e) {
-      return null;
-    }
+  const findReview = (postId) => {
+    const review = reviews.find((review) => review.postId === postId);
+    return review;
   };
 
-  const checkWritable = async () => {
-    try {
-      const joinedGroups = await checkBuyingRecord();
-      if (joinedGroups.length > 0 && joinedGroups.length > myReviews.length)
-        setWritable(true);
-      else setWritable(false);
-    } catch (e) {
-      setWritable(false);
-    }
+  const hasReview = (postId) => {
+    return Boolean(findReview(postId));
   };
 
   const handleDeleteMyReview = (postId) => {
-    setIsReviewFetched(false);
+    if (!hasReview(postId)) return;
 
     const remainedReviews = reviews.filter(
       (review) => review.postId !== postId
@@ -57,11 +40,18 @@ const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
       (myReview) => myReview.postId !== postId
     );
 
-    if (remainedReviews.length !== 0 && remainedMyReviews.length !== 0) {
-      setReviews(remainedReviews);
-      setMyReviews(remainedMyReviews);
-      setIsReviewFetched(true);
-    }
+    setReviews(remainedReviews);
+    setMyReviews(remainedMyReviews);
+  };
+
+  const checkWritable = (targetGroupId, myReviews) => {
+    const writtenReview = myReviews.find(
+      (myReview) => myReview.groupId === targetGroupId
+    );
+    if (Boolean(writtenReview)) setWritable(false);
+    else setWritable(true);
+
+    setLoading(false);
   };
 
   const getReviews = async () => {
@@ -75,79 +65,88 @@ const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
       setMyReviews(
         productReviews.filter((review) => review.writer === user.id)
       );
-      setIsReviewFetched(true);
+      return productReviews.filter((review) => review.writer === user.id);
     } catch (e) {
       console.log("후기 get 실패");
     }
   };
 
   useEffect(() => {
-    getReviews();
+    setLoading(true);
+    getReviews().then((myReviews) => {
+      if (targetGroupId) checkWritable(targetGroupId, myReviews);
+      else setLoading(false);
+    });
   }, []);
-
-  useEffect(() => {
-    checkWritable();
-  }, [isReviewFetched]);
 
   return (
     <Container>
-      {!isSeller &&
-        writable &&
-        (!isWriting ? (
-          <WriteButton
-            onClick={() => {
-              setIsWriting((cur) => !cur);
-            }}
-          >
-            후기 작성하기
-          </WriteButton>
-        ) : (
-          <ProductReviewForm
-            productId={product.id}
-            setIsWriting={setIsWriting}
-            setWritable={setWritable}
-            setReviews={setReviews}
-            setMyReviews={setMyReviews}
-          />
-        ))}
-      {isReviewFetched && (
-        <Review>
-          <ReviewTop>
-            <div id="reviewCount">
-              후기 {showMyReviews ? myReviews.length : reviews.length}건
-            </div>
-            {myReviews.length > 0 && (
-              <MyReviewButton
+      {loading ? (
+        <div id="loader">
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <>
+          {!isSeller &&
+            writable &&
+            (!isWriting ? (
+              <WriteButton
                 onClick={() => {
-                  setShowMyReviews((cur) => !cur);
+                  setIsWriting((cur) => !cur);
                 }}
-                showMyReviews={showMyReviews}
               >
-                내 후기
-              </MyReviewButton>
-            )}
-          </ReviewTop>
-          {!showMyReviews
-            ? reviews.map((review) => (
-                <ProductReviewCard
-                  key={review.postId}
-                  review={review}
-                  onDeleteMyReview={handleDeleteMyReview}
-                  isSeller={isSeller}
-                  isMyReview={review.writer === user.id}
-                  targetPostId={targetPostId}
-                />
-              ))
-            : myReviews.map((review) => (
-                <ProductReviewCard
-                  key={review.postId}
-                  review={review}
-                  onDeleteMyReview={handleDeleteMyReview}
-                  isMyReview={review.writer === user.id}
-                  targetPostId={targetPostId}
-                />
-              ))}
-        </Review>
+                후기 작성하기
+              </WriteButton>
+            ) : (
+              <ProductReviewForm
+                productId={product.id}
+                setIsWriting={setIsWriting}
+                setReviews={setReviews}
+                setMyReviews={setMyReviews}
+                targetGroupId={targetGroupId}
+                setWritable={setWritable}
+              />
+            ))}
+          <Review>
+            <ReviewTop>
+              <div id="reviewCount">
+                후기 {showMyReviews ? myReviews.length : reviews.length}건
+              </div>
+              {myReviews.length > 0 && (
+                <MyReviewButton
+                  onClick={() => {
+                    setShowMyReviews((cur) => !cur);
+                  }}
+                  showMyReviews={showMyReviews}
+                >
+                  내 후기
+                </MyReviewButton>
+              )}
+            </ReviewTop>
+            {!showMyReviews
+              ? reviews.map((review) => (
+                  <ProductReviewCard
+                    key={review.postId}
+                    review={review}
+                    onDeleteMyReview={handleDeleteMyReview}
+                    isSeller={isSeller}
+                    isMyReview={review.writer === user.id}
+                    targetPostId={targetPostId}
+                    targetGroupId={targetGroupId}
+                  />
+                ))
+              : myReviews.map((review) => (
+                  <ProductReviewCard
+                    key={review.postId}
+                    review={review}
+                    onDeleteMyReview={handleDeleteMyReview}
+                    isMyReview={review.writer === user.id}
+                    targetPostId={targetPostId}
+                    targetGroupId={targetGroupId}
+                  />
+                ))}
+          </Review>
+        </>
       )}
     </Container>
   );
@@ -161,6 +160,15 @@ const Container = styled.div`
   max-width: 770px;
   background-color: #ffffff;
   padding: 7px 0;
+
+  #loader {
+    width: 100%;
+    position: absolute;
+    top: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const WriteButton = styled.div`

@@ -14,9 +14,11 @@ const ProductInquiryForm = ({
   const [inquiryText, setInquiryText] = useState("");
   const [inquiryImg, setInquiryImg] = useState({});
   const [previewImg, setPreviewImg] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsClicked(true);
 
     try {
       const res = await Api.post("posts", {
@@ -87,7 +89,7 @@ const ProductInquiryForm = ({
             required
           />
           <div id="inquiryImage">
-            <label for="chooseFile" id="buttonForFile">
+            <label htmlFor="chooseFile" id="buttonForFile">
               사진 첨부하기
             </label>
             <input
@@ -115,7 +117,7 @@ const ProductInquiryForm = ({
           >
             취소
           </Button>
-          <Button type="submit" id="submit">
+          <Button type="submit" id="submit" disabled={isClicked}>
             확인
           </Button>
         </ButtonContainer>
