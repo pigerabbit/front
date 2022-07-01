@@ -56,7 +56,12 @@ const MyPurchaseListCard = ({
       <CardWrapper>
         <CardImageWrapper>
           <CardImage images={images} onClick={moveToGroupPage(groupId)} />
-          {groupState[state].length > 1 && (
+          {groupState[state].length > 1 && state !== 5 && (
+            <StateMessage>
+              <p>{groupState[state][1]}</p>
+            </StateMessage>
+          )}
+          {state === 5 && groupType !== "coupon" && (
             <StateMessage>
               <p>{groupState[state][1]}</p>
             </StateMessage>
