@@ -108,7 +108,7 @@ const CardContainer = styled.div`
   position: fixed;
   z-index: 10;
   bottom: 0;
-  animation: ${popupAnimation} 1s ease-in-out;
+  animation: ${popupAnimation} 0.7s ease-in-out;
 
   text-align: center;
   > h3 {
