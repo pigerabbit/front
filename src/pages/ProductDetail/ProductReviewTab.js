@@ -5,50 +5,31 @@ import * as Api from "api";
 import ProductReviewCard from "./ProductReviewCard";
 import ProductReviewForm from "./ProductReviewForm";
 
-const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
+const ProductReviewTab = ({
+  product,
+  user,
+  targetPostId,
+  isSeller,
+  targetGroupId,
+}) => {
   const [reviews, setReviews] = useState([]);
   const [myReviews, setMyReviews] = useState([]);
   const [isWriting, setIsWriting] = useState(false);
   const [showMyReviews, setShowMyReviews] = useState(false);
-  const [writable, setWritable] = useState(false);
   const [isReviewFetched, setIsReviewFetched] = useState(false);
+  const [writable, setWritable] = useState(Boolean(targetGroupId));
 
-  const checkBuyingRecord = async () => {
-    try {
-      const resGroups = await Api.get(`groups/productId/${product.id}`);
-      const joinedGroups = resGroups.data.payload
-        .filter(
-          (group) =>
-            group.state === 1 ||
-            group.state === 5 ||
-            (group.state === 1 && group.groupType === "coupon")
-        )
-        .map((group) => group.participants)
-        .reduce((addedParticipants, participants) => [
-          ...addedParticipants,
-          ...participants,
-        ])
-        .filter((participant) => participant.userId === user.id);
-
-      return joinedGroups;
-    } catch (e) {
-      return null;
-    }
+  const findReview = (postId) => {
+    const review = reviews.find((review) => review.postId === postId);
+    return review;
   };
 
-  const checkWritable = async () => {
-    try {
-      const joinedGroups = await checkBuyingRecord();
-      if (joinedGroups.length > 0 && joinedGroups.length > myReviews.length)
-        setWritable(true);
-      else setWritable(false);
-    } catch (e) {
-      setWritable(false);
-    }
+  const hasReview = (postId) => {
+    return Boolean(findReview(postId));
   };
 
   const handleDeleteMyReview = (postId) => {
-    setIsReviewFetched(false);
+    if (!hasReview(postId)) return;
 
     const remainedReviews = reviews.filter(
       (review) => review.postId !== postId
@@ -57,11 +38,8 @@ const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
       (myReview) => myReview.postId !== postId
     );
 
-    if (remainedReviews.length !== 0 && remainedMyReviews.length !== 0) {
-      setReviews(remainedReviews);
-      setMyReviews(remainedMyReviews);
-      setIsReviewFetched(true);
-    }
+    setReviews(remainedReviews);
+    setMyReviews(remainedMyReviews);
   };
 
   const getReviews = async () => {
@@ -82,12 +60,10 @@ const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
   };
 
   useEffect(() => {
+    setIsReviewFetched(false);
     getReviews();
+    if (targetGroupId) setWritable(true);
   }, []);
-
-  useEffect(() => {
-    checkWritable();
-  }, [isReviewFetched]);
 
   return (
     <Container>
@@ -105,9 +81,10 @@ const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
           <ProductReviewForm
             productId={product.id}
             setIsWriting={setIsWriting}
-            setWritable={setWritable}
             setReviews={setReviews}
             setMyReviews={setMyReviews}
+            targetGroupId={targetGroupId}
+            setWritable={setWritable}
           />
         ))}
       {isReviewFetched && (
@@ -136,6 +113,7 @@ const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
                   isSeller={isSeller}
                   isMyReview={review.writer === user.id}
                   targetPostId={targetPostId}
+                  targetGroupId={targetGroupId}
                 />
               ))
             : myReviews.map((review) => (
@@ -145,6 +123,7 @@ const ProductReviewTab = ({ product, user, targetPostId, isSeller }) => {
                   onDeleteMyReview={handleDeleteMyReview}
                   isMyReview={review.writer === user.id}
                   targetPostId={targetPostId}
+                  targetGroupId={targetGroupId}
                 />
               ))}
         </Review>

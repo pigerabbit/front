@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 
@@ -7,9 +7,10 @@ import encodeFileToBase64 from "utils/encodeFileToBase64";
 const ProductReviewForm = ({
   productId,
   setIsWriting,
-  setWritable,
   setReviews,
   setMyReviews,
+  targetGroupId,
+  setWritable,
 }) => {
   const [reviewTitle, setReviewTitle] = useState("");
   const [reviewText, setReviewText] = useState("");
@@ -25,6 +26,7 @@ const ProductReviewForm = ({
         receiver: productId,
         title: reviewTitle,
         content: reviewText,
+        groupId: targetGroupId,
       });
       let newReview = res.data.payload;
 
@@ -46,8 +48,9 @@ const ProductReviewForm = ({
         setReviews((cur) => [newReview, ...cur]);
         setMyReviews((cur) => [newReview, ...cur]);
       }
-      setWritable((cur) => !cur);
-      setIsWriting((cur) => !cur);
+
+      setIsWriting(false);
+      setWritable(false);
     } catch (e) {
       console.log("review post 실패");
     }
@@ -84,7 +87,7 @@ const ProductReviewForm = ({
             required
           />
           <div id="reviewImage">
-            <label for="chooseFile" id="buttonForFile">
+            <label htmlFor="chooseFile" id="buttonForFile">
               사진 첨부하기
             </label>
             <input
