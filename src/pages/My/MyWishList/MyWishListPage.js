@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import MyPageLayout from "../MyPageLayout";
-import MyListTabs from "../MyListTabs";
+import MyWishListTabs from "./MyWishListTabs";
 import GroupWishListTab from "./GroupWishListTab";
 import ProductWishListTab from "./ProductWishListTab";
 import LoadingSpinner from "components/LoadingSpinner";
@@ -49,11 +49,10 @@ const MyWishListPage = () => {
           <LoadingSpinner />
         ) : (
           <>
-            <MyListTabs
+            <MyWishListTabs
               tab={tab}
               setTab={setTab}
               tabNames={["공동구매", "판매상품"]}
-              isWishList
             />
             {tab === "tab1" && <GroupWishListTab groups={groups} />}
             {tab === "tab2" && <ProductWishListTab products={products} />}

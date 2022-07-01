@@ -1,13 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const MyListTabs = ({ tab, setTab, tabNames, isWishList, len }) => {
+const MyWishListTabs = ({ tab, setTab, tabNames }) => {
   const navigate = useNavigate();
 
   const handleClick = (tab) => () => {
     setTab(tab);
-    const route = isWishList ? "/wishlist" : "/purchaselist";
-    navigate(`${route}?tab=${tab}`, { replace: true });
+    navigate(`/wishlist?tab=${tab}`, { replace: true });
   };
 
   return (
@@ -28,7 +27,7 @@ const MyListTabs = ({ tab, setTab, tabNames, isWishList, len }) => {
   );
 };
 
-export default MyListTabs;
+export default MyWishListTabs;
 
 const TabsContainer = styled.div`
   position: absolute;
