@@ -4,9 +4,11 @@ import MyWishListCard from "./MyWishListCard";
 const ProductWishListTab = ({ products }) => {
   return (
     <Container>
-      <Count>
-        총 <strong>{products.length}</strong>개
-      </Count>
+      <CountWrapper>
+        <Count>
+          총 <strong>{products.length}</strong>개
+        </Count>
+      </CountWrapper>
       <ProductWishListContainer>
         <ProductWishListWrapper>
           {products.map((product) => (
@@ -45,15 +47,22 @@ const Container = styled.div`
   margin-top: 30px;
 `;
 
+const CountWrapper = styled.div`
+  position: absolute;
+  top: 70px;
+  padding: 1% 2%;
+`;
+
 const Count = styled.p`
   margin: 2%;
+  width: 100%;
 `;
 
 const ProductWishListContainer = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 60px;
+  top: 100px;
   overflow-y: scroll;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {

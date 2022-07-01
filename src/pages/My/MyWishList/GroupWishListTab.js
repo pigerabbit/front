@@ -4,9 +4,11 @@ import MyWishListCard from "./MyWishListCard";
 const GroupWishListTab = ({ groups }) => {
   return (
     <Container>
-      <Count>
-        총 <strong>{groups.length}</strong>개
-      </Count>
+      <CountWrapper>
+        <Count>
+          총 <strong>{groups.length}</strong>개
+        </Count>
+      </CountWrapper>
       <GroupWishListContainer>
         <GroupWishListWrapper>
           {groups.map((group) => (
@@ -48,7 +50,14 @@ const Container = styled.div`
   margin-top: 30px;
 `;
 
+const CountWrapper = styled.div`
+  position: absolute;
+  top: 70px;
+  padding: 1% 2%;
+`;
+
 const Count = styled.p`
+  width: 100%;
   margin: 2%;
 `;
 
@@ -56,7 +65,7 @@ const GroupWishListContainer = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 60px;
+  top: 100px;
   overflow-y: scroll;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
