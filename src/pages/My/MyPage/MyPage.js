@@ -93,7 +93,7 @@ const MyPage = () => {
           </ProfileImg>
           <div className="name">
             {user?.seller && `${user?.business[0].businessName}, `}
-            {user?.name}
+            {user?.name.split("_")[0]}
           </div>
           {user.type !== "oauth" && <div className="email">{user?.email}</div>}
         </Profile>

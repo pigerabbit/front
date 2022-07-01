@@ -35,13 +35,12 @@ const ParticipantsList = ({
 
         {participants.map((participant) => (
           <ParticipantCard key={participant.userId}>
-            <div>이름(닉네임): {participant.userInfo.name}</div>
+            <div>이름(닉네임): {participant.userInfo.name.split("_")[0]}</div>
             <div>구매수량: {participant.quantity}</div>
             <div>주소: {participant.userInfo.address}</div>
             <div>
               전화번호: {formatPhoneNumber(participant.userInfo.phoneNumber)}
             </div>
-            <div>이메일: {participant.userInfo.email}</div>
           </ParticipantCard>
         ))}
       </Container>
