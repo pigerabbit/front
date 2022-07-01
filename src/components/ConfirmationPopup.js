@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const ConfirmationPopup = ({
   children,
@@ -13,43 +13,64 @@ const ConfirmationPopup = ({
   };
 
   return (
-    <Container isOpenPopup={isOpenPopup}>
-      <MessageContainer>{children}</MessageContainer>
-      <ButtonsContainer>
-        <Button isCancel={false} onClick={handleButtonClick}>
-          {buttonContent}
-        </Button>
-        <Button isCancel={true} onClick={handleCancelClick}>
-          취소
-        </Button>
-      </ButtonsContainer>
+    <Container isOpenPopup={isOpenPopup} onClick={handleCancelClick}>
+      <PopupContainer
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
+        <MessageContainer>{children}</MessageContainer>
+        <ButtonsContainer>
+          <Button isCancel={false} onClick={handleButtonClick}>
+            {buttonContent}
+          </Button>
+          <Button isCancel={true} onClick={handleCancelClick}>
+            취소
+          </Button>
+        </ButtonsContainer>
+      </PopupContainer>
     </Container>
   );
 };
 
 export default ConfirmationPopup;
 
-const Container = styled.div`
-  z-index: 15;
-  position: fixed;
-  bottom: ${({ isOpenPopup }) => {
-    if (isOpenPopup) return "0;";
-    else return "-320px;";
-  }}
-  transition: bottom 0.3s;
+const popupAnimation = keyframes`
+  from{
+    transform: translateY(20%);
+  }
+  to{
+    transform: none;
+  }
+`;
 
+const Container = styled.div`
+  position: fixed;
   left: 0px;
   right: 0px;
-  max-width: 770px;
   width: 100%;
+  max-width: 770px;
+  min-width: 360px;
+  min-height: 100vh;
+  top: 0;
+  margin: 0 auto;
+  z-index: 10;
+  background-color: rgba(10, 10, 10, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PopupContainer = styled.div`
+  z-index: 15;
+  width: 85%;
+  max-height: 250px;
   margin: 0 auto;
   padding: 10px 0;
   background-color: #ffffff;
+  border-radius: 30px;
 
-  max-height: 250px;
-  background-color: white;
-  box-shadow: 0px -10px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 30px 30px 10px 10px;
+  animation: ${popupAnimation} 0.5s ease-in-out;
 `;
 
 const MessageContainer = styled.div`
@@ -84,8 +105,5 @@ const Button = styled.div`
   margin: 0 auto;
 
   color: white;
-  background-color: ${({ isCancel }) => {
-    if (isCancel) return "#d0d0d0;";
-    else return "#d3623b;";
-  }};
+  background-color: ${({ isCancel }) => (isCancel ? "#d0d0d0" : "#d3623b")};
 `;

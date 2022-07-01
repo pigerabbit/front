@@ -182,15 +182,17 @@ const ProductReviewCard = ({
           </div>
         )}
       </Container>
-      <ConfirmationPopup
-        handleButtonClick={handleDeleteReview}
-        isOpenPopup={isOpenPopup}
-        setIsOpenPopup={setIsOpenPopup}
-        buttonContent={"삭제"}
-      >
-        <span>후기를 삭제하시겠습니까?</span>
-        <span>삭제된 후기는 복구할 수 없습니다.</span>
-      </ConfirmationPopup>
+      {isOpenPopup && (
+        <ConfirmationPopup
+          handleButtonClick={handleDeleteReview}
+          isOpenPopup={isOpenPopup}
+          setIsOpenPopup={setIsOpenPopup}
+          buttonContent={"삭제"}
+        >
+          <span>후기를 삭제하시겠습니까?</span>
+          <span>삭제된 후기는 복구할 수 없습니다.</span>
+        </ConfirmationPopup>
+      )}
     </>
   );
 };

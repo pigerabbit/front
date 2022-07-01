@@ -34,10 +34,14 @@ export default ProductInfoCard;
 const Container = styled.div`
   position: relative;
   width: 95%;
-  margin: 2px auto;
+  margin: 0 auto;
   min-height: 80px;
   border-bottom: 1px solid #d0d0d0;
   background-color: #ffffff;
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   cursor: pointer;
 `;
 
@@ -45,11 +49,11 @@ const Title = styled.div`
   font-size: 16px;
   font-weight: ${({ open }) => (open ? "bold" : "normal")};
   color: #636363;
-  padding: 30px 0 0 30px;
+  padding: ${({ open }) => (open ? "30px 30px 0 30px" : "0 30px 0 30px")};
 `;
 
 const Content = styled.div`
-  margin: 30px;
+  padding: 30px;
   font-size: 15px;
   white-space: pre-wrap;
 `;

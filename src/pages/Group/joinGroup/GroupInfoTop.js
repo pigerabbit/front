@@ -85,7 +85,9 @@ const ProductDetailTop = ({ group, product, seller }) => {
           </Price>
         </PriceInfo>
         <p id="shippingFee">
-          배송비 {shippingFeeStr}원{shippingConStr}
+          {shippingFee
+            ? `배송비 ${shippingFeeStr}원${shippingConStr}`
+            : "무료배송"}
         </p>
       </InfoContainer>
       <DescriptionContainer>
