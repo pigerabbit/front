@@ -95,7 +95,7 @@ const MyPage = () => {
             {user?.seller && `${user?.business[0].businessName}, `}
             {user?.name}
           </div>
-          <div className="email">{user?.email}</div>
+          {user.type !== "oauth" && <div className="email">{user?.email}</div>}
         </Profile>
       </Section>
 
