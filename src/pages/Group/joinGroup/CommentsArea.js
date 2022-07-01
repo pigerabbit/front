@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import * as Api from "api";
 
 import CommentForm from "./CommentForm";
@@ -12,8 +11,13 @@ const CommentsArea = ({
   isSeller,
   setJoinedGroup,
   joinedGroup,
+  setShowBuyingProduct,
 }) => {
   const [comments, setComments] = useState([]);
+
+  const handleClickCommentArea = () => {
+    setShowBuyingProduct(true);
+  };
 
   const getComments = async () => {
     try {
@@ -31,9 +35,6 @@ const CommentsArea = ({
 
   useEffect(() => {
     getComments();
-  }, []);
-
-  useEffect(() => {
     if (user && Object.keys(group).length > 0)
       setJoinedGroup(
         group.participants.filter((v) => v.userId === user.id).length > 0
@@ -43,7 +44,9 @@ const CommentsArea = ({
   return (
     <Container>
       {!(joinedGroup || isSeller) && (
-        <Blur>댓글 읽기/작성은 공동구매 참여 후 가능</Blur>
+        <Blur onClick={handleClickCommentArea}>
+          댓글 읽기/작성은 공동구매 참여 후 가능
+        </Blur>
       )}
       <CommentsContainer>
         <h4>댓글 ({comments.length})</h4>
@@ -99,6 +102,7 @@ const Blur = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);

@@ -87,6 +87,7 @@ const GroupDetailPage = () => {
               isSeller={isSeller}
               setJoinedGroup={setJoinedGroup}
               joinedGroup={joinedGroup}
+              setShowBuyingProduct={setShowBuyingProduct}
             />
           </Body>
 

@@ -69,6 +69,7 @@ const Title = styled.p`
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: middle;
+  transform: translateY(-1.7px);
 
   @media (max-width: 500px) {
     width: 270px;

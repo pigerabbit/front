@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import * as Api from "api";
 
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons";
@@ -80,6 +80,7 @@ const ProductDescriptionTab = ({ product, seller }) => {
         <img id="productImg" src={images} alt={product.name + " 사진"} />
       </ImgContainer>
       <Seller
+        to={`/markets/${seller.userId}`}
         onClick={() => {
           navigate(`/markets/${seller.userId}`);
         }}
@@ -101,7 +102,9 @@ const ProductDescriptionTab = ({ product, seller }) => {
           </Price>
         </PriceInfo>
         <p id="shippingFee">
-          배송비 {shippingFeeStr}원{shippingConStr}
+          {shippingFee
+            ? `배송비 ${shippingFeeStr}원${shippingConStr}`
+            : "무료배송"}
         </p>
       </InfoContainer>
       <DescriptionContainer>
@@ -149,7 +152,10 @@ const ImgContainer = styled.div`
   }
 `;
 
-const Seller = styled.div`
+const Seller = styled(Link)`
+  display: inline-block;
+  text-decoration: none;
+  color: #000000;
   margin: 20px 0 15px 20px;
   font-size: 15px;
   font-weight: bold;
