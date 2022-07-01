@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 
@@ -33,7 +33,6 @@ const ProductInquiryForm = ({
         try {
           const formData = new FormData();
           formData.append("postImg", inquiryImg);
-          for (const keyValue of formData) console.log(keyValue[1]); // ["img", File] File은 객체
 
           const resImg = await Api.postImg(
             `posts/${newInquiry.postId}/img`,
@@ -50,7 +49,7 @@ const ProductInquiryForm = ({
         setMyInquiries((cur) => [newInquiry, ...cur]);
       }
 
-      setIsWriting((cur) => !cur);
+      setIsWriting(false);
     } catch (e) {
       console.log("inquiry post 실패");
     }
@@ -63,8 +62,6 @@ const ProductInquiryForm = ({
     setInquiryImg(img);
     encodeFileToBase64(img, setPreviewImg);
   };
-
-  useEffect(() => {}, []);
 
   return (
     <Container>
