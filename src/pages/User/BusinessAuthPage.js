@@ -129,7 +129,6 @@ const BusinessAuthPage = () => {
           title="사업장 주소"
           type="text"
           value={businessAddress}
-          setValue={setBusinessAddress}
           isValueValid={businessAddressValid}
           handleClick={() => {
             setIsDaumPostOpen(true);
