@@ -29,6 +29,7 @@ import QRCodePage from "./pages/Coupon/QRCodePage";
 import BridgePage from "./pages/Coupon/BridgePage";
 import CheckResultPage from "./pages/Coupon/CheckResultPage";
 import ConfirmationIcon from "components/ConfirmationIcon";
+import KakaoRedirectHandler from "pages/User/KakaoRedirectHandler";
 
 import ScrollToTop from "components/ScrollToTop";
 import FetchCurrentUser from "components/FetchCurrentUser";
@@ -70,6 +71,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/login/email" element={<EmailLoginPage />} />
           <Route path="/register/user" element={<RegisterPage />} />
+          <Route path="/login/kakao" element={<KakaoRedirectHandler />} />
           <Route path="/register/product" element={productRegisterPage} />
           <Route path="/businessauth" element={businessAuthPage} />
           <Route path="/mypage" element={myPage} />
