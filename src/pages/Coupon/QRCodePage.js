@@ -23,6 +23,7 @@ const QRCodePage = () => {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  // 테스트를 위해서 사용된 clickHandler 입니다.
   const handleClick = () => {
     try {
       navigate(
@@ -79,7 +80,7 @@ const QRCodePage = () => {
               level={"H"}
               id="qr"
               size={250}
-              onClick={handleClick}
+              // onClick={handleClick}
             />
           </QRContainer>
           <QRBottom>
