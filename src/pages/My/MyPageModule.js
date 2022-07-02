@@ -26,7 +26,7 @@ export const returnBgColor = (state) => () => {
   else if ([-5, -4, 4, 5, 1].includes(state)) {
     return "#ffb564";
   }
-  //기간마감 & 사용완료
+  //기간마감
   else if ([-1, -3].includes(state)) {
     return "#e8e8e8";
   }

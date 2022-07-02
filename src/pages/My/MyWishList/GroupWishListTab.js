@@ -2,6 +2,19 @@ import styled from "styled-components";
 import MyWishListCard from "./MyWishListCard";
 
 const GroupWishListTab = ({ groups }) => {
+  if (groups.length === 0) {
+    return (
+      <Container>
+        <NoWishListContainer>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/noWishList.svg`}
+            alt="no wishlist"
+          />
+          찜 내역이 없습니다.
+        </NoWishListContainer>
+      </Container>
+    );
+  }
   return (
     <Container>
       <CountWrapper>
@@ -27,15 +40,6 @@ const GroupWishListTab = ({ groups }) => {
           ))}
         </GroupWishListWrapper>
       </GroupWishListContainer>
-      {groups.length === 0 && (
-        <NoWishListContainer>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/noWishList.svg`}
-            alt="no wishlist"
-          />
-          찜 내역이 없습니다.
-        </NoWishListContainer>
-      )}
     </Container>
   );
 };
@@ -79,16 +83,14 @@ const GroupWishListWrapper = styled.div`
 `;
 
 const NoWishListContainer = styled.div`
-  margin-top: 10%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   font-size: 25px;
   > img {
     width: 50%;
     margin-bottom: 5%;
-  }
-  @media only screen and (max-width: 500px) {
-    margin-top: 30%;
   }
 `;

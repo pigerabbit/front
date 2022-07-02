@@ -50,7 +50,7 @@ const PaymentDetailPage = () => {
         </State>
       </Info>
       <AddressInfo
-        name={user?.name}
+        name={user?.type === "oauth" ? user?.name?.split("_")[0] : user?.name}
         contact={
           user?.phoneNumber?.slice(0, 3) +
           "-" +

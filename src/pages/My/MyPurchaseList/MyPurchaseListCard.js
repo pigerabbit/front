@@ -15,11 +15,10 @@ const MyPurchaseListCard = ({
   isOpenTab,
   setIsOpenPopUpCard,
   setCancelDataId,
-  handleRemoveGroupFromMyList,
-  handleDeleteGroup,
 }) => {
   const navigate = useNavigate();
   const myInfo = group.participants.filter((p) => p.userId === userId);
+
   const { groupId, state, groupType, groupName, remainedPersonnel, deadline } =
     group;
   const { id: productId, images, salePrice } = group.productInfo;
@@ -52,7 +51,7 @@ const MyPurchaseListCard = ({
 
   return (
     <CardContainer>
-      {!isOpenTab && <p>{formatParticipateDate(myInfo[0].participantDate)}</p>}
+      <p>{formatParticipateDate(myInfo[0].participantDate)}</p>
       <CardWrapper>
         <CardImageWrapper>
           <CardImage images={images} onClick={moveToGroupPage(groupId)} />
@@ -128,24 +127,6 @@ const MyPurchaseListCard = ({
           cursor="pointer"
         >
           후기 작성
-        </CardButton>
-      )}
-      {isOpenTab && group.state === -1 && (
-        <CardButton
-          onClick={() => handleDeleteGroup(groupId)}
-          bgColor="#A0A0A0"
-          cursor="pointer"
-        >
-          삭제
-        </CardButton>
-      )}
-      {(state === -6 || state === -7) && (
-        <CardButton
-          onClick={() => handleRemoveGroupFromMyList(groupId)}
-          bgColor="#A0A0A0"
-          cursor="pointer"
-        >
-          삭제
         </CardButton>
       )}
     </CardContainer>

@@ -14,16 +14,6 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
   const [cancelDataId, setCancelDataId] = useState("");
 
-  const handleRemoveGroupFromMyList = async (groupId) => {
-    try {
-      await Api.put(`groups/${groupId}/participate/out`);
-      const data = filteredData.filter((data) => data.groupId !== groupId);
-      setFilteredData(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleCancelGroupClick = async () => {
     try {
       await Api.put(`groups/${cancelDataId}/participate/out`);
@@ -38,9 +28,17 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
   const handleClosePopUpCard = () => setIsOpenPopUpCard(false);
 
   useEffect(() => {
-    setTotalData(participatedData);
+    const sortedData = participatedData.sort((a, b) => {
+      const myInfoA = a.participants.filter((p) => p.userId === userId);
+      const myInfoB = b.participants.filter((p) => p.userId === userId);
+      return (
+        new Date(myInfoB[0].participantDate) -
+        new Date(myInfoA[0].participantDate)
+      );
+    });
+    setTotalData(sortedData);
     if (option === "전체보기") {
-      setFilteredData(totalData);
+      setFilteredData(sortedData);
     } else if (option === "진행중") {
       const onProgress = totalData.filter((group) => group.state === 0);
       setFilteredData(onProgress);
@@ -49,19 +47,20 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
         [-5, -4, 4, 5, 1].includes(group.state)
       );
       setFilteredData(completed);
+    } else if (option === "사용완료") {
+      const completed = totalData.filter((group) => {
+        const myInfo = group.participants.filter((p) => p.userId === userId);
+        return myInfo[0].payment.voucher === 0;
+      });
+      setFilteredData(completed);
     }
-    // else if (option === "기간마감") {
-    //   const stopped = totalData.filter((group) =>
-    //     [-1, -3].includes(group.state)
-    //   );
-    //   setFilteredData(stopped);
-    // }
-  }, [participatedData, option, totalData]);
+  }, [participatedData, option, totalData, userId]);
 
   if (!filteredData) {
     return <LoadingSpinner />;
   }
 
+  console.log(filteredData);
   return (
     <Container>
       <Count>
@@ -87,7 +86,6 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
                 isOpenTab={false}
                 setIsOpenPopUpCard={setIsOpenPopUpCard}
                 setCancelDataId={setCancelDataId}
-                handleRemoveGroupFromMyList={handleRemoveGroupFromMyList}
               />
             ))}
         </PurchaseListWrapper>

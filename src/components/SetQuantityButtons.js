@@ -40,7 +40,7 @@ const SetQuantityButtons = ({ quantity, setQuantity, maxQuantity }) => {
 export default SetQuantityButtons;
 
 const Quantity = styled.div`
-  width: 114px;
+  width: fit-content;
   height: 34px;
   display: flex;
   flex-direction: row;
@@ -54,10 +54,16 @@ const Quantity = styled.div`
     height: 100%;
     background-color: #f1f2f4;
     font-size: 20px;
+    text-decoration: none;
+    color: #636363;
     cursor: pointer;
     border: none;
     border-right: 1px solid #dde0e3;
     border-left: 1px solid #dde0e3;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
 
   > input {

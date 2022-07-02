@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import * as Api from "api";
 
-import { CalShippingFee } from "../GroupModule";
+import { CalShippingFee, headerTitle } from "../GroupModule";
 import GroupHeader from "../GroupHeader";
 import AddressInfo from "./AddressInfo";
 import PriceInfo from "./PriceInfo";
@@ -33,7 +33,11 @@ const JoinGroupPaymentPage = () => {
 
   useEffect(() => {
     if (user) {
-      setName(user.name);
+      if (user.type === "oauth") {
+        setName(user.name.split("_")[0]);
+      } else {
+        setName(user.name);
+      }
       setContact(
         user.phoneNumber?.slice(0, 3) +
           "-" +
@@ -79,7 +83,10 @@ const JoinGroupPaymentPage = () => {
 
   return (
     <Container>
-      <GroupHeader headerTitle={`주문/결제`} goBack={-1} />
+      <GroupHeader
+        headerTitle={`주문/결제(${headerTitle[group.groupType]})`}
+        goBack={-1}
+      />
       <AddressInfo
         name={name}
         contact={contact}

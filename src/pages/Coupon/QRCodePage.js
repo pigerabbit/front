@@ -58,6 +58,14 @@ const QRCodePage = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (user) {
+      setCheckUrl(
+        `http://hackathon01.elicecoding.com/check?group=${groupObjId}&user=${user.id}&quantity=${quantity}`
+      );
+    }
+  }, [quantity]);
+
   return (
     <Container>
       {loading ? (
@@ -80,7 +88,7 @@ const QRCodePage = () => {
               level={"H"}
               id="qr"
               size={250}
-              // onClick={handleClick}
+              onClick={handleClick}
             />
           </QRContainer>
           <QRBottom>

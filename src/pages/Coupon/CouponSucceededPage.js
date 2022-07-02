@@ -37,10 +37,16 @@ const CouponSucceededPage = ({ group, quantity }) => {
             <span className="emphasize">{businessName} </span>의 이용권 입니다.
           </p>
           <br />
-          <p className="emphasize">공구명: {group.groupName}</p>
-          <p className="emphasize">
-            상품 수량: <span id="quantity">{quantity}</span>개
-          </p>
+          <div>
+            <p>공구명</p>
+            <p className="emphasize">{group.groupName}</p>
+          </div>
+          <div>
+            <p>상품 수량</p>
+            <p className="emphasize">
+              <span id="quantity">{quantity}</span>개
+            </p>
+          </div>
         </GroupInfo>
       )}
     </Container>
@@ -72,8 +78,8 @@ const Container = styled.div`
   justify-content: center;
 
   #roundIcon {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     background-color: #ffb564;
     display: flex;
     align-items: center;
@@ -82,9 +88,19 @@ const Container = styled.div`
     z-index: 5;
 
     > svg {
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       color: #ffffff;
+    }
+    @media (max-width: 500px) {
+      width: 60px;
+      height: 60px;
+
+      > svg {
+        width: 30px;
+        height: 30px;
+        color: #ffffff;
+      }
     }
   }
 
@@ -97,7 +113,7 @@ const Result = styled.p`
   margin-bottom: 10px;
 
   @media (max-width: 500px) {
-    font-size: 25px;
+    font-size: 22px;
   }
 `;
 
@@ -110,10 +126,10 @@ const GroupInfo = styled.div`
   justify-content: center;
   border: 7px solid #ffb564;
   border-radius: 10px;
-  padding-top: 10px;
-  margin-top: -50px;
+  padding-top: 30px;
+  margin-top: -40px;
 
-  h2 {
+  > h2 {
     margin-bottom: 15px;
   }
 
@@ -124,8 +140,20 @@ const GroupInfo = styled.div`
     border-radius: 10px;
   }
 
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+
+    > p {
+      margin-bottom: 5px;
+    }
+  }
+
   > p {
-    font-size: 18px;
+    font-size: 15px;
     margin-bottom: 7px;
   }
 
@@ -145,6 +173,7 @@ const GroupInfo = styled.div`
   @media (max-width: 500px) {
     width: 90%;
     height: 530px;
+    margin-top: -30px;
 
     > img {
       height: 280px;

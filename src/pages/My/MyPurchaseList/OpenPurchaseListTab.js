@@ -14,16 +14,6 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
   const [cancelDataId, setCancelDataId] = useState("");
 
-  const handleDeleteGroup = async (groupId) => {
-    try {
-      await Api.delete(`groups/${groupId}`);
-      const data = filteredData.filter((data) => data.groupId === groupId);
-      setFilteredData(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleRemoveGroupFromMyList = async (groupId) => {
     try {
       await Api.put(`groups/${groupId}/participate/out`);
@@ -42,9 +32,17 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
   const handleClosePopUpCard = () => setIsOpenPopUpCard(false);
 
   useEffect(() => {
-    setTotalData(openedData);
+    const sortedData = openedData.sort((a, b) => {
+      const myInfoA = a.participants.filter((p) => p.userId === userId);
+      const myInfoB = b.participants.filter((p) => p.userId === userId);
+      return (
+        new Date(myInfoB[0].participantDate) -
+        new Date(myInfoA[0].participantDate)
+      );
+    });
+    setTotalData(sortedData);
     if (option === "전체보기") {
-      setFilteredData(totalData);
+      setFilteredData(sortedData);
     } else if (option === "진행중") {
       const onProgress = totalData.filter((group) => group.state === 0);
       setFilteredData(onProgress);
@@ -53,14 +51,14 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
         [-5, -4, 4, 5, 1].includes(group.state)
       );
       setFilteredData(completed);
+    } else if (option === "사용완료") {
+      const completed = totalData.filter((group) => {
+        const myInfo = group.participants.filter((p) => p.userId === userId);
+        return myInfo[0].payment.voucher === 0;
+      });
+      setFilteredData(completed);
     }
-    // else if (option === "기간마감") {
-    //   const stopped = totalData.filter((group) =>
-    //     [-1, -3].includes(group.state)
-    //   );
-    //   setFilteredData(stopped);
-    // }
-  }, [openedData, option, totalData]);
+  }, [openedData, option, totalData, userId]);
 
   if (!filteredData) {
     return <LoadingSpinner />;
@@ -92,8 +90,6 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
                 isOpenTab={true}
                 setIsOpenPopUpCard={setIsOpenPopUpCard}
                 setCancelDataId={setCancelDataId}
-                handleRemoveGroupFromMyList={handleRemoveGroupFromMyList}
-                handleDeleteGroup={handleDeleteGroup}
               />
             ))}
         </PurchaseListWrapper>
