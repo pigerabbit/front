@@ -155,13 +155,13 @@ const PurchasersButton = styled.button`
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 16%;
+  width: 20%;
   max-width: 100px;
   z-index: 3;
   cursor: pointer;
   border: none;
   color: white;
-  padding: 1.2%;
+  padding: 1.6%;
   background: #ffb564;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.15);
   font-size: 2vw;
