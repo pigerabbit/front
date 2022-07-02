@@ -12,9 +12,9 @@ const SearchProductCard = ({ product }) => {
           <Name>{product.name}</Name>
           <DescriptionWrapper>
             <Description>
-              <Price>{`${product.price}원`}</Price>
+              <Price>{`${product.price.toLocaleString()}원`}</Price>
               <DiscountRate>{`${product.discountRate}%`}</DiscountRate>
-              <SalePrice>{`${product.salePrice}원`}</SalePrice>
+              <SalePrice>{`${product.salePrice.toLocaleString()}원`}</SalePrice>
             </Description>
             <InfoButton onClick={() => navigate(`/products/${product.id}`)}>
               보러가기
