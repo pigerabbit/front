@@ -54,22 +54,24 @@ const InquiresPage = () => {
         </LoadingContainer>
       ) : (
         <Container>
-          <Info>
-            <TotalNumber>총 {inquires.length}건</TotalNumber>
-            <SelectBox>
-              {options.map(({ eng, kor }) => (
-                <Option
-                  key={eng}
-                  selected={option === eng}
-                  onClick={() => {
-                    setOption(eng);
-                  }}
-                >
-                  {kor}
-                </Option>
-              ))}
-            </SelectBox>
-          </Info>
+          {inquires.length > 0 && (
+            <Info>
+              <TotalNumber>총 {inquires.length}건</TotalNumber>
+              <SelectBox>
+                {options.map(({ eng, kor }) => (
+                  <Option
+                    key={eng}
+                    selected={option === eng}
+                    onClick={() => {
+                      setOption(eng);
+                    }}
+                  >
+                    {kor}
+                  </Option>
+                ))}
+              </SelectBox>
+            </Info>
+          )}
 
           {inquires.map((inquire) => (
             <InquireCard
@@ -157,10 +159,12 @@ const Option = styled.div`
 `;
 
 const NoReviewContainer = styled.div`
-  margin-top: 10%;
+  width: 100%;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   font-size: 3vw;
   @media (min-width: 650px) {
     font-size: 20px;
