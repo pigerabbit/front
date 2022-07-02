@@ -45,9 +45,9 @@ const SearchGroupCard = ({ group }) => {
         <CardImage image={group.productInfo.images} />
         <CardContent>
           <Name>{group.groupName}</Name>
-          <Price>{`${group.productInfo.price}원`}</Price>
+          <Price>{`${group.productInfo.price.toLocaleString()}원`}</Price>
           <DiscountRate>{`${group.productInfo.discountRate}%`}</DiscountRate>
-          <SalePrice>{`${group.productInfo.salePrice}원`}</SalePrice>
+          <SalePrice>{`${group.productInfo.salePrice.toLocaleString()}원`}</SalePrice>
           <ImminentInfo>
             <Leftparticipants>{`${group.remainedPersonnel}개 남음`}</Leftparticipants>
             {remain.getFullYear() === 1970 && <Deadline>{remainText}</Deadline>}
