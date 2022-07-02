@@ -34,5 +34,4 @@ const Container = styled.div`
   min-width: 360px;
   max-width: 770px;
   background-color: #ffffff;
-  padding: 7px 0;
 `;
