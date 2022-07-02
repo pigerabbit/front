@@ -79,12 +79,7 @@ const ProductDescriptionTab = ({ product, seller }) => {
       <ImgContainer>
         <img id="productImg" src={images} alt={product.name + " 사진"} />
       </ImgContainer>
-      <Seller
-        to={`/markets/${seller.userId}`}
-        onClick={() => {
-          navigate(`/markets/${seller.userId}`);
-        }}
-      >
+      <Seller to={`/markets/${seller.userId}`}>
         {seller.business[0].businessName}
         <GoSeller />
       </Seller>
