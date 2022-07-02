@@ -1,22 +1,26 @@
 import styled from "styled-components";
 import MyPurchaseListCard from "./MyPurchaseListCard";
-import * as Api from "api";
+import { useEffect, useState } from "react";
 
-const CanceledListTab = ({ canceledData, setCanceledData, userId }) => {
-  const handleRemoveGroupFromMyList = async (groupId) => {
-    try {
-      await Api.put(`groups/${groupId}/participate/out`);
-      const data = canceledData.filter((data) => data.groupId !== groupId);
-      setCanceledData(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+const CanceledListTab = ({ canceledData, userId }) => {
+  const [totalData, setTotalData] = useState(canceledData);
+
+  useEffect(() => {
+    const sortedData = canceledData.sort((a, b) => {
+      const myInfoA = a.participants.filter((p) => p.userId === userId);
+      const myInfoB = b.participants.filter((p) => p.userId === userId);
+      return (
+        new Date(myInfoB[0].participantDate) -
+        new Date(myInfoA[0].participantDate)
+      );
+    });
+    setTotalData(sortedData);
+  }, [canceledData, userId]);
 
   return (
     <Container>
       <Count>
-        총 <strong>{canceledData.length}</strong>개
+        총 <strong>{totalData.length}</strong>개
       </Count>
       <PurchaseListContainer>
         <PurchaseListWrapper>
@@ -27,7 +31,6 @@ const CanceledListTab = ({ canceledData, setCanceledData, userId }) => {
                 userId={userId}
                 group={group}
                 isOpenTab={false}
-                handleRemoveGroupFromMyList={handleRemoveGroupFromMyList}
               />
             ))}
         </PurchaseListWrapper>

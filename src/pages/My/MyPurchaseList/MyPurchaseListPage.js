@@ -107,11 +107,7 @@ const MyPurchaseListPage = () => {
               />
             )}
             {tab === "tab3" && (
-              <CanceledListTab
-                canceledData={canceledData}
-                setCanceledData={setCancelData}
-                userId={user?.id}
-              />
+              <CanceledListTab canceledData={canceledData} userId={user?.id} />
             )}
           </>
         )}

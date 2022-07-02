@@ -18,6 +18,7 @@ const MyPurchaseListCard = ({
 }) => {
   const navigate = useNavigate();
   const myInfo = group.participants.filter((p) => p.userId === userId);
+
   const { groupId, state, groupType, groupName, remainedPersonnel, deadline } =
     group;
   const { id: productId, images, salePrice } = group.productInfo;
@@ -50,7 +51,7 @@ const MyPurchaseListCard = ({
 
   return (
     <CardContainer>
-      {!isOpenTab && <p>{formatParticipateDate(myInfo[0].participantDate)}</p>}
+      <p>{formatParticipateDate(myInfo[0].participantDate)}</p>
       <CardWrapper>
         <CardImageWrapper>
           <CardImage images={images} onClick={moveToGroupPage(groupId)} />

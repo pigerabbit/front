@@ -28,9 +28,17 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
   const handleClosePopUpCard = () => setIsOpenPopUpCard(false);
 
   useEffect(() => {
-    setTotalData(participatedData);
+    const sortedData = participatedData.sort((a, b) => {
+      const myInfoA = a.participants.filter((p) => p.userId === userId);
+      const myInfoB = b.participants.filter((p) => p.userId === userId);
+      return (
+        new Date(myInfoB[0].participantDate) -
+        new Date(myInfoA[0].participantDate)
+      );
+    });
+    setTotalData(sortedData);
     if (option === "전체보기") {
-      setFilteredData(totalData);
+      setFilteredData(sortedData);
     } else if (option === "진행중") {
       const onProgress = totalData.filter((group) => group.state === 0);
       setFilteredData(onProgress);
@@ -40,7 +48,7 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
       );
       setFilteredData(completed);
     }
-  }, [participatedData, option, totalData]);
+  }, [participatedData, option, totalData, userId]);
 
   if (!filteredData) {
     return <LoadingSpinner />;
