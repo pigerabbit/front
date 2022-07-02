@@ -76,16 +76,15 @@ const ProductWishListWrapper = styled.div`
 `;
 
 const NoWishListContainer = styled.div`
+  height: 100%;
   margin-top: 10%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   font-size: 25px;
   > img {
     width: 50%;
     margin-bottom: 5%;
-  }
-  @media only screen and (max-width: 500px) {
-    margin-top: 30%;
   }
 `;
