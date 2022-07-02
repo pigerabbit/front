@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import { states } from "pages/Group/GroupModule";
 
@@ -49,11 +49,7 @@ const ProductDetailTop = ({ group, product, seller }) => {
       </ImgContainer>
       <Seller>
         {seller.business[0].businessName}
-        <GoToProduct
-          onClick={() => {
-            navigate(`/products/${product.id}`);
-          }}
-        >
+        <GoToProduct to={`/products/${product.id}`}>
           판매 페이지로 이동
         </GoToProduct>
       </Seller>
@@ -138,7 +134,9 @@ const Seller = styled.div`
   align-items: center;
 `;
 
-const GoToProduct = styled.div`
+const GoToProduct = styled(Link)`
+  display: inline-block;
+  text-decoration: none;
   width: 120px;
   height: 30px;
   color: #ffffff;
