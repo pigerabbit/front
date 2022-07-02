@@ -54,7 +54,7 @@ const SearchPage = () => {
       <DeadLineContainer isEmpty={!deadlineGroup}>
         {deadlineGroup.length !== 0 && (
           <>
-            <h3>마감 임박</h3>
+            <h3>시간 임박 공동구매</h3>
             <SearchGroupCard group={deadlineGroup} />
           </>
         )}
