@@ -47,6 +47,13 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
         [-5, -4, 4, 5, 1].includes(group.state)
       );
       setFilteredData(completed);
+    } else if (option === "사용완료") {
+      const completed = totalData.filter((group) => {
+        const myInfo = group.participants.filter((p) => p.userId === userId);
+        console.log(myInfo);
+        return myInfo[0].complete;
+      });
+      setFilteredData(completed);
     }
   }, [participatedData, option, totalData, userId]);
 
@@ -54,6 +61,7 @@ const ParticipatePurchaseListTab = ({ participatedData, userId }) => {
     return <LoadingSpinner />;
   }
 
+  console.log(filteredData);
   return (
     <Container>
       <Count>
