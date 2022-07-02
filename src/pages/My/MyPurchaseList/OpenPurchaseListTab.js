@@ -14,16 +14,6 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
   const [isOpenPopUpCard, setIsOpenPopUpCard] = useState(false);
   const [cancelDataId, setCancelDataId] = useState("");
 
-  const handleDeleteGroup = async (groupId) => {
-    try {
-      await Api.delete(`groups/${groupId}`);
-      const data = filteredData.filter((data) => data.groupId === groupId);
-      setFilteredData(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleRemoveGroupFromMyList = async (groupId) => {
     try {
       await Api.put(`groups/${groupId}/participate/out`);
@@ -86,8 +76,6 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
                 isOpenTab={true}
                 setIsOpenPopUpCard={setIsOpenPopUpCard}
                 setCancelDataId={setCancelDataId}
-                handleRemoveGroupFromMyList={handleRemoveGroupFromMyList}
-                handleDeleteGroup={handleDeleteGroup}
               />
             ))}
         </PurchaseListWrapper>

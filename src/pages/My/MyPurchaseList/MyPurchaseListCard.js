@@ -15,8 +15,6 @@ const MyPurchaseListCard = ({
   isOpenTab,
   setIsOpenPopUpCard,
   setCancelDataId,
-  handleRemoveGroupFromMyList,
-  handleDeleteGroup,
 }) => {
   const navigate = useNavigate();
   const myInfo = group.participants.filter((p) => p.userId === userId);
@@ -128,24 +126,6 @@ const MyPurchaseListCard = ({
           cursor="pointer"
         >
           후기 작성
-        </CardButton>
-      )}
-      {isOpenTab && group.state === -1 && (
-        <CardButton
-          onClick={() => handleDeleteGroup(groupId)}
-          bgColor="#A0A0A0"
-          cursor="pointer"
-        >
-          삭제
-        </CardButton>
-      )}
-      {(state === -6 || state === -7) && (
-        <CardButton
-          onClick={() => handleRemoveGroupFromMyList(groupId)}
-          bgColor="#A0A0A0"
-          cursor="pointer"
-        >
-          삭제
         </CardButton>
       )}
     </CardContainer>
