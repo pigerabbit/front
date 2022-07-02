@@ -11,7 +11,6 @@ import ProductInformationTab from "./ProductInformationTab";
 import ProductReviewTab from "./ProductReviewTab";
 import ProductInquiryTab from "./ProductInquiryTab";
 import JoinGroupWindow from "pages/Group/joinGroup/JoinGroupWindow";
-import LoadingSpinner from "components/LoadingSpinner";
 
 const ProductDetailPage = () => {
   const { user } = useSelector((state) => state.user);
