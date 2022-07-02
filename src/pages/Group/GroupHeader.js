@@ -81,7 +81,7 @@ const Title = styled.p`
   padding: 20px 0;
   vertical-align: middle;
   text-align: center;
-  @media (max-width: 500px) {
+  @media (max-width: 510px) {
     margin-left: 5%;
     font-size: 20px;
     width: 270px;

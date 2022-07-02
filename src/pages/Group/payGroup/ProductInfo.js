@@ -50,6 +50,7 @@ const Image = styled.div`
   background-image: url(${(props) => props.image});
   background-size: cover;
   border-radius: 10px;
+  margin-right: 10px;
   @media (max-width: 500px) {
     width: 100px;
     height: 100px;
