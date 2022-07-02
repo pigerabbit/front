@@ -204,6 +204,7 @@ const LeftButton = styled.button`
   justify-content: center;
   border-radius: 10px;
   cursor: pointer;
+  font-size: 17px;
   font-weight: bold;
   margin: 0px 10px 0 20px;
   background-color: #ffffff;
@@ -224,6 +225,7 @@ const RightButton = styled.button`
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  font-size: 17px;
   cursor: pointer;
   font-weight: bold;
   margin: 0px 20px 0 10px;

@@ -114,7 +114,9 @@ const GroupDetailPage = () => {
               {!wish ? "찜 하기" : "찜 취소하기"}
             </LeftButton>
             {joinedGroup ? (
-              <RightButton joinedGroup={joinedGroup}>주문완료</RightButton>
+              <RightButton joinedGroup={joinedGroup} disabled>
+                주문완료
+              </RightButton>
             ) : (
               <RightButton onClick={() => setShowBuyingProduct(true)}>
                 구매하기
@@ -167,7 +169,7 @@ const ButtonsContainer = styled.div`
   z-index: 10;
 `;
 
-const LeftButton = styled.div`
+const LeftButton = styled.button`
   width: 48%;
   height: 65px;
   display: flex;
@@ -176,6 +178,7 @@ const LeftButton = styled.div`
   justify-content: center;
   border-radius: 10px;
   cursor: pointer;
+  font-size: 17px;
   font-weight: bold;
   margin: 0px 10px 0 20px;
   background-color: #ffffff;
@@ -192,7 +195,7 @@ const LeftButton = styled.div`
   }
 `;
 
-const RightButton = styled.div`
+const RightButton = styled.button`
   width: 48%;
   height: 65px;
   display: flex;
@@ -201,13 +204,17 @@ const RightButton = styled.div`
   justify-content: center;
   border-radius: 10px;
   cursor: ${({ joinedGroup }) => (joinedGroup ? "normal" : "pointer")};
+  font-size: 17px;
   font-weight: bold;
   margin: 0px 20px 0 10px;
   background-color: ${({ joinedGroup }) =>
     joinedGroup ? "#636363" : "#f79831"};
   color: #ffffff;
+  border: ${({ joinedGroup }) =>
+    joinedGroup ? "2px solid #636363" : "2px solid #f79831"};
 
   &:hover {
     background-color: #636363;
+    border-color: #636363;
   }
 `;
