@@ -53,12 +53,13 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
         [-5, -4, 4, 5, 1].includes(group.state)
       );
       setFilteredData(completed);
-    } else if (option === "기간마감") {
-      const stopped = totalData.filter((group) =>
-        [-1, -3].includes(group.state)
-      );
-      setFilteredData(stopped);
     }
+    // else if (option === "기간마감") {
+    //   const stopped = totalData.filter((group) =>
+    //     [-1, -3].includes(group.state)
+    //   );
+    //   setFilteredData(stopped);
+    // }
   }, [openedData, option, totalData]);
 
   if (!filteredData) {

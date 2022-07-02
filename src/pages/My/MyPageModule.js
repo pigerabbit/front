@@ -59,10 +59,4 @@ export const formatParticipateDate = (date) => {
   return formatDate;
 };
 
-export const options = [
-  "전체보기",
-  "진행중",
-  "모집성공",
-  "기간마감",
-  "사용완료",
-];
+export const options = ["전체보기", "진행중", "모집성공", "사용완료"];

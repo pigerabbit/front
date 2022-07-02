@@ -35,17 +35,37 @@ const MyPurchaseListPage = () => {
       ]);
 
       const filteredOpenedGroups = openedGroups.data.payload.filter(
-        (group) => !(group.state === -6 || group.state === -7)
+        (group) =>
+          !(
+            group.state === -6 ||
+            group.state === -7 ||
+            group.state === -1 ||
+            group.state === -3
+          )
       );
       const filteredParticipatedGroups = participatedGroups.data.payload.filter(
-        (group) => !(group.state === -6 || group.state === -7)
+        (group) =>
+          !(
+            group.state === -6 ||
+            group.state === -7 ||
+            group.state === -1 ||
+            group.state === -3
+          )
       );
 
       const canceledOpenedGroups = openedGroups.data.payload.filter(
-        (group) => group.state === -6 || group.state === -7
+        (group) =>
+          group.state === -6 ||
+          group.state === -7 ||
+          group.state === -1 ||
+          group.state === -3
       );
       const canceledParticipatedGroups = participatedGroups.data.payload.filter(
-        (group) => group.state === -6 || group.state === -7
+        (group) =>
+          group.state === -6 ||
+          group.state === -7 ||
+          group.state === -1 ||
+          group.state === -3
       );
 
       setOpenedGroups(filteredOpenedGroups);

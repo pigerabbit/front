@@ -136,7 +136,7 @@ const MyPurchaseListCard = ({
           bgColor="#A0A0A0"
           cursor="pointer"
         >
-          공구 삭제
+          삭제
         </CardButton>
       )}
       {(state === -6 || state === -7) && (
@@ -145,7 +145,7 @@ const MyPurchaseListCard = ({
           bgColor="#A0A0A0"
           cursor="pointer"
         >
-          공구 삭제
+          삭제
         </CardButton>
       )}
     </CardContainer>
