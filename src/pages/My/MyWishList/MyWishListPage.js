@@ -29,8 +29,8 @@ const MyWishListPage = () => {
         getWishGroups,
         getWishProducts,
       ]);
-      setGroups(wishGroups.data);
-      setProducts(wishProducts.data);
+      setGroups(wishGroups.data.reverse());
+      setProducts(wishProducts.data.reverse());
 
       setLoading(false);
     } catch (err) {
