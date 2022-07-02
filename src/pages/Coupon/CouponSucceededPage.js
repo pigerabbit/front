@@ -135,9 +135,11 @@ const GroupInfo = styled.div`
 
   > img {
     width: auto;
+    max-width: 85%;
     height: 300px;
     margin-bottom: 15px;
     border-radius: 10px;
+    object-fit: cover;
   }
 
   > div {
