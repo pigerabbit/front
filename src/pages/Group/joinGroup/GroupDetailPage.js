@@ -148,7 +148,7 @@ const Container = styled.div`
 const Body = styled.div`
   background-color: #ffffff;
   padding-bottom: ${({ state, isSeller }) =>
-    state === 0 && !isSeller ? "90px" : "20px"};
+    state === 0 && !isSeller ? "85px" : "15px"};
 `;
 
 const ButtonsContainer = styled.div`
@@ -164,7 +164,7 @@ const ButtonsContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
-  padding: 10px 0 20px 0;
+  padding: 10px 0 15px 0;
   background-color: #ffffff;
   z-index: 10;
 `;
