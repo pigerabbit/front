@@ -33,7 +33,11 @@ const JoinGroupPaymentPage = () => {
 
   useEffect(() => {
     if (user) {
-      setName(user.name);
+      if (user.type === "oauth") {
+        setName(user.name.split("_")[0]);
+      } else {
+        setName(user.name);
+      }
       setContact(
         user.phoneNumber?.slice(0, 3) +
           "-" +
