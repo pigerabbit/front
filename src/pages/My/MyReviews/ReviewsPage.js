@@ -45,7 +45,9 @@ const ReviewsPage = () => {
         </LoadingContainer>
       ) : (
         <Container>
-          <TotalNumber>총 {reviews.length}건</TotalNumber>
+          {reviews.length > 0 && (
+            <TotalNumber>총 {reviews.length}건</TotalNumber>
+          )}
 
           {reviews.map((review) => (
             <ReviewCard
@@ -102,10 +104,12 @@ const TotalNumber = styled.div`
 `;
 
 const NoReviewContainer = styled.div`
-  margin-top: 10%;
+  width: 100%;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   font-size: 3vw;
   @media (min-width: 650px) {
     font-size: 20px;
