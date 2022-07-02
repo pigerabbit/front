@@ -26,6 +26,7 @@ const ProductDetailPage = () => {
   });
   const [targetPostId, setTargetPostId] = useState("");
   const [targetGroupId, setTargetGroupId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const loc = useLocation();
@@ -58,6 +59,7 @@ const ProductDetailPage = () => {
           title: "상품설명",
         });
       }
+      setLoading(false);
     }
   };
 
@@ -82,6 +84,7 @@ const ProductDetailPage = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getProductDetail();
   }, [user]);
 
@@ -129,6 +132,7 @@ const ProductDetailPage = () => {
           onClick={() => {
             navigate(`/group/select`, { state: product });
           }}
+          disabled={loading}
         >
           공구 열기
         </LeftButton>
@@ -136,6 +140,7 @@ const ProductDetailPage = () => {
           isFilled="true"
           position="right"
           onClick={() => setShowJoinGroup((cur) => !cur)}
+          disabled={loading}
         >
           공구 참여하기
         </RightButton>
@@ -189,7 +194,7 @@ const ButtonsContainer = styled.div`
   z-index: 5;
 `;
 
-const LeftButton = styled.div`
+const LeftButton = styled.button`
   width: 48%;
   height: 65px;
   display: flex;
@@ -198,6 +203,7 @@ const LeftButton = styled.div`
   justify-content: center;
   border-radius: 10px;
   cursor: pointer;
+  font-size: 17px;
   font-weight: bold;
   margin: 0px 10px 0 20px;
   background-color: #ffffff;
@@ -210,7 +216,7 @@ const LeftButton = styled.div`
   }
 `;
 
-const RightButton = styled.div`
+const RightButton = styled.button`
   width: 48%;
   height: 65px;
   display: flex;
@@ -218,13 +224,16 @@ const RightButton = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  font-size: 17px;
   cursor: pointer;
   font-weight: bold;
   margin: 0px 20px 0 10px;
   background-color: #f79831;
   color: #ffffff;
+  border: 2px solid #f79831;
 
   &:hover {
     background-color: #636363;
+    border-color: #636363;
   }
 `;
