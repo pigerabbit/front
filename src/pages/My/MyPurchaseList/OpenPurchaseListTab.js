@@ -54,7 +54,7 @@ const OpenPurchaseListTab = ({ openedData, userId }) => {
     } else if (option === "사용완료") {
       const completed = totalData.filter((group) => {
         const myInfo = group.participants.filter((p) => p.userId === userId);
-        return myInfo[0].complete;
+        return myInfo[0].payment.voucher === 0;
       });
       setFilteredData(completed);
     }
