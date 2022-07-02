@@ -29,7 +29,6 @@ const SearchProductCard = ({ product }) => {
 export default SearchProductCard;
 
 const CardContainer = styled.div`
-  width: 100%;
   height: 80px;
   background: #fafafa;
   margin: 10px 0;
