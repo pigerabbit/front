@@ -80,7 +80,7 @@ const QRCodePage = () => {
               level={"H"}
               id="qr"
               size={250}
-              // onClick={handleClick}
+              onClick={handleClick}
             />
           </QRContainer>
           <QRBottom>
