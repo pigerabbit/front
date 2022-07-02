@@ -57,6 +57,14 @@ const QRCodePage = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (user) {
+      setCheckUrl(
+        `http://hackathon01.elicecoding.com/check?group=${groupObjId}&user=${user.id}&quantity=${quantity}`
+      );
+    }
+  }, [quantity]);
+
   return (
     <Container>
       {loading ? (
