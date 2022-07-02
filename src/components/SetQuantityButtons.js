@@ -40,7 +40,7 @@ const SetQuantityButtons = ({ quantity, setQuantity, maxQuantity }) => {
 export default SetQuantityButtons;
 
 const Quantity = styled.div`
-  width: 114px;
+  width: fit-content;
   height: 34px;
   display: flex;
   flex-direction: row;
