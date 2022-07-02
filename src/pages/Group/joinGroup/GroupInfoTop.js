@@ -87,10 +87,15 @@ const ProductDetailTop = ({ group, product, seller }) => {
         </p>
       </InfoContainer>
       <DescriptionContainer>
-        {group.location && (
+        {group.groupType !== "normal" ? (
           <Location>
             <h3>픽업 주소</h3>
             <p>{group.location}</p>
+          </Location>
+        ) : (
+          <Location>
+            <h3>판매처 주소</h3>
+            <p>{seller.business[0].businessLocation}</p>
           </Location>
         )}
       </DescriptionContainer>
