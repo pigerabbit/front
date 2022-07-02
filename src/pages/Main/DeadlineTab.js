@@ -5,7 +5,7 @@ import PaginationCardsContainer from "./PaginationCardsContainer";
 import LoadingSpinner from "components/LoadingSpinner";
 
 const DeadlineTab = ({ loading, personNearGroups, timeNearGroups }) => {
-  const productDeadlineTitle = "달성 인원이 얼마 남지 않았어요!";
+  const productDeadlineTitle = "공구 달성이 얼마 남지 않았어요!";
   const timeDeadlineTitle = "24시간 이내 마감되는 공동구매에요!";
 
   return (
