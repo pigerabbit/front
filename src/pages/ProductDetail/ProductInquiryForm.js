@@ -84,6 +84,7 @@ const ProductInquiryForm = ({
             name="inquiryText"
             rows="6"
             onChange={(e) => setInquiryText(e.target.value)}
+            maxlength="1000"
             required
           />
           <div id="inquiryImage">

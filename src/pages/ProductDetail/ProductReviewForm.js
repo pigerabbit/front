@@ -87,6 +87,8 @@ const ProductReviewForm = ({
             name="reviewText"
             rows="6"
             onChange={(e) => setReviewText(e.target.value)}
+            minlength="10"
+            maxlength="5000"
             required
           />
           <div id="reviewImage">
