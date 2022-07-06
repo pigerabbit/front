@@ -16,7 +16,7 @@ const CommentsArea = ({
   const [comments, setComments] = useState([]);
 
   const handleClickCommentArea = () => {
-    if (group.groupState === 0) setShowBuyingProduct(true);
+    if (group.state === 0) setShowBuyingProduct(true);
   };
 
   const getComments = async () => {
