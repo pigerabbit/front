@@ -78,6 +78,7 @@ const ProductReviewForm = ({
             name="reviewTitle"
             value={reviewTitle}
             onChange={(e) => setReviewTitle(e.target.value)}
+            maxlength="100"
             required
           />
           <textarea

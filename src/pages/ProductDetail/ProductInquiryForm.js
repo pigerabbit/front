@@ -75,6 +75,7 @@ const ProductInquiryForm = ({
             name="inquiryTitle"
             value={inquiryTitle}
             onChange={(e) => setInquiryTitle(e.target.value)}
+            maxlength="100"
             required
           />
           <textarea
