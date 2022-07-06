@@ -35,6 +35,7 @@ const CommentForm = ({ groupId, setComments, joinedGroup }) => {
             name="comment"
             value={comment}
             onChange={handleChange}
+            maxlength="100"
             required
           />
           <button id="submit" disabled={!joinedGroup}>
