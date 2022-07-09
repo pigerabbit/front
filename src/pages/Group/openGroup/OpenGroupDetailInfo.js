@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useForm } from "react-hook-form";
 
 import DaumPost from "components/DaumPostCode";
 import GroupInput from "./GroupInput";
@@ -14,28 +15,43 @@ const OpenGroupDetailInfo = ({
 }) => {
   const navigate = useNavigate();
 
+  const defaultValues = {
+    groupName: "",
+    detailAddress: "",
+  };
+  const { watch, register, handleSubmit } = useForm({
+    defaultValues,
+  });
+
+  const { groupName, detailAddress } = watch();
+
   const [count, setCount] = useState(0);
-  const [groupName, setGroupName] = useState("");
   const [address, setAddress] = useState("");
-  const [detailAddress, setDetailAddress] = useState("");
   const [isDaumPostOpen, setIsDaumPostOpen] = useState(false);
 
   const handleDaumPostOpen = () => setIsDaumPostOpen(true);
 
-  const groupNameValid = groupName.length > 0;
-  const locationValid = address.length > 0 && detailAddress.length > 0;
+  const locationValid = address.length > 0 && detailAddress;
   const countValid = count > 0;
   const hourValid = hour !== "";
   const isValid =
     type !== "local"
-      ? groupNameValid && countValid && hourValid
-      : groupNameValid && locationValid && countValid && hourValid;
+      ? groupName && countValid && hourValid
+      : groupName && locationValid && countValid && hourValid;
 
-  useEffect(() => {
-    if (product && type === "coupon") {
-      setAddress(product.userInfo.business[0].businessLocation);
-    }
-  }, [product, type]);
+  const onSubmit = () =>
+    navigate("/group/open/pay", {
+      state: {
+        data: {
+          product,
+          type,
+          groupName,
+          location: `${address} ${detailAddress}`,
+          count,
+          hour: Number(hour.slice(0, 2)),
+        },
+      },
+    });
 
   return (
     <>
@@ -43,42 +59,35 @@ const OpenGroupDetailInfo = ({
         <Title>공구 세부 정보</Title>
         <GroupInput
           title="공구 제목"
-          type="text"
-          value={groupName}
-          setValue={setGroupName}
-          valueValid={groupNameValid}
+          valueName="groupName"
+          valueValid={groupName}
           width={70}
-          check={true}
+          register={register}
         />
         <GroupInput
           title="참여 개수"
-          type="counter"
           value={count}
           setValue={setCount}
           valueValid={countValid}
           minPurchaseQty={product.minPurchaseQty}
-          check={true}
+          isCounter
         />
         {type === "local" && (
           <>
             <GroupInput
               title="공구 주소"
-              type="text"
               value={address}
               setValue={setAddress}
               valueValid={locationValid}
               width={70}
               handleClick={handleDaumPostOpen}
-              check={true}
             />
             <GroupInput
-              title=""
-              type="text"
-              value={detailAddress}
-              setValue={setDetailAddress}
+              valueName="detailAddress"
               width={70}
-              check={false}
               placeHolder="상세 주소를 입력해주세요."
+              register={register}
+              notChecked
             />
           </>
         )}
@@ -90,12 +99,10 @@ const OpenGroupDetailInfo = ({
         )}
         <GroupInput
           title="공구 기간"
-          type="text"
           value={hour}
           setValue={setHour}
           valueValid={hourValid}
           width={30}
-          check={true}
           handleClick={() => setIsHourPopup(true)}
         />
       </Container>
@@ -103,20 +110,7 @@ const OpenGroupDetailInfo = ({
         <Button
           disabled={!isValid}
           valid={isValid}
-          onClick={() =>
-            navigate("/group/open/pay", {
-              state: {
-                data: {
-                  product,
-                  type,
-                  groupName,
-                  location: `${address} ${detailAddress}`,
-                  count,
-                  hour: Number(hour.slice(0, 2)),
-                },
-              },
-            })
-          }
+          onClick={handleSubmit(onSubmit)}
         >
           확인
         </Button>

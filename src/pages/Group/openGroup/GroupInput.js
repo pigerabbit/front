@@ -5,37 +5,52 @@ import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
 const GroupInput = ({
   title,
-  type,
   value,
   setValue,
   valueValid,
+  valueName,
   minPurchaseQty,
   width,
-  check,
   handleClick,
   placeHolder,
+  register,
+  isCounter,
+  notChecked,
 }) => {
   return (
-    <InputContainer onClick={handleClick}>
+    <InputContainer>
       <Title>{title}</Title>
-      {type !== "counter" ? (
-        <Input
-          width={width}
-          type={type}
-          autoComplete="off"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={placeHolder}
-        />
-      ) : (
+      {isCounter && (
         <Counter
           count={value}
           setCount={setValue}
           minPurchaseQty={minPurchaseQty}
         />
       )}
+      {!isCounter &&
+        (register ? (
+          <Input
+            {...register(valueName, {
+              minLength: 1,
+            })}
+            width={width}
+            type="text"
+            autoComplete="off"
+            onClick={handleClick}
+            placeholder={placeHolder}
+          />
+        ) : (
+          <Input
+            width={width}
+            type="text"
+            autoComplete="off"
+            onClick={handleClick}
+            placeholder={placeHolder}
+            value={value}
+          />
+        ))}
 
-      {check && (
+      {!notChecked && (
         <CheckIcon valid={valueValid} width={width}>
           <FontAwesomeIcon icon={faCircleCheck} />
         </CheckIcon>
