@@ -27,7 +27,7 @@ const NoticeCard = ({ notice }) => {
   };
 
   return (
-    <Container key={notice._id} onClick={handleCardClick}>
+    <Container from={notice.from} onClick={handleCardClick}>
       <Image url={notice.image} />
       <Text>
         <span>[{from[notice.from]}]</span>
@@ -40,7 +40,7 @@ const NoticeCard = ({ notice }) => {
 export default NoticeCard;
 
 const Container = styled.div`
-  cursor: pointer;
+  cursor: ${({ from }) => (from === "product" ? "default" : "pointer")}
   box-shadow: 0 2px 3px #d9d9d9;
   background-color: white;
   box-sizing: border-box;
