@@ -19,6 +19,12 @@ const ProductInquiryForm = ({
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
 
+  const handleKeyPress = (e) => {
+    if (showAlert) {
+      e.preventDefault();
+    }
+  };
+
   const handleChange = (e) => {
     const content = e.target.value;
     if (content.length >= e.target.maxLength) {
@@ -100,6 +106,7 @@ const ProductInquiryForm = ({
             name="inquiryTitle"
             value={inquiryTitle}
             onInput={handleChange}
+            onKeyPress={handleKeyPress}
             maxLength={100}
             required
           />
@@ -109,6 +116,7 @@ const ProductInquiryForm = ({
             name="inquiryText"
             rows="6"
             onInput={handleChange}
+            onKeyPress={handleKeyPress}
             maxLength={1000}
             required
           />
