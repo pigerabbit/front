@@ -30,6 +30,7 @@ const ProductReplyEditForm = ({ comment, setComment, setIsEditingReply }) => {
           defaultValue={commentText}
           rows="6"
           onChange={(e) => setCommentText(e.target.value)}
+          maxlength="5000"
           required
         />
       </form>

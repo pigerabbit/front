@@ -2,10 +2,31 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 
+import AlertPopup from "components/AlertPopup";
+
 const CommentForm = ({ groupId, setComments, joinedGroup }) => {
   const [comment, setComment] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
 
-  const handleChange = (e) => setComment(e.target.value);
+  const handleChange = (e) => {
+    const content = e.target.value;
+    if (content.length >= e.target.maxLength) {
+      setAlertContent(
+        `최대 ${e.target.maxLength.toLocaleString()}자까지 작성할 수 있습니다.`
+      );
+      setShowAlert(true);
+      return;
+    } else {
+      setComment(e.target.value);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (showAlert) {
+      e.preventDefault();
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,10 +52,12 @@ const CommentForm = ({ groupId, setComments, joinedGroup }) => {
           <input
             type="text"
             id="comment"
-            placeholder="댓글을 입력해주세요."
+            placeholder="댓글을 입력해주세요.(100자 이하)"
             name="comment"
             value={comment}
-            onChange={handleChange}
+            onInput={handleChange}
+            onKeyPress={handleKeyPress}
+            maxLength={100}
             required
           />
           <button id="submit" disabled={!joinedGroup}>
@@ -42,6 +65,15 @@ const CommentForm = ({ groupId, setComments, joinedGroup }) => {
           </button>
         </CommentContainer>
       </form>
+      {showAlert && (
+        <AlertPopup
+          alertContent={alertContent}
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+        >
+          {alertContent}
+        </AlertPopup>
+      )}
     </Container>
   );
 };

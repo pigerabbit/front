@@ -37,6 +37,7 @@ const ProductReplyForm = ({
           name="replyText"
           rows="6"
           onChange={(e) => setCommentText(e.target.value)}
+          maxlength="5000"
           required
         />
       </form>
