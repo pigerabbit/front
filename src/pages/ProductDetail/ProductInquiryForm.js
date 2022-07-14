@@ -3,6 +3,7 @@ import styled from "styled-components";
 import * as Api from "api";
 
 import encodeFileToBase64 from "utils/encodeFileToBase64";
+import AlertPopup from "components/AlertPopup";
 
 const ProductInquiryForm = ({
   productId,
@@ -15,6 +16,30 @@ const ProductInquiryForm = ({
   const [inquiryImg, setInquiryImg] = useState({});
   const [previewImg, setPreviewImg] = useState("");
   const [isClicked, setIsClicked] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+
+  const handleChange = (e) => {
+    const content = e.target.value;
+    if (content.length >= e.target.maxLength) {
+      setAlertContent(
+        `최대 ${e.target.maxLength.toLocaleString()}자까지 작성할 수 있습니다.`
+      );
+      setShowAlert(true);
+      return;
+    } else {
+      switch (e.target.id) {
+        case "inquiryTitle":
+          setInquiryTitle(e.target.value);
+          return;
+        case "inquiryText":
+          setInquiryText(e.target.value);
+          return;
+        default:
+          return;
+      }
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,20 +96,20 @@ const ProductInquiryForm = ({
           <input
             type="text"
             id="inquiryTitle"
-            placeholder="제목을 입력해주세요."
+            placeholder="제목을 입력해주세요.(100자 이하)"
             name="inquiryTitle"
             value={inquiryTitle}
-            onChange={(e) => setInquiryTitle(e.target.value)}
-            maxlength="100"
+            onInput={handleChange}
+            maxLength={100}
             required
           />
           <textarea
             id="inquiryText"
-            placeholder="문의 내용을 작성해주세요."
+            placeholder="문의 내용을 작성해주세요.(1,000자 이하)"
             name="inquiryText"
             rows="6"
-            onChange={(e) => setInquiryText(e.target.value)}
-            maxlength="1000"
+            onInput={handleChange}
+            maxLength={1000}
             required
           />
           <div id="inquiryImage">
@@ -121,6 +146,15 @@ const ProductInquiryForm = ({
           </Button>
         </ButtonContainer>
       </form>
+      {showAlert && (
+        <AlertPopup
+          alertContent={alertContent}
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+        >
+          {alertContent}
+        </AlertPopup>
+      )}
     </Container>
   );
 };

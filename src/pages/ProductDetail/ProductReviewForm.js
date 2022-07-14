@@ -3,6 +3,7 @@ import styled from "styled-components";
 import * as Api from "api";
 
 import encodeFileToBase64 from "utils/encodeFileToBase64";
+import AlertPopup from "components/AlertPopup";
 
 const ProductReviewForm = ({
   productId,
@@ -17,6 +18,30 @@ const ProductReviewForm = ({
   const [reviewImg, setReviewImg] = useState({});
   const [previewImg, setPreviewImg] = useState("");
   const [isClicked, setIsClicked] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+
+  const handleChange = (e) => {
+    const content = e.target.value;
+    if (content.length >= e.target.maxLength) {
+      setAlertContent(
+        `최대 ${e.target.maxLength.toLocaleString()}자까지 작성할 수 있습니다.`
+      );
+      setShowAlert(true);
+      return;
+    } else {
+      switch (e.target.id) {
+        case "reviewTitle":
+          setReviewTitle(e.target.value);
+          return;
+        case "reviewText":
+          setReviewText(e.target.value);
+          return;
+        default:
+          return;
+      }
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,21 +99,23 @@ const ProductReviewForm = ({
           <input
             type="text"
             id="reviewTitle"
-            placeholder="제목을 입력해주세요."
+            placeholder="제목을 입력해주세요.(100자 이하)"
             name="reviewTitle"
             value={reviewTitle}
             onChange={(e) => setReviewTitle(e.target.value)}
-            maxlength="100"
+            onInput={handleChange}
+            maxLength={100}
             required
           />
           <textarea
             id="reviewText"
-            placeholder="후기 내용을 작성해주세요."
+            placeholder="후기 내용을 작성해주세요.(10자 이상 5,000자 이하)"
             name="reviewText"
             rows="6"
             onChange={(e) => setReviewText(e.target.value)}
-            minlength="10"
-            maxlength="5000"
+            onInput={handleChange}
+            minLength={10}
+            maxLength={5000}
             required
           />
           <div id="reviewImage">
@@ -125,6 +152,15 @@ const ProductReviewForm = ({
           </Button>
         </ButtonContainer>
       </form>
+      {showAlert && (
+        <AlertPopup
+          alertContent={alertContent}
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+        >
+          {alertContent}
+        </AlertPopup>
+      )}
     </Container>
   );
 };
