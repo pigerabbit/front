@@ -21,6 +21,12 @@ const ProductReviewForm = ({
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
 
+  const handleKeyPress = (e) => {
+    if (showAlert) {
+      e.preventDefault();
+    }
+  };
+
   const handleChange = (e) => {
     const content = e.target.value;
     if (content.length >= e.target.maxLength) {
@@ -104,6 +110,7 @@ const ProductReviewForm = ({
             value={reviewTitle}
             onChange={(e) => setReviewTitle(e.target.value)}
             onInput={handleChange}
+            onKeyPress={handleKeyPress}
             maxLength={100}
             required
           />
@@ -114,6 +121,7 @@ const ProductReviewForm = ({
             rows="6"
             onChange={(e) => setReviewText(e.target.value)}
             onInput={handleChange}
+            onKeyPress={handleKeyPress}
             minLength={10}
             maxLength={5000}
             required
