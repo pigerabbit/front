@@ -21,7 +21,7 @@ const QRCodePage = () => {
   );
   const [maxQuantity, setMaxQuantity] = useState(1);
   const [quantity, setQuantity] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // 테스트를 위해서 사용된 clickHandler 입니다.
   const handleClick = () => {
@@ -49,7 +49,6 @@ const QRCodePage = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
     if (user) {
       getMaxQuantity();
       setCheckUrl(
@@ -66,44 +65,46 @@ const QRCodePage = () => {
     }
   }, [quantity]);
 
+  if (loading) {
+    return (
+      <Container>
+        <LoadingSpinner />
+      </Container>
+    );
+  }
+
   return (
     <Container>
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <>
-          <DetailHeader />
-          <QRInfo>
-            <p id="title">이용권 사용을 위한 QR코드입니다.</p>
-            <p id="inform">
-              하단에 있는 상품 수량을 선택한 후, 이용권을 사용하실 구매처
-              사장님께 보여주세요!
-              <br />본 이용권은 정해진 기간 내에만 사용할 수 있으며, 기간 만료
-              시 포인트로 환불될 수 있음을 알려드립니다.
-            </p>
-          </QRInfo>
-          <QRContainer>
-            <QRCode
-              value={checkUrl}
-              level={"H"}
-              id="qr"
-              size={250}
-              // onClick={handleClick}
-            />
-          </QRContainer>
-          <QRBottom>
-            <h4>사용할 상품 수량</h4>
-            <div id="quantity">
-              <SetQuantityButtons
-                quantity={quantity}
-                setQuantity={setQuantity}
-                maxQuantity={maxQuantity}
-              />
-              (남는 수량 {maxQuantity - quantity}개 / 최대 {maxQuantity}개)
-            </div>
-          </QRBottom>
-        </>
-      )}
+      <DetailHeader />
+      <QRInfo>
+        <p id="title">이용권 사용을 위한 QR코드입니다.</p>
+        <p id="inform">
+          하단에 있는 상품 수량을 선택한 후, 이용권을 사용하실 구매처 사장님께
+          보여주세요!
+          <br />본 이용권은 정해진 기간 내에만 사용할 수 있으며, 기간 만료 시
+          포인트로 환불될 수 있음을 알려드립니다.
+        </p>
+      </QRInfo>
+      <QRContainer>
+        <QRCode
+          value={checkUrl}
+          level={"H"}
+          id="qr"
+          size={250}
+          onClick={handleClick}
+        />
+      </QRContainer>
+      <QRBottom>
+        <h4>사용할 상품 수량</h4>
+        <div id="quantity">
+          <SetQuantityButtons
+            quantity={quantity}
+            setQuantity={setQuantity}
+            maxQuantity={maxQuantity}
+          />
+          (남는 수량 {maxQuantity - quantity}개 / 최대 {maxQuantity}개)
+        </div>
+      </QRBottom>
     </Container>
   );
 };

@@ -26,7 +26,7 @@ const ProductDetailPage = () => {
   });
   const [targetPostId, setTargetPostId] = useState("");
   const [targetGroupId, setTargetGroupId] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
   const loc = useLocation();
@@ -84,7 +84,6 @@ const ProductDetailPage = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
     getProductDetail();
   }, [user]);
 
