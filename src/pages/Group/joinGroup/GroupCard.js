@@ -70,7 +70,9 @@ const GroupCard = ({ group, minPurchaseQty }) => {
       </GroupType>
       <GroupInfo>
         <h3>{group.groupName}</h3>
-        {group.location && <p>({group.location})</p>}
+        {group.location && group.groupType === "local" && (
+          <p>({group.location})</p>
+        )}
       </GroupInfo>
       <Button
         joined={
@@ -126,8 +128,8 @@ const GroupType = styled.div`
   color: #ffffff;
 
   @media (max-width: 510px) {
-    width: 27px;
-    height: 27px;
+    width: 30px;
+    height: 30px;
     font-size: 10px;
   }
 `;
@@ -140,8 +142,6 @@ const GroupInfo = styled.div`
   > h3 {
     font-size: 18px;
     text-align: left;
-    margin-top: 10px;
-    margin-bottom: 5px;
     word-break: keep-all;
     @media (max-width: 510px) {
       font-size: 16px;
@@ -151,7 +151,7 @@ const GroupInfo = styled.div`
     font-size: 15px;
     color: #636363;
     text-align: left;
-    margin-bottom: 10px;
+    margin-top: 5px;
     max-width: 410px;
     word-break: keep-all;
     @media (max-width: 510px) {
@@ -163,7 +163,7 @@ const GroupInfo = styled.div`
   padding-left: 65px;
   @media (max-width: 510px) {
     padding-right: 170px;
-    padding-left: 33px;
+    padding-left: 37px;
   }
 `;
 
@@ -173,14 +173,13 @@ const Current = styled.div`
   font-size: 23px;
   font-weight: bold;
   color: ${({ isImminent }) => (isImminent ? "#ff0000" : "#000000")};
-  margin: 10px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   @media (max-width: 510px) {
     font-size: 20px;
-    right: 100px;
+    right: 96px;
   }
 `;
 
@@ -211,7 +210,6 @@ const StyledButton = styled.button`
 const Remain = styled.div`
   margin-top: 5px;
   font-weight: bold;
-  text-align: left;
   font-size: 16px;
 
   @media (max-width: 510px) {
