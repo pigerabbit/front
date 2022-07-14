@@ -9,7 +9,7 @@ import LoadingSpinner from "components/LoadingSpinner";
 
 const JoinGroupWindow = ({ productId, setShowJoinGroup, minPurchaseQty }) => {
   const [groups, setGroups] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleClose = () => {
     setShowJoinGroup(false);
@@ -30,7 +30,6 @@ const JoinGroupWindow = ({ productId, setShowJoinGroup, minPurchaseQty }) => {
   };
 
   useEffect(() => {
-    setLoading(true);
     getGroups();
   }, []);
 
