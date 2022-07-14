@@ -2,9 +2,33 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 
+import AlertPopup from "components/AlertPopup";
+
 const ProductReplyEditForm = ({ comment, setComment, setIsEditingReply }) => {
   const [commentText, setCommentText] = useState(comment.content);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+
   const postId = comment.postId;
+
+  const handleChange = (e) => {
+    const content = e.target.value;
+    if (content.length >= e.target.maxLength) {
+      setAlertContent(
+        `최대 ${e.target.maxLength.toLocaleString()}자까지 작성할 수 있습니다.`
+      );
+      setShowAlert(true);
+      return;
+    } else {
+      setCommentText(e.target.value);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (showAlert) {
+      e.preventDefault();
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,8 +53,9 @@ const ProductReplyEditForm = ({ comment, setComment, setIsEditingReply }) => {
           name="replyText"
           defaultValue={commentText}
           rows="6"
-          onChange={(e) => setCommentText(e.target.value)}
-          maxlength="5000"
+          onInput={handleChange}
+          onKeyPress={handleKeyPress}
+          maxLength={5000}
           required
         />
       </form>
@@ -47,6 +72,15 @@ const ProductReplyEditForm = ({ comment, setComment, setIsEditingReply }) => {
           확인
         </Button>
       </ButtonContainer>
+      {showAlert && (
+        <AlertPopup
+          alertContent={alertContent}
+          showAlert={showAlert}
+          setShowAlert={setShowAlert}
+        >
+          {alertContent}
+        </AlertPopup>
+      )}
     </Container>
   );
 };
