@@ -16,7 +16,7 @@ const CommentsArea = ({
   const [comments, setComments] = useState([]);
 
   const handleClickCommentArea = () => {
-    setShowBuyingProduct(true);
+    if (group.state === 0) setShowBuyingProduct(true);
   };
 
   const getComments = async () => {
@@ -45,7 +45,7 @@ const CommentsArea = ({
     <Container>
       {!(joinedGroup || isSeller) && (
         <Blur onClick={handleClickCommentArea}>
-          댓글 읽기/작성은 공동구매 참여 후 가능
+          댓글 읽기/작성은 공동구매 참여자만 가능
         </Blur>
       )}
       <CommentsContainer>
