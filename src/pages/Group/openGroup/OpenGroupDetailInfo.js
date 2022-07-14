@@ -39,6 +39,12 @@ const OpenGroupDetailInfo = ({
       ? groupName && countValid && hourValid
       : groupName && locationValid && countValid && hourValid;
 
+  useEffect(() => {
+    if (product && type === "coupon") {
+      setAddress(product.userInfo.business[0].businessLocation);
+    }
+  }, [product, type]);
+
   const onSubmit = () =>
     navigate("/group/open/pay", {
       state: {
