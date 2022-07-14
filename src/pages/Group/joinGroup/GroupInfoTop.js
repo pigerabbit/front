@@ -162,8 +162,9 @@ const InfoContainer = styled.div`
   #groupName {
     display: inline-block;
     width: 60%;
-    @media (max-width: 360px) {
-      width: 57%;
+    word-break: keep-all;
+    @media (max-width: 405px) {
+      width: 52%;
     }
   }
 
