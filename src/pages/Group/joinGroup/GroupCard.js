@@ -71,7 +71,7 @@ const GroupCard = ({ group, minPurchaseQty }) => {
       <GroupInfo>
         <h3>{group.groupName}</h3>
         {group.location && group.groupType === "local" && (
-          <p>({group.location})</p>
+          <p>{group.location}</p>
         )}
       </GroupInfo>
       <Button
